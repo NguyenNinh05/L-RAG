@@ -1,0 +1,20 @@
+# Web API Server
+fastapi
+uvicorn[standard]
+python-multipart
+aiohttp
+
+# Document Ingestion (PDF & DOCX)
+python-docx
+pymupdf4llm
+PyMuPDF
+
+# Vector Database & Processing
+chromadb
+numpy
+requests
+
+# LLM & Pipeline Utilities
+tenacity
+tqdm
+nest-asyncio

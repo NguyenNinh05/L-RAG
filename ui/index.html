@@ -1,0 +1,1332 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LegalRAG — So sánh văn bản pháp lý</title>
+    <meta
+      name="description"
+      content="Hệ thống so sánh văn bản pháp lý thông minh sử dụng RAG và LLM"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <style>
+      /* ── Reset & Base ────────────────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg-base: #0a0a14;
+        --bg-surface: #12121e;
+        --bg-card: #1a1a2e;
+        --bg-hover: #1e1e32;
+        --border: rgba(99, 102, 241, 0.15);
+        --border-light: rgba(255, 255, 255, 0.06);
+        --accent: #6366f1;
+        --accent-2: #8b5cf6;
+        --accent-glow: rgba(99, 102, 241, 0.35);
+        --green: #10b981;
+        --yellow: #f59e0b;
+        --red: #ef4444;
+        --text-1: #f1f5f9;
+        --text-2: #94a3b8;
+        --text-3: #475569;
+        --radius: 14px;
+        --radius-sm: 8px;
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: "Inter", sans-serif;
+        background: var(--bg-base);
+        color: var(--text-1);
+        overflow: hidden;
+      }
+
+      /* ── Layout ──────────────────────────────────────────────────────────────── */
+      .app {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        height: 100vh;
+      }
+
+      /* ── Sidebar ─────────────────────────────────────────────────────────────── */
+      .sidebar {
+        background: var(--bg-surface);
+        border-right: 1px solid var(--border-light);
+        display: flex;
+        flex-direction: column;
+        padding: 24px 20px;
+        gap: 20px;
+        overflow-y: auto;
+      }
+
+      .sidebar-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+        box-shadow: 0 0 16px var(--accent-glow);
+      }
+
+      .logo-text h1 {
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.2;
+        background: linear-gradient(135deg, #e2e8f0, #a5b4fc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .logo-text p {
+        font-size: 11px;
+        color: var(--text-3);
+        font-weight: 400;
+      }
+
+      .sidebar-divider {
+        height: 1px;
+        background: var(--border-light);
+        flex-shrink: 0;
+      }
+
+      /* ── Upload slots ─────────────────────────────────────────────────────────── */
+      .upload-section h2 {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-3);
+        margin-bottom: 12px;
+      }
+
+      .upload-slots {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .upload-slot {
+        border: 1.5px dashed var(--border);
+        border-radius: var(--radius-sm);
+        padding: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        background: rgba(99, 102, 241, 0.03);
+      }
+
+      .upload-slot:hover {
+        border-color: var(--accent);
+        background: rgba(99, 102, 241, 0.07);
+      }
+
+      .upload-slot.has-file {
+        border-style: solid;
+        border-color: rgba(16, 185, 129, 0.5);
+        background: rgba(16, 185, 129, 0.05);
+      }
+
+      .upload-slot input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .slot-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        pointer-events: none;
+      }
+
+      .slot-badge {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 100px;
+        flex-shrink: 0;
+      }
+
+      .slot-badge.v1 {
+        background: rgba(99, 102, 241, 0.2);
+        color: #a5b4fc;
+      }
+      .slot-badge.v2 {
+        background: rgba(139, 92, 246, 0.2);
+        color: #c4b5fd;
+      }
+
+      .slot-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .slot-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-2);
+      }
+
+      .slot-filename {
+        font-size: 11px;
+        color: var(--green);
+        font-family: "JetBrains Mono", monospace;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 2px;
+      }
+
+      .slot-hint {
+        font-size: 11px;
+        color: var(--text-3);
+        margin-top: 2px;
+      }
+
+      .slot-check {
+        font-size: 16px;
+        color: var(--green);
+      }
+
+      /* ── Compare button ───────────────────────────────────────────────────────── */
+      #btn-compare {
+        width: 100%;
+        padding: 13px;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 16px var(--accent-glow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      #btn-compare:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5);
+      }
+
+      #btn-compare:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* ── Info tags ────────────────────────────────────────────────────────────── */
+      .info-tags {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .info-tag {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        color: var(--text-3);
+      }
+
+      .info-tag-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex-shrink: 0;
+      }
+
+      /* ── Main content ─────────────────────────────────────────────────────────── */
+      .main {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .topbar {
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border-light);
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+
+      .topbar-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-2);
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+      /* ── Chat area ───────────────────────────────────────────────────────────── */
+      .chat-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        scroll-behavior: smooth;
+      }
+
+      .chat-area::-webkit-scrollbar {
+        width: 4px;
+      }
+      .chat-area::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 2px;
+      }
+
+      /* ── Empty state ─────────────────────────────────────────────────────────── */
+      .empty-state {
+        margin: auto;
+        text-align: center;
+        max-width: 420px;
+        padding: 40px;
+      }
+
+      .empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5));
+      }
+
+      .empty-state h2 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #e2e8f0, #a5b4fc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .empty-state p {
+        font-size: 13px;
+        color: var(--text-3);
+        line-height: 1.6;
+      }
+
+      .feature-chips {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .chip {
+        font-size: 11px;
+        font-weight: 500;
+        padding: 5px 12px;
+        border-radius: 100px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid var(--border);
+        color: #a5b4fc;
+      }
+
+      /* ── Message bubbles ─────────────────────────────────────────────────────── */
+      .msg {
+        max-width: 100%;
+        animation: fadeUp 0.25s ease;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── Progress card ───────────────────────────────────────────────────────── */
+      .progress-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius);
+        padding: 20px 24px;
+        max-width: 680px;
+        box-shadow: var(--shadow);
+      }
+
+      .progress-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .ai-avatar {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+
+      .ai-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-2);
+      }
+
+      .thinking-dots {
+        display: inline-flex;
+        gap: 3px;
+        align-items: center;
+        margin-left: 4px;
+      }
+
+      .thinking-dots span {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: dot-bounce 1.2s ease-in-out infinite;
+      }
+
+      .thinking-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .thinking-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes dot-bounce {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        30% {
+          transform: translateY(-5px);
+          opacity: 1;
+        }
+      }
+
+      /* ── Step list ───────────────────────────────────────────────────────────── */
+      .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: var(--radius-sm);
+        transition: background 0.2s;
+      }
+
+      .step.running {
+        background: rgba(99, 102, 241, 0.08);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+      }
+
+      .step.done {
+        background: rgba(16, 185, 129, 0.05);
+        border: 1px solid rgba(16, 185, 129, 0.15);
+      }
+
+      .step.skipped {
+        background: rgba(245, 158, 11, 0.05);
+        border: 1px solid rgba(245, 158, 11, 0.15);
+      }
+
+      .step.waiting {
+        background: transparent;
+        border: 1px solid var(--border-light);
+        opacity: 0.4;
+      }
+
+      .step-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+        line-height: 1;
+        margin-top: 1px;
+      }
+
+      .step-icon.spin {
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-1);
+        margin-bottom: 3px;
+      }
+
+      .step-detail {
+        font-size: 11.5px;
+        color: var(--text-3);
+        line-height: 1.4;
+      }
+
+      /* ── Stats row ────────────────────────────────────────────────────────────── */
+      .stats-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+
+      .stat-card {
+        flex: 1;
+        min-width: 80px;
+        padding: 12px;
+        border-radius: var(--radius-sm);
+        text-align: center;
+        border: 1px solid var(--border-light);
+      }
+
+      .stat-card.modified {
+        background: rgba(245, 158, 11, 0.07);
+        border-color: rgba(245, 158, 11, 0.2);
+      }
+      .stat-card.added {
+        background: rgba(16, 185, 129, 0.07);
+        border-color: rgba(16, 185, 129, 0.2);
+      }
+      .stat-card.deleted {
+        background: rgba(239, 68, 68, 0.07);
+        border-color: rgba(239, 68, 68, 0.2);
+      }
+      .stat-card.unchanged {
+        background: rgba(99, 102, 241, 0.07);
+        border-color: rgba(99, 102, 241, 0.2);
+      }
+
+      .stat-num {
+        font-size: 22px;
+        font-weight: 700;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .stat-card.modified .stat-num {
+        color: var(--yellow);
+      }
+      .stat-card.added .stat-num {
+        color: var(--green);
+      }
+      .stat-card.deleted .stat-num {
+        color: var(--red);
+      }
+      .stat-card.unchanged .stat-num {
+        color: #a5b4fc;
+      }
+
+      .stat-label {
+        font-size: 10px;
+        color: var(--text-3);
+        font-weight: 500;
+        margin-top: 4px;
+      }
+
+      /* ── Report card ───────────────────────────────────────────────────────────── */
+      .report-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius);
+        overflow: hidden;
+        max-width: 100%;
+        box-shadow: var(--shadow);
+        animation: fadeUp 0.4s ease;
+      }
+
+      .report-header {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.12),
+          rgba(139, 92, 246, 0.08)
+        );
+        border-bottom: 1px solid var(--border-light);
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .report-title {
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .report-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn-icon {
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        transition: all 0.15s;
+        color: var(--text-2);
+      }
+
+      .btn-icon:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-1);
+      }
+
+      .report-body {
+        padding: 24px;
+        overflow-y: auto;
+        max-height: 60vh;
+      }
+
+      .report-body::-webkit-scrollbar {
+        width: 4px;
+      }
+      .report-body::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 2px;
+      }
+
+      /* ── Markdown styling ──────────────────────────────────────────────────────── */
+      .md-content {
+        font-size: 13.5px;
+        line-height: 1.75;
+        color: var(--text-2);
+      }
+      .md-content h1 {
+        font-size: 18px;
+        color: var(--text-1);
+        margin: 20px 0 10px;
+        border-bottom: 1px solid var(--border-light);
+        padding-bottom: 8px;
+      }
+      .md-content h2 {
+        font-size: 15px;
+        color: #a5b4fc;
+        margin: 18px 0 8px;
+      }
+      .md-content h3 {
+        font-size: 13px;
+        color: var(--text-2);
+        margin: 14px 0 6px;
+        font-weight: 600;
+      }
+      .md-content p {
+        margin-bottom: 10px;
+      }
+      .md-content strong {
+        color: var(--text-1);
+        font-weight: 600;
+      }
+      .md-content em {
+        color: var(--text-3);
+        font-style: italic;
+      }
+      .md-content code {
+        font-family: "JetBrains Mono", monospace;
+        background: rgba(99, 102, 241, 0.1);
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #c4b5fd;
+      }
+      .md-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+        font-size: 12.5px;
+      }
+      .md-content th {
+        background: rgba(99, 102, 241, 0.1);
+        padding: 8px 12px;
+        text-align: left;
+        font-weight: 600;
+        color: #a5b4fc;
+        border: 1px solid var(--border);
+      }
+      .md-content td {
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        color: var(--text-2);
+        vertical-align: top;
+      }
+      .md-content tr:nth-child(even) td {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .md-content blockquote {
+        border-left: 3px solid var(--accent);
+        padding: 8px 14px;
+        margin: 10px 0;
+        background: rgba(99, 102, 241, 0.05);
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      }
+      .md-content hr {
+        border: none;
+        border-top: 1px solid var(--border-light);
+        margin: 16px 0;
+      }
+      .md-content ul,
+      .md-content ol {
+        padding-left: 20px;
+        margin-bottom: 10px;
+      }
+      .md-content li {
+        margin-bottom: 4px;
+      }
+
+      /* ── Error message ────────────────────────────────────────────────────────── */
+      .error-msg {
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        border-radius: var(--radius-sm);
+        padding: 14px 16px;
+        font-size: 13px;
+        color: #fca5a5;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        max-width: 680px;
+      }
+
+      /* ── Drag overlay ─────────────────────────────────────────────────────────── */
+      .drag-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(99, 102, 241, 0.12);
+        backdrop-filter: blur(4px);
+        border: 2px dashed var(--accent);
+        border-radius: var(--radius);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #a5b4fc;
+      }
+
+      .drag-overlay.active {
+        display: flex;
+      }
+
+      /* ── Responsive ───────────────────────────────────────────────────────────── */
+      @media (max-width: 768px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--border-light);
+          max-height: 40vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="drag-overlay" id="drag-overlay">📂 Thả file PDF vào đây</div>
+
+    <div class="app">
+      <!-- ── Sidebar ── -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo-icon">⚖️</div>
+          <div class="logo-text">
+            <h1>LegalRAG</h1>
+            <p>So sánh văn bản pháp lý</p>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="upload-section">
+          <h2>📂 Tài liệu so sánh</h2>
+          <div class="upload-slots">
+            <!-- Slot A -->
+            <label class="upload-slot" id="slot-a" for="input-a">
+              <input type="file" id="input-a" accept=".pdf,.docx" />
+              <div class="slot-label">
+                <span class="slot-badge v1">v1</span>
+                <div class="slot-info">
+                  <div class="slot-title">Văn bản gốc</div>
+                  <div class="slot-filename" id="name-a">Chưa chọn file</div>
+                  <div class="slot-hint" id="hint-a">PDF hoặc DOCX</div>
+                </div>
+                <span class="slot-check" id="check-a" style="display: none"
+                  >✅</span
+                >
+              </div>
+            </label>
+
+            <!-- Slot B -->
+            <label class="upload-slot" id="slot-b" for="input-b">
+              <input type="file" id="input-b" accept=".pdf,.docx" />
+              <div class="slot-label">
+                <span class="slot-badge v2">v2</span>
+                <div class="slot-info">
+                  <div class="slot-title">Văn bản mới</div>
+                  <div class="slot-filename" id="name-b">Chưa chọn file</div>
+                  <div class="slot-hint" id="hint-b">PDF hoặc DOCX</div>
+                </div>
+                <span class="slot-check" id="check-b" style="display: none"
+                  >✅</span
+                >
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <button id="btn-compare" disabled onclick="startComparison()">
+          <span id="btn-icon">🔍</span>
+          <span id="btn-text">So sánh văn bản</span>
+        </button>
+
+        <button id="btn-reset" onclick="resetComparison()" style="display:none; width:100%; margin-top:8px; background: transparent; border: 1px solid var(--border-light); color: var(--text-2); padding: 10px; border-radius: 10px; cursor: pointer; font-size: 13px; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-1)';this.style.color='var(--accent-1)'" onmouseout="this.style.borderColor='var(--border-light)';this.style.color='var(--text-2)'">
+          🔄 So sánh văn bản khác
+        </button>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="info-tags">
+          <div class="info-tag">
+            <div class="info-tag-dot"></div>
+            RAG + Needleman-Wunsch Alignment
+          </div>
+          <div class="info-tag">
+            <div class="info-tag-dot" style="background: var(--accent-2)"></div>
+            Ollama Qwen3 Embedding + LLM
+          </div>
+          <div class="info-tag">
+            <div class="info-tag-dot" style="background: var(--green)"></div>
+            ChromaDB Vector Store
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── Main ── -->
+      <main class="main">
+        <div class="topbar">
+          <span class="topbar-title"
+            >Phân tích pháp lý · Legal Document Analysis</span
+          >
+          <div class="status-dot" id="status-dot"></div>
+        </div>
+
+        <div class="chat-area" id="chat">
+          <!-- Empty state -->
+          <div class="empty-state" id="empty-state">
+            <div class="empty-icon">⚖️</div>
+            <h2>Chào mừng đến LegalRAG</h2>
+            <p>
+              Tải lên hai phiên bản văn bản pháp lý để hệ thống tự động<br />phân
+              tích và so sánh từng điều khoản bằng AI.
+            </p>
+            <div class="feature-chips">
+              <span class="chip">📄 PDF & DOCX</span>
+              <span class="chip">🤖 LLM Analysis</span>
+              <span class="chip">🔢 Semantic Matching</span>
+              <span class="chip">📊 Báo cáo chi tiết</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // ── File upload logic ──────────────────────────────────────────────────────────
+      let fileA = null,
+        fileB = null;
+
+      function setupFileInput(
+        inputId,
+        slotId,
+        nameId,
+        checkId,
+        hintId,
+        varSetter,
+      ) {
+        const input = document.getElementById(inputId);
+        const slot = document.getElementById(slotId);
+        const nameEl = document.getElementById(nameId);
+        const checkEl = document.getElementById(checkId);
+        const hintEl = document.getElementById(hintId);
+
+        input.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          varSetter(file);
+          nameEl.textContent = file.name;
+          hintEl.style.display = "none";
+          slot.classList.add("has-file");
+          checkEl.style.display = "inline";
+          updateCompareBtn();
+        });
+      }
+
+      setupFileInput(
+        "input-a",
+        "slot-a",
+        "name-a",
+        "check-a",
+        "hint-a",
+        (f) => (fileA = f),
+      );
+      setupFileInput(
+        "input-b",
+        "slot-b",
+        "name-b",
+        "check-b",
+        "hint-b",
+        (f) => (fileB = f),
+      );
+
+      function updateCompareBtn() {
+        const btn = document.getElementById("btn-compare");
+        btn.disabled = !(fileA && fileB);
+      }
+
+      // ── Steps definition ───────────────────────────────────────────────────────────
+      const STEP_DEFS = [
+        { icon: "📂", title: "Đọc & phân tích cấu trúc tài liệu" },
+        { icon: "🔢", title: "Nhúng vector (Embedding)" },
+        { icon: "🔍", title: "So sánh ngữ nghĩa (Semantic Matching)" },
+        { icon: "🤖", title: "Phân tích điều khoản bằng AI (LLM)" },
+        { icon: "✅", title: "Hoàn tất" },
+      ];
+
+      // ── DOM helpers ────────────────────────────────────────────────────────────────
+      function hideEmpty() {
+        const el = document.getElementById("empty-state");
+        if (el) el.remove();
+      }
+
+      function appendMsg(el) {
+        const chat = document.getElementById("chat");
+        chat.appendChild(el);
+        el.scrollIntoView({ behavior: "smooth", block: "end" });
+      }
+
+      function createProgressCard(nameA, nameB) {
+        const card = document.createElement("div");
+        card.className = "msg";
+        card.id = "progress-card";
+        card.innerHTML = `
+    <div class="progress-card">
+      <div class="progress-card-header">
+        <div class="ai-avatar">⚖️</div>
+        <div>
+          <div class="ai-name">LegalRAG AI <span class="thinking-dots"><span></span><span></span><span></span></span></div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:2px">
+            ${escHtml(nameA)} → ${escHtml(nameB)}
+          </div>
+        </div>
+      </div>
+      <div class="steps" id="steps-list">
+        ${STEP_DEFS.map(
+          (s, i) => `
+          <div class="step waiting" id="step-${i + 1}">
+            <span class="step-icon">${s.icon}</span>
+            <div class="step-content">
+              <div class="step-title">${s.title}</div>
+              <div class="step-detail" id="step-detail-${i + 1}">Đang chờ...</div>
+            </div>
+          </div>
+        `,
+        ).join("")}
+      </div>
+    </div>
+  `;
+        return card;
+      }
+
+      function updateStep(step, status, detail) {
+        const el = document.getElementById(`step-${step}`);
+        const detailEl = document.getElementById(`step-detail-${step}`);
+        if (!el || !detailEl) return;
+
+        el.className = `step ${status}`;
+
+        const iconEl = el.querySelector(".step-icon");
+        if (status === "running") {
+          iconEl.textContent = "⏳";
+          iconEl.classList.add("spin");
+        } else if (status === "done") {
+          iconEl.textContent = "✅";
+          iconEl.classList.remove("spin");
+        } else if (status === "skipped") {
+          iconEl.textContent = "⏭️";
+          iconEl.classList.remove("spin");
+        }
+
+        detailEl.textContent = detail || "";
+        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      function showStats(stats) {
+        const card = document
+          .getElementById("progress-card")
+          ?.querySelector(".progress-card");
+        if (!card) return;
+
+        // Remove thinking dots
+        const dots = card.querySelector(".thinking-dots");
+        if (dots) dots.remove();
+
+        const statsEl = document.createElement("div");
+        statsEl.className = "stats-row";
+        statsEl.innerHTML = `
+    <div class="stat-card modified">
+      <div class="stat-num">${stats.modified}</div>
+      <div class="stat-label">✏️ Sửa đổi</div>
+    </div>
+    <div class="stat-card added">
+      <div class="stat-num">${stats.added}</div>
+      <div class="stat-label">➕ Thêm mới</div>
+    </div>
+    <div class="stat-card deleted">
+      <div class="stat-num">${stats.deleted}</div>
+      <div class="stat-label">🗑️ Bị xóa</div>
+    </div>
+    <div class="stat-card unchanged">
+      <div class="stat-num">${stats.unchanged}</div>
+      <div class="stat-label">✔️ Không đổi</div>
+    </div>
+  `;
+        card.appendChild(statsEl);
+      }
+
+      // Store reports safely (avoid injecting large strings into onclick attributes)
+      const _reportStore = {};
+      let _reportCounter = 0;
+
+      function showReport(markdown) {
+        const wrap = document.createElement("div");
+        wrap.className = "msg";
+
+        // Sanitize output của marked để tránh XSS nếu LLM trả về HTML độc hại
+        const renderedHtml = DOMPurify.sanitize(marked.parse(markdown));
+
+        // Store markdown in memory map to avoid attribute injection issues
+        const rid = ++_reportCounter;
+        _reportStore[rid] = markdown;
+
+        wrap.innerHTML = `
+    <div class="report-card">
+      <div class="report-header">
+        <div class="report-title">📝 Báo cáo so sánh chi tiết</div>
+        <div class="report-actions">
+          <button class="btn-icon" title="Copy Markdown" onclick="copyReport(this, ${rid})">📋</button>
+          <button class="btn-icon" title="Tải về" onclick="downloadReport(${rid})">⬇️</button>
+        </div>
+      </div>
+      <div class="report-body">
+        <div class="md-content">${renderedHtml}</div>
+      </div>
+    </div>
+  `;
+        appendMsg(wrap);
+      }
+
+      function showError(msg) {
+        const wrap = document.createElement("div");
+        wrap.className = "msg";
+        wrap.innerHTML = `
+    <div class="error-msg">
+      <span>⚠️</span>
+      <div><strong>Lỗi xử lý:</strong><br>${escHtml(msg)}</div>
+    </div>
+  `;
+        appendMsg(wrap);
+      }
+
+      function escHtml(text) {
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // ── Copy & Download ─────────────────────────────────────────────────────────
+      function copyReport(btnEl, rid) {
+        const md = _reportStore[rid] || "";
+        navigator.clipboard.writeText(md).then(() => {
+          btnEl.textContent = "✅";
+          setTimeout(() => (btnEl.textContent = "📋"), 1500);
+        });
+      }
+
+      function downloadReport(rid) {
+        const md = _reportStore[rid] || "";
+        const blob = new Blob([md], { type: "text/markdown" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `comparison_report_${Date.now()}.md`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      // ── Main comparison flow ──────────────────────────────────────────────────────
+      async function startComparison() {
+        if (!fileA || !fileB) return;
+
+        hideEmpty();
+
+        const btn = document.getElementById("btn-compare");
+        btn.disabled = true;
+        document.getElementById("btn-icon").textContent = "⏳";
+        document.getElementById("btn-text").textContent = "Đang phân tích...";
+
+        // Create progress card
+        const progressCard = createProgressCard(fileA.name, fileB.name);
+        appendMsg(progressCard);
+
+        // Build FormData
+        const form = new FormData();
+        form.append("file_a", fileA);
+        form.append("file_b", fileB);
+
+        try {
+          const response = await fetch("/api/compare", {
+            method: "POST",
+            body: form,
+          });
+
+          if (!response.ok) {
+            const err = await response
+              .json()
+              .catch(() => ({ detail: "Lỗi không xác định" }));
+            showError(err.detail || "Lỗi server");
+            return;
+          }
+
+          // Read SSE stream
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let buffer = "";
+
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+
+            // Parse SSE frames
+            const frames = buffer.split("\n\n");
+            buffer = frames.pop() || "";
+
+            for (const frame of frames) {
+              if (!frame.trim()) continue;
+
+              const lines = frame.split("\n");
+              let event = "message",
+                data = "";
+
+              for (const line of lines) {
+                if (line.startsWith("event: ")) event = line.slice(7).trim();
+                else if (line.startsWith("data: ")) {
+                  data += (data ? "\n" : "") + line.slice(6).trim();
+                }
+              }
+
+              if (!data) continue;
+
+              try {
+                const payload = JSON.parse(data);
+                handleSSE(event, payload);
+              } catch {}
+            }
+          }
+        } catch (err) {
+          showError(`Không thể kết nối server: ${err.message}`);
+        } finally {
+          btn.disabled = false;
+          document.getElementById("btn-icon").textContent = "🔍";
+          document.getElementById("btn-text").textContent = "So sánh văn bản";
+        }
+      }
+
+      function handleSSE(event, payload) {
+        if (event === "progress") {
+          updateStep(payload.step, payload.status, payload.detail);
+        } else if (event === "stats") {
+          showStats(payload);
+        } else if (event === "report") {
+          showReport(payload.markdown);
+        } else if (event === "done") {
+          // Hien thi nut "So sanh lai" sau khi hoan thanh
+          document.getElementById("btn-reset").style.display = "block";
+        } else if (event === "error") {
+          showError(payload.message);
+          document.getElementById("btn-reset").style.display = "block";
+        }
+      }
+
+      function resetComparison() {
+        // Reset file state
+        fileA = null;
+        fileB = null;
+
+        // Reset file slots UI
+        for (const [slot, name, check, hint, input] of [
+          ["slot-a", "name-a", "check-a", "hint-a", "input-a"],
+          ["slot-b", "name-b", "check-b", "hint-b", "input-b"],
+        ]) {
+          document.getElementById(slot).classList.remove("has-file");
+          document.getElementById(name).textContent = slot === "slot-a" ? "Chưa chọn file" : "Chưa chọn file";
+          document.getElementById(check).style.display = "none";
+          document.getElementById(hint).style.display = "";
+          document.getElementById(input).value = "";
+        }
+
+        // Reset chat area
+        const chat = document.getElementById("chat");
+        chat.innerHTML = `
+          <div class="empty-state" id="empty-state">
+            <div class="empty-icon">⚖️</div>
+            <h2>Chào mừng đến LegalRAG</h2>
+            <p>Tải lên hai phiên bản văn bản pháp lý để hệ thống tự động<br/>phân tích và so sánh từng điều khoản bằng AI.</p>
+            <div class="feature-chips">
+              <span class="chip">📄 PDF &amp; DOCX</span>
+              <span class="chip">🤖 LLM Analysis</span>
+              <span class="chip">🔢 Semantic Matching</span>
+              <span class="chip">📊 Báo cáo chi tiết</span>
+            </div>
+          </div>`;
+
+        // Reset nut Reset + Compare
+        document.getElementById("btn-reset").style.display = "none";
+        document.getElementById("btn-compare").disabled = true;
+      }
+
+      // ── Drag & drop support ────────────────────────────────────────────────────────
+      (() => {
+        const overlay = document.getElementById("drag-overlay");
+        let dragTarget = null;
+
+        document.addEventListener("dragenter", (e) => {
+          if (e.dataTransfer.types.includes("Files")) {
+            dragTarget = e.target;
+            overlay.classList.add("active");
+          }
+        });
+
+        document.addEventListener("dragleave", (e) => {
+          if (e.target === dragTarget) {
+            overlay.classList.remove("active");
+          }
+        });
+
+        document.addEventListener("dragover", (e) => e.preventDefault());
+
+        document.addEventListener("drop", (e) => {
+          e.preventDefault();
+          overlay.classList.remove("active");
+
+          const files = Array.from(e.dataTransfer.files).filter(
+            (f) => f.name.endsWith(".pdf") || f.name.endsWith(".docx"),
+          );
+
+          if (files[0]) {
+            fileA = files[0];
+            document.getElementById("name-a").textContent = files[0].name;
+            document.getElementById("hint-a").style.display = "none";
+            document.getElementById("slot-a").classList.add("has-file");
+            document.getElementById("check-a").style.display = "inline";
+          }
+          if (files[1]) {
+            fileB = files[1];
+            document.getElementById("name-b").textContent = files[1].name;
+            document.getElementById("hint-b").style.display = "none";
+            document.getElementById("slot-b").classList.add("has-file");
+            document.getElementById("check-b").style.display = "inline";
+          }
+
+          updateCompareBtn();
+        });
+      })();
+
+      // Thêm marked options
+      marked.setOptions({ breaks: true, gfm: true });
+    </script>
+  </body>
+</html>

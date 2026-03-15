@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+.env
+.venv
+
+# Dự án Legal RAG - Database (QUAN TRỌNG)
+chroma_db/
+*.db
+*.sqlite3
+
+# Kết quả đầu ra
+comparison_report.md
+*.log
+
+# Tài liệu test (Nên để local, không nên đẩy lên Git nếu là tài liệu thật)
+*.pdf
+*.docx
+!docs_test/*.pdf
+!docs_test/*.docx
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Hệ điều hành
+Thumbs.db
+Desktop.ini
+.DS_Store
