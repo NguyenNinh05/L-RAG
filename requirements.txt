@@ -7,7 +7,6 @@ aiohttp
 # Document Ingestion (PDF & DOCX)
 python-docx
 pymupdf4llm
-PyMuPDF
 
 # Vector Database & Processing
 chromadb

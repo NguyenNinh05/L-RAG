@@ -1,14 +1,7 @@
-"""
-llm/generator.py
-================
-Sinh bao cao so sanh hop dong bang LLM local qua Ollama API.
-Dung Qwen3-4B (GGUF Q4_K_M) chay qua Ollama de toi uu VRAM.
-"""
-
 from __future__ import annotations
 import asyncio
 import nest_asyncio
-nest_asyncio.apply()  # Cho phep asyncio.run() hoat dong trong thread co san event loop (api.py dung run_in_executor)
+nest_asyncio.apply() 
 import aiohttp
 from tenacity import retry, stop_after_attempt, wait_exponential
 from tqdm.asyncio import tqdm_asyncio
@@ -27,30 +20,25 @@ import logging
 logger = logging.getLogger(__name__)
 
 # ── System prompt ─────────────────────────────────────────────────────────────
-SYSTEM_PROMPT = """Bạn là chuyên gia so sánh hợp đồng tại một hãng luật hàng đầu. 
-Nhiệm vụ của bạn là lập báo cáo so sánh chi tiết giữa hai phiên bản hợp đồng.
+SYSTEM_PROMPT = """Bạn là Trợ lý đối chiếu văn bản chuyên nghiệp (Document Comparison Assistant). 
+Nhiệm vụ của bạn là thực hiện đối chiếu thực tế (Fact-checking) cực kỳ chính xác giữa hai đoạn văn bản của một hợp đồng pháp lý.
 
-**Tài liệu so sánh:**
-- Hợp đồng gốc: {FILE_A}
-- Hợp đồng mới: {FILE_B}
+**PHẠM VI CÔNG VIỆC:**
+1. CHỈ liệt kê các sai khác thực tế về ngôn ngữ, con số và cấu trúc.
+2. TUYỆT ĐỐI KHÔNG đưa ra kết luận pháp lý hoặc tư vấn pháp luật.
 
-ĐỊNH DẠNG BÁO CÁO BẮT BUỘC:
-1. **Nội dung thay đổi:** Mô tả ngắn gọn bản chất sự thay đổi.
-
-2. **Bảng so sánh chi tiết:**
+**ĐỊNH DẠNG BÁO CÁO BẮT BUỘC CHO MỖI ĐIỀU KHOẢN:**
+1. **Phân loại mức độ:** [THỰC CHẤT] (nếu đổi nội dung, số liệu, nghĩa pháp lý) hoặc [HÌNH THỨC] (nếu chỉ đổi định dạng, lỗi chính tả, khoảng trắng, dấu câu nhưng giữ nguyên nghĩa).
+2. **Tag chi tiết:** Chọn ít nhất một: [Số liệu], [Thời hạn], [Lỗi chính tả], [Định dạng], [Ngôn ngữ chuyên môn], [Cấu trúc danh sách], [Khoảng trắng].
+3. **Tóm tắt thay đổi:** Mô tả ngắn gọn (Ví dụ: Thay đổi số tiền, Cập nhật font chữ/chính tả).
+4. **Bảng so sánh chi tiết:**
 | Hạng mục | {FILE_A} | {FILE_B} |
 | :--- | :--- | :--- |
-| [Tên điều khoản] | [Nội dung gốc] | [Nội dung mới] |
+| [Mục thay đổi] | [Nội dung gốc] | [Nội dung mới] |
 
-3. **Phân tích tác động:**
-- **Rủi ro/Lợi ích:** Phân tích phiên bản mới mang lại lợi ích hay rủi ro so với phiên bản gốc.
-- **Điểm cần lưu ý:** Các điều kiện đi kèm hoặc hệ quả pháp lý.
-
-NGUYÊN TẮC:
-- Dùng ngôn ngữ pháp lý trang trọng, chuẩn xác.
-- CHỈ phân tích dựa trên text cung cấp. Nếu thiếu thông tin, ghi "Không có dữ liệu".
-- Mọi trích dẫn phải trùng khớp với văn bản.
-- Trả lời bằng tiếng Việt có dấu."""
+**NGUYÊN TẮC QUAN TRỌNG:**
+- Nếu phát hiện lỗi chính tả, font chữ (ví dụ: "$k\\hat{e}$" thay vì "kể") hoặc thay đổi định dạng (dấu gạch đầu dòng), bạn phải ghi rõ đây là thay đổi [HÌNH THỨC] và đánh giá mức độ ảnh hưởng đến nghĩa pháp lý (thường là không đổi).
+- Trả lời bằng tiếng Việt chuyên ngành văn phòng, trang trọng, khách quan."""
 
 # ── Call LLM via Ollama ───────────────────────────────────────────────────────
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=2, max=10))
@@ -101,11 +89,11 @@ def _build_prompt(pair: ComparedPair, file_a: str = "v1", file_b: str = "v2") ->
     content_b = pair.chunk_b.content
 
     return (
-        f"Hay so sanh su khac biet cua dieu khoan: **{label}**\n\n"
-        f"--- NGUON DU LIEU ---\n"
+        f"Hãy so sánh sự khác biệt của điều khoản: **{label}**\n\n"
+        f"--- NGUỒN DỮ LIỆU ---\n"
         f"[{file_a}]:\n{content_a}\n\n"
         f"[{file_b}]:\n{content_b}\n\n"
-        f"Hay tao bang so sanh va phan tich tac dong theo dung dinh dang yeu cau."
+        f"Hãy tạo bảng so sánh và phân loại sai khác theo đúng định dạng yêu cầu."
     )
 
 
@@ -114,16 +102,50 @@ def get_llm_model():
 
 from datetime import datetime
 
+# ── Helper for async LLM calls ──────────────────────────────────────────────
+async def _run_all_llm_requests(modified_pairs, file_a, file_b, batch_size=5):
+    """Chạy batch async gọi LLM."""
+    results = []
+    semaphore = asyncio.Semaphore(2) 
+    async with aiohttp.ClientSession() as session:
+        for i in range(0, len(modified_pairs), batch_size):
+            batch = modified_pairs[i:i+batch_size]
+            tasks = []
+            for j, pair in enumerate(batch):
+                label = pair.chunk_a.article_number or "N/A"
+                prompt = _build_prompt(pair, file_a, file_b)
+                tasks.append(_call_llm_async(session, prompt, file_a, file_b, semaphore, i+j, label))
+            
+            batch_results = await tqdm_asyncio.gather(*tasks, desc=f"Tiến trình LLM")
+            results.extend(batch_results)
+            
+            # Memory cleanup
+            await asyncio.sleep(0.1)
+        return results
+
 # ── Main report function ──────────────────────────────────────────────────────
 def generate_comparison_report(
     pairs: list[ComparedPair],
     file_a: str = "v1",
     file_b: str = "v2",
 ) -> str:
-    """Sinh bao cao Markdown chuyen nghiep, phan tich TOAN BO thay doi."""
+    """Sinh báo cáo Markdown chuyên nghiệp, phân tách thay đổi Thực chất vs Hình thức."""
     modified = [p for p in pairs if p.match_type == "MODIFIED"]
     added    = [p for p in pairs if p.match_type == "ADDED"]
     deleted  = [p for p in pairs if p.match_type == "DELETED"]
+
+    analysis_results = []
+    if modified:
+        analysis_results = asyncio.run(_run_all_llm_requests(modified, file_a, file_b))
+
+    # Tally Substantial vs Formal
+    substantial_count = 0
+    formal_count = 0
+    for res in analysis_results:
+        if "[THỰC CHẤT]" in res.upper():
+            substantial_count += 1
+        else:
+            formal_count += 1
 
     # Header
     lines = [
@@ -135,56 +157,31 @@ def generate_comparison_report(
         f"- Mới (v2): `{file_b}`",
         "",
         "## I. TỔNG QUAN THAY ĐỔI",
-        f"Hệ thống đã phát hiện tổng cộng **{len(modified) + len(added) + len(deleted)}** điểm khác biệt đáng chú ý:",
-        f"- **{len(modified)}** điều khoản bị sửa đổi nội dung.",
-        f"- **{len(added)}** điều khoản/phụ lục được thêm mới.",
+        f"Hệ thống AI đã phân tích và phát hiện các thay đổi sau:",
+        f"- **{substantial_count}** thay đổi **THỰC CHẤT** (Ảnh hưởng đến ngôn ngữ/số liệu pháp lý).",
+        f"- **{formal_count}** thay đổi **HÌNH THỨC** (Chính tả, định dạng, font chữ).",
+        f"- **{len(added)}** điều khoản được thêm mới.",
         f"- **{len(deleted)}** điều khoản bị loại bỏ.",
         "",
         "---",
         ""
     ]
 
-    # Phan 1: Sua doi
+    # Phan 2: Sua doi
     if modified:
-        lines += ["## II. NỘI DUNG SỬA ĐỔI CHI TIẾT", ""]
-        logger.info(f"[LLM] Analyzing {len(modified)} modified clauses...")
-
-        async def _run_all_llm_requests(modified_pairs, batch_size=5):
-            results = []
-            semaphore = asyncio.Semaphore(2) 
-            async with aiohttp.ClientSession() as session:
-                for i in range(0, len(modified_pairs), batch_size):
-                    batch = modified_pairs[i:i+batch_size]
-                    tasks = []
-                    for j, pair in enumerate(batch):
-                        label = pair.chunk_a.article_number or "N/A"
-                        prompt = _build_prompt(pair, file_a, file_b)
-                        tasks.append(_call_llm_async(session, prompt, file_a, file_b, semaphore, i+j, label))
-                    
-                    batch_results = await tqdm_asyncio.gather(*tasks, desc=f"Tiến trình LLM (Batch {i//batch_size+1})")
-                    results.extend(batch_results)
-                    
-                    # Memory cleanup
-                    await asyncio.sleep(0.1)
-                    
-                return results
-
-        analysis_results = asyncio.run(_run_all_llm_requests(modified))
-
+        lines += ["## II. PHÂN TÍCH CHI TIẾT SỬA ĐỔI", ""]
         for i, (pair, analysis) in enumerate(zip(modified, analysis_results)):
             label = pair.chunk_a.article_number or "N/A"
-            
-            # Format lai page info net hon
             page_a = f" (trang {pair.chunk_a.page})" if pair.chunk_a.page else ""
             page_b = f" (trang {pair.chunk_b.page})" if pair.chunk_b.page else ""
 
             lines += [
                 f"### {i+1}. {label}",
-                f"*Do tuong dong ngu nghia: {pair.similarity:.2%}*",
+                f"*Độ tương đồng: {pair.similarity:.2%}*",
                 "",
                 analysis,
                 "",
-                f"> **Nguon:** `{file_a}`{page_a} → `{file_b}`{page_b}",
+                f"> **Vị trí nguồn:** `{file_a}`{page_a} → `{file_b}`{page_b}",
                 "",
                 "---",
                 ""
@@ -218,7 +215,7 @@ def generate_comparison_report(
 
     lines += [
         "",
-        "**Ghi chu:**",
+        "**Ghi chú:**",
         "- Báo cáo này được hỗ trợ bởi công nghệ RAG (Retrieval-Augmented Generation) và LLM Qwen3.",
         "- Các phân tích mang tính chất tham khảo, cần được kiểm chứng bởi bộ phận chuyên môn."
     ]

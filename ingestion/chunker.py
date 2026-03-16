@@ -8,7 +8,7 @@ from ingestion.normalizer import normalize_text, is_noise
 
 @dataclass(frozen=True)
 class ChunkingConfig:
-    MAX_CHARS: Final[int] = 800
+    MAX_CHARS: Final[int] = 1500
     MIN_CHARS: Final[int] = 30
     TABLE_DETECTION_THRESHOLD: Final[float] = 0.5
 
@@ -19,7 +19,7 @@ MIN_CHUNK_CHARS = CONFIG.MIN_CHARS
 
 # Phân cấp cao nhất: Phần, Phụ lục
 _TOP_LEVEL_RE = re.compile(
-    r"^(ph[aầ]n|PH[AẦ]N|phụ\s+lục|PHỤ\s+LỤC)\s+([\dIVXivx\w]+)\s*[:\-–\.]?\s*(.+?)$",
+    r"^(ph[aầ]n|PH[AẦ]N|phụ\s+lục|PHỤ\s+LỤC)\s*([\dIVXivx\w]*)\s*[:\-–\.]?\s*(.*)$",
     re.IGNORECASE
 )
 
@@ -45,6 +45,11 @@ _SUB_CLAUSE_RE = re.compile(
     re.IGNORECASE
 )
 
+# Nhận diện phần ký tên / xác nhận (thường ở cuối văn bản)
+_SIGNATURE_RE = re.compile(
+    r"^(đ[ạa]i\s+di[ệê]n\s+bên\s+[ab]|đ[ạa]i\s+di[ệê]n\s+các\s+bên|người\s+đại\s+diện|phần\s+ký\s+tên|ký\s+tên|đóng\s+dấu|xác\s+nhận\s+của|thay\s+mặt\s+công\s+ty|giám\s+đốc|tổng\s+giám\s+đốc|người\s+lập\s+biểu)",
+    re.IGNORECASE
+)
 
 def detect_top_level(text: str) -> Optional[str]:
     """Nhận diện Phần hoặc Phụ lục."""
@@ -62,6 +67,13 @@ def detect_mid_level(text: str) -> Optional[str]:
         m = pattern.match(text.strip())
         if m:
             return text.strip()
+    return None
+
+
+def detect_signature(text: str) -> Optional[str]:
+    """Nhận diện phần ký tên, xác nhận."""
+    if _SIGNATURE_RE.match(text.strip()):
+        return "Phần ký tên & Xác nhận"
     return None
 
 
@@ -234,6 +246,18 @@ def structure_document(
         if mid:
             flush()
             current_mid = mid
+            current_art_num = None
+            current_title = None
+            current_page = page
+            current_lines.append(text)
+            continue
+
+        # 2.5 Check Phần ký tên
+        sig = detect_signature(text)
+        if sig:
+            flush()
+            current_top = sig
+            current_mid = None
             current_art_num = None
             current_title = None
             current_page = page

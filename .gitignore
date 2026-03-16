@@ -44,11 +44,3 @@ comparison_report.md
 
 # IDEs
 .vscode/
-.idea/
-*.swp
-*.swo
-
-# Hệ điều hành
-Thumbs.db
-Desktop.ini
-.DS_Store

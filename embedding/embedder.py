@@ -72,30 +72,50 @@ def _cleanup_old_collections(
     base_name: str,
     keep: int = CHROMA_KEEP_SESSIONS,
 ) -> None:
-    """Xoa cac collection cu, chi giu lai 'keep' session gan nhat.
-
-    Convention ten collection: {base_name}_{unix_timestamp}
-    Vi du: legal_chunks_1710000000
     """
+    Xoa các collection cũ và dọn dẹp rác vật lý trong thư mục chroma_db.
+    Hỗ trợ dọn dẹp các thư mục UUID rác mà ChromaDB tự tạo ra trên Windows.
+    """
+    import shutil
+    import time
+
+    # 1. Dọn dẹp Collection trong DB
     pattern = re.compile(rf"^{re.escape(base_name)}_(\d+)$")
     all_cols = client.list_collections()
-
-    # Lay ten cac collection khop pattern va sort theo timestamp tang dan
     matched: list[tuple[int, str]] = []
+    
     for col in all_cols:
         m = pattern.match(col.name)
         if m:
             matched.append((int(m.group(1)), col.name))
 
-    matched.sort(key=lambda x: x[0])  # cu nhat dau tien
-
-    to_delete = matched[:-keep] if len(matched) > keep else []
-    for ts, name in to_delete:
-        try:
-            client.delete_collection(name)
-            logger.info(f"[ChromaDB] Cleaned up old collection: '{name}'")
-        except Exception as e:
-            logger.warning(f"[ChromaDB] Khong the xoa collection '{name}': {e}")
+    matched.sort(key=lambda x: x[0])
+    if len(matched) > keep:
+        to_delete = matched[:-keep]
+        for ts, name in to_delete:
+            try:
+                client.delete_collection(name)
+                logger.info(f"[ChromaDB] Deleted old collection: '{name}'")
+            except Exception as e:
+                logger.warning(f"[ChromaDB] Failed to delete collection '{name}': {e}")
+    try:
+        abs_chroma_path = os.path.abspath(CHROMA_DIR)
+        current_time = time.time()
+        
+        if os.path.exists(abs_chroma_path):
+            for item in os.listdir(abs_chroma_path):
+                item_path = os.path.join(abs_chroma_path, item)
+                
+                if os.path.isdir(item_path):
+                    mtime = os.path.getmtime(item_path)
+                    if len(item) == 36 and (current_time - mtime) > 3600:
+                        try:
+                            shutil.rmtree(item_path)
+                            logger.info(f"[ChromaDB] Removed physical junk dir: {item}")
+                        except Exception:
+                            pass
+    except Exception as e:
+        logger.warning(f"[ChromaDB] Physical cleanup failed: {e}")
 
 
 # ── Main Embedding Functions ──────────────────────────────────────────────────

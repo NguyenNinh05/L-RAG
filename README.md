@@ -193,7 +193,7 @@ ollama serve
 
 ---
 
-## Cau hinh
+## Cấu hình
 
 Toàn bộ cấu hình được quản lý tập trung trong file `config.py`:
 

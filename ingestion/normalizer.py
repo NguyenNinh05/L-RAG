@@ -12,10 +12,6 @@ _NOISE_PATTERNS = [
     # Nhãn bảo mật
     r"^bảo\s*mật$",
     r"^confidential$",
-    # Dòng ký tên
-    r"^\(?\s*(ký,?\s*)?(ghi\s*rõ\s*)?họ\s*(và\s*)?tên\s*\)?$",
-    r"^đại\s*diện\s*(bên\s*[ab])?$",
-    r"^\(chữ\s*ký\)$",
     # Dòng ngày ký
     r"^(tp\.|thành\s*phố|hà\s*nội|hồ\s*chí\s*minh).{0,30}ngày\s+\d+",
     r"^ngày\s+\d+\s+tháng\s+\d+\s+năm\s+\d{4}$",

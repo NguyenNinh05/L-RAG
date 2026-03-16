@@ -64,6 +64,12 @@ app.add_middleware(
 UI_DIR = Path(__file__).parent / "ui"
 UI_DIR.mkdir(exist_ok=True)
 
+# Mount static files (MUST be after other routes or handled carefully)
+# We will mount it at the end of the file instead to avoid shadowing /api routes
+# Or just mount it for specific extensions.
+# Actually, the best way is to keep the / route and mount static files separately if they are in a subfolder, 
+# but here they are in the same folder as index.html.
+
 
 # ── SSE helper ─────────────────────────────────────────────────────────────────
 def _sse(event: str, data: dict | str) -> str:
@@ -73,6 +79,7 @@ def _sse(event: str, data: dict | str) -> str:
     else:
         payload = json.dumps({"message": data}, ensure_ascii=False)
     return f"event: {event}\ndata: {payload}\n\n"
+
 
 
 def _sanitize_filename(name: str) -> str:
@@ -91,20 +98,25 @@ async def _run_comparison_pipeline(
     path_b: str,
     name_a: str,
     name_b: str,
+    preview_url_a: str | None = None,
+    preview_url_b: str | None = None,
     temp_paths: list[str] | None = None,
 ) -> AsyncIterator[str]:
     """
     Generator async: yield SSE frames trong suốt pipeline.
-    Pipeline gồm 5 bước:
-      1. Ingestion & Chunking
-      2. Embedding (Ollama batch)
-      3. Cross-Matching (Anchor + NW)
-      4. LLM Analysis (Ollama streaming)
-      5. Done → trả về report
     """
     loop = asyncio.get_event_loop()
 
     try:
+        # Gửi URLs của tệp PDF để UI chuẩn bị iframe
+        if preview_url_a and preview_url_b:
+            yield _sse("previews", {
+                "url_a": preview_url_a,
+                "url_b": preview_url_b,
+                "name_a": name_a,
+                "name_b": name_b
+            })
+
         # ── Bước 1: Ingestion ──────────────────────────────────────────────────
         yield _sse("progress", {
             "step": 1, "total": 5,
@@ -122,7 +134,7 @@ async def _run_comparison_pipeline(
             "step": 1, "total": 5,
             "status": "done",
             "title": "Đọc & phân tích cấu trúc tài liệu",
-            "detail": f"Đã trích xuất {len(chunks_a)} chunks từ v1, {len(chunks_b)} chunks từ v2.",
+            "detail": f"Đã trích xuất {len(chunks_a)} chunks từ '{name_a}', {len(chunks_b)} chunks từ '{name_b}'.",
         })
 
         # ── Bước 2: Embedding ──────────────────────────────────────────────────
@@ -212,15 +224,27 @@ async def _run_comparison_pipeline(
                 "step": 4, "total": 5,
                 "status": "done",
                 "title": "Phân tích điều khoản bằng AI (LLM)",
-                "detail": f"Hoàn thành phân tích {modified_count} điều khoản.",
+                "detail": f"Đã hoàn thành phân tích {modified_count} điều khoản sửa đổi.",
             })
+
+        # ── Bước cuối: Lưu file và Gửi phản hồi ───────────────────────────────
+        # Lấy thông tin folder dự án để lưu file chắc chắn
+        project_dir = Path(__file__).parent.resolve()
+        report_path = project_dir / "comparison_report.md"
+
+        try:
+            with open(report_path, "w", encoding="utf-8") as f:
+                f.write(report_md)
+            logger.info(f"[API] Đã lưu báo cáo mới tại: {report_path}")
+        except Exception as e:
+            logger.error(f"[API] Lỗi khi lưu file Markdown: {e}")
 
         # ── Bước 5: Done ───────────────────────────────────────────────────────
         yield _sse("progress", {
             "step": 5, "total": 5,
             "status": "done",
             "title": "Hoàn tất",
-            "detail": "Báo cáo đã sẵn sàng.",
+            "detail": f"Báo cáo đã sẵn sàng và được lưu tại {report_path.name}",
         })
 
         # Gửi summary stats
@@ -230,6 +254,21 @@ async def _run_comparison_pipeline(
             "deleted":   deleted_count,
             "unchanged": unchanged_count,
         })
+
+        # Gửi citations (nội dung gốc để highlight)
+        citation_list = []
+        for p in pairs:
+            if p.match_type in ("MODIFIED", "ADDED", "DELETED"):
+                citation_list.append({
+                    "id": p.label,
+                    "type": p.match_type,
+                    "similarity": round(p.similarity, 4),
+                    "text_a": p.chunk_a.content if p.chunk_a else None,
+                    "text_b": p.chunk_b.content if p.chunk_b else None,
+                    "page_a": p.chunk_a.page if p.chunk_a else None,
+                    "page_b": p.chunk_b.page if p.chunk_b else None,
+                })
+        yield _sse("citations", {"items": citation_list})
 
         # Gửi report Markdown
         yield _sse("report", {"markdown": report_md})
@@ -315,14 +354,34 @@ async def compare_documents(
         tmp_a.close()
         tmp_b.close()
 
-        # Temp files sẽ được cleanup bên trong generator (sau khi stream kết thúc)
+        # ── Preview: chỉ hỗ trợ file PDF (trình duyệt không mở được DOCX) ──
+        preview_dir = UI_DIR / "previews"
+        preview_dir.mkdir(exist_ok=True)
+        preview_files: list[str] = []  # track để cleanup sau
+
+        def _prepare_preview(tmp_path: str, suffix: str) -> str | None:
+            """Copy file PDF vào thư mục preview, trả về URL. Bỏ qua nếu là DOCX."""
+            if suffix == ".pdf":
+                import shutil
+                dest = preview_dir / Path(tmp_path).name
+                shutil.copy2(tmp_path, dest)
+                preview_files.append(str(dest))
+                return f"/previews/{dest.name}"
+            return None
+
+        url_a = _prepare_preview(tmp_a.name, suffix_a)
+        url_b = _prepare_preview(tmp_b.name, suffix_b)
+
+        # Truyền file GỐC vào pipeline (load_document sẽ tự chọn loader phù hợp)
         return StreamingResponse(
             _run_comparison_pipeline(
                 path_a=tmp_a.name,
                 path_b=tmp_b.name,
-                name_a=_sanitize_filename(file_a.filename or "Document A"),
-                name_b=_sanitize_filename(file_b.filename or "Document B"),
-                temp_paths=[tmp_a.name, tmp_b.name],
+                name_a=_sanitize_filename(file_a.filename or "Doc A"),
+                name_b=_sanitize_filename(file_b.filename or "Doc B"),
+                preview_url_a=url_a,
+                preview_url_b=url_b,
+                temp_paths=[tmp_a.name, tmp_b.name] + preview_files,
             ),
             media_type="text/event-stream",
             headers={
@@ -343,3 +402,6 @@ async def compare_documents(
 @app.get("/api/health")
 async def health_check():
     return {"status": "ok", "version": "1.0.0"}
+
+# Mount static files last so they don't override /api routes
+app.mount("/", StaticFiles(directory=UI_DIR), name="ui")
