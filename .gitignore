@@ -118,3 +118,27 @@ htmlcov/
 # ============================================================
 Thumbs.db
 desktop.ini
+
+# ============================================================
+# Phase 2 — Vector DB (Qdrant local persistent)
+# ============================================================
+qdrant_db/
+qdrant_storage/
+*.qdrant/
+collection/
+
+# ============================================================
+# Phase 2 — HuggingFace model cache
+# ============================================================
+.cache/
+hf_cache/
+# Model snapshot dirs (tải về khi dùng BGEM3Manager)
+# Đặt HF_HOME env var nếu muốn chỉ định custom path
+
+# ============================================================
+# Phase 2 — Eval & diff output
+# ============================================================
+eval_output/*.json
+eval_output/*.md
+diff_catalog*.json
+phase2_catalog*.json
