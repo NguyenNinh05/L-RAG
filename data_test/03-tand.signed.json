@@ -1,0 +1,152 @@
+[
+  {
+    "change_id": 1,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Phần đầu văn bản, Số hiệu",
+    "original_text": "Số: 03/2026/TT-TANDTC",
+    "modified_text": "Số: 05/2026/TT-TANDTC",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản",
+    "location": "Phần đầu văn bản, Ngày tháng",
+    "original_text": "Hà Nội, ngày 13 tháng 01 năm 2026",
+    "modified_text": "Hà Nội, ngày 15 tháng 01 năm 2026",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "B",
+    "technique": "Diễn đạt lại tiêu đề Thông tư",
+    "location": "Tiêu đề văn bản",
+    "original_text": "Quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân",
+    "modified_text": "Quy định chi tiết về biểu tượng ngành và các nghi thức trong quản lý nhân sự của Tòa án nhân dân",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 4,
+    "category": "C",
+    "technique": "Đảo thứ tự các Điều trong Chương I",
+    "location": "Chương I, Điều 1 và Điều 2",
+    "original_text": "Điều 1. Phạm vi điều chỉnh Thông tư này quy định về biểu trưng, việc sử dụng biểu trưng của Tòa án nhân dân và nghi lễ trong công tác cán bộ của Tòa án nhân dân.\n\nĐiều 2. Đối tượng áp dụng Thông tư này áp dụng đối với Tòa án nhân dân, Tòa án quân sự các cấp, các đơn vị thuộc Tòa án nhân dân tối cao, cán bộ, Thẩm phán, Thẩm tra viên Tòa án, Thư ký Tòa án, công chức khác, viên chức, người lao động trong Tòa án và cơ quan, tổ chức, cá nhân có liên quan.",
+    "modified_text": "Điều 1. Đối tượng áp dụng (Structural: Đảo Điều 2 gốc lên thành Điều 1) Thông tư này áp dụng đối với Tòa án nhân dân, Tòa án quân sự các cấp, các đơn vị trực thuộc Tòa án nhân dân tối cao, đội ngũ Thẩm phán, Thư ký, người lao động và các tổ chức liên quan.\n\nĐiều 2. Phạm vi và lĩnh vực điều chỉnh (Structural: Đảo Điều 1 gốc xuống Điều 2 và Semantic: Diễn đạt lại) Văn bản này thiết lập các quy tắc về hình ảnh biểu trưng, phương thức sử dụng logo ngành cũng như trình tự thực hiện các nghi thức lễ tiết trong công tác cán bộ.",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 5,
+    "category": "D",
+    "technique": "Thay đổi nghĩa vụ sử dụng biểu trưng từ bắt buộc sang tùy chọn",
+    "location": "Điều 4, Khoản 4",
+    "original_text": "Cơ quan, tổ chức, cá nhân sử dụng biểu trưng của Tòa án nhân dân phải được sự đồng ý của Tòa án.",
+    "modified_text": "Các tổ chức ngoài ngành khi sử dụng biểu trưng của Tòa án nhân dân có thể thông báo cho Tòa án.",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 6,
+    "category": "A",
+    "technique": "Thay đổi kích thước đường kính huy hiệu",
+    "location": "Điều 5, Khoản 1",
+    "original_text": "đường kính là 22mm",
+    "modified_text": "kích thước mặt tròn là 25mm",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 7,
+    "category": "D",
+    "technique": "Thay đổi chủ thể phối hợp tổ chức nghi lễ",
+    "location": "Điều 8, Khoản 1",
+    "original_text": "Văn phòng Chủ tịch nước tổ chức.",
+    "modified_text": "Văn phòng Chính phủ chủ trì phối hợp (thay vì Văn phòng Chủ tịch nước).",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 8,
+    "category": "A",
+    "technique": "Thay đổi thời hạn tổ chức nghi lễ",
+    "location": "Điều 9",
+    "original_text": "Trong thời hạn 05 ngày làm việc, kể từ ngày nhận được quyết định bổ nhiệm, cơ quan phải tổ chức lễ. Trường hợp có lý do chính đáng, thời hạn không quá 30 ngày.",
+    "modified_text": "Trong vòng 07 ngày làm việc kể từ khi có quyết định. Trường hợp đặc biệt không quá 45 ngày.",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 9,
+    "category": "F",
+    "technique": "Thay đổi định dạng đánh số danh sách chương trình",
+    "location": "Điều 10",
+    "original_text": "Chào cờ.\nTuyên bố lý do, giới thiệu đại biểu.\nCông bố quyết định bổ nhiệm.\nTrao quyết định bổ nhiệm.\nLãnh đạo phát biểu giao nhiệm vụ.\nThẩm phán tuyên thệ/Người được bổ nhiệm phát biểu nhận nhiệm vụ.\nBế mạc.",
+    "modified_text": "a. Nghi thức Chào cờ. b. Giới thiệu thành phần tham dự. c. Đọc quyết định. d. Trao hồ sơ bổ nhiệm. e. Phát biểu chỉ đạo. f. Tuyên thệ và hứa hẹn. g. Kết thúc buổi lễ.",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 10,
+    "category": "B",
+    "technique": "Thay đổi thuật ngữ từ 'Quyết định' sang 'Hồ sơ'",
+    "location": "Điều 10, Điểm d",
+    "original_text": "Trao quyết định bổ nhiệm.",
+    "modified_text": "Trao hồ sơ bổ nhiệm.",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 11,
+    "category": "F",
+    "technique": "Lỗi đánh máy (Typo)",
+    "location": "Điều 11",
+    "original_text": "Thẩm phán",
+    "modified_text": "Tham phan",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 12,
+    "category": "C",
+    "technique": "Chèn thêm Điều mới về bảo quản biểu trưng",
+    "location": "Điều 12 (v2)",
+    "original_text": "",
+    "modified_text": "Điều 12. Điều khoản bổ sung: Bảo quản biểu trưng (Structural: Chèn thêm Điều mới) Các đơn vị có trách nhiệm bảo quản, vệ sinh các biểu trưng, huy hiệu được cấp phát, không để hư hỏng, hoen ố.",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 13,
+    "category": "A",
+    "technique": "Thay đổi ngày hiệu lực thi hành",
+    "location": "Điều 13 (v2) / Điều 15 (v1)",
+    "original_text": "ngày 01 tháng 3 năm 2026",
+    "modified_text": "ngày 15 tháng 4 năm 2026",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 14,
+    "category": "E",
+    "technique": "Chuyển danh sách mô tả biểu trưng thành bảng biểu và thêm nội dung",
+    "location": "Phụ lục I",
+    "original_text": "Mô tả: Hình tròn, trung tâm là \"Cán cân công lý\" và \"Thanh kiếm\" vàng trên nền xanh dương. Đế là quyển sách mở. Dải cờ đỏ ghi \"TÒA ÁN NHÂN DÂN\".\nChỉ số màu sắc:\nXanh dương: C:100, M:20, Y:0, K:0\nĐỏ: C:0, M:100, Y:100, K:0\nVàng: C:0, M:0, Y:100, K:0",
+    "modified_text": "The following table:\nThành phần,Chỉ số CMYK,Mã màu Hex (Tham khảo),Ghi chú\nNền trung tâm,\"C:100, M:20, Y:0, K:0\",#0072BC,Xanh dương đậm\nViền và Ngôi sao,\"C:0, M:100, Y:100, K:0\",#E60012,Đỏ cờ\nCán cân & Kiếm,\"C:0, M:0, Y:100, K:0\",#FFF200,Vàng tươi\nBánh răng ,\"C:0, M:0, Y:50, K:0 \",#FFF9AE ,Dòng mới thêm vào",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 15,
+    "category": "F",
+    "technique": "Lỗi đánh máy (Typo)",
+    "location": "Ghi chú cuối văn bản",
+    "original_text": "hợp đồng",
+    "modified_text": "hợp dồng",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  }
+]

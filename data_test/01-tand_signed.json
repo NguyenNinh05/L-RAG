@@ -1,0 +1,242 @@
+[
+  {
+    "change_id": 1,
+    "category": "F",
+    "technique": "Thay đổi định dạng ngày tháng",
+    "location": "Phần tiêu đề (Header)",
+    "original_text": "Hà Nội, ngày 13 tháng 01 năm 2026",
+    "modified_text": "Hà Nội, ngày 13/01/2026",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 2,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt tiêu đề",
+    "location": "Tên Thông tư",
+    "original_text": "Quy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi",
+    "modified_text": "Về mẫu, việc quãn lý, sử dụng, cấp, đổi, thu hồi",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 3,
+    "category": "F",
+    "technique": "Lỗi đánh máy (typo)",
+    "location": "Tên Thông tư",
+    "original_text": "quản lý",
+    "modified_text": "quãn lý",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 4,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt",
+    "location": "Điều 2",
+    "original_text": "Thông tư này áp dụng đối với",
+    "modified_text": "Thông tư này có hiệu lực thi hành đối với",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 5,
+    "category": "B",
+    "technique": "Thay đổi thứ tự chủ thể",
+    "location": "Điều 2, cuối đoạn",
+    "original_text": "cơ quan, tổ chức, cá nhân",
+    "modified_text": "các tổ chức, cơ quan, cá nhân",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 6,
+    "category": "D",
+    "technique": "Thay đổi logic (thêm điều kiện cho phép)",
+    "location": "Điều 3, Khoản 2",
+    "original_text": "Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được sử dụng trong hoạt động công vụ theo quy định của pháp luật, không sử dụng cho mục đích khác.",
+    "modified_text": "Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được sử dụng trong hoạt động công vụ theo quy định của pháp luật; có thể được sử dụng cho các mục đích khác nếu được Chánh án Tòa án nhân dân tối cao phê duyệt bằng văn bản.",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 7,
+    "category": "C",
+    "technique": "Thêm điều khoản mới",
+    "location": "Sau Điều 3",
+    "original_text": "",
+    "modified_text": "Điều 3a. Bảo mật thông tin trên Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm\n1. Thông tin cá nhân của Thẩm phán, Hội thẩm ghi trên Giấy chứng minh phải được bảo mật theo quy định của pháp luật về bảo vệ dữ liệu cá nhân.\n2. Cơ quan, tổ chức tiếp nhận Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm trong quá trình kiểm tra, đối chiếu phải có trách nhiệm bảo mật thông tin, không được sao chép, lưu trữ dữ liệu cá nhân của Thẩm phán, Hội thẩm khi chưa được sự đồng ý của người có liên quan.\n3. Tòa án nhân dân tối cao có trách nhiệm ban hành quy trình bảo mật dữ liệu liên quan đến việc cấp, quản lý Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm.",
+    "change_type": "addition",
+    "severity": "high"
+  },
+  {
+    "change_id": 8,
+    "category": "B",
+    "technique": "Thay đổi cách dùng từ",
+    "location": "Điều 4, Khoản 4",
+    "original_text": "Làm giả, sửa chữa, tẩy xóa Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm.",
+    "modified_text": "Giả mạo, cải tạo hoặc tiêu hủy thông tin trên Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm dưới bất kỳ hình thức nào.",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 9,
+    "category": "A",
+    "technique": "Thay đổi số lượng định mức",
+    "location": "Điều 7, Khoản 1",
+    "original_text": "mỗi người 01 chiếc",
+    "modified_text": "mỗi người 02 chiếc",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 10,
+    "category": "A",
+    "technique": "Thay đổi số lượng định mức",
+    "location": "Điều 7, Khoản 2",
+    "original_text": "mỗi người 01 chiếc",
+    "modified_text": "mỗi người 02 chiếc",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 11,
+    "category": "A",
+    "technique": "Thay đổi kích thước ảnh",
+    "location": "Điều 8, Khoản 2, Điểm b",
+    "original_text": "02 ảnh 20 x 30 mm",
+    "modified_text": "02 ảnh 25 x 35 mm",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 12,
+    "category": "A",
+    "technique": "Thay đổi thời hạn hiệu lực của ảnh",
+    "location": "Điều 8, Khoản 2, Điểm b1",
+    "original_text": "chụp trong 06 tháng gần nhất",
+    "modified_text": "chụp trong 03 tháng gần nhất",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 13,
+    "category": "A",
+    "technique": "Thay đổi thời hạn xử lý hồ sơ",
+    "location": "Điều 8, Khoản 4",
+    "original_text": "Trong thời hạn 10 ngày làm việc",
+    "modified_text": "Trong thời hạn 15 ngày làm việc",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 14,
+    "category": "E",
+    "technique": "Chuyển danh sách thành bảng và thêm nội dung",
+    "location": "Điều 9",
+    "original_text": "Việc cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm khi thuộc một trong các trường hợp sau đây:\n1. Khi thay đổi thông tin trong Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm;\n2. Thông tin trong Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm đã cấp có sai sót;\n3. Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm bị mất, bị hư hỏng không còn giá trị sử dụng.",
+    "modified_text": "Việc cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được thực hiện khi có một trong các căn cứ sau: [Kèm bảng 4 dòng: thay đổi thông tin, sai sót, mất/hư hỏng, và căn cứ mới: Hết hạn sử dụng theo quy định mới]",
+    "change_type": "structural_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 15,
+    "category": "C",
+    "technique": "Thêm điều khoản mới về hình thức cấp đổi",
+    "location": "Sau Điều 9",
+    "original_text": "",
+    "modified_text": "Điều 9b. Hình thức cấp đổi, cấp lại\n1. Đối với trường hợp thay đổi thông tin hoặc sai sót: thực hiện cấp đổi và thu hồi Giấy chứng minh cũ.\n2. Đối với trường hợp mất hoặc hư hỏng: thực hiện cấp lại với số hiệu mới; Giấy chứng minh cũ (nếu còn) bị vô hiệu hóa và hủy theo quy định.",
+    "change_type": "addition",
+    "severity": "high"
+  },
+  {
+    "change_id": 16,
+    "category": "A",
+    "technique": "Thay đổi kích thước ảnh",
+    "location": "Điều 10, Khoản 2, Điểm c",
+    "original_text": "02 ảnh 20 x 30 mm",
+    "modified_text": "02 ảnh 25 x 35 mm",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 17,
+    "category": "D",
+    "technique": "Thay đổi chủ thể chịu trách nhiệm",
+    "location": "Điều 11, Khoản 2, Điểm a5",
+    "original_text": "Vụ Tổ chức - Cán bộ có trách nhiệm thu hồi",
+    "modified_text": "Chánh án Tòa án nhân dân tối cao có trách nhiệm thu hồi",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 18,
+    "category": "C",
+    "technique": "Đảo thứ tự Điều",
+    "location": "Điều 12 và Điều 13",
+    "original_text": "Điều 12. Kiểm tra, thanh tra; Điều 13. Xử lý vi phạm",
+    "modified_text": "Điều 12. Xử lý vi phạm; Điều 13. Kiểm tra, thanh tra",
+    "change_type": "structural_shift",
+    "severity": "low"
+  },
+  {
+    "change_id": 19,
+    "category": "F",
+    "technique": "Lỗi đánh máy (typo)",
+    "location": "Điều 12 (V2)",
+    "original_text": "Thẩm phán",
+    "modified_text": "Thẩn phán",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 20,
+    "category": "B",
+    "technique": "Thay đổi cách dùng từ",
+    "location": "Điều 12 (V2)",
+    "original_text": "thì tùy theo tính chất",
+    "modified_text": "thì căn cứ vào tính chất",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 21,
+    "category": "A",
+    "technique": "Thay đổi ngày có hiệu lực",
+    "location": "Điều 14, Khoản 1",
+    "original_text": "ngày 15 tháng 01 năm 2026",
+    "modified_text": "ngày 20 tháng 02 năm 2026",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 22,
+    "category": "A",
+    "technique": "Thay đổi kích thước vật lý của Giấy chứng minh",
+    "location": "Phụ lục I và II, Mục 1",
+    "original_text": "chiều dài 95mm, chiều rộng 62mm",
+    "modified_text": "chiều dài 100mm, chiều rộng 65mm",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 23,
+    "category": "A",
+    "technique": "Thay đổi kích thước ảnh chân dung trên mẫu giấy",
+    "location": "Phụ lục I, Mục 3 và Phụ lục II, Mục 3",
+    "original_text": "cỡ 20 x 30 mm",
+    "modified_text": "cỡ 25 x 35 mm",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 24,
+    "category": "F",
+    "technique": "Thay đổi định dạng template ngày tháng",
+    "location": "Phụ lục III, Cuối tờ khai",
+    "original_text": "ngày ... tháng ... năm 20...",
+    "modified_text": "ngày.../tháng.../năm 20...",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  }
+]

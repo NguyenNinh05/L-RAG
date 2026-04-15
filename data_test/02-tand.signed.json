@@ -1,0 +1,192 @@
+[
+  {
+    "change_id": 1,
+    "category": "F",
+    "technique": "Lỗi chính tả và định dạng dấu tiếng Việt",
+    "location": "Dòng 1",
+    "original_text": "TÒA ÁN NHÂN DÂN TỐI CAO",
+    "modified_text": "TOA AN NHAN DAN TOI CAO",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Số hiệu văn bản",
+    "original_text": "Số: 02/2026/TT-TANDTC",
+    "modified_text": "Số: 08/2026/TT-TANDTC",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành và lỗi chính tả địa danh",
+    "location": "Phần tiêu đề, Ngày tháng",
+    "original_text": "Hà Nội, ngày 13 tháng 01 năm 2026",
+    "modified_text": "Ha Noi, ngày 27 than 03 năm 2026",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 4,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt tên Thông tư",
+    "location": "Tên văn bản",
+    "original_text": "THÔNG TƯ Quy định về thủ tục, hồ sơ đề nghị bổ nhiệm, bổ nhiệm lại, xét nâng bậc, điều động, biệt phái, miễn nhiệm, cách chức Thẩm phán Tòa án nhân dân",
+    "modified_text": "THÔNG TƯ Quy định các trình tự, bộ chứng từ liên quan đến việc tuyển dụng, tái bổ nhiệm, xét nâng ngạch, luân chuyển, biệt phái, giải chức, bãi miễn chức vụ Thẩm phán",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 5,
+    "category": "C",
+    "technique": "Xóa bỏ các căn cứ pháp lý",
+    "location": "Phần Căn cứ",
+    "original_text": "Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15;\nCăn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15;\nCăn cứ Nghị quyết số 67/2025/UBTVQH15...",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 6,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt tiêu đề Chương",
+    "location": "Chương I",
+    "original_text": "Chương I: NHỮNG QUY ĐỊNH CHUNG",
+    "modified_text": "Chương I: CÁC QUY ĐỊNH CỐT LÕI",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 7,
+    "category": "C",
+    "technique": "Xóa bỏ Điều 1 (Phạm vi điều chỉnh)",
+    "location": "Điều 1",
+    "original_text": "Điều 1. Phạm vi điều chỉnh\n1. Thông tư này quy định về thủ tục và hồ sơ đề nghị bổ nhiệm, bổ nhiệm lại, xét nâng bậc, điều động, biệt phái, miễn nhiệm, cách chức Thẩm phán Tòa án nhân dân.",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 8,
+    "category": "C",
+    "technique": "Thay đổi số thứ tự Điều và tiêu đề Điều",
+    "location": "Điều 2 (v2)",
+    "original_text": "Điều 3. Nguyên tắc thực hiện",
+    "modified_text": "Điều 2. Các nguyên lý vận hành",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 9,
+    "category": "B",
+    "technique": "Sử dụng thuật ngữ chuyên môn thay thế",
+    "location": "Điều 2 (v2), Khoản 1",
+    "original_text": "1. Bảo đảm công khai, minh bạch, khách quan, công bằng, đúng quy định của Đảng, pháp luật của Nhà nước và của Tòa án nhân dân tối cao.",
+    "modified_text": "1. Đảm bảo tính rõ ràng, tường minh và không che giấu (Semantic).",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 10,
+    "category": "D",
+    "technique": "Thay đổi bản chất nguyên tắc chính trị",
+    "location": "Điều 2 (v2), Khoản 2",
+    "original_text": "2. Bảo đảm nguyên tắc tập trung dân chủ, phát huy vai trò, trách nhiệm và quyền hạn của cấp ủy, tập thể lãnh đạo và người đứng đầu.",
+    "modified_text": "2. Tuân thủ nguyên lý tập trung lãnh đạo (Semantic).",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 11,
+    "category": "C",
+    "technique": "Thay đổi số thứ tự Điều và tiêu đề Điều",
+    "location": "Điều 3 (v2)",
+    "original_text": "Điều 2. Đối tượng áp dụng",
+    "modified_text": "Điều 3. Các thực thể liên đới",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 12,
+    "category": "C",
+    "technique": "Sửa đổi nội dung và xóa bỏ chủ thể liên quan",
+    "location": "Điều 3 (v2), Khoản 1 và 2",
+    "original_text": "1. Những người được đề nghị bổ nhiệm, bổ nhiệm lại, xét nâng bậc, điều động, biệt phái, miễn nhiệm, cách chức Thẩm phán Tòa án nhân dân.2.\nCơ quan, đơn vị, Tòa án và người có thẩm quyền thực hiện thủ tục.",
+    "modified_text": "1. Các cá nhân nằm trong diện đề bạt bổ nhiệm chức danh tư pháp.",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 13,
+    "category": "C",
+    "technique": "Thêm mới điều khoản về bảo mật hồ sơ",
+    "location": "Điều 5 (v2)",
+    "original_text": "",
+    "modified_text": "Điều 5. Quy định về bảo mật hồ sơ\nHồ sơ nhân sự phải được bảo mật tuyệt đối, không cung cấp cho bên thứ ba khi chưa có sự đồng ý của Chánh án.",
+    "change_type": "addition",
+    "severity": "high"
+  },
+  {
+    "change_id": 14,
+    "category": "B",
+    "technique": "Thay đổi thuật ngữ tiêu đề Điều",
+    "location": "Điều 4",
+    "original_text": "Điều 4. Điều kiện thực hiện",
+    "modified_text": "Điều 4. Điều kiện tiên quyết",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 15,
+    "category": "B",
+    "technique": "Diễn đạt lại tiêu chuẩn bổ nhiệm",
+    "location": "Điều 4, Khoản 1, Điểm a",
+    "original_text": "a) Đáp ứng tiêu chuẩn Luật Tổ chức;",
+    "modified_text": "a) Thỏa mãn tiêu chuẩn mới;",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 16,
+    "category": "B",
+    "technique": "Diễn đạt lại tình trạng kỷ luật",
+    "location": "Điều 4, Khoản 1, Điểm b",
+    "original_text": "b) Không đang kỷ luật;",
+    "modified_text": "b) Không có án kỷ luật;",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 17,
+    "category": "A",
+    "technique": "Thay đổi thời gian xét loại công chức",
+    "location": "Điều 4, Khoản 1, Điểm c",
+    "original_text": "03 năm",
+    "modified_text": "05 năm (Numerical: 03->05)",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 18,
+    "category": "D",
+    "technique": "Thay đổi từ tính chất bắt buộc sang xem xét có điều kiện",
+    "location": "Điều 4, Khoản 1, Điểm c",
+    "original_text": "xếp loại công chức 03 năm liền kề là hoàn thành tốt nhiệm vụ trở lên.",
+    "modified_text": "Kết quả công tác 05 năm (Numerical: 03->05) có thể (Logic Shift: phải->có thể) được xem xét nếu đạt loại xuất sắc.",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 19,
+    "category": "E",
+    "technique": "Thêm mới Điều quy định danh mục biểu mẫu và bảng dữ liệu",
+    "location": "Điều 6 (v2)",
+    "original_text": "",
+    "modified_text": "Điều 6. Danh mục Biểu mẫu áp dụng\nSTT,Mã tham chiếu,Nội dung biểu mẫu\n1,BM-01,Đơn tình nguyện công tác\n2,BM-02,Đơn đề nghị xin thôi giữ chức vụ\n3,ADD-01,Phụ lục kiểm tra AI (New row)",
+    "change_type": "addition",
+    "severity": "medium"
+  }
+]

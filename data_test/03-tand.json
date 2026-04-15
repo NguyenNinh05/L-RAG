@@ -1,0 +1,172 @@
+[
+  {
+    "change_id": 1,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Phần đầu văn bản, Số hiệu",
+    "original_text": "Số: 03/2024/TT-TANDTC",
+    "modified_text": "Số: 08/2025/TT-TANDTC",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản",
+    "location": "Phần đầu văn bản, Ngày tháng",
+    "original_text": "Hà Nội, ngày 31 tháng 12 năm 2024",
+    "modified_text": "Hà Nội, ngày 15 tháng 02 năm 2025",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "B",
+    "technique": "Diễn đạt lại tiêu đề Thông tư",
+    "location": "Tiêu đề văn bản",
+    "original_text": "Quy định tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của Văn phòng, Vụ thuộc Tòa án nhân dân cấp cao",
+    "modified_text": "Quy định cơ cấu tổ chức, vai trò, trách nhiệm và thẩm quyền của khối Văn phòng và các Vụ trực thuộc Tòa án nhân dân cấp cao",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 4,
+    "category": "F",
+    "technique": "Rút gọn định dạng căn cứ pháp luật",
+    "location": "Phần Căn cứ",
+    "original_text": "Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020;",
+    "modified_text": "Căn cứ Luật Ban hành văn bản quy phạm pháp luật năm 2015 (đã được sửa đổi, bổ sung năm 2020);",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 5,
+    "category": "B",
+    "technique": "Thay đổi chức danh chủ thể đề nghị",
+    "location": "Phần Căn cứ, đoạn đề nghị",
+    "original_text": "Theo đề nghị của Vụ trưởng Vụ Tổ chức - Cán bộ Tòa án nhân dân tối cao;",
+    "modified_text": "Theo đề nghị của lãnh đạo Vụ Tổ chức - Cán bộ thuộc Tòa án nhân dân tối cao;",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 6,
+    "category": "B",
+    "technique": "Diễn đạt lại đoạn dẫn nhập ban hành",
+    "location": "Lời dẫn ban hành",
+    "original_text": "Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của Văn phòng, Vụ thuộc Tòa án nhân dân cấp cao.",
+    "modified_text": "Chánh án Tòa án nhân dân tối cao ban hành văn bản quy định về mô hình tổ chức, chức năng và các nhiệm vụ trọng yếu của Văn phòng, Vụ chuyên môn thuộc Tòa án nhân dân cấp cao.",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 7,
+    "category": "C",
+    "technique": "Gộp nội dung Phạm vi điều chỉnh và Đối tượng áp dụng",
+    "location": "Điều 1",
+    "original_text": "Điều 1. Phạm vi điều chỉnh\nThông tư này quy định về tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của Văn phòng, Vụ thuộc Tòa án nhân dân cấp cao.",
+    "modified_text": "Điều 1. Phạm vi điều chỉnh và Đối tượng áp dụng\nVăn bản này thiết lập các quy định chi tiết về bộ máy tổ chức, vai trò tham mưu và phạm vi quyền hạn đối với hệ thống Văn phòng và các Vụ chuyên môn trực thuộc Tòa án nhân dân cấp cao.",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 8,
+    "category": "E",
+    "technique": "Chuyển danh sách cơ cấu tổ chức thành bảng biểu",
+    "location": "Điều 2",
+    "original_text": "Tổ chức bộ máy của Văn phòng, gồm:\na) Văn phòng có Chánh Văn phòng, Phó Chánh Văn phòng, Trưởng phòng, Phó Trưởng phòng, Thẩm phán Tòa án nhân dân, Thẩm tra viên Tòa án, Thư ký Tòa án, công chức khác và người lao động;\nb) Các đơn vị thuộc Văn phòng gồm: Phòng Hành chính - Tư pháp, Phòng Tổ chức cán bộ, Phòng Kế toán - Quản trị.",
+    "modified_text": "STT,Thành phần/Đơn vị,Thành phần nhân sự / Chức năng\n1,Lãnh đạo và Chuyên môn,\"Chánh Văn phòng, các Phó Chánh Văn phòng, Thẩm phán, Thẩm tra viên, Thư ký Tòa án và đội ngũ trợ lý.\"\n2,Phòng Hành chính - Tư pháp,\"Đầu mối tiếp nhận hồ sơ, quản lý văn thư và con dấu.\"\n3,Phòng Tổ chức cán bộ,\"Quản lý nhân sự, đào tạo và thi đua khen thưởng.\"\n4,Phòng Kế toán - Quản trị,\"Quản lý ngân sách, tài sản và hậu cần kỹ thuật.\"",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 9,
+    "category": "E",
+    "technique": "Thêm mới thành phần tổ chức trong bảng",
+    "location": "Điều 2, Bảng cơ cấu, STT 5",
+    "original_text": "",
+    "modified_text": "5,Bộ phận An ninh (Mới),Đảm bảo an toàn trật tự và phòng cháy chữa cháy.",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 10,
+    "category": "C",
+    "technique": "Tách chức năng nhiệm vụ Văn phòng thành điều riêng",
+    "location": "Điều 3 (v2)",
+    "original_text": "Văn phòng thực hiện nhiệm vụ, quyền hạn sau đây: [liệt kê tại Điều 2 v1]",
+    "modified_text": "Điều 3. Chức năng và Nhiệm vụ của Văn phòng",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 11,
+    "category": "D",
+    "technique": "Thay đổi tính chất bắt buộc sang tùy chọn",
+    "location": "Điều 3 (v2), đoạn về CNTT",
+    "original_text": "p) Tổ chức triển khai ứng dụng công nghệ thông tin;",
+    "modified_text": "Văn phòng có thể chủ động triển khai các ứng dụng công nghệ thông tin và quản trị cơ sở dữ liệu số để tối ưu hóa công tác điều hành của lãnh đạo.",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 12,
+    "category": "C",
+    "technique": "Tách Điều 3 (v1) thành hai Điều (Điều 4 và Điều 5 v2)",
+    "location": "Điều 4, Điều 5 (v2)",
+    "original_text": "Điều 3. Vụ thuộc Tòa án nhân dân cấp cao",
+    "modified_text": "Điều 4. Các Vụ chuyên môn thuộc Tòa án nhân dân cấp cao\nĐiều 5. Nhiệm vụ và Quyền hạn của Vụ Giám đốc thẩm, tái thẩm",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 13,
+    "category": "D",
+    "technique": "Bổ sung quyền hạn yêu cầu cung cấp tài liệu cho các Vụ",
+    "location": "Điều 5 (v2)",
+    "original_text": "g) Tổng kết thực tiễn xét xử, đề xuất án lệ;",
+    "modified_text": "Các Vụ chuyên môn có quyền yêu cầu các đơn vị liên quan cung cấp tài liệu phục vụ việc tổng kết thực tiễn xét xử và đề xuất án lệ.",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 14,
+    "category": "C",
+    "technique": "Chèn thêm Điều khoản mới về bảo mật thông tin",
+    "location": "Điều 6 (v2)",
+    "original_text": "",
+    "modified_text": "Điều 6. Bảo mật thông tin (Điều mới)\nToàn thể công chức, người lao động tại Văn phòng và các Vụ thuộc Tòa án nhân dân cấp cao có trách nhiệm bảo mật tuyệt đối các thông tin, tài liệu liên quan đến quá trình giải quyết vụ án và các nội dung thảo luận nội bộ của Ủy ban Thẩm phán.",
+    "change_type": "addition",
+    "severity": "high"
+  },
+  {
+    "change_id": 15,
+    "category": "A",
+    "technique": "Thay đổi ngày hiệu lực thi hành",
+    "location": "Điều 7 (v2) / Điều 4 (v1)",
+    "original_text": "ngày 01 tháng 01 năm 2025",
+    "modified_text": "ngày 01 tháng 03 năm 2025",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 16,
+    "category": "F",
+    "technique": "Thay đổi định dạng văn bản (Bold)",
+    "location": "Điều 7 (v2), ngày hiệu lực",
+    "original_text": "01 tháng 01 năm 2025",
+    "modified_text": "01 tháng 03 năm 2025",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 17,
+    "category": "F",
+    "technique": "Lỗi đánh máy/Biến thể ký tự dấu",
+    "location": "Điều 8 (v2) / Điều 5 (v1)",
+    "original_text": "Tòa án nhân dân tối cao",
+    "modified_text": "Toà án nhân dân tối cao",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  }
+]

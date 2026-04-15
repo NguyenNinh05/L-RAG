@@ -1,0 +1,212 @@
+[
+  {
+    "change_id": 1,
+    "category": "F",
+    "technique": "Lỗi định dạng (thiếu dấu tiếng Việt)",
+    "location": "Dòng 1",
+    "original_text": "TÒA ÁN NHÂN DÂN TỐI CAO",
+    "modified_text": "TOA AN NHAN DAN TOI CAO",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Số hiệu văn bản",
+    "original_text": "Số: 02/2024/TT-TANDTC",
+    "modified_text": "Số: 05/2024/TT-TANDTC",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "F",
+    "technique": "Lỗi định dạng địa danh",
+    "location": "Địa danh, ngày tháng",
+    "original_text": "Hà Nội",
+    "modified_text": "Ha Noi",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 4,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản",
+    "location": "Địa danh, ngày tháng",
+    "original_text": "ngày 31 tháng 12 năm 2024",
+    "modified_text": "15/01/2025",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 5,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt tên Thông tư",
+    "location": "Tiêu đề Thông tư",
+    "original_text": "Quy định tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của các đơn vị thuộc Tòa án nhân dân tối cao",
+    "modified_text": "Hướng dẫn chi tiết về cơ cấu tổ chức, vai trò và trách nhiệm của các bộ phận trực thuộc Tòa án nhân dân cấp cao nhất",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 6,
+    "category": "A",
+    "technique": "Thay đổi số hiệu luật căn cứ",
+    "location": "Căn cứ pháp lý",
+    "original_text": "Luật Tổ chức Tòa án nhân dân số 34/2024/QH15",
+    "modified_text": "Luật Tổ chức Tòa án nhân dân số 35/2024/QH15",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 7,
+    "category": "F",
+    "technique": "Thay đổi định dạng ngày tháng trong căn cứ",
+    "location": "Căn cứ pháp lý",
+    "original_text": "ngày 24 tháng 6 năm 2024",
+    "modified_text": "ngày 24/06/2024",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 8,
+    "category": "C",
+    "technique": "Xóa bỏ căn cứ pháp lý và lời ban hành",
+    "location": "Phần Căn cứ",
+    "original_text": "Căn cứ Luật Giáo dục đại học số 08/2012/QH13 ngày 18 tháng 6 năm 2012; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của các đơn vị thuộc Tòa án nhân dân tối cao.",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "medium"
+  },
+  {
+    "change_id": 9,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt tiêu đề Chương",
+    "location": "Chương I",
+    "original_text": "QUY ĐỊNH CHUNG",
+    "modified_text": "CÁC QUY ĐỊNH CỐT LÕI",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 10,
+    "category": "C",
+    "technique": "Đảo thứ tự Điều 1 và Điều 2",
+    "location": "Chương I, Điều 1 và Điều 2",
+    "original_text": "Điều 1. Phạm vi điều chỉnh... Điều 2. Đối tượng áp dụng...",
+    "modified_text": "Điều 1. Các thực thể chịu sự điều chỉnh... Điều 2. Giới hạn thực thi...",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 11,
+    "category": "B",
+    "technique": "Thay đổi thuật ngữ tiêu đề Điều (Phạm vi -> Giới hạn)",
+    "location": "Điều 1 (V1) / Điều 2 (V2)",
+    "original_text": "Phạm vi điều chỉnh",
+    "modified_text": "Giới hạn thực thi",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 12,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt nội dung phạm vi",
+    "location": "Điều 1 (V1) / Điều 2 (V2)",
+    "original_text": "Thông tư này quy định về tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của các đơn vị thuộc bộ máy giúp việc của Tòa án nhân dân tối cao.",
+    "modified_text": "Thông tư này đề ra các quy tắc về sơ đồ tổ chức và các chức năng chuyên môn của văn phòng giúp việc Chánh án.",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 13,
+    "category": "B",
+    "technique": "Thay đổi thuật ngữ tiêu đề Điều (Đối tượng -> Thực thể)",
+    "location": "Điều 2 (V1) / Điều 1 (V2)",
+    "original_text": "Đối tượng áp dụng",
+    "modified_text": "Các thực thể chịu sự điều chỉnh",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 14,
+    "category": "F",
+    "technique": "Lỗi đánh máy (Typo)",
+    "location": "Điều 1 (V2)",
+    "original_text": "văn bản",
+    "modified_text": "Van bản",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 15,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt nội dung đối tượng áp dụng",
+    "location": "Điều 2 (V1) / Điều 1 (V2)",
+    "original_text": "Thông tư này áp dụng đối với các đơn vị thuộc Tòa án nhân dân tối cao và các cơ quan, tổ chức, cá nhân có liên quan.",
+    "modified_text": "Van bản này được áp dụng cho toàn bộ các đơn vị thành viên của Tòa án nhân dân tối cao và các bên liên đới.",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 16,
+    "category": "B",
+    "technique": "Thay đổi tên đơn vị (Pháp chế -> Pháp lý)",
+    "location": "Điều 3",
+    "original_text": "Vụ Pháp chế và Quản lý khoa học",
+    "modified_text": "Vụ Pháp lý và Khoa học",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 17,
+    "category": "D",
+    "technique": "Thay đổi tính chất thực hiện (Nhiệm vụ -> Có quyền)",
+    "location": "Điều 3, Khoản 3",
+    "original_text": "thực hiện nhiệm vụ, quyền hạn sau đây:",
+    "modified_text": "CÓ QUYỀN thực hiện các đầu việc sau:",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 18,
+    "category": "E",
+    "technique": "Chuyển đổi danh sách thành bảng biểu",
+    "location": "Điều 3, Khoản 3",
+    "original_text": "a) Xây dựng văn bản quy phạm pháp luật... b) Phối hợp với Chính phủ... c) Phát triển án lệ...",
+    "modified_text": "Bảng biểu: Thứ tự, Nhiệm vụ cụ thể, Ghi chú thêm",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 19,
+    "category": "C",
+    "technique": "Xóa bỏ nhiệm vụ lập đề nghị xây dựng luật",
+    "location": "Điều 3, Khoản 3, Điểm d",
+    "original_text": "d) Lập đề nghị xây dựng luật, pháp lệnh, nghị quyết trình Quốc hội, Ủy ban Thường vụ Quốc hội.",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 20,
+    "category": "E",
+    "technique": "Thêm dòng mới vào nội dung bảng",
+    "location": "Điều 3, Bảng nội dung, Dòng 4",
+    "original_text": "",
+    "modified_text": "4, KIỂM THỨC AI (Dòng mới), Dòng chèn thêm cho QA",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 21,
+    "category": "C",
+    "technique": "Thêm mới điều khoản về bảo mật",
+    "location": "Điều 4 (V2)",
+    "original_text": "",
+    "modified_text": "Điều 4. Bảo mật thông tin nội bộ\nMọi hồ sơ tài liệu trong quá trình xây dựng văn bản pháp luật phải được lưu trữ theo chế độ bảo mật tuyệt đối.",
+    "change_type": "addition",
+    "severity": "high"
+  }
+]

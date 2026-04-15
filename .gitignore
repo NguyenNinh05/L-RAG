@@ -1,13 +1,19 @@
+# ============================================================
 # Python
+# ============================================================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyc
 .Python
-env/
+
+# ============================================================
+# Build / Distribution
+# ============================================================
 build/
-develop-eggs/
 dist/
+develop-eggs/
 downloads/
 eggs/
 .eggs/
@@ -20,27 +26,95 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# Virtual Environment
+# ============================================================
+# Virtual Environments
+# ============================================================
 venv/
 ENV/
+env/
 .env
-.venv
+.venv/
+.conda/
 
-# Dự án Legal RAG - Database (QUAN TRỌNG)
+# ============================================================
+# Database — Graph DB (Kuzu)
+# ============================================================
+# Giữ placeholder thư mục nhưng bỏ qua dữ liệu thực
+graph_db/*
+!graph_db/.gitkeep
+
+# Thư mục eval output (dữ liệu test tạm thời)
+eval_output/
+
+# ============================================================
+# Database — Vector DB (ChromaDB)
+# ============================================================
+vector_db/*
+!vector_db/.gitkeep
+
 chroma_db/
 *.db
 *.sqlite3
 
-# Kết quả đầu ra
-comparison_report.md
-*.log
+# ============================================================
+# Model Weights (thường rất lớn)
+# ============================================================
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+*.gguf
 
-# Tài liệu test (Nên để local, không nên đẩy lên Git nếu là tài liệu thật)
+# ============================================================
+# Logs & Reports
+# ============================================================
+*.log
+*.out
+comparison_report.md
+comparison_report_*.md
+
+# ============================================================
+# Tài liệu test
+# Bỏ qua PDF/DOCX thật (privacy), giữ lại file trong docs_test/
+# ============================================================
 *.pdf
 *.docx
+# Ngoại lệ: giữ lại file test mẫu trong docs_test/
 !docs_test/*.pdf
 !docs_test/*.docx
+# Giữ lại data_test (file test pháp lý dùng để phát triển)
+# Bỏ comment dòng dưới nếu data_test chứa dữ liệu nhạy cảm:
+# data_test/
 
-# IDEs
+# ============================================================
+# IDEs & Editors
+# ============================================================
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ============================================================
+# Testing & Coverage
+# ============================================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# ============================================================
+# Jupyter Notebooks (checkpoints)
+# ============================================================
+.ipynb_checkpoints/
+
+# ============================================================
+# OS
+# ============================================================
+Thumbs.db
+desktop.ini

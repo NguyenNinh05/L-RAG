@@ -1,0 +1,142 @@
+[
+  {
+    "change_id": 1,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Phần đầu văn bản, Số hiệu [cite: 834, 849]",
+    "original_text": "Số: 05/2026/TT-BYT",
+    "modified_text": "Số: 08/2026/TT-BYT",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản",
+    "location": "Phần đầu văn bản, Ngày tháng [cite: 835, 850]",
+    "original_text": "Hà Nội, ngày 31 tháng 3 năm 2026",
+    "modified_text": "Hà Nội, ngày 15/04/2026",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "F",
+    "technique": "Lỗi đánh máy và thay đổi tên văn bản",
+    "location": "Tiêu đề văn bản [cite: 836, 851]",
+    "original_text": "THÔNG TƯ Ban hành Danh mục hóa chất không được sử dụng và Danh mục hóa chất nguy hiểm cần công bố thông tin trong chế phẩm diệt côn trùng, diệt khuẩn dùng trong lĩnh vực gia dụng và y tế",
+    "modified_text": "THÔNG TU(Phiên bản hiệu đính QA)",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 4,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt căn cứ pháp lý",
+    "location": "Phần Căn cứ [cite: 837, 852]",
+    "original_text": "Căn cứ Luật hóa chất số 69/2025/QH15;",
+    "modified_text": "Dựa trên các cơ sở pháp lý được thiết lập tại Luật hóa chất mã số 69/2025/QH15;",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 5,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt căn cứ pháp lý",
+    "location": "Phần Căn cứ [cite: 838, 853]",
+    "original_text": "Căn cứ Nghị định số 42/2025/NĐ-CP của Chính phủ quy định chức năng, nhiệm vụ, quyền hạn và cơ cấu tổ chức của Bộ Y tế;",
+    "modified_text": "Chiếu theo Nghị định số 42/2025/NĐ-CP xác định vai trò, chức trách và bộ máy vận hành của Bộ Y tế;",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 6,
+    "category": "C",
+    "technique": "Thêm mới điều khoản Giải thích từ ngữ",
+    "location": "Sau phần Căn cứ, Điều 1a [cite: 854, 855]",
+    "original_text": "",
+    "modified_text": "Điều 1a. Giải thích từ ngữ\nTrong văn bản này, 'Hóa chất nguy hiểm' được hiểu là các hợp chất có khả năng gây độc tính cao cho con người và môi trường.",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 7,
+    "category": "C",
+    "technique": "Đảo thứ tự Điều và thay đổi tiêu đề Điều",
+    "location": "Điều 1 và Điều 2 [cite: 841, 843, 856, 858]",
+    "original_text": "Điều 1. Phạm vi điều chỉnh\nĐiều 2. Đối tượng áp dụng",
+    "modified_text": "Điều 1. Chủ thể áp dụng (Đổi từ Điều 2)\nĐiều 2. Giới hạn điều chỉnh (Đổi từ Điều 1)",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 8,
+    "category": "D",
+    "technique": "Thay đổi tính chất áp dụng từ bắt buộc sang tùy chọn",
+    "location": "Điều 1 (V2) [cite: 844, 857]",
+    "original_text": "Thông tư này áp dụng đối với cơ quan, tổ chức, cá nhân tham gia các hoạt động sản xuất, kinh doanh chế phẩm diệt côn trùng, diệt khuẩn.",
+    "modified_text": "Văn bản hiện hành CÓ THỂ ĐƯỢC ÁP DỤNG ĐỐI VỚI các pháp nhân, đơn vị và cá nhân thực hiện quy trình chế biến, lưu thông chế phẩm diệt khuẩn.",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 9,
+    "category": "B",
+    "technique": "Thay đổi cách diễn đạt phạm vi điều chỉnh",
+    "location": "Điều 2 (V2) [cite: 842, 859]",
+    "original_text": "Thông tư này quy định chi tiết và hướng dẫn khoản 4 Điều 15 và khoản 2 Điều 31 của Luật Hóa chất, bao gồm Danh mục hóa chất không được sử dụng và Danh mục hóa chất nguy hiểm cần công bố thông tin.",
+    "modified_text": "Văn bản quy định chi tiết về việc liệt kê các hoạt chất bị cấm và các nhóm chất độc hại cần minh bạch thông tin.",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 10,
+    "category": "E",
+    "technique": "Thay đổi tiêu đề và các cột trong bảng",
+    "location": "Phụ lục I, Bảng [cite: 845, 846, 860, 861]",
+    "original_text": "PHỤ LỤC I (Trích lược)\nSTT,Tên hóa chất,Số CAS",
+    "modified_text": "PHỤ LỤC I: DANH MỤC CẬP NHẬT\nThứ tự,Hoạt chất,Mã số nhận diện CAS",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 11,
+    "category": "B",
+    "technique": "Thay đổi tên hóa chất",
+    "location": "Phụ lục I, Bảng, Dòng 58 [cite: 846, 861]",
+    "original_text": "Metofluthrin",
+    "modified_text": "Metofluthrin (Cấp độ 1)",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 12,
+    "category": "A",
+    "technique": "Thay đổi mã số CAS",
+    "location": "Phụ lục I, Bảng, Dòng 58 [cite: 846, 861]",
+    "original_text": "240494-70-6",
+    "modified_text": "999-999-999",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 13,
+    "category": "E",
+    "technique": "Thêm mới dòng trong bảng",
+    "location": "Phụ lục I, Bảng, Dòng 101 [cite: 861]",
+    "original_text": "",
+    "modified_text": "101,QA-Test-Chemical-2024,000-00-0",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 14,
+    "category": "C",
+    "technique": "Thêm mới các quy định về rà soát và báo cáo",
+    "location": "Cuối văn bản [cite: 862, 863]",
+    "original_text": "",
+    "modified_text": "a) Thực hiện rà soát định kỳ hàng năm.\nb) Báo cáo kết quả về Cục Phòng bệnh.",
+    "change_type": "addition",
+    "severity": "medium"
+  }
+]

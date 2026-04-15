@@ -1,0 +1,112 @@
+[
+  {
+    "change_id": 1,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Dòng 1",
+    "original_text": "Số: 05/2026/TT-BVHTTDL",
+    "modified_text": "Số: 09/2026/TT-BVHTTDL",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản",
+    "location": "Dòng 2",
+    "original_text": "Hà Nội, ngày 31 tháng 3 năm 2026",
+    "modified_text": "Hà Nội, ngày 15/04/2026",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "F",
+    "technique": "Lỗi đánh máy (Typo) và thay đổi định dạng ngày tháng",
+    "location": "Dòng 2 và Dòng 3",
+    "original_text": "ngày 31 tháng 3 năm 2026\nTHÔNG TƯ",
+    "modified_text": "ngày 15/04/2026\nTHÔNG TU(Bản sửa đổi kiểm thử)",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 4,
+    "category": "C",
+    "technique": "Xóa bỏ tiêu đề nội dung hướng dẫn của Thông tư",
+    "location": "Dòng 3",
+    "original_text": "Hướng dẫn thực hiện một số nội dung tại Nghị định số 289/2025/NĐ-CP ngày 06 tháng 11 năm 2025 của Chính phủ hướng dẫn thi hành Nghị quyết số 197/2025/QH15 ngày 17 tháng 5 năm 2025 của Quốc hội về một số cơ chế, chính sách đặc biệt tạo đột phá trong xây dựng và tổ chức thi hành pháp luật",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 5,
+    "category": "C",
+    "technique": "Thêm mới điều khoản Giải thích từ ngữ",
+    "location": "Điều 1a (Mới)",
+    "original_text": "",
+    "modified_text": "Điều 1a. Giải thích từ ngữ\nHoạt động 'Khoán chi' được hiểu là việc xác định một hạn mức tài chính cố định cho một đơn vị sản phẩm hoặc công việc cụ thể.",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 6,
+    "category": "B",
+    "technique": "Thay đổi thuật ngữ tiêu đề Điều 1",
+    "location": "Điều 1",
+    "original_text": "Điều 1. Phạm vi điều chỉnh",
+    "modified_text": "Điều 1. Lĩnh vực áp dụng",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 7,
+    "category": "D",
+    "technique": "Thay đổi tính chất bắt buộc sang tùy chọn",
+    "location": "Điều 1",
+    "original_text": "Thông tư này hướng dẫn thực hiện một số nội dung về định mức khoán chi và quy trình thẩm định, phê duyệt dự toán kinh phí đối với các hoạt động xây dựng văn bản quy phạm pháp luật theo cơ chế đặc thù.",
+    "modified_text": "Văn bản này CÓ THỂ ĐƯỢC DÙNG ĐỂ hướng dẫn các cơ quan đơn vị trong việc xác lập các tiêu chuẩn về chi phí và các bước phê duyệt ngân sách cho công tác soạn thảo văn bản.",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 8,
+    "category": "E",
+    "technique": "Thay đổi tiêu đề bảng",
+    "location": "Phần Bảng biểu",
+    "original_text": "BẢNG ĐỊNH MỨC KHOÁN CHI (Trích lược)",
+    "modified_text": "BẢNG ĐỊNH MỨC CHI PHÍ (Đã thay đổi tiêu đề)",
+    "change_type": "value_change",
+    "severity": "low"
+  },
+  {
+    "change_id": 9,
+    "category": "E",
+    "technique": "Thay đổi tiêu đề các cột trong bảng",
+    "location": "Tiêu đề cột bảng",
+    "original_text": "STT, Nhiệm vụ, hoạt động, Định mức tối đa, Ghi chú",
+    "modified_text": "Mã số, Hoạt động chi tiết, Hạn mức chi phí trần, Đơn vị",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 10,
+    "category": "A",
+    "technique": "Thay đổi định mức kinh phí (Con số)",
+    "location": "Bảng, Mã số 1.1",
+    "original_text": "105",
+    "modified_text": "115",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 11,
+    "category": "E",
+    "technique": "Thêm dòng mới trong bảng định mức",
+    "location": "Bảng, Mã số 1.3",
+    "original_text": "",
+    "modified_text": "1.3, Chi phí dự phòng phát sinh, 20, Triệu VNĐ",
+    "change_type": "addition",
+    "severity": "medium"
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "change_id": 1,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Phần đầu văn bản, Số hiệu",
+    "original_text": "Số: 04/2024/TT-TANDTC",
+    "modified_text": "Số: 09/2024/TT-TANDTC",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản và định dạng",
+    "location": "Phần đầu văn bản, Ngày tháng",
+    "original_text": "Hà Nội, ngày 31 tháng 12 năm 2024",
+    "modified_text": "Hà Nội, 05/01/2025",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "B",
+    "technique": "Diễn đạt lại tên Thông tư",
+    "location": "Tiêu đề văn bản",
+    "original_text": "THÔNG TƯ Quy định chức năng, nhiệm vụ, quyền hạn của Văn phòng, phòng thuộc Tòa án nhân dân tỉnh, thành phố trực thuộc trung ương; bộ máy giúp việc của Tòa án nhân dân huyện, quận, thị xã, thành phố thuộc tỉnh, thành phố thuộc thành phố trực thuộc trung ương",
+    "modified_text": "THÔNG TƯ Quy định về thẩm quyền, vai trò và trách nhiệm của khối Văn phòng thuộc Tòa án các tỉnh; các cơ quan trợ giúp pháp lý của Tòa án các huyện và đơn vị hành chính tương đương trên toàn lãnh thổ",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 4,
+    "category": "C",
+    "technique": "Xóa bỏ các căn cứ pháp lý và thêm mới Điều mục tiêu",
+    "location": "Phần Căn cứ và Điều 1",
+    "original_text": "Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 ngày 24 tháng 6 năm 2024; Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14; Chánh án Tòa án nhân dân tối cao ban hành Thông tư...",
+    "modified_text": "Điều 1. Mục tiêu và nguyên tắc Thiết lập hệ thống tổ chức chặt chẽ, tối ưu hóa nguồn lực nhân sự trong hệ thống Tòa án.",
+    "change_type": "structural_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 5,
+    "category": "B",
+    "technique": "Thay đổi tiêu đề Điều bằng cách diễn đạt tương đương",
+    "location": "Điều 6",
+    "original_text": "Điều 6. Nhiệm vụ của bộ máy giúp việc Tòa án nhân dân cấp huyện",
+    "modified_text": "Điều 6. Vai trò của hệ thống trợ giúp Tòa án cấp huyện (B. Paraphrase)",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 6,
+    "category": "F",
+    "technique": "Lỗi đánh máy (Typo) và rút gọn nội dung",
+    "location": "Điều 6, Điểm a (V2) / Điểm h (V1)",
+    "original_text": "h) Thực hiện công tác bảo vệ chính trị nội bộ, bảo vệ cơ quan, phòng cháy, chữa cháy, y tế của Tòa án nhân dân cấp huyện;",
+    "modified_text": "a) Đảm bảo an ninh trật tự và an toàn phong cháy (F. Typo) trong nội bộ cơ quan;",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 7,
+    "category": "B",
+    "technique": "Diễn đạt lại nhiệm vụ quản lý phương tiện",
+    "location": "Điều 6, Điểm b (V2) / Điểm i (V1)",
+    "original_text": "i) Quản lý, sử dụng phương tiện phục vụ hoạt động của Tòa án nhân dân cấp huyện theo quy định;",
+    "modified_text": "b) Điều phối và khai thác trang thiết bị công tác (B. Paraphrase);",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 8,
+    "category": "B",
+    "technique": "Diễn đạt lại nhiệm vụ thi đua khen thưởng",
+    "location": "Điều 6, Điểm c (V2) / Điểm k (V1)",
+    "original_text": "k) Thực hiện công tác thi đua, khen thưởng theo quy định;",
+    "modified_text": "c) Tổ chức phong trào thi đua và xét duyệt khen thưởng;",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 9,
+    "category": "C",
+    "technique": "Xóa bỏ các điểm l, m, n quy định về lý lịch tư pháp, CNTT và nhiệm vụ khác",
+    "location": "Điều 6",
+    "original_text": "l) Rà soát, tra cứu, xác minh, cung cấp thông tin về lý lịch tư pháp theo quy định của pháp luật về lý lịch tư pháp; m) Triển khai ứng dụng công nghệ thông tin theo quy định; n) Thực hiện nhiệm vụ, quyền hạn khác theo phân công của Chánh án Tòa án nhân dân cấp huyện.",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 10,
+    "category": "D",
+    "technique": "Thay đổi quyền hạn triển khai văn bản",
+    "location": "Điều 7 (V2) / Điều 8 (V1)",
+    "original_text": "1. Chánh án Tòa án nhân dân cấp tỉnh, Chánh án Tòa án nhân dân cấp huyện và cơ quan, tổ chức, cá nhân liên quan có trách nhiệm thi hành Thông tư này.",
+    "modified_text": "1. Chánh án Tòa án các cấp có QUYỀN chủ động trong việc triển khai các nội dung của văn bản này phù hợp với đặc thù địa phương (D. Logic).",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 11,
+    "category": "C",
+    "technique": "Đảo thứ tự Điều và thay đổi tiêu đề Điều",
+    "location": "Điều 7 và Điều 8",
+    "original_text": "Điều 7. Hiệu lực thi hành... Điều 8. Tổ chức thực hiện",
+    "modified_text": "Điều 7. Quy định thực hiện... Điều 8. Ngày hiệu lực",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 12,
+    "category": "A",
+    "technique": "Thay đổi ngày hiệu lực thi hành",
+    "location": "Điều 8 (V2) / Điều 7 (V1)",
+    "original_text": "kể từ ngày 01 tháng 01 năm 2025.",
+    "modified_text": "từ ngày 20 tháng 02 năm 2025.",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 13,
+    "category": "E",
+    "technique": "Thêm bảng danh mục cơ quan nhận văn bản",
+    "location": "Cuối văn bản",
+    "original_text": "",
+    "modified_text": "DANH MỤC CƠ QUAN NHẬN VĂN BẢN: STT,Cơ quan,Phân loại 1,Văn phòng Trung ương Đảng,Lưu 2,Văn phòng Chính phủ,Phối hợp 3,Bộ Tư pháp,Theo dõi",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 14,
+    "category": "C",
+    "technique": "Xóa bỏ quy định về phản ánh vướng mắc",
+    "location": "Điều 8, Khoản 2 (V1)",
+    "original_text": "2. Trong quá trình thực hiện nếu có khó khăn, vướng mắc hoặc đề xuất, kiến nghị thì phản ánh về Tòa án nhân dân tối cao (qua Vụ Tổ chức – Cán bộ) để tổng hợp, báo cáo Chánh án Tòa án nhân dân tối cao xem xét, quyết định.",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "medium"
+  }
+]

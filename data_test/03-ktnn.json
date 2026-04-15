@@ -1,0 +1,182 @@
+[
+  {
+    "change_id": 1,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Phần đầu văn bản, Số hiệu",
+    "original_text": "Số: 03/2026/TT-KTNN",
+    "modified_text": "Số: 05/2026/TT-KTNN",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản",
+    "location": "Phần đầu văn bản, Ngày tháng",
+    "original_text": "ngày 12 tháng 01 năm 2026",
+    "modified_text": "ngày 20 tháng 02 năm 2026",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "B",
+    "technique": "Diễn đạt lại tên Thông tư",
+    "location": "Tiêu đề văn bản",
+    "original_text": "THÔNG TƯ Quy định trình tự xây dựng và ban hành kế hoạch kiểm toán năm, kế hoạch kiểm toán trung hạn của Kiểm toán nhà nước",
+    "modified_text": "THÔNG TƯ Quy định các bước quy trình thiết lập và phê duyệt kế hoạch kiểm toán định kỳ và dài hạn của Kiểm toán nhà nước",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 4,
+    "category": "C",
+    "technique": "Xóa bỏ các căn cứ pháp lý",
+    "location": "Phần Căn cứ",
+    "original_text": "Căn cứ Luật Kiểm toán nhà nước số 81/2015/QH13 được sửa đổi, bổ sung bởi Luật số 55/2019/QH14; Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Tổng hợp;",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 5,
+    "category": "B",
+    "technique": "Thay đổi tiêu đề và phân cấp Chương",
+    "location": "Chương I",
+    "original_text": "Chương I: QUY ĐỊNH CHUNG",
+    "modified_text": "Mục I: QUY ĐỊNH TỔNG QUÁT",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 6,
+    "category": "C",
+    "technique": "Đảo thứ tự Điều 1 và Điều 2",
+    "location": "Điều 1 và Điều 2",
+    "original_text": "Điều 1. Phạm vi điều chỉnh... Điều 2. Đối tượng áp dụng...",
+    "modified_text": "Điều 1. Đối tượng áp dụng... Điều 2. Phạm vi điều chỉnh...",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 7,
+    "category": "B",
+    "technique": "Diễn đạt lại đối tượng áp dụng",
+    "location": "Điều 1 (V2) / Điều 2 (V1)",
+    "original_text": "Thông tư này áp dụng đối với các đơn vị trực thuộc Kiểm toán nhà nước và các cơ quan, tổ chức, cá nhân có liên quan trong việc xây dựng và ban hành kế hoạch kiểm toán năm, kế hoạch kiểm toán trung hạn của Kiểm toán nhà nước.",
+    "modified_text": "Văn bản này có hiệu lực với toàn bộ các đơn vị thành viên của Kiểm toán nhà nước và các bên liên quan trực tiếp.",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 8,
+    "category": "F",
+    "technique": "Lỗi đánh máy (Typo)",
+    "location": "Điều 2, Khoản 1 (V2)",
+    "original_text": "quy định",
+    "modified_text": "quy dình",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 9,
+    "category": "A",
+    "technique": "Thay đổi thời hạn/loại hình kế hoạch kiểm toán",
+    "location": "Điều 2, Khoản 1 (V2) / Điều 1, Khoản 1 (V1)",
+    "original_text": "trung hạn",
+    "modified_text": "05 năm",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 10,
+    "category": "C",
+    "technique": "Xóa bỏ quy định về trường hợp ngoại trừ",
+    "location": "Điều 1, Khoản 2 (V1)",
+    "original_text": "2. Thông tư này không áp dụng đối với các trường hợp điều chỉnh kế hoạch kiểm toán năm hoặc các kế hoạch kiểm toán của Kiểm toán nhà nước đã cam kết thực hiện theo các văn bản ký kết với đối tác nước ngoài.",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 11,
+    "category": "C",
+    "technique": "Xóa bỏ các nguyên tắc xây dựng kế hoạch",
+    "location": "Điều 3 (V1)",
+    "original_text": "Điều 3. Nguyên tắc xây dựng kế hoạch kiểm toán năm, kế hoạch kiểm toán trung hạn\n1. Bảo đảm tính độc lập của Kiểm toán nhà nước theo quy định tại Hiến pháp năm 2013...\n2. Bảo đảm tính khách quan, minh bạch...\n3. Bảo đảm tính hệ thống, toàn diện và khả thi...",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 12,
+    "category": "B",
+    "technique": "Rút gọn tiêu đề Điều",
+    "location": "Điều 7",
+    "original_text": "Điều 7. Định hướng, hướng dẫn xây dựng kế hoạch kiểm toán năm",
+    "modified_text": "Điều 7. Định hướng xây dựng kế hoạch",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 13,
+    "category": "A",
+    "technique": "Thay đổi thời hạn ban hành hướng dẫn",
+    "location": "Điều 7, Khoản 1",
+    "original_text": "Trước ngày 15 tháng 6 hàng năm",
+    "modified_text": "Trước ngày 25 tháng 8 hàng năm",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 14,
+    "category": "D",
+    "technique": "Thay đổi tính chất bắt buộc sang tùy chọn",
+    "location": "Điều 7, Khoản 1",
+    "original_text": "ban hành văn bản hướng dẫn",
+    "modified_text": "CÓ THỂ ban hành văn bản hướng dẫn",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 15,
+    "category": "C",
+    "technique": "Thêm mới điều khoản về bảo mật thông tin",
+    "location": "Điều 10 (V2)",
+    "original_text": "",
+    "modified_text": "Điều 10. Bảo mật thông tin\nMọi dữ liệu trong quá trình lập kế hoạch phải được bảo mật tuyệt đối theo tiêu chuẩn ISO/IEC 27001.",
+    "change_type": "addition",
+    "severity": "high"
+  },
+  {
+    "change_id": 16,
+    "category": "E",
+    "technique": "Thêm bảng danh sách nơi nhận văn bản",
+    "location": "Cuối văn bản",
+    "original_text": "",
+    "modified_text": "NƠI NHẬN:\nCơ quan nhận,Số lượng bản\nBan Bí thư,01\nChủ tịch nước,01\nThủ tướng,02",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 17,
+    "category": "C",
+    "technique": "Xóa bỏ Chương về Điều khoản thi hành",
+    "location": "Chương V (V1)",
+    "original_text": "Chương V: ĐIỀU KHOẢN THI HÀNH\nĐiều 19. Hiệu lực thi hành\n1. Thông tư này có hiệu lực thi hành từ ngày 01 tháng 3 năm 2026.\nĐiều 20. Trách nhiệm thi hành\n1. Thủ trưởng các đơn vị trực thuộc Kiểm toán nhà nước và các cơ quan, tổ chức, cá nhân có liên quan chịu trách nhiệm tổ chức thực hiện Thông tư này.",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 18,
+    "category": "F",
+    "technique": "Lỗi đánh máy (Typo) trong tên người ký",
+    "location": "Chữ ký",
+    "original_text": "Ngô Văn Tuấn",
+    "modified_text": "Ngô Văn Tuán",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  }
+]

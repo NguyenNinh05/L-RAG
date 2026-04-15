@@ -8,12 +8,30 @@ aiohttp
 python-docx
 pymupdf4llm
 
-# Vector Database & Processing
+# =============================================================
+# Phase 1: Legal RAG Ingestion Pipeline
+# =============================================================
+
+# Document Parsing (Primary engine)
+docling                    # pip install docling
+
+# Document Parsing (OCR Fallback)
+marker-pdf                 # pip install marker-pdf
+
+# Pydantic v2 (Data Modeling)
+pydantic>=2.0
+
+# Graph Database (Embedded — local, no server needed)
+kuzu                       # pip install kuzu
+
+# Vector Database (Persistent)
 chromadb
+
+# =============================================================
+# Utilities
+# =============================================================
 numpy
 requests
-
-# LLM & Pipeline Utilities
 tenacity
 tqdm
 nest-asyncio

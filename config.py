@@ -1,34 +1,68 @@
+"""
+config.py
+=========
+Cấu hình tập trung cho toàn bộ hệ thống L-RAG.
+Đọc từ biến môi trường hoặc file .env (nếu có).
+"""
+
+from __future__ import annotations
+
 import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent.resolve()
+# ---------------------------------------------------------------------------
+# Project root
+# ---------------------------------------------------------------------------
+PROJECT_ROOT = Path(__file__).parent.resolve()
 
-EMBEDDING_MODEL_NAME  = "qwen3-embedding:0.6b"   
-OLLAMA_API_BASE       = "http://localhost:11434/api"
+# ---------------------------------------------------------------------------
+# Parser (Module 1) settings
+# ---------------------------------------------------------------------------
 
-INSTRUCTION_DOC   = "Represent this legal document for retrieval"
-INSTRUCTION_QUERY = "Represent this query for retrieving legal documents"
+# Ngưỡng confidence: nếu avg confidence của docling < threshold này
+# thì tự động fallback sang marker-pdf OCR.
+DOCLING_CONFIDENCE_THRESHOLD: float = float(
+    os.getenv("DOCLING_CONFIDENCE_THRESHOLD", "0.75")
+)
 
-CHROMA_DIR       = str(BASE_DIR / "chroma_db")
-COLLECTION_NAME  = "legal_chunks"
-# Số session ChromaDB tối đa giữ lại; các session cũ hơn sẽ bị xóa tự động
-CHROMA_KEEP_SESSIONS = int(os.getenv("CHROMA_KEEP_SESSIONS", "3"))
+# Tỷ lệ tối đa trang có confidence thấp trước khi trigger OCR toàn bộ
+DOCLING_LOW_CONF_PAGE_RATIO: float = float(
+    os.getenv("DOCLING_LOW_CONF_PAGE_RATIO", "0.3")
+)
 
-OLLAMA_LLM_MODEL   = "hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q4_K_M"
-OLLAMA_CHAT_URL    = "http://localhost:11434/api/chat"
-LLM_MAX_TOKENS     = 4096
-LLM_TEMPERATURE    = 0.2
-LLM_TOP_P          = 0.9
-LLM_NUM_CTX        = 16384
-LLM_PRESENCE_PENALTY = 1.2
+# marker-pdf CLI / Python API timeout (giây)
+MARKER_TIMEOUT_SECONDS: int = int(os.getenv("MARKER_TIMEOUT_SECONDS", "300"))
 
-UNCHANGED_THRESHOLD  = 0.95   
-MODIFIED_THRESHOLD   = 0.75   
-GAP_PENALTY          = 0.40   
-TEXT_UNCHANGED_RATIO = 0.998   
+# ---------------------------------------------------------------------------
+# Graph DB (Module 3) settings — Kuzu embedded
+# ---------------------------------------------------------------------------
+KUZU_DB_PATH: Path = Path(
+    os.getenv("KUZU_DB_PATH", str(PROJECT_ROOT / "graph_db" / "legal_graph"))
+)
 
-# CORS: danh sách origin được phép, đọc từ env var khi deploy production
-# VD: ALLOWED_ORIGINS="https://yourdomain.com,https://app.yourdomain.com"
-ALLOWED_ORIGINS: list[str] = os.getenv(
-	"ALLOWED_ORIGINS", "http://localhost:8000,http://localhost:3000"
-).split(",")
+# ---------------------------------------------------------------------------
+# Vector DB (Module 3) settings — ChromaDB persistent
+# ---------------------------------------------------------------------------
+CHROMA_DB_PATH: Path = Path(
+    os.getenv("CHROMA_DB_PATH", str(PROJECT_ROOT / "vector_db" / "chroma_legal"))
+)
+
+CHROMA_COLLECTION_NAME: str = os.getenv(
+    "CHROMA_COLLECTION_NAME", "legal_documents"
+)
+
+# ---------------------------------------------------------------------------
+# Chunking (Module 2) settings
+# ---------------------------------------------------------------------------
+# Kích thước chunk tối đa (ký tự). Nếu khoản có nội dung dài hơn,
+# sẽ bị chia nhỏ thêm theo câu.
+MAX_CHUNK_CHARS: int = int(os.getenv("MAX_CHUNK_CHARS", "2000"))
+
+# Số ký tự overlap giữa các sub-chunk khi khoản bị chia nhỏ
+CHUNK_OVERLAP_CHARS: int = int(os.getenv("CHUNK_OVERLAP_CHARS", "200"))
+
+# ---------------------------------------------------------------------------
+# Embedding (placeholder — sẽ được thay bởi model thực)
+# ---------------------------------------------------------------------------
+EMBEDDING_DIM: int = int(os.getenv("EMBEDDING_DIM", "1024"))
+EMBEDDING_BATCH_SIZE: int = int(os.getenv("EMBEDDING_BATCH_SIZE", "32"))

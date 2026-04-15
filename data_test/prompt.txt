@@ -1,0 +1,103 @@
+Role: Bạn là một chuyên gia pháp lý cao cấp và đồng thời là một chuyên gia kiểm thử phần mềm (QA Engineer) cho các hệ thống LegalTech.
+Task: Tôi sẽ cung cấp cho bạn một văn bản pháp lý gốc dưới dạng file PDF. Nhiệm vụ của bạn gồm 3 phần:
+Tạo file {tên_file_gốc}_v1.docx: Chuyển đổi trung thực nội dung PDF gốc sang định dạng Word (.docx), giữ nguyên toàn bộ nội dung, cấu trúc, bảng biểu, và định dạng gốc một cách chính xác nhất có thể.
+Tạo file {tên_file_gốc}_v2.docx: Dựa trên bản V1, tạo ra một phiên bản biến thể với các thay đổi được tính toán kỹ lưỡng theo yêu cầu bên dưới để kiểm tra khả năng đối chiếu của AI.
+Tạo file ground_truth_{tên_file_gốc}.json: Đây là file "đáp án" chứa danh sách chi tiết tất cả các thay đổi đã thực hiện từ V1 sang V2 để máy thực hiện đối soát tự động.
+(Ví dụ: nếu file đầu vào là hop_dong_mua_ban.pdf, đầu ra sẽ là hop_dong_mua_ban_v1.docx, hop_dong_mua_ban_v2.docx và ground_truth_hop_dong_mua_ban.json)
+Yêu cầu về các biến thể thay đổi cho V2 (Cực kỳ quan trọng):
+Hãy áp dụng tổ hợp tất cả các kỹ thuật sau. Mỗi kỹ thuật phải được sử dụng ít nhất 1 lần, phân bổ đều khắp văn bản:
+A. Thay đổi con số (Numerical)
+Thay đổi giá trị hợp đồng, số tiền, đơn giá trong bảng.
+Thay đổi thời hạn thanh toán, thời hạn hợp đồng (ví dụ: 30 ngày 
+→
+→
+ 45 ngày).
+Thay đổi mức phạt/lãi suất phần trăm (ví dụ: 5% 
+→
+→
+ 8%).
+Thay đổi ngày hiệu lực, ngày ký.
+Thay đổi số tài khoản ngân hàng, mã số thuế.
+B. Diễn đạt lại ngữ nghĩa (Semantic Paraphrasing)
+Giữ nguyên ý nghĩa pháp lý nhưng thay đổi hoàn toàn cách dùng từ.
+Sử dụng từ đồng nghĩa, từ Hán-Việt thay cho từ thuần Việt hoặc ngược lại.
+Đảo cấu trúc câu chủ động 
+↔
+↔
+ bị động.
+Diễn đạt lại bằng thuật ngữ pháp lý chuyên sâu hơn hoặc đơn giản hơn.
+C. Thay đổi cấu trúc (Structural Shift)
+Đảo thứ tự ít nhất 2 Điều khoản (ví dụ: Điều 5 chuyển xuống sau Điều 8).
+Tách 1 Điều lớn thành 2-3 Điều nhỏ hơn, hoặc gộp 2 Điều nhỏ thành 1 Điều lớn.
+Chèn thêm 1 Điều khoản mới không có trong bản gốc (ví dụ: Điều khoản Bất khả kháng, Bảo mật thông tin).
+Xóa bỏ 1 khoản/mục phụ trong một Điều.
+D. Thay đổi logic pháp lý (Logic Shift)
+Thay đổi từ "phải" / "có nghĩa vụ" (Shall) 
+→
+→
+ "có thể" / "có quyền" (May) hoặc ngược lại.
+Thêm hoặc bớt một điều kiện loại trừ trách nhiệm (Exclusion clause).
+Thay đổi chủ thể chịu trách nhiệm (ví dụ: "Bên A chịu trách nhiệm" 
+→
+→
+ "Bên B chịu trách nhiệm").
+Thêm/bớt điều kiện tiên quyết cho một nghĩa vụ.
+E. Xử lý bảng biểu (Table Manipulation)
+Chèn thêm ít nhất 1 dòng mới vào bảng.
+Thay đổi giá trị trong ít nhất 2 ô cụ thể.
+Gộp 2 cột thành 1 hoặc tách 1 cột thành 2.
+Thay đổi tiêu đề cột.
+Nếu bản gốc không có bảng: chuyển một danh sách liệt kê thành dạng bảng.
+F. Nhiễu định dạng (Formatting Noise)
+Chèn 2-3 lỗi đánh máy nhẹ (typo) tại các vị trí khác nhau (ví dụ: "hợp đồng" 
+→
+→
+ "hợp dồng").
+Thay đổi cách đánh số mục (1. 
+→
+→
+ a., hoặc Điều 1 
+→
+→
+ Mục I).
+Thay đổi định dạng ngày (dd/mm/yyyy 
+→
+→
+ ngày ... tháng ... năm ...).
+Thêm/bớt dấu cách, xuống dòng bất thường.
+Yêu cầu chi tiết cho file ground_truth_{tên_file_gốc}.json:
+File JSON phải là một mảng các đối tượng, mỗi đối tượng đại diện cho một thay đổi duy nhất. Cấu trúc bắt buộc như sau:
+code
+JSON
+[
+  {
+    "change_id": 1,
+    "category": "A", 
+    "technique": "Thay đổi con số",
+    "location": "Điều 4, Khoản 2",
+    "original_text": "Thời hạn thanh toán là 30 ngày kể từ ngày nhận hóa đơn",
+    "modified_text": "Thời hạn thanh toán là 45 ngày kể từ ngày nhận hóa đơn",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 2,
+    "category": "B",
+    "technique": "Diễn đạt lại ngữ nghĩa",
+    "location": "Điều 1, Mục a",
+    "original_text": "Bên A cam kết thực hiện đúng nghĩa vụ",
+    "modified_text": "Bên A khẳng định sẽ tuân thủ nghiêm ngặt các trách nhiệm đã đề ra",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  }
+]
+Quy định về các trường trong JSON:
+change_id: Số thứ tự tăng dần của thay đổi.
+category: Ký hiệu A, B, C, D, E, F tương ứng với các kỹ thuật trên.
+technique: Tên chi tiết của kỹ thuật áp dụng.
+location: Vị trí chính xác nơi thay đổi xảy ra (Điều, Khoản, Mục hoặc Trang).
+original_text: Đoạn văn bản chính xác trong bản V1.
+modified_text: Đoạn văn bản chính xác sau khi đã sửa trong bản V2.
+change_type: Loại thay đổi (ví dụ: value_change, paraphrasing, structural_shift, logic_shift, formatting_noise, addition, deletion).
+severity: Mức độ ảnh hưởng đến ý nghĩa pháp lý (low, medium, high).
+Yêu cầu cuối cùng: Mọi thay đổi xuất hiện trong bản V2 BẮT BUỘC phải được ghi lại trong file JSON này. Không được bỏ sót bất kỳ thay đổi nào, dù là một dấu phẩy hay một lỗi typo.

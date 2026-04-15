@@ -1,0 +1,212 @@
+[
+  {
+    "change_id": 1,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản",
+    "location": "Phần đầu văn bản, Ngày tháng",
+    "original_text": "Hà Nội, ngày 12 tháng 01 năm 2026",
+    "modified_text": "Hà Nội, ngày 15/01/2026",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 2,
+    "category": "B",
+    "technique": "Thay đổi cách dùng từ và diễn đạt (Paraphrasing)",
+    "location": "Điều 1",
+    "original_text": "Thông tư này quy định về trình tự, nội dung công việc, nhiệm vụ, trách nhiệm của các đơn vị, tổ chức, cá nhân có liên quan trong quá trình lập, thẩm định, xét duyệt và phát hành kế hoạch kiểm toán tổng quát của cuộc kiểm toán (sau đây gọi tắt là kế hoạch kiểm toán) do Kiểm toán nhà nước thực hiện.",
+    "modified_text": "Thông tư này điều chỉnh về trình tự, nội dung các công việc cụ thể, chức năng, nghĩa vụ của các cơ quan, tổ chức, cá nhân hữu quan trong tiến trình lập, thẩm định, phê duyệt và ban hành kế hoạch kiểm toán tổng quát của cuộc kiểm toán (viết tắt là kế hoạch kiểm toán) do Kiểm toán nhà nước triển khai thực hiện.",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 3,
+    "category": "D",
+    "technique": "Thay đổi tính chất bắt buộc thành tùy chọn",
+    "location": "Điều 4, Khoản 1",
+    "original_text": "Kế hoạch kiểm toán phải được lập, thẩm định và xét duyệt đối với tất cả các cuộc kiểm toán trước khi tổ chức thực hiện kiểm toán.",
+    "modified_text": "Kế hoạch kiểm toán có thể được lập, thẩm định và xét duyệt đối với tất cả các cuộc kiểm toán trước khi tổ chức thực hiện kiểm toán.",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 4,
+    "category": "C",
+    "technique": "Xóa bỏ các căn cứ tuân thủ",
+    "location": "Điều 4, Khoản 4",
+    "original_text": "Việc lập, thẩm định, xét duyệt và phát hành kế hoạch kiểm toán phải tuân thủ các quy định của quy trình kiểm toán của Kiểm toán nhà nước, quy tắc đạo đức nghề nghiệp, quy tắc ứng xử của Kiểm toán viên nhà nước, quy chế tổ chức và hoạt động của Đoàn kiểm toán nhà nước, quy định về bảo vệ bí mật nhà nước và các quy định pháp luật có liên quan.",
+    "modified_text": "Việc lập, thẩm định, xét duyệt và phát hành kế hoạch kiểm toán phải tuân thủ các quy định của quy trình kiểm toán của Kiểm toán nhà nước, quy tắc đạo đức nghề nghiệp, quy tắc ứng xử của Kiểm toán viên nhà nước.",
+    "change_type": "deletion",
+    "severity": "medium"
+  },
+  {
+    "change_id": 5,
+    "category": "F",
+    "technique": "Thay đổi định dạng đánh số danh sách",
+    "location": "Điều 5",
+    "original_text": "1. Khảo sát, thu thập thông tin.\n2. Đánh giá hệ thống kiểm soát nội bộ và phân tích thông tin đã thu thập.\n3. Lập kế hoạch kiểm toán.\n4. Thẩm định, xét duyệt kế hoạch kiểm toán.\n5. Hoàn thiện, phát hành kế hoạch kiểm toán và ban hành quyết định kiểm toán.",
+    "modified_text": "a. Khảo sát, thu thập thông tin.\nb. Đánh giá hệ thống kiểm soát nội bộ và phân tích thông tin đã thu thập.\nc. Lập kế hoạch kiểm toán.\nd. Thẩm định, xét duyệt kế hoạch kiểm toán.\nđ. Hoàn thiện, phát hành kế hoạch kiểm toán và ban hành quyết định kiểm toán.",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 6,
+    "category": "C",
+    "technique": "Đảo thứ tự các Điều trong chương",
+    "location": "Điều 6 và Điều 7",
+    "original_text": "Điều 6. Khảo sát, thu thập thông tin [...]\nĐiều 7. Đánh giá hệ thống kiểm soát nội bộ và phân tích thông tin đã thu thập [...]",
+    "modified_text": "Điều 6. Đánh giá hệ thống kiểm soát nội bộ và phân tích thông tin đã thu thập [...]\nĐiều 7. Khảo sát, thu thập thông tin [...]",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 7,
+    "category": "B",
+    "technique": "Thay đổi từ ngữ diễn đạt chuyên môn",
+    "location": "Điều 6 (V2) / Điều 7 (V1)",
+    "original_text": "Trên cơ sở kết quả khảo sát, thu thập thông tin của đơn vị được kiểm toán, Trưởng đoàn kiểm toán tổ chức đánh giá hệ thống kiểm soát nội bộ và phân tích thông tin đã thu thập",
+    "modified_text": "Dựa trên kết quả điều tra, thu thập tài liệu từ đơn vị được kiểm toán, Trưởng đoàn kiểm toán chủ trì việc đánh giá hệ thống kiểm soát nội bộ và xử lý, phân tích các thông tin thu thập được",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 8,
+    "category": "F",
+    "technique": "Lỗi chính tả (Typo)",
+    "location": "Điều 7, Khoản 1 (V2)",
+    "original_text": "Lập, phê duyệt và gửi Đề cương khảo sát.",
+    "modified_text": "Lap, phê duyệt và gửi Đề cương khảo sát.",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 9,
+    "category": "E",
+    "technique": "Chuyển danh sách thành bảng biểu và thêm nội dung mới",
+    "location": "Điều 8",
+    "original_text": "Kế hoạch kiểm toán bao gồm các nội dung cơ bản sau: [Danh sách từ 1-9]",
+    "modified_text": "Kế hoạch kiểm toán bao gồm các nội dung cơ bản sau: [Bảng biểu từ 1-10, thêm mục 10: Rủi ro kiểm toán và biện pháp phòng ngừa]",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 10,
+    "category": "D",
+    "technique": "Thay đổi chủ thể chịu trách nhiệm chủ trì",
+    "location": "Điều 9, Khoản 1",
+    "original_text": "Thủ trưởng đơn vị chỉ đạo Tổ kiểm soát chất lượng kiểm toán thực hiện thẩm định và lập báo cáo thẩm định",
+    "modified_text": "Trưởng đoàn kiểm toán chủ trì phối hợp với Tổ kiểm soát chất lượng kiểm toán thực hiện thẩm định và lập báo cáo thẩm định",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 11,
+    "category": "A",
+    "technique": "Thay đổi thời hạn thực hiện (số ngày làm việc)",
+    "location": "Điều 9, Khoản 3, Điểm c",
+    "original_text": "ít nhất là 15 ngày làm việc",
+    "modified_text": "ít nhất là 20 ngày làm việc",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 12,
+    "category": "A",
+    "technique": "Thay đổi thời hạn thẩm định",
+    "location": "Điều 10, Khoản 1",
+    "original_text": "Trong thời hạn 04 ngày làm việc",
+    "modified_text": "Trong thời hạn 05 ngày làm việc",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 13,
+    "category": "A",
+    "technique": "Thay đổi thời hạn gửi báo cáo thẩm định",
+    "location": "Điều 10, Khoản 2",
+    "original_text": "ít nhất 01 ngày làm việc.",
+    "modified_text": "ít nhất 02 ngày làm việc.",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 14,
+    "category": "A",
+    "technique": "Thay đổi thời hạn tổ chức xét duyệt",
+    "location": "Điều 11, Khoản 1",
+    "original_text": "Chậm nhất là 06 ngày làm việc",
+    "modified_text": "Chậm nhất là 07 ngày làm việc",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 15,
+    "category": "A",
+    "technique": "Thay đổi thời hạn hoàn thiện thông báo kết luận",
+    "location": "Điều 11, Khoản 1, Điểm d",
+    "original_text": "trong phạm vi 02 ngày làm việc",
+    "modified_text": "trong phạm vi 03 ngày làm việc",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 16,
+    "category": "F",
+    "technique": "Lỗi chính tả (Typo)",
+    "location": "Điều 11, Khoản 2, Điểm b (V2)",
+    "original_text": "các nội dung thống nhất",
+    "modified_text": "các nội dung thồng nhất",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 17,
+    "category": "A",
+    "technique": "Thay đổi thời hạn trách nhiệm của Thủ trưởng đơn vị",
+    "location": "Điều 12, Khoản 1",
+    "original_text": "Trong thời hạn 04 ngày làm việc",
+    "modified_text": "Trong thời hạn 05 ngày làm việc",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 18,
+    "category": "A",
+    "technique": "Thay đổi thời hạn rà soát của Vụ Tổng hợp",
+    "location": "Điều 12, Khoản 2",
+    "original_text": "Trong thời hạn 02 ngày làm việc",
+    "modified_text": "Trong thời hạn 03 ngày làm việc",
+    "change_type": "value_change",
+    "severity": "medium"
+  },
+  {
+    "change_id": 19,
+    "category": "C",
+    "technique": "Gộp hai Điều thành một Điều",
+    "location": "Điều 18 (V2)",
+    "original_text": "Điều 18. Trách nhiệm của Thanh tra Kiểm toán nhà nước\nĐiều 19. Trách nhiệm của Văn phòng Kiểm toán nhà nước",
+    "modified_text": "Điều 18. Trách nhiệm của Thanh tra Kiểm toán nhà nước và Văn phòng Kiểm toán nhà nước",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 20,
+    "category": "C",
+    "technique": "Thêm mới một Điều hoàn toàn mới",
+    "location": "Điều 19 (V2)",
+    "original_text": "",
+    "modified_text": "Điều 19. Bảo mật thông tin trong quá trình lập và thẩm định kế hoạch kiểm toán\n1. Toàn bộ thông tin, tài liệu thu thập được trong quá trình khảo sát và lập kế hoạch kiểm toán phải được bảo mật tuyệt đối theo quy định của pháp luật về bảo vệ bí mật nhà nước.\n2. Các thành viên đoàn khảo sát và Đoàn kiểm toán không được tiết lộ thông tin về kế hoạch kiểm toán cho bên thứ ba khi chưa có sự đồng ý bằng văn bản của Tổng Kiểm toán nhà nước.\n3. Vi phạm quy định về bảo mật thông tin sẽ bị xử lý theo quy định của pháp luật và quy chế nội bộ của Kiểm toán nhà nước.",
+    "change_type": "addition",
+    "severity": "high"
+  },
+  {
+    "change_id": 21,
+    "category": "A",
+    "technique": "Thay đổi ngày hiệu lực thi hành",
+    "location": "Điều 21, Khoản 1",
+    "original_text": "từ ngày 01 tháng 3 năm 2026",
+    "modified_text": "từ ngày 01 tháng 4 năm 2026",
+    "change_type": "value_change",
+    "severity": "high"
+  }
+]

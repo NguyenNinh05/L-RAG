@@ -1,0 +1,152 @@
+[
+  {
+    "change_id": 1,
+    "category": "A",
+    "technique": "Thay đổi số hiệu văn bản",
+    "location": "Dòng 2",
+    "original_text": "Số: 04/2026/TT-TANDTC",
+    "modified_text": "Số: 06/2026/TT-TANDTC",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 2,
+    "category": "A",
+    "technique": "Thay đổi ngày ban hành văn bản",
+    "location": "Dòng 4",
+    "original_text": "Hà Nội, ngày 09 tháng 3 năm 2026",
+    "modified_text": "Hà Nội, 15/03/2026",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 3,
+    "category": "B",
+    "technique": "Diễn đạt lại tiêu đề Thông tư",
+    "location": "Tiêu đề văn bản",
+    "original_text": "THÔNG TƯ Sửa đổi, bổ sung một số điều của Thông tư số 03/2025/TT-TANDTC ngày 30/6/2025 của Chánh án Tòa án nhân dân tối cao thành lập các Tòa Phúc thẩm, cục, vụ và tương đương, cơ quan báo chí của Tòa án nhân dân tối cao; quy định chức năng, nhiệm vụ, quyền hạn, tổ chức bộ máy của các đơn vị thuộc Tòa án nhân dân tối cao",
+    "modified_text": "THÔNG TƯ Điều chỉnh và cập nhật các quy định tại Thông tư 03/2025/TT-TANDTC về việc thiết lập hệ thống các Tòa chuyên trách, Cục, Vụ và cơ cấu bộ máy nhân sự tại Tòa án nhân dân tối cao",
+    "change_type": "paraphrasing",
+    "severity": "medium"
+  },
+  {
+    "change_id": 4,
+    "category": "C",
+    "technique": "Thay đổi cấu trúc và thứ tự các mục sửa đổi",
+    "location": "Điều 1",
+    "original_text": "1. Sửa đổi, bổ sung khoản 4 Điều 6 như sau... 2. Sửa đổi, bổ sung khoản 4 Điều 8 như sau... 3. Sửa đổi, bổ sung khoản 3 Điều 14 như sau... 4. Sửa đổi, bổ sung khoản 3 Điều 16 như sau...",
+    "modified_text": "Mục 1. Sửa đổi khoản 3 Điều 14... Mục 2. Sửa đổi khoản 3 Điều 16... Mục 3. Sửa đổi khoản 4 Điều 6...",
+    "change_type": "structural_shift",
+    "severity": "medium"
+  },
+  {
+    "change_id": 5,
+    "category": "B",
+    "technique": "Rút gọn và thay đổi tên gọi phòng ban",
+    "location": "Điều 1, Mục 1 (V2) / Khoản 3 Điều 14 (V1)",
+    "original_text": "a) Phòng Tổng hợp; b) Phòng Đào tạo, bồi dưỡng; c) Phòng Quản lý Cán bộ.",
+    "modified_text": "Phòng Tổng hợp; Phòng Đào tạo; Phòng Quản trị nhân sự (B. Semantic).",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 6,
+    "category": "F",
+    "technique": "Lỗi đánh máy (Typo)",
+    "location": "Điều 1, Mục 2 (V2)",
+    "original_text": "Thanh tra",
+    "modified_text": "Than tra",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  },
+  {
+    "change_id": 7,
+    "category": "C",
+    "technique": "Xóa bỏ bớt các phòng ban chuyên môn",
+    "location": "Điều 1, Mục 2 (V2) / Khoản 3 Điều 16 (V1)",
+    "original_text": "a) Phòng Thanh tra giải quyết khiếu nại, tố cáo; b) Phòng Thanh tra, kiểm tra nghiệp vụ và phòng, chống tham nhũng, lãng phí, tiêu cực.",
+    "modified_text": "Bổ sung Phòng Than tra giải quyết khiếu nại (F. Typo).",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 8,
+    "category": "B",
+    "technique": "Diễn đạt lại tên phòng ban",
+    "location": "Điều 1, Mục 3 (V2) / Khoản 4 Điều 6 (V1)",
+    "original_text": "a) Phòng Tham mưu tổng hợp; b) Phòng Tiếp công dân và Xử lý đơn tư pháp;",
+    "modified_text": "Phòng Tham mưu; Phòng Tiếp dân (B. Semantic);",
+    "change_type": "paraphrasing",
+    "severity": "low"
+  },
+  {
+    "change_id": 9,
+    "category": "C",
+    "technique": "Xóa bỏ toàn bộ nội dung sửa đổi cơ cấu tổ chức Cục",
+    "location": "Điều 1 (giữa Khoản 1 và 3 của V1)",
+    "original_text": "2. Sửa đổi, bổ sung khoản 4 Điều 8 như sau:“4. Cơ cấu tổ chức.a) Văn phòng Cục;b) Phòng Hạ tầng và An toàn thông tin;c) Phòng Dữ liệu và Nền tảng số;d) Phòng Giám sát, điều hành và Thông tin số.”",
+    "modified_text": "",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 10,
+    "category": "C",
+    "technique": "Xóa bỏ các phòng ban khu vực phía Nam",
+    "location": "Điều 1, Mục 3 (V2) / Khoản 4 Điều 6 (V1)",
+    "original_text": "c) Phồng Thi đua - Khen thưởng; d) Phòng Văn thư - Lưu trữ; e) Phòng Tài vụ; f) Phòng Quản trị; g) Phòng Tiếp công dân và Xử lý đơn khu vực phía Nam; h) Phòng Hành chính, quản trị khu vực phía Nam.",
+    "modified_text": "Phòng Thi đua; Phòng Văn thư.",
+    "change_type": "deletion",
+    "severity": "high"
+  },
+  {
+    "change_id": 11,
+    "category": "D",
+    "technique": "Thay đổi từ danh mục đơn vị sang quy định quyền tự chủ có điều kiện",
+    "location": "Điều 1, Mục 4 (V2) / Khoản 3 Điều 19 (V1)",
+    "original_text": "b) Các đơn vị thuộc Học viện Tòa án gồm: Khoa Đào tạo, bồi dưỡng công chức, viên chức Tòa án; Khoa Đại học; Phòng Quản lý đào tạo; Phòng Đảm bảo chất lượng đào tạo; Phòng Tổ chức, hành chính; Phòng Khoa học, thông tin và thư viện; Phòng Kế hoạch - Tài chính; Phân viện tại Thành phố Hồ Chí Minh.",
+    "modified_text": "Các đơn vị thuộc Học viện Tòa án có quyền tự chủ trong việc thiết lập phân viện tại các tỉnh thành phía Nam nếu có sự đồng ý của Chánh án (D. Logic).",
+    "change_type": "logic_shift",
+    "severity": "high"
+  },
+  {
+    "change_id": 12,
+    "category": "C",
+    "technique": "Thêm mới điều khoản về quy định chuyển tiếp nhân sự",
+    "location": "Điều 2 (V2)",
+    "original_text": "",
+    "modified_text": "Điều 2. Quy định về chuyển tiếp\nCác nhân sự thuộc các phòng bị giải thể sẽ được sắp xếp công việc mới trong vòng 30 ngày.",
+    "change_type": "addition",
+    "severity": "medium"
+  },
+  {
+    "change_id": 13,
+    "category": "A",
+    "technique": "Thay đổi ngày hiệu lực thi hành",
+    "location": "Điều 2 (V1) / Điều 3 (V2)",
+    "original_text": "ngày 10 tháng 3 năm 2026.",
+    "modified_text": "ngày 25 tháng 03 năm 2026.",
+    "change_type": "value_change",
+    "severity": "high"
+  },
+  {
+    "change_id": 14,
+    "category": "E",
+    "technique": "Thêm bảng danh sách nơi nhận văn bản",
+    "location": "Cuối văn bản, trước chữ ký",
+    "original_text": "",
+    "modified_text": "Cơ quan/Đơn vị,Ghi chú\nỦy ban Thường vụ Quốc hội,Bản gốc\nBộ Tư pháp,Bản lưu\nTòa án các cấp,Triển khai",
+    "change_type": "addition",
+    "severity": "low"
+  },
+  {
+    "change_id": 15,
+    "category": "F",
+    "technique": "Lỗi đánh máy tên người ký (dấu ngã thay vì dấu hỏi)",
+    "location": "Chữ ký",
+    "original_text": "Nguyễn Văn Quảng",
+    "modified_text": "Nguyễn Văn Quãng",
+    "change_type": "formatting_noise",
+    "severity": "low"
+  }
+]
