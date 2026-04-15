@@ -35,3 +35,18 @@ requests
 tenacity
 tqdm
 nest-asyncio
+
+# =============================================================
+# Phase 2: Comparison & Alignment Pipeline
+# =============================================================
+
+# Vector Database — multi-vector (dense + sparse, in-memory & persistent)
+qdrant-client>=1.7.0
+
+# String similarity (Jaro-Winkler) cho structural matching
+jellyfish>=1.0.0
+
+# Embedding Model — BGE-M3 (dense + sparse + colbert) via FlagEmbedding
+# pip install FlagEmbedding
+# Note: requires torch >= 2.0, CUDA optional
+FlagEmbedding>=1.2.5
