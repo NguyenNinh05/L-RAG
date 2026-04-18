@@ -1,0 +1,42 @@
+# configs/pipeline_config.yaml
+# =============================
+# Pipeline runtime parameters & thresholds
+
+ingestion:
+  max_chunk_chars: 2000
+  overlap_chars: 200
+  kuzu_db_path: "./data/processed/graph_db"
+  chroma_db_path: "./data/processed/chroma_db"
+  chroma_collection_name: "legal_documents"
+
+alignment:
+  # Trọng số Similarity Matrix — phải tổng = 1.0
+  w_semantic: 0.6
+  w_jaro_winkler: 0.3
+  w_ordinal: 0.1
+
+  # Ngưỡng matching
+  match_threshold: 0.65
+  split_merge_threshold: 0.80
+
+  embed_batch_size: 32
+
+  qdrant:
+    path: "./data/processed/qdrant_db"  # null = in-memory
+    dense_dim: 1024
+
+comparison:
+  # Tầng 2 — Evidence Verification
+  fuzzy_match_threshold: 0.85
+  min_evidence_length: 5
+  normalize_whitespace: true
+
+  # Tầng 3 — Numerical Verification
+  strict_numerical: true
+  numerical_context_window: 50
+
+  # Pre-filter trước verification
+  min_confidence_to_include: 0.4
+
+  # Concurrency
+  max_concurrency: 4

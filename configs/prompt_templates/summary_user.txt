@@ -1,0 +1,8 @@
+So sánh tài liệu: {v1_doc_id} (V1) ↔ {v2_doc_id} (V2)
+{location_context}
+
+Dưới đây là danh sách {acu_count} thay đổi nguyên tử (ACU) đã được xác minh:
+
+{acu_list_json}
+
+Hãy tổng hợp thành Executive Summary theo schema yêu cầu.

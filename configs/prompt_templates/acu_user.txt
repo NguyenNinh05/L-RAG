@@ -1,0 +1,15 @@
+{context_block}
+
+Hướng dẫn đặc biệt: {guidance}
+
+Hãy xác định tất cả thay đổi nguyên tử (ACU) giữa V1 và V2 dưới đây:
+
+<v1_text>
+{raw_text_v1}
+</v1_text>
+
+<v2_text>
+{raw_text_v2}
+</v2_text>
+
+Nhớ: Chỉ trả về JSON. Mọi chuỗi trong "verbatim_evidence_v1/v2" PHẢI xuất hiện nguyên văn trong <v1_text> hoặc <v2_text> tương ứng ở trên.

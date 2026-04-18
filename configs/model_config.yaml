@@ -1,0 +1,25 @@
+# configs/model_config.yaml
+# =========================
+# Model paths & hardware settings
+
+embedding:
+  model_name: "BAAI/bge-m3"
+  use_fp16: true
+  batch_size: 16
+  max_length: 1024
+  # device: "cuda"  # uncomment để force GPU
+
+llm:
+  model_name: "Qwen/Qwen2.5-7B-Instruct"
+  base_url: "http://localhost:8000/v1"
+  api_key: "not-needed"
+  temperature_acu: 0.05       # Tầng 1 — cực thấp, anti-hallucination
+  temperature_summary: 0.3    # Tầng 4 — cho phép diễn đạt tự nhiên hơn
+  max_tokens_acu: 4096
+  max_tokens_summary: 1024
+  timeout_seconds: 120.0
+  max_retries: 3
+
+ingestion:
+  confidence_threshold: 0.75  # Ngưỡng OCR fallback (Docling → Marker)
+  embedding_dim: 1024          # BGE-M3 dense output dimension
