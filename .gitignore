@@ -146,3 +146,5 @@ report_*.json
 # Bỏ qua mọi file test tạm thời trong root
 test_*.py
 scratch_*.py
+
+test/*
