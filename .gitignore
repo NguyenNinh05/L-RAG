@@ -136,9 +136,13 @@ hf_cache/
 # Đặt HF_HOME env var nếu muốn chỉ định custom path
 
 # ============================================================
-# Phase 2 — Eval & diff output
+# Phase 3 — Generative Comparison Output
 # ============================================================
-eval_output/*.json
-eval_output/*.md
-diff_catalog*.json
-phase2_catalog*.json
+generative_report*.md
+acu_output*.json
+generative_summary*.json
+report_*.md
+report_*.json
+# Bỏ qua mọi file test tạm thời trong root
+test_*.py
+scratch_*.py
