@@ -1,6 +1,10 @@
 import argparse
 import sys
 import os
+import warnings
+
+# Suppress lỗi cosmetic của QdrantClient.__del__ khi Python shutdown
+warnings.filterwarnings("ignore", message="sys.meta_path is None")
 
 def main():
     parser = argparse.ArgumentParser(description="Chạy hệ thống L-RAG (LegalDiff Pipeline)")

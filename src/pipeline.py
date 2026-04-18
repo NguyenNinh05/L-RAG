@@ -184,7 +184,8 @@ class LegalDiffPipeline:
         # ── Phase 2: Alignment ──────────────────────────────────────────
         logger.info("[Phase 2] Alignment bắt đầu...")
 
-        from comparison.alignment_engine import LegalAlignmentEngine, AlignmentConfig
+        from src.alignment.alignment_engine import LegalAlignmentEngine
+        from src.alignment.similarity_matrix import AlignmentConfig
         from src.alignment.embedder import BGEM3Manager
         from src.alignment.qdrant_indexer import QdrantManager
 

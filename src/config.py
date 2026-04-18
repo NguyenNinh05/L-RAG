@@ -46,11 +46,22 @@ def get_config() -> dict[str, Any]:
         if yaml_path.exists():
             with open(yaml_path, "r", encoding="utf-8") as f:
                 loaded = yaml.safe_load(f) or {}
-                cfg.update(loaded)
+                for key, val in loaded.items():
+                    if isinstance(val, dict) and key in cfg and isinstance(cfg[key], dict):
+                        cfg[key].update(val)
+                    else:
+                        cfg[key] = val
         else:
             logger.warning("Config file không tồn tại: %s. Dùng defaults.", yaml_path)
 
-    return {**_get_defaults(), **cfg}
+    base = _get_defaults()
+    for key, val in cfg.items():
+        if isinstance(val, dict) and key in base and isinstance(base[key], dict):
+            base[key].update(val)
+        else:
+            base[key] = val
+            
+    return base
 
 
 def _get_defaults() -> dict[str, Any]:

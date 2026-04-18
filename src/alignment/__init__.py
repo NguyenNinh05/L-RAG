@@ -36,12 +36,8 @@ from .hungarian_matcher import hungarian_match, detect_split_merge
 # Vector store
 from .qdrant_indexer import QdrantManager, QdrantCollectionConfig
 
-# Main orchestrator — lazy import để avoid circular deps
-def __getattr__(name: str):
-    if name == "LegalAlignmentEngine":
-        from comparison.alignment_engine import LegalAlignmentEngine
-        return LegalAlignmentEngine
-    raise AttributeError(f"module 'src.alignment' has no attribute {name!r}")
+# Main orchestrator
+from .alignment_engine import LegalAlignmentEngine
 
 __all__ = [
     # Orchestrator

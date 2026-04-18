@@ -208,7 +208,7 @@ class LegalDocumentParser:
             return False
 
         low_conf_ratio = (
-            len(metrics.low_conf_pages) / metrics.total_pages
+            len(metrics.low_confidence_pages) / metrics.total_pages
             if metrics.total_pages > 0
             else 0.0
         )
@@ -309,7 +309,7 @@ class LegalDocumentParser:
         return ParseQualityMetrics(
             engine_used=ParseEngine.DOCLING,
             avg_confidence=avg_conf,
-            low_conf_pages=sorted(low_conf_pages),
+            low_confidence_pages=sorted(low_conf_pages),
             total_pages=total_pages if total_pages > 0 else self._count_pages(None),
             ocr_triggered=False,
         )
@@ -476,7 +476,7 @@ class LegalDocumentParser:
         metrics = ParseQualityMetrics(
             engine_used=ParseEngine.MARKER_PDF,
             avg_confidence=None,            # marker không cung cấp confidence
-            low_conf_pages=[],
+            low_confidence_pages=[],
             total_pages=self._count_pages_from_md(marker_md),
             ocr_triggered=ocr_triggered,
         )
