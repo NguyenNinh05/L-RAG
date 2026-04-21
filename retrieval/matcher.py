@@ -20,6 +20,8 @@ Giảm ~80-90% khối lượng embedding + NW so với pipeline cũ.
 from __future__ import annotations
 
 import difflib
+import re
+import unicodedata
 from dataclasses import dataclass
 from typing import Optional
 
@@ -35,6 +37,9 @@ from config import (
     MODIFIED_THRESHOLD,
     GAP_PENALTY,
     TEXT_UNCHANGED_RATIO,
+    NEAR_UNCHANGED_BAND,
+    CLAUSE_HINT_ALPHA,
+    CLAUSE_HINT_MIN_GAP,
 )
 
 
@@ -43,8 +48,9 @@ from config import (
 class ComparedPair:
     chunk_a:    Optional[ArticleChunk]   # None nếu ADDED
     chunk_b:    Optional[ArticleChunk]   # None nếu DELETED
-    match_type: str                      # "UNCHANGED" | "MODIFIED" | "ADDED" | "DELETED"
+    match_type: str                      # "UNCHANGED" | "MODIFIED" | "ADDED" | "DELETED" 
     similarity: float                    # cosine similarity (1.0 nếu anchor, 0.0 nếu ADDED/DELETED)
+    near_threshold: bool = False         # True nếu cặp nằm sát ngưỡng UNCHANGED
 
     @property
     def label(self) -> str:
@@ -55,8 +61,64 @@ class ComparedPair:
 
 # ── Tầng 1: Anchor detection ─────────────────────────────────────────────────
 def _normalize_for_anchor(text: str) -> str:
-    """Chuẩn hóa text để so sánh anchor: lowercase + collapse whitespace."""
-    return " ".join(text.lower().split())
+    """Chuẩn hóa text để so sánh anchor: lowercase + bỏ dấu + chuẩn hóa punctuation/roman tokens."""
+    lowered = text.lower()
+    decomposed = unicodedata.normalize("NFKD", lowered)
+    no_marks = "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
+    normalized = no_marks.replace("đ", "d").replace("Đ", "D")
+    normalized = normalized.replace("—", "-").replace("–", "-")
+    normalized = re.sub(r"\b(viii|vii|vi|iv|iii|ii|ix|x|v|i)\b", " ", normalized)
+    normalized = re.sub(r"[^\w\s]", " ", normalized)
+    return " ".join(normalized.split())
+
+
+def _normalize_clause_key(value: str | None) -> str:
+    if not value:
+        return ""
+    normalized = _normalize_for_anchor(value)
+    return normalized.strip()
+
+
+def _extract_clause_anchor(value: str | None) -> str:
+    normalized = _normalize_clause_key(value)
+    if not normalized:
+        return ""
+    match = re.search(r"(dieu\s+\d+|phu\s+luc\s+[a-z0-9]+)", normalized)
+    return match.group(1) if match else ""
+
+
+def _clause_match_bonus(chunk_a: ArticleChunk, chunk_b: ArticleChunk) -> float:
+    key_a = _normalize_clause_key(chunk_a.article_number or chunk_a.title)
+    key_b = _normalize_clause_key(chunk_b.article_number or chunk_b.title)
+    if not key_a or not key_b:
+        return 0.0
+    if key_a == key_b:
+        return 1.0
+    anchor_a = _extract_clause_anchor(key_a)
+    anchor_b = _extract_clause_anchor(key_b)
+    if anchor_a and anchor_a == anchor_b:
+        return 0.6
+    return 0.0
+
+
+def _apply_clause_hint_bonus(
+    sim: np.ndarray,
+    gap_a: list[ArticleChunk],
+    gap_b: list[ArticleChunk],
+    alpha: float,
+    min_gap: int,
+) -> np.ndarray:
+    """Boost similarity scores softly when clause identity matches in ambiguous long gaps."""
+    if alpha <= 0.0 or max(len(gap_a), len(gap_b)) < min_gap:
+        return sim
+
+    adjusted = sim.copy()
+    for i, chunk_a in enumerate(gap_a):
+        for j, chunk_b in enumerate(gap_b):
+            bonus = _clause_match_bonus(chunk_a, chunk_b)
+            if bonus > 0.0:
+                adjusted[i, j] = adjusted[i, j] + alpha * bonus
+    return adjusted
 
 
 def _find_anchors(
@@ -169,19 +231,29 @@ def _classify_pair(
     sim_score: float,
     unchanged_threshold: float,
     modified_threshold: float,
+    near_unchanged_band: float,
 ) -> list[ComparedPair]:
     """
     Phân loại một cặp đã được NW ghép.
     Tích hợp text-ratio để bắt false negative (thay đổi nhỏ bị embedding bỏ sót).
     """
+    near_floor = max(modified_threshold, unchanged_threshold - near_unchanged_band)
+    near_ceiling = unchanged_threshold + near_unchanged_band
+
     if sim_score >= unchanged_threshold:
         # Kiểm tra thêm bằng text-ratio
         ratio = _text_ratio(chunk_a.content, chunk_b.content)
         if ratio >= TEXT_UNCHANGED_RATIO:
+            # Vùng sát ngưỡng được xếp MODIFIED để downstream review an toàn hơn.
+            if sim_score < near_ceiling:
+                return [ComparedPair(chunk_a, chunk_b, "MODIFIED", sim_score, near_threshold=True)]
             return [ComparedPair(chunk_a, chunk_b, "UNCHANGED", sim_score)]
         else:
             # Embedding nói giống nhau, nhưng text thực sự thay đổi → MODIFIED
             return [ComparedPair(chunk_a, chunk_b, "MODIFIED", sim_score)]
+
+    elif sim_score >= near_floor:
+        return [ComparedPair(chunk_a, chunk_b, "MODIFIED", sim_score, near_threshold=True)]
 
     elif sim_score >= modified_threshold:
         return [ComparedPair(chunk_a, chunk_b, "MODIFIED", sim_score)]
@@ -194,6 +266,67 @@ def _classify_pair(
         ]
 
 
+# ── Gap-only embedding (optimized lazy path) ──────────────────────────────
+def _embed_gaps_only(
+    chunks_a: list[ArticleChunk],
+    chunks_b: list[ArticleChunk],
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Tim anchors truoc, chi embed cac chunk thuoc gap regions.
+    Tra ve full-size arrays (dummy zeros cho anchor positions) de giu index alignment.
+    """
+    opcodes = _find_anchors(chunks_a, chunks_b)
+
+    # Thu thập chỉ số gap cho doc A và doc B
+    gap_indices_a: list[int] = []
+    gap_indices_b: list[int] = []
+    for tag, i1, i2, j1, j2 in opcodes:
+        if tag != 'equal':
+            gap_indices_a.extend(range(i1, i2))
+            gap_indices_b.extend(range(j1, j2))
+
+    # Embed chỉ gap chunks
+    gap_chunks_a = [chunks_a[i] for i in gap_indices_a]
+    gap_chunks_b = [chunks_b[i] for i in gap_indices_b]
+
+    n_anchors_a = len(chunks_a) - len(gap_indices_a)
+    n_anchors_b = len(chunks_b) - len(gap_indices_b)
+    logger.info(
+        f"[Matcher] Optimized embed: {len(gap_indices_a)}/{len(chunks_a)} "
+        f"gap chunks in A, {len(gap_indices_b)}/{len(chunks_b)} gap chunks in B "
+        f"({n_anchors_a + n_anchors_b} anchors skipped)"
+    )
+
+    gap_embeds_a = embed_chunks(gap_chunks_a, instruction=INSTRUCTION_DOC) if gap_chunks_a else []
+    gap_embeds_b = embed_chunks(gap_chunks_b, instruction=INSTRUCTION_DOC) if gap_chunks_b else []
+
+    # Xác định embedding dimension từ gap embeds
+    dim = 0
+    if gap_embeds_a:
+        dim = len(gap_embeds_a[0])
+    elif gap_embeds_b:
+        dim = len(gap_embeds_b[0])
+
+    if dim == 0:
+        # Không có gap nào → không cần embed, trả về array rỗng
+        logger.info("[Matcher] No gaps to embed — all chunks are anchors.")
+        A = np.zeros((len(chunks_a), 1), dtype=np.float32)
+        B = np.zeros((len(chunks_b), 1), dtype=np.float32)
+        return A, B
+
+    # Xây full-size arrays với dummy zeros cho anchor positions
+    A = np.zeros((len(chunks_a), dim), dtype=np.float32)
+    B = np.zeros((len(chunks_b), dim), dtype=np.float32)
+
+    # Đặt real embeddings tại đúng vị trí gap
+    for idx, emb in zip(gap_indices_a, gap_embeds_a):
+        A[idx] = emb
+    for idx, emb in zip(gap_indices_b, gap_embeds_b):
+        B[idx] = emb
+
+    return A, B
+
+
 # ── Pipeline chính ────────────────────────────────────────────────────────────
 def build_comparison_pairs(
     chunks_a: list[ArticleChunk],
@@ -203,6 +336,9 @@ def build_comparison_pairs(
     unchanged_threshold: float = UNCHANGED_THRESHOLD,
     modified_threshold:  float = MODIFIED_THRESHOLD,
     gap_penalty:         float = GAP_PENALTY,
+    near_unchanged_band: float = NEAR_UNCHANGED_BAND,
+    clause_hint_alpha:   float = CLAUSE_HINT_ALPHA,
+    clause_hint_min_gap: int = CLAUSE_HINT_MIN_GAP,
 ) -> list[ComparedPair]:
     """
     Pipeline 2 tầng: Anchor-based → NW-on-gaps.
@@ -219,16 +355,14 @@ def build_comparison_pairs(
     if not chunks_b:
         return [ComparedPair(c, None, "DELETED", 0.0) for c in chunks_a]
 
-    # Embed toàn bộ nếu chưa có (dùng cho các gap)
-    if embeds_a is None:
-        logger.info("[Matcher] Encoding doc_A chunks...")
-        embeds_a = embed_chunks(chunks_a, instruction=INSTRUCTION_DOC)
-    if embeds_b is None:
-        logger.info("[Matcher] Encoding doc_B chunks...")
-        embeds_b = embed_chunks(chunks_b, instruction=INSTRUCTION_DOC)
-
-    A = np.array(embeds_a, dtype=np.float32)
-    B = np.array(embeds_b, dtype=np.float32)
+    # ── Build embedding arrays ──────────────────────────────────────────
+    # Nếu caller đã truyền precomputed embeds (từ API/main) → dùng luôn.
+    # Nếu embeds=None → tối ưu: tìm anchors trước, chỉ embed gap chunks.
+    if embeds_a is not None and embeds_b is not None:
+        A = np.array(embeds_a, dtype=np.float32)
+        B = np.array(embeds_b, dtype=np.float32)
+    else:
+        A, B = _embed_gaps_only(chunks_a, chunks_b)
 
     # Tầng 1: tìm anchors và gaps
     opcodes = _find_anchors(chunks_a, chunks_b)
@@ -268,6 +402,13 @@ def build_comparison_pairs(
         gap_A   = A[i1:i2]
         gap_B   = B[j1:j2]
         sim_mat = _sim_matrix(gap_A, gap_B)
+        sim_mat = _apply_clause_hint_bonus(
+            sim_mat,
+            gap_a,
+            gap_b,
+            alpha=clause_hint_alpha,
+            min_gap=clause_hint_min_gap,
+        )
         alignment = _needleman_wunsch(sim_mat, gap_penalty)
 
         for idx_a, idx_b in alignment:
@@ -280,6 +421,7 @@ def build_comparison_pairs(
                 pairs.extend(_classify_pair(
                     gap_a[idx_a], gap_b[idx_b], s,
                     unchanged_threshold, modified_threshold,
+                    near_unchanged_band,
                 ))
 
     return pairs

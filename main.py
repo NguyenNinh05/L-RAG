@@ -4,7 +4,9 @@ import time
 from ingestion import process_two_documents
 from embedding import embed_and_store, query_similar, print_query_results
 from retrieval import build_comparison_pairs, print_diff_summary
+from comparison import build_comparison_result
 from llm import generate_comparison_report
+from config import LLM_ENABLE_REPORT
 
 
 def main():
@@ -33,7 +35,8 @@ def main():
 
     print_diff_summary(pairs)
 
-    modified = [p for p in pairs if p.match_type == "MODIFIED"]
+    comparison_result = build_comparison_result(pairs, file_a=file_a, file_b=file_b)
+    stats = comparison_result.stats
 
     print("\n" + "="*60)
     print("BƯỚC 6: DEMO TRUY VẤN THEO ĐIỀU KHOẢN (RAG Retrieval)")
@@ -59,17 +62,21 @@ def main():
             results = query_similar(query, collection=collection, n_results=2, doc_label_filter=doc_label)
             print_query_results(results)
 
-    # ── BUOC 7: Sinh bao cao LLM + citation ──────────────────────────────────
-    if modified:
+    # ── BUOC 7: Sinh bao cao hybrid (LLM + deterministic) ───────────────────
+    if stats.clauses_affected:
         print("\n" + "="*60)
-        print("BUOC 7: SINH BAO CAO SO SANH (LLM + Citation)")
+        print("BUOC 7: SINH BAO CAO SO SANH (LLM + Deterministic)")
         print("="*60)
-        print("[!] Dang load LLM... (co the mat 1-2 phut lan dau)")
+        print(
+            f"[!] Dang so sanh clause-level voi local LLM tren "
+            f"{stats.clauses_affected} dieu khoan/phu luc"
+        )
 
         report_md = generate_comparison_report(
-            pairs,
+            comparison_result,
             file_a=file_a,
             file_b=file_b,
+            enable_llm=LLM_ENABLE_REPORT,
         )
 
         # Luu ra file
@@ -82,7 +89,7 @@ def main():
         print(report_md[:1000])  # in preview 1000 ky tu
         print("... (xem day du trong file comparison_report.md)")
     else:
-        print("\n[Buoc 7] Khong co dieu khoan sua doi → Bo qua sinh bao cao LLM.")
+        print("\n[Buoc 7] Khong co dieu khoan thay doi → Bo qua sinh bao cao.")
 
     print("\n Tổng thời gian xử lý: ", time.time() - start)
 if __name__ == "__main__":

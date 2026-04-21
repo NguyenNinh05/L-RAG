@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx *)",
+      "Bash(python *)",
+      "Bash(venv\\scripts\\python.exe *)",
+      "Bash(conda *)",
+      "Bash(findstr *)",
+      "Bash(del *)",
+      "Bash(curl *)",
+      "Bash(nvidia-smi)",
+      "Bash(taskkill *)",
+      "Bash(timeout *)",
+      "Bash(start *)",
+      "WebSearch"
+    ]
+  },
+  "$version": 3
+}

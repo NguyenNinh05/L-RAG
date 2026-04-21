@@ -1,0 +1,139 @@
+{
+  "pair_id": "03-ktnn",
+  "difficulty_level": "Khó (Chứa bẫy xóa ngầm diện rộng, bẫy tag giả, đảo cấu trúc và typo)",
+  "description": "Cặp tài liệu này sử dụng chiến thuật mớm nhãn tag (A. Numerical, D. Logic) để đánh lạc hướng, trong khi âm thầm xóa bỏ hàng loạt nội dung cốt lõi bao gồm Quốc hiệu, Căn cứ pháp lý, Khoản 2 ngoại lệ, toàn bộ Điều 3, Chương Điều khoản thi hành, đồng thời đảo trật tự Điều 1 - Điều 2 và chèn thêm bảng biểu.",
+  "changes": [
+    {
+      "type": "Silent Deletion",
+      "location": "Phần Quốc hiệu và Tiêu ngữ",
+      "v1_content": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAMĐộc lập - Tự do - Hạnh phúc",
+      "v2_content": "(Bị xóa hoàn toàn)"
+    },
+    {
+      "type": "Numerical",
+      "location": "Phần đầu văn bản (Số hiệu)",
+      "v1_content": "Số: 03/2026/TT-KTNN",
+      "v2_content": "Số: 05/2026/TT-KTNN"
+    },
+    {
+      "type": "Numerical",
+      "location": "Phần đầu văn bản (Ngày tháng)",
+      "v1_content": "ngày 12 tháng 01 năm 2026",
+      "v2_content": "ngày 20 tháng 02 năm 2026"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "Quy định trình tự xây dựng và ban hành kế hoạch kiểm toán năm, kế hoạch kiểm toán trung hạn...",
+      "v2_content": "Quy định các bước quy trình thiết lập và phê duyệt kế hoạch kiểm toán định kỳ và dài hạn..."
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Phần Căn cứ pháp lý và Lời dẫn",
+      "v1_content": "Căn cứ Luật Kiểm toán nhà nước... Căn cứ Luật Ban hành văn bản... Theo đề nghị... Tổng Kiểm toán nhà nước ban hành Thông tư...",
+      "v2_content": "(Toàn bộ 4 đoạn căn cứ và dẫn nhập này bị xóa sạch)"
+    },
+    {
+      "type": "Semantic & Formatting Noise",
+      "location": "Tiêu đề Chương I",
+      "v1_content": "Chương I: QUY ĐỊNH CHUNG",
+      "v2_content": "Mục I: QUY ĐỊNH TỔNG QUÁT"
+    },
+    {
+      "type": "Structural Swap",
+      "location": "Điều 1 và Điều 2",
+      "v1_content": "Điều 1. Phạm vi điều chỉnh; Điều 2. Đối tượng áp dụng",
+      "v2_content": "Đảo vị trí: Điều 1. Đối tượng áp dụng; Điều 2. Phạm vi điều chỉnh"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 1 (Đối tượng áp dụng ở bản v2)",
+      "v1_content": "Thông tư này áp dụng đối với các đơn vị trực thuộc Kiểm toán nhà nước và các cơ quan, tổ chức, cá nhân có liên quan trong việc xây dựng và ban hành kế hoạch...",
+      "v2_content": "Văn bản này có hiệu lực với toàn bộ các đơn vị thành viên của Kiểm toán nhà nước và các bên liên quan trực tiếp."
+    },
+    {
+      "type": "Typo",
+      "location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 1",
+      "v1_content": "Thông tư này quy định về...",
+      "v2_content": "Thông tư này quy dình về..."
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 1",
+      "v1_content": "...trình tự, nội dung công việc xây dựng và ban hành kế hoạch...",
+      "v2_content": "...các giai đoạn công việc xây dựng kế hoạch..."
+    },
+    {
+      "type": "Numerical (Tagged)",
+      "location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 1",
+      "v1_content": "kế hoạch kiểm toán trung hạn",
+      "v2_content": "kế hoạch kiểm toán hàng năm và 05 năm (A. Numerical: 3 -> 5)"
+    },
+    {
+      "type": "Paraphrase / Semantic",
+      "location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 1",
+      "v1_content": "...của Kiểm toán nhà nước.",
+      "v2_content": "...của cơ quan."
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 2",
+      "v1_content": "2. Thông tư này không áp dụng đối với các trường hợp điều chỉnh kế hoạch...",
+      "v2_content": "(Toàn bộ Khoản 2 ngoại lệ bị xóa hoàn toàn)"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Điều 3 (Bản gốc)",
+      "v1_content": "Điều 3. Nguyên tắc xây dựng kế hoạch kiểm toán... (Gồm 3 khoản)",
+      "v2_content": "(Điều 3 này đã bị xóa bốc hơi không để lại dấu vết)"
+    },
+    {
+      "type": "Deletion / Semantic",
+      "location": "Tiêu đề Điều 7",
+      "v1_content": "Điều 7. Định hướng, hướng dẫn xây dựng kế hoạch kiểm toán năm",
+      "v2_content": "Điều 7. Định hướng xây dựng kế hoạch"
+    },
+    {
+      "type": "Numerical (Tagged)",
+      "location": "Điều 7, Khoản 1",
+      "v1_content": "Trước ngày 15 tháng 6 hàng năm...",
+      "v2_content": "Trước ngày 25 tháng 8 hàng năm (A. Numerical)..."
+    },
+    {
+      "type": "Logic Shift (Tagged)",
+      "location": "Điều 7, Khoản 1",
+      "v1_content": "Tổng Kiểm toán nhà nước ban hành văn bản...",
+      "v2_content": "Tổng Kiểm toán nhà nước CÓ THỂ ban hành văn bản hướng dẫn (D. Logic)."
+    },
+    {
+      "type": "Micro Deletion",
+      "location": "Điều 7, Khoản 1 (Cuối câu)",
+      "v1_content": "...hướng dẫn xây dựng kế hoạch kiểm toán năm sau.",
+      "v2_content": "(Cụm 'xây dựng kế hoạch kiểm toán năm sau' bị cắt bỏ âm thầm ở cuối câu)"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 10 (Mới)",
+      "v1_content": null,
+      "v2_content": "Điều 10. Bảo mật thông tin\nMọi dữ liệu trong quá trình lập kế hoạch phải được bảo mật tuyệt đối theo tiêu chuẩn ISO/IEC 27001."
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Chương V: ĐIỀU KHOẢN THI HÀNH",
+      "v1_content": "Chương V: ĐIỀU KHOẢN THI HÀNH (Gồm Điều 19. Hiệu lực thi hành và Điều 20. Trách nhiệm thi hành)",
+      "v2_content": "(Cả Chương V bao gồm Điều 19 và Điều 20 bị xóa sạch sẽ)"
+    },
+    {
+      "type": "Addition & Table Manipulation",
+      "location": "Phần cuối văn bản (Nơi nhận)",
+      "v1_content": null,
+      "v2_content": "Chèn thêm cấu trúc bảng NƠI NHẬN gồm 3 dòng (Ban Bí thư, Chủ tịch nước, Thủ tướng)."
+    },
+    {
+      "type": "Typo",
+      "location": "Phần chữ ký",
+      "v1_content": "Ngô Văn Tuấn",
+      "v2_content": "Ngô Văn Tuán"
+    }
+  ]
+}

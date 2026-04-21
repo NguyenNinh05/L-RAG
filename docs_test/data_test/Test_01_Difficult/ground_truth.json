@@ -1,0 +1,145 @@
+{
+  "pair_id": "02-ktnn",
+  "difficulty_level": "Khó (Chứa bẫy lồng, xóa ngầm, đẩy lùi chuỗi số liệu và thay đổi thẩm quyền)",
+  "description": "Cặp tài liệu này sử dụng chiến thuật xáo trộn diện rộng: Đẩy lùi toàn bộ lịch trình kiểm toán thêm từ 1 đến 5 ngày, âm thầm xóa bỏ căn cứ pháp lý ở Điều 4, đảo vị trí Điều 6-7 đồng thời paraphrase lại nội dung, chuyển văn bản thành bảng biểu, tước đoạt thẩm quyền ở Điều 9, và gộp Điều 18-19 cũ để dọn chỗ nhét Điều 19 mới về Bảo mật thông tin.",
+  "changes": [
+    {
+      "type": "Formatting Noise & Numerical",
+      "location": "Phần đầu văn bản (Ngày tháng ban hành)",
+      "v1_content": "ngày 12 tháng 01 năm 2026",
+      "v2_content": "ngày 15/01/2026"
+    },
+    {
+      "type": "Semantic / Paraphrase",
+      "location": "Điều 1. Phạm vi điều chỉnh",
+      "v1_content": "Thông tư này quy định về... nhiệm vụ, trách nhiệm của các đơn vị... lập, thẩm định, xét duyệt... (sau đây gọi tắt là... do Kiểm toán nhà nước thực hiện.",
+      "v2_content": "Thông tư này điều chỉnh về... chức năng, nghĩa vụ của các cơ quan... lập, thẩm định, phê duyệt... (viết tắt là... do Kiểm toán nhà nước triển khai thực hiện."
+    },
+    {
+      "type": "Logic Shift",
+      "location": "Điều 4, Khoản 1",
+      "v1_content": "Kế hoạch kiểm toán phải được lập...",
+      "v2_content": "Kế hoạch kiểm toán có thể được lập..."
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Điều 4, Khoản 4",
+      "v1_content": "...quy tắc ứng xử của Kiểm toán viên nhà nước, quy chế tổ chức và hoạt động của Đoàn kiểm toán nhà nước, quy định về bảo vệ bí mật nhà nước và các quy định pháp luật có liên quan.",
+      "v2_content": "...quy tắc ứng xử của Kiểm toán viên nhà nước. (Bị xóa ngầm toàn bộ 33 chữ liên quan đến quy chế hoạt động và bảo vệ bí mật)"
+    },
+    {
+      "type": "Formatting Noise",
+      "location": "Điều 5. Trình tự các bước...",
+      "v1_content": "Đánh số: 1. Khảo sát... 2. Đánh giá... 3. Lập... 4. Thẩm định... 5. Hoàn thiện...",
+      "v2_content": "Đánh chữ: a. Khảo sát... b. Đánh giá... c. Lập... d. Thẩm định... đ. Hoàn thiện..."
+    },
+    {
+      "type": "Structural Swap",
+      "location": "Điều 6 và Điều 7",
+      "v1_content": "Điều 6. Khảo sát, thu thập thông tin; Điều 7. Đánh giá hệ thống kiểm soát nội bộ...",
+      "v2_content": "Đảo vị trí: Điều 6. Đánh giá hệ thống kiểm soát nội bộ...; Điều 7. Khảo sát, thu thập thông tin"
+    },
+    {
+      "type": "Semantic Paraphrase",
+      "location": "Điều 6 (Bản v2) - Đánh giá hệ thống kiểm soát nội bộ",
+      "v1_content": "Trên cơ sở kết quả khảo sát... tổ chức đánh giá... và phân tích thông tin đã thu thập theo quy định tại... phù hợp với...",
+      "v2_content": "Dựa trên kết quả điều tra... chủ trì việc đánh giá... và xử lý, phân tích các thông tin thu thập được theo quy chuẩn tại... tương ứng với... (Viết lại toàn bộ từ ngữ)"
+    },
+    {
+      "type": "Typo",
+      "location": "Điều 7 (Bản v2), Khoản 1",
+      "v1_content": "1. Lập, phê duyệt và gửi Đề cương khảo sát.",
+      "v2_content": "1. Lap, phê duyệt và gửi Đề cương khảo sát."
+    },
+    {
+      "type": "Table Manipulation",
+      "location": "Điều 8. Lập kế hoạch kiểm toán",
+      "v1_content": "Liệt kê danh sách text từ khoản 1. Mục tiêu... đến 9. Kinh phí...",
+      "v2_content": "Chuyển cấu trúc text thành Bảng biểu gồm 3 cột (STT, Nội dung, Cơ sở pháp lý)"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 8, Bảng nội dung",
+      "v1_content": null,
+      "v2_content": "Chèn thêm Dòng số 10: 'Rủi ro kiểm toán và biện pháp phòng ngừa'"
+    },
+    {
+      "type": "Logic Shift / Thẩm quyền",
+      "location": "Điều 9, Khoản 1",
+      "v1_content": "Thủ trưởng đơn vị chỉ đạo Tổ kiểm soát chất lượng...",
+      "v2_content": "Trưởng đoàn kiểm toán chủ trì phối hợp với Tổ kiểm soát chất lượng..."
+    },
+    {
+      "type": "Typo",
+      "location": "Điều 9, Khoản 1, điểm đ",
+      "v1_content": "Tính phù hợp giữa mục tiêu...",
+      "v2_content": "Tính phù họp giữa mục tiêu..."
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 9, Khoản 3, điểm c",
+      "v1_content": "ít nhất là 15 ngày làm việc",
+      "v2_content": "ít nhất là 20 ngày làm việc"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 10, Khoản 1",
+      "v1_content": "Trong thời hạn 04 ngày làm việc",
+      "v2_content": "Trong thời hạn 05 ngày làm việc"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 10, Khoản 2",
+      "v1_content": "ít nhất 01 ngày làm việc",
+      "v2_content": "ít nhất 02 ngày làm việc"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 11, Khoản 1",
+      "v1_content": "Chậm nhất là 06 ngày làm việc",
+      "v2_content": "Chậm nhất là 07 ngày làm việc"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 11, Khoản 1, điểm d",
+      "v1_content": "trong phạm vi 02 ngày làm việc",
+      "v2_content": "trong phạm vi 03 ngày làm việc"
+    },
+    {
+      "type": "Typo",
+      "location": "Điều 11, Khoản 2, điểm b",
+      "v1_content": "về các nội dung thống nhất hoặc chưa thống nhất",
+      "v2_content": "về các nội dung thồng nhất hoặc chưa thống nhất"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 12, Khoản 1",
+      "v1_content": "Trong thời hạn 04 ngày làm việc",
+      "v2_content": "Trong thời hạn 05 ngày làm việc"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 12, Khoản 2",
+      "v1_content": "Trong thời hạn 02 ngày làm việc",
+      "v2_content": "Trong thời hạn 03 ngày làm việc"
+    },
+    {
+      "type": "Structural Merge",
+      "location": "Điều 18 và Điều 19",
+      "v1_content": "Điều 18. Trách nhiệm của Thanh tra... Điều 19. Trách nhiệm của Văn phòng...",
+      "v2_content": "Gộp 2 điều gốc thành một 'Điều 18. Trách nhiệm của Thanh tra Kiểm toán nhà nước và Văn phòng Kiểm toán nhà nước'"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 19 (Mới)",
+      "v1_content": null,
+      "v2_content": "Chèn mới hoàn toàn 'Điều 19. Bảo mật thông tin trong quá trình lập và thẩm định kế hoạch kiểm toán' gồm 3 khoản."
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 21. Hiệu lực thi hành",
+      "v1_content": "từ ngày 01 tháng 3 năm 2026",
+      "v2_content": "từ ngày 01 tháng 4 năm 2026"
+    }
+  ]
+}

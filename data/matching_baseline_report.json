@@ -1,0 +1,151 @@
+{
+  "cases": [
+    {
+      "case_name": "Test_01_Difficult",
+      "file_v1": "02-ktnn_v1.docx",
+      "file_v2": "02-ktnn_v2.docx",
+      "gt_changes": 23,
+      "predicted_atomic_changes": 13,
+      "deterministic_scores": {
+        "clause_recall": 0.6923,
+        "number_recall": 0.7826,
+        "volume_alignment": 0.5652
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_02_Difficult",
+      "file_v1": "03-ktnn_v1.docx",
+      "file_v2": "03-ktnn_v2.docx",
+      "gt_changes": 22,
+      "predicted_atomic_changes": 13,
+      "deterministic_scores": {
+        "clause_recall": 1.0,
+        "number_recall": 1.0,
+        "volume_alignment": 0.5909
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_03_Difficult",
+      "file_v1": "02-tand.signed_v1.docx",
+      "file_v2": "02-tand.signed_v2.docx",
+      "gt_changes": 22,
+      "predicted_atomic_changes": 15,
+      "deterministic_scores": {
+        "clause_recall": 1.0,
+        "number_recall": 0.9375,
+        "volume_alignment": 0.6818
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_04_Difficult",
+      "file_v1": "01-tand_signed_v1.docx",
+      "file_v2": "01-tand_signed_v2.docx",
+      "gt_changes": 28,
+      "predicted_atomic_changes": 21,
+      "deterministic_scores": {
+        "clause_recall": 0.8,
+        "number_recall": 1.0,
+        "volume_alignment": 0.75
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_05_Difficult",
+      "file_v1": "04-tandtc.signed_v1.docx",
+      "file_v2": "04-tandtc.signed_v2.docx",
+      "gt_changes": 24,
+      "predicted_atomic_changes": 12,
+      "deterministic_scores": {
+        "clause_recall": 0.875,
+        "number_recall": 0.9524,
+        "volume_alignment": 0.5
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_06_Difficult",
+      "file_v1": "02-tt-tand.signed_v1.docx",
+      "file_v2": "02-tt-tand.signed_v2.docx",
+      "gt_changes": 22,
+      "predicted_atomic_changes": 11,
+      "deterministic_scores": {
+        "clause_recall": 1.0,
+        "number_recall": 0.95,
+        "volume_alignment": 0.5
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_07_Difficult",
+      "file_v1": "03-tand.signed_v1.docx",
+      "file_v2": "03-tand.signed_v2.docx",
+      "gt_changes": 22,
+      "predicted_atomic_changes": 39,
+      "deterministic_scores": {
+        "clause_recall": 1.0,
+        "number_recall": 1.0,
+        "volume_alignment": 0.2273
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_08_Difficult",
+      "file_v1": "03-tand_v1.docx",
+      "file_v2": "03-tand_v2.docx",
+      "gt_changes": 23,
+      "predicted_atomic_changes": 26,
+      "deterministic_scores": {
+        "clause_recall": 1.0,
+        "number_recall": 0.913,
+        "volume_alignment": 0.8696
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_09_Difficult",
+      "file_v1": "04-tt-tand.signed_v1.docx",
+      "file_v2": "04-tt-tand.signed_v2.docx",
+      "gt_changes": 18,
+      "predicted_atomic_changes": 10,
+      "deterministic_scores": {
+        "clause_recall": 1.0,
+        "number_recall": 0.9375,
+        "volume_alignment": 0.5556
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    },
+    {
+      "case_name": "Test_10_Difficult",
+      "file_v1": "01-tandtc.signed_v1.docx",
+      "file_v2": "01-tandtc.signed_v2.docx",
+      "gt_changes": 20,
+      "predicted_atomic_changes": 13,
+      "deterministic_scores": {
+        "clause_recall": 1.0,
+        "number_recall": 0.9333,
+        "volume_alignment": 0.65
+      },
+      "llm_score": null,
+      "llm_notes": "LLM judge disabled"
+    }
+  ],
+  "summary": {
+    "total_cases": 10,
+    "avg_llm_score": null,
+    "avg_clause_recall": 0.9367,
+    "avg_number_recall": 0.9406,
+    "avg_volume_alignment": 0.589
+  }
+}

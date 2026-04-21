@@ -1,0 +1,139 @@
+{
+  "pair_id": "02-tt-tand.signed",
+  "difficulty_level": "Rất Khó (Xóa ngầm diện rộng, cắt xén vi mô, đảo cấu trúc, lật logic và thao túng bảng biểu)",
+  "description": "Cặp tài liệu này giăng bẫy ở cấp độ từng từ: Xóa ngầm một đạo luật và lời dẫn ở phần căn cứ; lật ngược vị trí Điều 1-2; hô biến đoạn liệt kê thành bảng biểu nhưng lén cắt bớt từ ngữ và xóa sạch điểm d; thay đổi bản chất từ 'nghĩa vụ' sang 'đặc quyền'; và cài cắm hàng loạt lỗi đánh máy không dấu.",
+  "changes": [
+    {
+      "type": "Typo / Unaccented",
+      "location": "Phần đầu văn bản (Tên cơ quan)",
+      "v1_content": "TÒA ÁN NHÂN DÂN TỐI CAO",
+      "v2_content": "TOA AN NHAN DAN TOI CAO"
+    },
+    {
+      "type": "Numerical",
+      "location": "Phần đầu văn bản (Số hiệu)",
+      "v1_content": "Số: 02/2024/TT-TANDTC",
+      "v2_content": "Số: 05/2024/TT-TANDTC"
+    },
+    {
+      "type": "Formatting Noise, Typo & Numerical",
+      "location": "Phần đầu văn bản (Ngày tháng)",
+      "v1_content": "Hà Nội, ngày 31 tháng 12 năm 2024",
+      "v2_content": "Ha Noi, 15/01/2025"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "THÔNG TƯQuy định tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạncủa các đơn vị thuộc Tòa án nhân dân tối cao",
+      "v2_content": "THÔNG TƯHướng dẫn chi tiết về cơ cấu tổ chức, vai trò và trách nhiệmcủa các bộ phận trực thuộc Tòa án nhân dân cấp cao nhất"
+    },
+    {
+      "type": "Numerical & Formatting Noise",
+      "location": "Phần Căn cứ (Luật Tổ chức TAND)",
+      "v1_content": "Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 ngày 24 tháng 6 năm 2024;",
+      "v2_content": "Căn cứ Luật Tổ chức Tòa án nhân dân số 35/2024/QH15 ban hành ngày 24/06/2024;"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Phần Căn cứ (Luật Giáo dục đại học)",
+      "v1_content": "Căn cứ Luật Giáo dục đại học số 08/2012/QH13 ngày 18 tháng 6 năm 2012;",
+      "v2_content": "(Bị xóa ngầm hoàn toàn)"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Phần Căn cứ (Lời dẫn ban hành)",
+      "v1_content": "Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của các đơn vị thuộc Tòa án nhân dân tối cao.",
+      "v2_content": "(Bị xóa ngầm hoàn toàn)"
+    },
+    {
+      "type": "Semantic",
+      "location": "Tiêu đề Chương I",
+      "v1_content": "Chương I: QUY ĐỊNH CHUNG",
+      "v2_content": "Chương I: CÁC QUY ĐỊNH CỐT LÕI"
+    },
+    {
+      "type": "Structural Swap",
+      "location": "Điều 1 và Điều 2",
+      "v1_content": "Điều 1. Phạm vi điều chỉnh; Điều 2. Đối tượng áp dụng",
+      "v2_content": "Đảo vị trí thành: Điều 1. Các thực thể chịu sự điều chỉnh (Đối tượng); Điều 2. Giới hạn thực thi (Phạm vi)"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 1 (Bản v2) - Tên điều",
+      "v1_content": "Điều 2. Đối tượng áp dụng",
+      "v2_content": "Điều 1. Các thực thể chịu sự điều chỉnh"
+    },
+    {
+      "type": "Typo & Paraphrase",
+      "location": "Điều 1 (Bản v2) - Nội dung",
+      "v1_content": "Thông tư này áp dụng đối với các đơn vị thuộc Tòa án nhân dân tối cao và các cơ quan, tổ chức, cá nhân có liên quan.",
+      "v2_content": "Van bản này được áp dụng cho toàn bộ các đơn vị thành viên của Tòa án nhân dân tối cao và các bên liên đới."
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 2 (Bản v2) - Tên điều",
+      "v1_content": "Điều 1. Phạm vi điều chỉnh",
+      "v2_content": "Điều 2. Giới hạn thực thi"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 2 (Bản v2) - Nội dung",
+      "v1_content": "Thông tư này quy định về tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của các đơn vị thuộc bộ máy giúp việc của Tòa án nhân dân tối cao.",
+      "v2_content": "Thông tư này đề ra các quy tắc về sơ đồ tổ chức và các chức năng chuyên môn của văn phòng giúp việc Chánh án."
+    },
+    {
+      "type": "Semantic",
+      "location": "Điều 3 - Tiêu đề",
+      "v1_content": "Điều 3. Vụ Pháp chế và Quản lý khoa học",
+      "v2_content": "Điều 3. Chức năng của Vụ Pháp lý và Khoa học"
+    },
+    {
+      "type": "Logic Shift & Paraphrase",
+      "location": "Điều 3, Khoản 3 - Phần dẫn",
+      "v1_content": "3. Vụ Pháp chế và Quản lý khoa học thực hiện nhiệm vụ, quyền hạn sau đây:",
+      "v2_content": "3. Vụ Pháp lý và Khoa học CÓ QUYỀN thực hiện các đầu việc sau:"
+    },
+    {
+      "type": "Table Manipulation",
+      "location": "Điều 3, Khoản 3 - Cấu trúc liệt kê",
+      "v1_content": "Liệt kê dọc các điểm a, b, c, d",
+      "v2_content": "Chuyển cấu trúc thành Bảng biểu gồm 3 cột (Thứ tự, Nhiệm vụ cụ thể, Ghi chú thêm)"
+    },
+    {
+      "type": "Micro Deletion & Paraphrase",
+      "location": "Điều 3, Khoản 3 - Điểm a (Dòng 1)",
+      "v1_content": "a) Xây dựng văn bản quy phạm pháp luật của Hội đồng Thẩm phán Tòa án nhân dân tối cao, Chánh án Tòa án nhân dân tối cao;",
+      "v2_content": "1 | Soạn thảo các văn bản luật cho Hội đồng Thẩm phán | Ưu tiên (Xóa ngầm chủ thể 'Chánh án Tòa án nhân dân tối cao')"
+    },
+    {
+      "type": "Micro Deletion & Paraphrase",
+      "location": "Điều 3, Khoản 3 - Điểm b (Dòng 2)",
+      "v1_content": "b) Phối hợp với Chính phủ và các Bộ, ngành xây dựng văn bản quy phạm pháp luật, tổng kết thực tiễn xét xử trong các lĩnh vực pháp luật liên quan;",
+      "v2_content": "2 | Hợp tác với các Bộ, ngành để tổng kết án lệ | Thực hiện thường xuyên (Xóa ngầm 'Chính phủ' và nhiệm vụ 'xây dựng văn bản quy phạm pháp luật')"
+    },
+    {
+      "type": "Micro Deletion & Paraphrase",
+      "location": "Điều 3, Khoản 3 - Điểm c (Dòng 3)",
+      "v1_content": "c) Phát triển án lệ; tổng kết thực tiễn xét xử và bảo đảm áp dụng thống nhất pháp luật trong xét xử;",
+      "v2_content": "3 | Phát triển các án lệ mới và thống nhất cách hiểu luật | Quan trọng (Xóa ngầm nhiệm vụ 'tổng kết thực tiễn xét xử')"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Điều 3, Khoản 3 - Điểm d",
+      "v1_content": "d) Lập đề nghị xây dựng luật, pháp lệnh, nghị quyết trình Quốc hội, Ủy ban Thường vụ Quốc hội.",
+      "v2_content": "(Toàn bộ điểm d bị xóa ngầm)"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 3, Khoản 3 - Dòng mới (Dòng 4)",
+      "v1_content": null,
+      "v2_content": "4 | KIỂM THỨC AI (Dòng mới) | Dòng chèn thêm cho QA"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 4 (Mới)",
+      "v1_content": null,
+      "v2_content": "Điều 4. Bảo mật thông tin nội bộ\nMọi hồ sơ tài liệu trong quá trình xây dựng văn bản pháp luật phải được lưu trữ theo chế độ bảo mật tuyệt đối."
+    }
+  ]
+}

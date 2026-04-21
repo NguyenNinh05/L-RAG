@@ -1,0 +1,175 @@
+{
+  "pair_id": "01-tand_signed",
+  "difficulty_level": "Khó (Chứa mật độ bẫy vi mô dày đặc, đảo cấu trúc sang bảng, lật logic và nhiễu định dạng)",
+  "description": "Cặp tài liệu này giăng ra tới 28 bẫy siêu vi mô độc lập bao gồm: Xóa ngầm một từ ở tiêu đề, thay đổi hàng loạt định mức (số lượng, kích thước, thời gian), bẻ cong mục đích sử dụng (Logic Shift), tước đoạt thẩm quyền, chèn hẳn một điều luật mới (Điều 3a, Điều 9b), chuyển văn bản thành bảng biểu, đảo vị trí Điều 12 & 13 và rải các lỗi typo đánh lừa thuật toán.",
+  "changes": [
+    {
+      "type": "Formatting Noise",
+      "location": "Phần đầu văn bản (Ngày tháng ban hành)",
+      "v1_content": "ngày 13 tháng 01 năm 2026",
+      "v2_content": "ngày 13/01/2026"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "Quy định về mẫu, việc quản lý...",
+      "v2_content": "Về mẫu, việc quãn lý... (Xóa ngầm từ 'Quy định')"
+    },
+    {
+      "type": "Typo",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "quản lý",
+      "v2_content": "quãn lý"
+    },
+    {
+      "type": "Semantic",
+      "location": "Điều 2. Đối tượng áp dụng",
+      "v1_content": "Thông tư này áp dụng đối với Thẩm phán...",
+      "v2_content": "Thông tư này có hiệu lực thi hành đối với Thẩm phán..."
+    },
+    {
+      "type": "Word Order",
+      "location": "Điều 2. Đối tượng áp dụng",
+      "v1_content": "...và cơ quan, tổ chức, cá nhân có liên quan.",
+      "v2_content": "...và các tổ chức, cơ quan, cá nhân có liên quan."
+    },
+    {
+      "type": "Logic Shift",
+      "location": "Điều 3, Khoản 2",
+      "v1_content": "...không sử dụng cho mục đích khác.",
+      "v2_content": "...có thể được sử dụng cho các mục đích khác nếu được Chánh án Tòa án nhân dân tối cao phê duyệt bằng văn bản."
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 3a (Mới)",
+      "v1_content": null,
+      "v2_content": "Chèn mới 'Điều 3a. Bảo mật thông tin trên Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm' gồm 3 khoản."
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 4, Khoản 4",
+      "v1_content": "Làm giả, sửa chữa, tẩy xóa Giấy chứng minh...",
+      "v2_content": "Giả mạo, cải tạo hoặc tiêu hủy thông tin trên Giấy chứng minh... dưới bất kỳ hình thức nào."
+    },
+    {
+      "type": "Typo",
+      "location": "Điều 6, Khoản 1",
+      "v1_content": "Hội thẩm quân nhân",
+      "v2_content": "Hội thảm quân nhân"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 7, Khoản 1",
+      "v1_content": "định mức mỗi người 01 chiếc",
+      "v2_content": "định mức mỗi người 02 chiếc"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 7, Khoản 2",
+      "v1_content": "định mức mỗi người 01 chiếc",
+      "v2_content": "định mức mỗi người 02 chiếc"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 8, Khoản 2, Điểm b",
+      "v1_content": "02 ảnh 20 x 30 mm",
+      "v2_content": "02 ảnh 25 x 35 mm"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 8, Khoản 2, Điểm b1",
+      "v1_content": "chụp trong 06 tháng gần nhất",
+      "v2_content": "chụp trong 03 tháng gần nhất"
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 8, Khoản 4",
+      "v1_content": "Trong thời hạn 10 ngày làm việc",
+      "v2_content": "Trong thời hạn 15 ngày làm việc"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Điều 9",
+      "v1_content": "Điều 9. Cấp đổi, cấp lại...",
+      "v2_content": "Điều 9. Các trường hợp được cấp đổi, cấp lại..."
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 9, Phần lời dẫn",
+      "v1_content": "Việc cấp đổi, cấp lại... thuộc một trong các trường hợp sau đây:",
+      "v2_content": "Việc cấp đổi, cấp lại... được thực hiện khi có một trong các căn cứ sau:"
+    },
+    {
+      "type": "Table Manipulation / Structural",
+      "location": "Điều 9, Nội dung",
+      "v1_content": "Liệt kê các trường hợp dưới dạng đoạn văn bản (Khoản 1, 2, 3).",
+      "v2_content": "Chuyển cấu trúc thành Bảng biểu gồm 3 cột (STT, Căn cứ cấp đổi, Loại giấy tờ cần cung cấp bổ sung) và có 4 dòng."
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 9b (Mới)",
+      "v1_content": null,
+      "v2_content": "Chèn mới 'Điều 9b. Hình thức cấp đổi, cấp lại' gồm 2 khoản."
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 10, Khoản 2, Điểm c",
+      "v1_content": "02 ảnh 20 x 30 mm",
+      "v2_content": "02 ảnh 25 x 35 mm"
+    },
+    {
+      "type": "Logic Shift / Thẩm quyền",
+      "location": "Điều 11, Khoản 2, Điểm a5",
+      "v1_content": "Vụ Tổ chức - Cán bộ có trách nhiệm thu hồi...",
+      "v2_content": "Chánh án Tòa án nhân dân tối cao có trách nhiệm thu hồi..."
+    },
+    {
+      "type": "Structural Swap",
+      "location": "Điều 12 và Điều 13",
+      "v1_content": "Điều 12. Kiểm tra, thanh tra; Điều 13. Xử lý vi phạm",
+      "v2_content": "Đảo lộn vị trí: Điều 12. Xử lý vi phạm; Điều 13. Kiểm tra, thanh tra"
+    },
+    {
+      "type": "Typo",
+      "location": "Điều 12 (Xử lý vi phạm ở bản v2)",
+      "v1_content": "Thẩm phán, Hội thẩm vi phạm...",
+      "v2_content": "Thẩn phán, Hội thẩm vi phạm..."
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 12 (Xử lý vi phạm ở bản v2)",
+      "v1_content": "...thì tùy theo tính chất, mức độ...",
+      "v2_content": "...thì căn cứ vào tính chất, mức độ..."
+    },
+    {
+      "type": "Numerical",
+      "location": "Điều 14, Khoản 1",
+      "v1_content": "có hiệu lực thi hành từ ngày 15 tháng 01 năm 2026",
+      "v2_content": "có hiệu lực thi hành từ ngày 20 tháng 02 năm 2026"
+    },
+    {
+      "type": "Numerical",
+      "location": "Phụ lục I và Phụ lục II, Kích thước thẻ",
+      "v1_content": "chiều dài 95mm, chiều rộng 62mm",
+      "v2_content": "chiều dài 100mm, chiều rộng 65mm"
+    },
+    {
+      "type": "Numerical",
+      "location": "Phụ lục I và Phụ lục II, Cỡ ảnh",
+      "v1_content": "cỡ 20 x 30 mm",
+      "v2_content": "cỡ 25 x 35 mm"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Phụ lục III, Mẫu tờ khai",
+      "v1_content": "Lý do cấp đổi... (Kèm theo 2 dòng chấm lửng bên dưới)",
+      "v2_content": "Lý do cấp đổi... (Bị xóa mất 1 dòng chấm lửng bên dưới)"
+    },
+    {
+      "type": "Formatting Noise",
+      "location": "Phụ lục III, Phần ngày tháng chữ ký",
+      "v1_content": "......, ngày ... tháng ... năm 20...",
+      "v2_content": "......, ngày.../tháng.../năm 20..."
+    }
+  ]
+}

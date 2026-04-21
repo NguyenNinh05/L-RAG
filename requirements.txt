@@ -17,3 +17,6 @@ requests
 tenacity
 tqdm
 nest-asyncio
+
+
+psutil

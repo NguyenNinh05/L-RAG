@@ -1,0 +1,151 @@
+{
+  "pair_id": "04-tandtc.signed",
+  "difficulty_level": "Rất Khó (Xóa ngầm diện rộng, cắt xén vi mô, bẫy lồng chéo và lật logic tự chủ)",
+  "description": "Cặp tài liệu là một ma trận bẫy kết hợp giữa tag mồi nhử và các hành vi thao túng ngầm: Xóa hoàn toàn khoản 2 (sửa Điều 8); bóp nghẹt 3 đoạn căn cứ pháp lý thành 1 câu; đảo lộn thứ tự các khoản sửa đổi; cắt xén từng đuôi từ riêng lẻ ('tố cáo', 'bồi dưỡng', 'tổng hợp'); lật ngược logic từ danh sách cố định sang quyền tự chủ; và cài bẫy Typo ở chữ ký.",
+  "changes": [
+    {
+      "type": "Numerical",
+      "location": "Phần đầu văn bản (Số hiệu)",
+      "v1_content": "Số: 04/2026/TT-TANDTC",
+      "v2_content": "Số: 06/2026/TT-TANDTC"
+    },
+    {
+      "type": "Formatting Noise & Numerical",
+      "location": "Phần đầu văn bản (Ngày tháng)",
+      "v1_content": "Hà Nội, ngày 09 tháng 3 năm 2026",
+      "v2_content": "Hà Nội, 15/03/2026"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "Sửa đổi, bổ sung một số điều của Thông tư số 03/2025/TT-TANDTC ngày 30/6/2025 của Chánh án Tòa án nhân dân tối cao thành lập các Tòa Phúc thẩm, cục, vụ và tương đương, cơ quan báo chí... quy định chức năng, nhiệm vụ...",
+      "v2_content": "Điều chỉnh và cập nhật các quy định tại Thông tư 03/2025/TT-TANDTC về việc thiết lập hệ thống các Tòa chuyên trách, Cục, Vụ và cơ cấu bộ máy nhân sự..."
+    },
+    {
+      "type": "Massive Silent Deletion & Paraphrase",
+      "location": "Phần Căn cứ pháp lý và Lời dẫn",
+      "v1_content": "Căn cứ Luật Tổ chức... Căn cứ Luật Ban hành... Theo đề nghị... Chánh án Tòa án nhân dân tối cao ban hành Thông tư...",
+      "v2_content": "Dựa trên các cơ sở pháp lý về Tổ chức Tòa án và Ban hành văn bản, Chánh án Tòa án nhân dân tối cao quyết định ban hành các nội dung thay đổi sau:"
+    },
+    {
+      "type": "Semantic",
+      "location": "Tiêu đề Điều 1",
+      "v1_content": "Điều 1. Sửa đổi, bổ sung một số điều...",
+      "v2_content": "Điều 1. Nội dung sửa đổi"
+    },
+    {
+      "type": "Formatting Noise & Structural Swap",
+      "location": "Cấu trúc thứ tự tại Điều 1",
+      "v1_content": "Đánh số: 1 (sửa Điều 6), 2 (sửa Điều 8), 3 (sửa Điều 14), 4 (sửa Điều 16), 5 (sửa Điều 19)",
+      "v2_content": "Đổi thành 'Mục' và đảo lộn: Mục 1 (sửa Điều 14), Mục 2 (sửa Điều 16), Mục 3 (sửa Điều 6), Mục 4 (sửa Điều 19)"
+    },
+    {
+      "type": "Massive Silent Deletion",
+      "location": "Khoản 2 (Bản v1) - Sửa đổi khoản 4 Điều 8",
+      "v1_content": "2. Sửa đổi, bổ sung khoản 4 Điều 8 như sau:“4. Cơ cấu tổ chức. a) Văn phòng Cục; b) Phòng Hạ tầng... c) Phòng Dữ liệu... d) Phòng Giám sát...”",
+      "v2_content": "(Toàn bộ Mục sửa đổi Điều 8 bị xóa ngầm bốc hơi hoàn toàn không để lại dấu vết)"
+    },
+    {
+      "type": "Micro Deletion",
+      "location": "Mục 1 (v2) / Sửa Điều 14, Điểm b",
+      "v1_content": "Phòng Đào tạo, bồi dưỡng",
+      "v2_content": "Phòng Đào tạo"
+    },
+    {
+      "type": "Semantic (Tagged)",
+      "location": "Mục 1 (v2) / Sửa Điều 14, Điểm c",
+      "v1_content": "Phòng Quản lý Cán bộ",
+      "v2_content": "Phòng Quản trị nhân sự (B. Semantic)"
+    },
+    {
+      "type": "Typo (Tagged)",
+      "location": "Mục 2 (v2) / Sửa Điều 16, Điểm a",
+      "v1_content": "Phòng Thanh tra...",
+      "v2_content": "Phòng Than tra... (F. Typo)"
+    },
+    {
+      "type": "Micro Deletion",
+      "location": "Mục 2 (v2) / Sửa Điều 16, Điểm a",
+      "v1_content": "Phòng Thanh tra giải quyết khiếu nại, tố cáo",
+      "v2_content": "Phòng Than tra giải quyết khiếu nại"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Mục 2 (v2) / Sửa Điều 16, Điểm b",
+      "v1_content": "b) Phòng Thanh tra, kiểm tra nghiệp vụ và phòng, chống tham nhũng, lãng phí, tiêu cực.",
+      "v2_content": "(Điểm b này bị xóa ngầm hoàn toàn)"
+    },
+    {
+      "type": "Micro Deletion",
+      "location": "Mục 3 (v2) / Sửa Điều 6, Điểm a",
+      "v1_content": "Phòng Tham mưu tổng hợp",
+      "v2_content": "Phòng Tham mưu"
+    },
+    {
+      "type": "Semantic (Tagged)",
+      "location": "Mục 3 (v2) / Sửa Điều 6, Điểm b",
+      "v1_content": "Phòng Tiếp công dân và Xử lý đơn tư pháp",
+      "v2_content": "Phòng Tiếp dân (B. Semantic)"
+    },
+    {
+      "type": "Micro Deletion & Typo Correction",
+      "location": "Mục 3 (v2) / Sửa Điều 6, Điểm c",
+      "v1_content": "Phồng Thi đua - Khen thưởng",
+      "v2_content": "Phòng Thi đua"
+    },
+    {
+      "type": "Micro Deletion",
+      "location": "Mục 3 (v2) / Sửa Điều 6, Điểm d",
+      "v1_content": "Phòng Văn thư - Lưu trữ",
+      "v2_content": "Phòng Văn thư"
+    },
+    {
+      "type": "Deletion (Tagged)",
+      "location": "Mục 3 (v2) / Sửa Điều 6, Điểm e, f, g, h",
+      "v1_content": "e) Phòng Tài vụ; f) Phòng Quản trị; g) Phòng Tiếp công dân... h) Phòng Hành chính...",
+      "v2_content": "(C. Removed others)"
+    },
+    {
+      "type": "Massive Silent Deletion",
+      "location": "Mục 4 (v2) / Sửa Điều 19",
+      "v1_content": "Khoa Đào tạo...; Khoa Đại học; Phòng Quản lý đào tạo; Phòng Đảm bảo chất lượng...; Phòng Tổ chức...; Phòng Khoa học...; Phòng Kế hoạch...",
+      "v2_content": "(Toàn bộ danh sách 7 đơn vị phòng/khoa bị xóa ngầm bốc hơi)"
+    },
+    {
+      "type": "Logic Shift (Tagged)",
+      "location": "Mục 4 (v2) / Sửa Điều 19",
+      "v1_content": "Các đơn vị thuộc Học viện Tòa án gồm: [Liệt kê cố định]... Phân viện tại Thành phố Hồ Chí Minh.",
+      "v2_content": "Các đơn vị thuộc Học viện Tòa án có quyền tự chủ trong việc thiết lập phân viện tại các tỉnh thành phía Nam nếu có sự đồng ý của Chánh án (D. Logic)."
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 2 (Mới)",
+      "v1_content": null,
+      "v2_content": "Điều 2. Quy định về chuyển tiếp\nCác nhân sự thuộc các phòng bị giải thể sẽ được sắp xếp công việc mới trong vòng 30 ngày."
+    },
+    {
+      "type": "Structural Shift",
+      "location": "Điều Khoản Hiệu Lực",
+      "v1_content": "Điều 2. Hiệu lực thi hành",
+      "v2_content": "Điều 3. Hiệu lực thi hành"
+    },
+    {
+      "type": "Paraphrase & Numerical",
+      "location": "Nội dung Hiệu lực thi hành",
+      "v1_content": "Thông tư này có hiệu lực thi hành từ ngày 10 tháng 3 năm 2026.",
+      "v2_content": "Văn bản này bắt đầu có hiệu lực kể từ ngày 25 tháng 03 năm 2026."
+    },
+    {
+      "type": "Addition / Table Manipulation",
+      "location": "Phần Nơi nhận",
+      "v1_content": null,
+      "v2_content": "Chèn thêm cấu trúc bảng 'DANH SÁCH NƠI NHẬN:' gồm 2 cột, 3 dòng"
+    },
+    {
+      "type": "Typo",
+      "location": "Chữ ký",
+      "v1_content": "Nguyễn Văn Quảng",
+      "v2_content": "Nguyễn Văn Quãng"
+    }
+  ]
+}

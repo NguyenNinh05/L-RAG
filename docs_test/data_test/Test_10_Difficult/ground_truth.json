@@ -1,0 +1,127 @@
+{
+  "pair_id": "01-tandtc.signed",
+  "difficulty_level": "Rất Khó (Xóa ngầm diện rộng, vi phẫu từ vựng, đảo cấu trúc, chuyển hóa bảng biểu và lật logic)",
+  "description": "Cặp tài liệu này là một bài test vi mô cực đoan: Tác giả cắt nhỏ từng lỗi typo (THÔNG TU), xóa ngầm văn bản pháp lý ở phần Căn cứ, xóa sổ hoàn toàn Tòa án cấp tỉnh/huyện khỏi đối tượng thi đua, và chém cụt quy định đối với Tòa án quân sự. Đồng thời, tác giả đảo ngược vị trí Điều 1-2, hô biến đoạn liệt kê danh hiệu thành bảng biểu, cài cắm thêm Điều 1a, và lật logic sang trạng thái 'có thể được xem xét'.",
+  "changes": [
+    {
+      "type": "Numerical",
+      "location": "Phần đầu văn bản (Số hiệu)",
+      "v1_content": "Số: 01/2024/TT-TANDTC",
+      "v2_content": "Số: 08/2024/TT-TANDTC"
+    },
+    {
+      "type": "Numerical & Formatting Noise",
+      "location": "Phần đầu văn bản (Ngày tháng)",
+      "v1_content": "ngày 11 tháng 04 năm 2024",
+      "v2_content": "15/05/2024"
+    },
+    {
+      "type": "Typo",
+      "location": "Tiêu đề Thông tư (Từ đầu tiên)",
+      "v1_content": "THÔNG TƯ",
+      "v2_content": "THÔNG TU"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Thông tư (Nội dung chính)",
+      "v1_content": "QUY ĐỊNH CÔNG TÁC THI ĐUA, KHEN THƯỞNG CỦA TÒA ÁN NHÂN DÂN",
+      "v2_content": "THIẾT LẬP CÁC QUY CHẾ VỀ PHONG TRÀO THI ĐUA VÀ CHẾ ĐỘ KHEN THƯỞNG TRONG HỆ THỐNG TÒA ÁN"
+    },
+    {
+      "type": "Massive Silent Deletion & Paraphrase",
+      "location": "Phần Căn cứ pháp lý",
+      "v1_content": "Căn cứ Luật Tổ chức... Căn cứ Luật Thi đua... Căn cứ Nghị định... Thông tư số 01/2024/TT-BNV...",
+      "v2_content": "Dựa trên các quy định tại Luật Tổ chức... Tuân thủ Luật Thi đua... và Nghị định 98/2023/NĐ-CP; (Xóa ngầm toàn bộ ngày tháng và xóa bốc hơi hoàn toàn Thông tư số 01/2024/TT-BNV)"
+    },
+    {
+      "type": "Micro Deletion & Paraphrase",
+      "location": "Phần Lời dẫn ban hành",
+      "v1_content": "Theo đề nghị của Vụ trưởng Vụ Thi đua - Khen thưởng Tòa án nhân dân tối cao, Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định công tác thi đua, khen thưởng của Tòa án nhân dân.",
+      "v2_content": "Dưới sự tham mưu của Vụ trưởng Vụ Thi đua - Khen thưởng, Chánh án Tòa án nhân dân tối cao quyết định ban hành văn bản quy phạm này. (Xóa ngầm cụm 'Tòa án nhân dân tối cao' đứng sau Vụ trưởng)"
+    },
+    {
+      "type": "Semantic",
+      "location": "Tiêu đề Chương I",
+      "v1_content": "Chương INHỮNG QUY ĐỊNH CHUNG",
+      "v2_content": "Chương ICÁC QUY ĐỊNH MANG TÍNH PHỔ QUÁT"
+    },
+    {
+      "type": "Structural Swap & Paraphrase",
+      "location": "Tiêu đề Điều 1 (Bản gốc)",
+      "v1_content": "Điều 1. Phạm vi điều chỉnh",
+      "v2_content": "Điều 2. Giới hạn điều chỉnh"
+    },
+    {
+      "type": "Massive Silent Deletion & Paraphrase",
+      "location": "Nội dung Điều Phạm vi điều chỉnh (Khoản 1)",
+      "v1_content": "Thông tư này quy định công tác thi đua, khen thưởng... (Liệt kê dài hơn 60 chữ)",
+      "v2_content": "1. Văn bản này hướng dẫn sơ bộ công tác thi đua tại hệ thống Tòa án nhân dân. (Rút gọn toàn bộ danh sách chi tiết)"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Nội dung Điều Phạm vi điều chỉnh (Khoản 2 gốc)",
+      "v1_content": "2. Đối với Tòa án quân sự các cấp, Thông tư này chỉ quy định việc xét khen thưởng danh hiệu...",
+      "v2_content": "(Toàn bộ khoản 2 quy định cho Tòa án quân sự đã bị xóa ngầm bốc hơi)"
+    },
+    {
+      "type": "Structural Swap, Paraphrase & Tagged",
+      "location": "Tiêu đề Điều 2 (Bản gốc)",
+      "v1_content": "Điều 2. Đối tượng thi đua",
+      "v2_content": "Điều 1. Các chủ thể tham gia thi đua (Đã đổi vị trí)"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Nội dung Điều Đối tượng thi đua (Khoản 1)",
+      "v1_content": "1. Các đơn vị thuộc Tòa án nhân dân tối cao, Học viện Tòa án.",
+      "v2_content": "1. Các cơ quan trực thuộc Tòa án nhân dân tối cao cùng với Học viện Tòa án."
+    },
+    {
+      "type": "Micro Deletion",
+      "location": "Nội dung Điều Đối tượng thi đua (Khoản 2)",
+      "v1_content": "2. Các Tòa án nhân dân cấp cao, Tòa án quân sự các cấp.",
+      "v2_content": "2. Hệ thống Tòa án nhân dân cấp cao và Tòa án quân sự. (Xóa ngầm cụm từ 'các cấp')"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Nội dung Điều Đối tượng thi đua (Khoản 3 gốc)",
+      "v1_content": "3. Các Tòa án nhân dân tỉnh, thành phố trực thuộc trung ương và tương đương.",
+      "v2_content": "(Khoản 3 đã bị xóa ngầm, loại bỏ hoàn toàn Tòa án cấp tỉnh/huyện khỏi đối tượng)"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 1a (Mới)",
+      "v1_content": null,
+      "v2_content": "Điều 1a. Giải thích từ ngữ chuyên ngành\nTrong văn bản này, 'Thi đua' được hiểu là hoạt động có tổ chức..."
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Điều 11",
+      "v1_content": "Điều 11. Các danh hiệu thi đua",
+      "v2_content": "Điều 11. Bảng phân loại danh hiệu thi đua"
+    },
+    {
+      "type": "Table Manipulation",
+      "location": "Nội dung Điều 11 (Cấu trúc)",
+      "v1_content": "Danh sách liệt kê dạng văn bản từ a) đến d)",
+      "v2_content": "Chuyển thành Bảng biểu với 2 cột: Phân nhóm | Tên danh hiệu (Cập nhật)"
+    },
+    {
+      "type": "Semantic",
+      "location": "Nội dung Điều 11 (Tên danh hiệu)",
+      "v1_content": "c) “Chiến sĩ thi đua Tòa án nhân dân”; d) “Chiến sĩ thi đua toàn quốc”.",
+      "v2_content": "3. Chiến sĩ thi đua ngành Tòa án; 4. Chiến sĩ thi đua cấp quốc gia."
+    },
+    {
+      "type": "Addition & Logic Shift",
+      "location": "Điều 12 (Bản v2) - Khoản i",
+      "v1_content": null,
+      "v2_content": "Điều 12. Tiêu chuẩn Lao động tiên tiến\ni. Cá nhân CÓ THỂ ĐƯỢC XEM XÉT TẶNG danh hiệu... (Biến điều kiện bắt buộc thành tùy nghi)"
+    },
+    {
+      "type": "Addition & Typo (Tagged)",
+      "location": "Điều 12 (Bản v2) - Khoản ii",
+      "v1_content": null,
+      "v2_content": "ii. Hoàn thành nhiệm vụ được giao ở mức độ tốt (typo: thanh tich xuất sắc)."
+    }
+  ]
+}

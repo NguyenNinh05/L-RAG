@@ -1,7 +1,11 @@
 import os
+import re
+import json
+import hashlib
+from numbers import Number
 import requests
 import chromadb
-import re
+from pathlib import Path
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from ingestion.models import ArticleChunk
@@ -13,15 +17,106 @@ from config import (
     INSTRUCTION_DOC,
     INSTRUCTION_QUERY,
     CHROMA_KEEP_SESSIONS,
+    DATA_DIR,
 )
 
 import logging
 logger = logging.getLogger(__name__)
 
+
+def _sanitize_metadata_list_for_chroma(values: list[object]) -> list[str] | list[int] | list[float] | list[bool] | None:
+    """Normalize list metadata to Chroma-supported homogeneous primitive lists."""
+    primitives = [item for item in values if item is not None and isinstance(item, (str, int, float, bool))]
+    if not primitives:
+        return None
+
+    # Keep pure-bool lists as bool for downstream filters.
+    if all(isinstance(item, bool) for item in primitives):
+        return [bool(item) for item in primitives]
+
+    # Normalize numeric lists to one numeric type.
+    if all(isinstance(item, Number) and not isinstance(item, str) for item in primitives):
+        if any(isinstance(item, float) for item in primitives):
+            return [float(item) for item in primitives]
+        return [int(item) for item in primitives]
+
+    # If there is any mixed primitive type, stringify to keep list type uniform.
+    if not all(isinstance(item, str) for item in primitives):
+        return [str(item) for item in primitives]
+    return [str(item) for item in primitives]
+
+
+def _sanitize_metadata_for_chroma(metadata: dict) -> dict:
+    """Drop/normalize unsupported metadata values before writing to ChromaDB."""
+    sanitized: dict = {}
+    for key, value in metadata.items():
+        if value is None:
+            continue
+        if isinstance(value, list):
+            normalized_list = _sanitize_metadata_list_for_chroma(value)
+            if normalized_list is not None:
+                sanitized[str(key)] = normalized_list
+            continue
+        if isinstance(value, (str, int, float, bool)):
+            sanitized[str(key)] = value
+            continue
+
+        # Keep extra context by stringifying unsupported structured values.
+        try:
+            sanitized[str(key)] = json.dumps(value, ensure_ascii=False)
+        except TypeError:
+            sanitized[str(key)] = str(value)
+    return sanitized
+
+# ── Embedding cache (disk-backed) ─────────────────────────────────────────────
+_EMBED_CACHE_PATH = Path(DATA_DIR) / "embedding_cache.json"
+_embed_cache: dict[str, list[float]] = {}
+
+def _load_embed_cache() -> None:
+    global _embed_cache
+    if _EMBED_CACHE_PATH.exists():
+        try:
+            with open(_EMBED_CACHE_PATH, "r", encoding="utf-8") as f:
+                _embed_cache = json.load(f)
+            logger.info(f"[EmbedCache] Loaded {len(_embed_cache)} cached embeddings")
+        except Exception as e:
+            logger.warning(f"[EmbedCache] Failed to load cache: {e}")
+            _embed_cache = {}
+
+def _save_embed_cache() -> None:
+    try:
+        _EMBED_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with open(_EMBED_CACHE_PATH, "w", encoding="utf-8") as f:
+            json.dump(_embed_cache, f, ensure_ascii=False)
+    except Exception as e:
+        logger.warning(f"[EmbedCache] Failed to save cache: {e}")
+
+def _cache_key(text: str, model: str) -> str:
+    return hashlib.sha256(f"{model}||{text}".encode("utf-8")).hexdigest()[:16]
+
+def _get_cached_embeddings(texts: list[str], model: str) -> tuple[list[list[float]], list[str]]:
+    """Trả về (cached_embeddings, missing_texts_indices)."""
+    if not _embed_cache:
+        _load_embed_cache()
+    embeddings: list[list[float] | None] = [None] * len(texts)
+    missing_indices: list[int] = []
+    for i, text in enumerate(texts):
+        key = _cache_key(text, model)
+        if key in _embed_cache:
+            embeddings[i] = _embed_cache[key]
+        else:
+            missing_indices.append(i)
+    return embeddings, missing_indices
+
+def _cache_embeddings(texts: list[str], embeddings: list[list[float]], indices: list[int], model: str) -> None:
+    for idx, emb in zip(indices, embeddings):
+        key = _cache_key(texts[idx], model)
+        _embed_cache[key] = emb
+    _save_embed_cache()
+
 # ── Helper: Goi Ollama Embedding API ───────────────────────────────────────────
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10))
 def _get_single_batch(batch: list[str]) -> list[list[float]]:
-    """Goi API cho mot batch duy nhat với retry."""
     payload = {
         "model": MODEL_NAME,
         "input": batch
@@ -37,7 +132,6 @@ def _get_single_batch(batch: list[str]) -> list[list[float]]:
         )
 
 def _get_batch_embeddings(texts: list[str], batch_size: int = 50) -> list[list[float]]:
-    """Goi API voi retry tung batch va theo doi dimension."""
     all_embeddings = []
     detected_dim = None
     
@@ -121,27 +215,49 @@ def _cleanup_old_collections(
 # ── Main Embedding Functions ──────────────────────────────────────────────────
 def embed_chunks(
     chunks: list[ArticleChunk],
-    batch_size: int = 100, 
+    batch_size: int = 100,
     instruction: str = INSTRUCTION_DOC,
 ) -> list[list[float]]:
-    """Chuyen tat ca chunks thanh vectors (Batch Mode)."""
+    """Chuyen tat ca chunks thanh vectors (Batch Mode) với disk cache."""
     if not chunks:
         return []
 
-    logger.info(f"[Embedding] Encoding {len(chunks)} chunks via Ollama (batch mode)...")
-    
-    # Chuan bi toan bo text voi instruction linh hoat
+    # Chuan bi toan bo text voi instruction
     texts = [f"{instruction}: {chunk.content}" for chunk in chunks]
-    
-    # Goi API lay toan bo vectors
-    embeddings = _get_batch_embeddings(texts, batch_size=batch_size)
-    
-    if not embeddings:
-        raise RuntimeError(f"Lỗi: Không thể lấy embedding từ model {MODEL_NAME}. Check Ollama log.")
 
-    actual_dim = len(embeddings[0])
-    logger.info(f"[Embedding] Done. Vector dim: {actual_dim} (detected dynamically)")
-    return embeddings
+    # Kiem tra cache
+    cached_embeddings, missing_indices = _get_cached_embeddings(texts, MODEL_NAME)
+    hit_count = len(texts) - len(missing_indices)
+
+    if hit_count > 0:
+        logger.info(f"[Embedding] Cache hit: {hit_count}/{len(texts)} chunks ({100*hit_count/len(texts):.0f}%)")
+
+    if not missing_indices:
+        # Tất cả đã có trong cache
+        return cached_embeddings
+
+    # Embed chỉ chunks chưa có trong cache
+    missing_texts = [texts[i] for i in missing_indices]
+    logger.info(f"[Embedding] Encoding {len(missing_texts)} new chunks via Ollama (batch mode)...")
+
+    new_embeddings = _get_batch_embeddings(missing_texts, batch_size=batch_size)
+
+    # Gộp cache + mới embed
+    result: list[list[float]] = []
+    new_idx = 0
+    for i in range(len(texts)):
+        if cached_embeddings[i] is not None:
+            result.append(cached_embeddings[i])
+        else:
+            result.append(new_embeddings[new_idx])
+            new_idx += 1
+
+    # Lưu mới vào cache
+    _cache_embeddings(texts, new_embeddings, missing_indices, MODEL_NAME)
+
+    actual_dim = len(result[0])
+    logger.info(f"[Embedding] Done. Vector dim: {actual_dim}")
+    return result
 
 def store_in_chromadb(
     chunks: list[ArticleChunk],
@@ -165,15 +281,26 @@ def store_in_chromadb(
     documents = [chunk.content for chunk in chunks]
 
     def _build_meta(chunk: ArticleChunk) -> dict:
+        """Trích xuất và chuẩn hóa metadata để lưu vào ChromaDB.
+        Đảm bảo các trường quan trọng luôn tồn tại và ở định dạng string.
+        """
+        # Khởi tạo từ metadata gốc
         m = dict(chunk.metadata)
+        
+        # Ghi đè/Bổ sung các trường định danh vị trí
         m["raw_index"] = chunk.raw_index
-        m.setdefault("sub_index", chunk.sub_index)
+        m["sub_index"] = chunk.sub_index
         
-        # Use empty string for nullable fields (ChromaDB best practice)
-        m["page"] = str(m.get("page")) if m.get("page") is not None else ""
+        # Ép kiểu string cho các trường quan trọng (ChromaDB best practice cho filtering)
+        m["doc_label"]      = str(m.get("doc_label", chunk.doc_label))
+        m["breadcrumb"]     = str(m.get("breadcrumb", ""))
+        m["article_number"] = str(m.get("article_number", chunk.article_number or ""))
+        
+        # Xử lý các trường nullable
+        m["page"]  = str(m.get("page")) if m.get("page") is not None else ""
         m["title"] = str(m.get("title")) if m.get("title") is not None else ""
-        
-        return m
+
+        return _sanitize_metadata_for_chroma(m)
 
     metadatas = [_build_meta(chunk) for chunk in chunks]
 

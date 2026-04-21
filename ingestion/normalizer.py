@@ -12,9 +12,6 @@ _NOISE_PATTERNS = [
     # Nhãn bảo mật
     r"^bảo\s*mật$",
     r"^confidential$",
-    # Dòng ngày ký
-    r"^(tp\.|thành\s*phố|hà\s*nội|hồ\s*chí\s*minh).{0,30}ngày\s+\d+",
-    r"^ngày\s+\d+\s+tháng\s+\d+\s+năm\s+\d{4}$",
     # Ký hiệu hợp đồng đứng một mình
     r"^số:\s*[\w\/\-]+$",
     r"^số\s+hợp\s*đồng",

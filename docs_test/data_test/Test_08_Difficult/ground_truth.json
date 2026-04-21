@@ -1,0 +1,145 @@
+{
+  "pair_id": "03-tand",
+  "difficulty_level": "Rất Khó (Bẫy tag giả, xóa ngầm diện rộng nguyên chương điều, vi phẫu từ vựng, lật logic và chuyển bảng)",
+  "description": "Cặp tài liệu này là một kiệt tác ngụy trang: Tác giả dùng tag (Numerical, Semantic, Logic...) để nhử AI, nhưng âm thầm nhấn Delete xóa sạch: Toàn bộ Căn cứ pháp lý, Điều 12 (Trang phục), Điều 13 (Trang trí), Điều 14 (Tổ chức thực hiện) và Phụ lục II. Đồng thời, tác giả xé lẻ các từ vựng, tước đoạt đối tượng áp dụng, đổi cơ quan chủ trì và hô biến text thành bảng.",
+  "changes": [
+    {
+      "type": "Numerical (Tagged)",
+      "location": "Phần đầu văn bản (Số hiệu)",
+      "v1_content": "Số: 03/2026/TT-TANDTC",
+      "v2_content": "Số: 05/2026/TT-TANDTC *(Numerical: Thay đổi số hiệu 03 -> 05)*"
+    },
+    {
+      "type": "Numerical (Tagged)",
+      "location": "Phần đầu văn bản (Ngày tháng)",
+      "v1_content": "ngày 13 tháng 01 năm 2026",
+      "v2_content": "ngày 15 tháng 01 năm 2026 *(Numerical: Thay đổi ngày ban hành)*"
+    },
+    {
+      "type": "Paraphrase (Tagged)",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "Quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân",
+      "v2_content": "Quy định chi tiết về biểu tượng ngành và các nghi thức trong quản lý nhân sự của Tòa án nhân dân *(Semantic: Diễn đạt lại tiêu đề)*"
+    },
+    {
+      "type": "Massive Silent Deletion",
+      "location": "Phần Căn cứ pháp lý",
+      "v1_content": "Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15... Căn cứ Luật Tòa án chuyên biệt... Theo đề nghị của Vụ trưởng... Chánh án Tòa án nhân dân tối cao ban hành Thông tư...",
+      "v2_content": "(Toàn bộ phần căn cứ pháp lý và lời dẫn dài hơn 70 chữ đã bị xóa ngầm bốc hơi hoàn toàn)"
+    },
+    {
+      "type": "Structural Swap (Tagged)",
+      "location": "Điều 1 và Điều 2",
+      "v1_content": "Điều 1. Phạm vi điều chỉnh...; Điều 2. Đối tượng áp dụng...",
+      "v2_content": "Điều 1. Đối tượng áp dụng...; Điều 2. Phạm vi và lĩnh vực điều chỉnh..."
+    },
+    {
+      "type": "Micro Deletion & Paraphrase",
+      "location": "Điều 1 (Bản v2) - Đối tượng áp dụng",
+      "v1_content": "...cán bộ, Thẩm phán, Thẩm tra viên Tòa án, Thư ký Tòa án, công chức khác, viên chức, người lao động trong Tòa án và cơ quan, tổ chức, cá nhân có liên quan.",
+      "v2_content": "...đội ngũ Thẩm phán, Thư ký, người lao động và các tổ chức liên quan. (Xóa ngầm: 'cán bộ', 'Thẩm tra viên', 'công chức khác', 'viên chức', 'cá nhân')"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 2 (Bản v2) - Phạm vi điều chỉnh",
+      "v1_content": "Thông tư này quy định về biểu trưng, việc sử dụng biểu trưng của Tòa án nhân dân và nghi lễ trong công tác cán bộ của Tòa án nhân dân.",
+      "v2_content": "Văn bản này thiết lập các quy tắc về hình ảnh biểu trưng, phương thức sử dụng logo ngành cũng như trình tự thực hiện các nghi thức lễ tiết trong công tác cán bộ."
+    },
+    {
+      "type": "Logic Shift (Tagged)",
+      "location": "Điều 4, Khoản 4",
+      "v1_content": "Cơ quan, tổ chức, cá nhân sử dụng biểu trưng của Tòa án nhân dân phải được sự đồng ý của Tòa án.",
+      "v2_content": "Các tổ chức ngoài ngành khi sử dụng biểu trưng của Tòa án nhân dân có thể thông báo cho Tòa án. *(Logic: Thay \"phải được đồng ý\" -> \"có thể thông báo\")*"
+    },
+    {
+      "type": "Numerical (Tagged)",
+      "location": "Điều 5, Khoản 1",
+      "v1_content": "đường kính là 22mm.",
+      "v2_content": "mặt tròn là 25mm. *(Numerical: 22mm -> 25mm)*"
+    },
+    {
+      "type": "Semantic Addition",
+      "location": "Tiêu đề Chương III",
+      "v1_content": "Chương III: NGHI LỄ TRONG CÔNG TÁC CÁN BỘ CỦA TÒA ÁN NHÂN DÂN",
+      "v2_content": "Chương III: NGHI LỄ VÀ CÔNG TÁC LƯU TRỮ"
+    },
+    {
+      "type": "Paraphrase (Tagged)",
+      "location": "Điều 7. Nguyên tắc tổ chức",
+      "v1_content": "Thực hiện theo đúng chương trình... bảo đảm tính trang nghiêm... Bảo đảm tiết kiệm thời gian... Việc tổ chức nghi lễ không được làm ảnh hưởng...",
+      "v2_content": "Phải đảm bảo tính uy nghiêm, tiết kiệm ngân sách và không gây đình trệ hoạt động xét xử thường xuyên của đơn vị. *(Semantic: Rút gọn ý)*"
+    },
+    {
+      "type": "Logic Shift (Tagged) & Micro Deletion",
+      "location": "Điều 8. Thẩm quyền - Phó Chánh án TANDTC",
+      "v1_content": "Lễ công bố quyết định bổ nhiệm chức vụ Phó Chánh án Tòa án nhân dân tối cao và chức danh Thẩm phán Tòa án nhân dân tối cao: Tòa án nhân dân tối cao phối hợp với Văn phòng Chủ tịch nước tổ chức.",
+      "v2_content": "Đối với chức danh Phó Chánh án TANDTC: Văn phòng Chính phủ chủ trì phối hợp (thay vì Văn phòng Chủ tịch nước). *(Logic Shift)* (Xóa ngầm 'chức danh Thẩm phán Tòa án nhân dân tối cao')"
+    },
+    {
+      "type": "Massive Silent Deletion & Generalization",
+      "location": "Điều 8. Thẩm quyền - Các chức danh khác",
+      "v1_content": "Lễ công bố quyết định bổ nhiệm Thẩm phán: a) Tại Tòa án nhân dân tối cao... b) Tại Tòa án quân sự... Thẩm quyền tổ chức Lễ công bố quyết định bổ nhiệm chức vụ lãnh đạo, quản lý...",
+      "v2_content": "Đối với các chức danh khác: Thực hiện theo phân cấp quản lý cán bộ hiện hành. (Cắt bỏ toàn bộ quy định chi tiết thẩm quyền của từng cấp Tòa án)"
+    },
+    {
+      "type": "Numerical (Tagged)",
+      "location": "Điều 9. Thời hạn tổ chức",
+      "v1_content": "Trong thời hạn 05 ngày làm việc... thời hạn không quá 30 ngày.",
+      "v2_content": "Trong vòng 07 ngày làm việc *(Numerical: 5 -> 7)* ... không quá 45 ngày. *(Numerical: 30 -> 45)*"
+    },
+    {
+      "type": "Formatting Noise & Semantic",
+      "location": "Điều 10. Chương trình Lễ công bố",
+      "v1_content": "Đánh số 1, 2, 3, 4 (Trao quyết định bổ nhiệm)...",
+      "v2_content": "Đánh chữ a, b, c, d (Trao hồ sơ bổ nhiệm). *(Semantic: Quyết định -> Hồ sơ)*"
+    },
+    {
+      "type": "Typo (Tagged)",
+      "location": "Điều 11. Tuyên thệ",
+      "v1_content": "Thẩm phán",
+      "v2_content": "Tham phan *(Formatting Noise: Typo \"Thẩm phán\" -> \"Tham phan\")*"
+    },
+    {
+      "type": "Massive Silent Deletion",
+      "location": "Điều 12 (Trang phục) và Điều 13 (Trang trí) ở bản gốc",
+      "v1_content": "Điều 12. Trang phục của đại biểu tham dự nghi lễ... Điều 13. Trang trí Lễ công bố quyết định bổ nhiệm...",
+      "v2_content": "(Toàn bộ Điều 12 và Điều 13 quy định về trang phục và trang trí phông nền đã bị xóa ngầm hoàn toàn)"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 12 (Bản v2)",
+      "v1_content": null,
+      "v2_content": "Điều 12. Điều khoản bổ sung: Bảo quản biểu trưng *(Structural: Chèn thêm Điều mới)* Các đơn vị có trách nhiệm bảo quản..."
+    },
+    {
+      "type": "Massive Silent Deletion",
+      "location": "Điều 14 (Bản gốc) - Tổ chức thực hiện",
+      "v1_content": "Điều 14. Tổ chức thực hiện Chánh án các cấp và Thủ trưởng đơn vị chịu trách nhiệm triển khai...",
+      "v2_content": "(Toàn bộ Điều 14 về tổ chức thực hiện đã bị xóa sạch)"
+    },
+    {
+      "type": "Numerical (Tagged)",
+      "location": "Điều khoản thi hành (Điều 15 gốc -> Điều 13 v2)",
+      "v1_content": "kể từ ngày 01 tháng 3 năm 2026.",
+      "v2_content": "từ ngày 15 tháng 4 năm 2026. *(Numerical: 1/3 -> 15/4)*"
+    },
+    {
+      "type": "Table Manipulation & Addition",
+      "location": "Phụ lục I",
+      "v1_content": "Chỉ số màu sắc: Xanh dương: C:100... Đỏ: C:0... Vàng: C:0...",
+      "v2_content": "Chuyển thành Bảng biểu có 4 cột, và chèn thêm dòng: Bánh răng | C:0, M:0, Y:50, K:0 | #FFF9AE | Dòng mới thêm vào"
+    },
+    {
+      "type": "Massive Silent Deletion",
+      "location": "Phụ lục II",
+      "v1_content": "PHỤ LỤC II: PHÔNG LỄ CÔNG BỐ (Bao gồm Mẫu số 1 cho lãnh đạo và Mẫu số 2 cho Thẩm phán).",
+      "v2_content": "(Toàn bộ Phụ lục II đã bị xóa sổ hoàn toàn)"
+    },
+    {
+      "type": "Typo, Addition & Logic Shift",
+      "location": "Đoạn văn cuối (sau Phụ lục I ở v2)",
+      "v1_content": "Phản ánh vướng mắc về TANDTC để xem xét, quyết định.",
+      "v2_content": "Mọi vướng mắc trong quá trình thực hiện hợp dồng công tác này cần báo cáo về Vụ Tổ chức. *(Typo: hợp dồng)*"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "pair_id": "02-tand.signed",
+  "difficulty_level": "Khó (Chứa bẫy xóa ngầm nguyên chương/điều luật, đảo thứ tự dị biệt và thay đổi bản chất pháp lý)",
+  "description": "Cặp tài liệu chứa các bẫy ở cấp độ vi mô và vĩ mô: Xóa hoàn toàn Căn cứ pháp lý, Điều 1 và Khoản 2 (Điều 2 gốc); viết lại tiêu đề và các điều khoản; đảo lộn cấu trúc (Điều 2 đổi chỗ Điều 3, Điều 5 chèn trước Điều 4); cài cắm nhãn lộ liễu để đánh lạc hướng; và đặc biệt là bẻ cong bản chất pháp lý từ 'đang kỷ luật' sang 'có án kỷ luật'.",
+  "changes": [
+    {
+      "type": "Typo / Unaccented",
+      "location": "Phần đầu văn bản (Tên cơ quan ban hành)",
+      "v1_content": "TÒA ÁN NHÂN DÂN TỐI CAO",
+      "v2_content": "TOA AN NHAN DAN TOI CAO"
+    },
+    {
+      "type": "Numerical",
+      "location": "Phần đầu văn bản (Số hiệu)",
+      "v1_content": "Số: 02/2026/TT-TANDTC",
+      "v2_content": "Số: 08/2026/TT-TANDTC"
+    },
+    {
+      "type": "Typo & Numerical",
+      "location": "Phần đầu văn bản (Ngày tháng ban hành)",
+      "v1_content": "Hà Nội, ngày 13 tháng 01 năm 2026",
+      "v2_content": "Ha Noi, ngày 27 than 03 năm 2026"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "Quy định về thủ tục, hồ sơ đề nghị bổ nhiệm, bổ nhiệm lại, xét nâng bậc,điều động, biệt phái, miễn nhiệm, cách chức Thẩm phán...",
+      "v2_content": "Quy định các trình tự, bộ chứng từ liên quan đến việc tuyển dụng, tái bổ nhiệm, xét nâng ngạch,luân chuyển, biệt phái, giải chức, bãi miễn chức vụ Thẩm phán"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Phần Căn cứ pháp lý",
+      "v1_content": "Căn cứ Luật Tổ chức... Căn cứ Luật Ban hành... Căn cứ Nghị quyết số 67/2025/UBTVQH15...",
+      "v2_content": "(Toàn bộ 3 đoạn Căn cứ pháp lý này đã bị xóa sạch hoàn toàn)"
+    },
+    {
+      "type": "Semantic",
+      "location": "Tiêu đề Chương I",
+      "v1_content": "Chương I: NHỮNG QUY ĐỊNH CHUNG",
+      "v2_content": "Chương I: CÁC QUY ĐỊNH CỐT LÕI"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Điều 1 (Bản gốc)",
+      "v1_content": "Điều 1. Phạm vi điều chỉnh\n1. Thông tư này quy định về thủ tục và hồ sơ đề nghị...",
+      "v2_content": "(Toàn bộ Điều 1 đã bị bốc hơi không để lại dấu vết)"
+    },
+    {
+      "type": "Structural Swap",
+      "location": "Điều 2 và Điều 3",
+      "v1_content": "Điều 2. Đối tượng áp dụng; Điều 3. Nguyên tắc thực hiện",
+      "v2_content": "Đảo vị trí thành: Điều 2. Các nguyên lý vận hành (Điều 3 cũ); Điều 3. Các thực thể liên đới (Điều 2 cũ)"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Điều 3 (Bản gốc) đổi thành Điều 2 (Bản v2)",
+      "v1_content": "Điều 3. Nguyên tắc thực hiện",
+      "v2_content": "Điều 2. Các nguyên lý vận hành"
+    },
+    {
+      "type": "Paraphrase (Tagged) & Partial Deletion",
+      "location": "Điều 2 (Bản v2), Khoản 1",
+      "v1_content": "1. Bảo đảm công khai, minh bạch, khách quan, công bằng, đúng quy định của Đảng, pháp luật của Nhà nước và của Tòa án nhân dân tối cao.",
+      "v2_content": "1. Đảm bảo tính rõ ràng, tường minh và không che giấu (Semantic). (Xóa ngầm toàn bộ vế sau 'đúng quy định của Đảng...')"
+    },
+    {
+      "type": "Paraphrase (Tagged) & Partial Deletion",
+      "location": "Điều 2 (Bản v2), Khoản 2",
+      "v1_content": "2. Bảo đảm nguyên tắc tập trung dân chủ, phát huy vai trò, trách nhiệm và quyền hạn của cấp ủy, tập thể lãnh đạo và người đứng đầu.",
+      "v2_content": "2. Tuân thủ nguyên lý tập trung lãnh đạo (Semantic). (Xóa ngầm toàn bộ vế sau 'phát huy vai trò...')"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Điều 2 (Bản gốc) đổi thành Điều 3 (Bản v2)",
+      "v1_content": "Điều 2. Đối tượng áp dụng",
+      "v2_content": "Điều 3. Các thực thể liên đới"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 3 (Bản v2), Khoản 1",
+      "v1_content": "1. Những người được đề nghị bổ nhiệm, bổ nhiệm lại... Thẩm phán Tòa án nhân dân.",
+      "v2_content": "1. Các cá nhân nằm trong diện đề bạt bổ nhiệm chức danh tư pháp."
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Điều 3 (Bản v2), Khoản 2",
+      "v1_content": "2. Cơ quan, đơn vị, Tòa án và người có thẩm quyền thực hiện thủ tục.",
+      "v2_content": "(Khoản 2 này đã bị xóa hoàn toàn ở bản v2)"
+    },
+    {
+      "type": "Structural Misordering",
+      "location": "Thứ tự Điều 4 và Điều 5 (Bản v2)",
+      "v1_content": "Theo thứ tự tăng dần",
+      "v2_content": "Điều 5 (Bảo mật) bị cố tình đặt ngang ngược LÊN TRƯỚC Điều 4 (Điều kiện tiên quyết)"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 5 (Mới)",
+      "v1_content": null,
+      "v2_content": "Điều 5. Quy định về bảo mật hồ sơ\nHồ sơ nhân sự phải được bảo mật tuyệt đối..."
+    },
+    {
+      "type": "Semantic",
+      "location": "Tiêu đề Điều 4",
+      "v1_content": "Điều 4. Điều kiện thực hiện",
+      "v2_content": "Điều 4. Điều kiện tiên quyết"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 4, mở đầu khoản 1",
+      "v1_content": "1. Điều kiện bổ nhiệm lần đầu:",
+      "v2_content": "1. Với bổ nhiệm lần đầu:"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 4, Khoản 1, Điểm a",
+      "v1_content": "a) Đáp ứng tiêu chuẩn Luật Tổ chức;",
+      "v2_content": "a) Thỏa mãn tiêu chuẩn mới;"
+    },
+    {
+      "type": "Logic Shift",
+      "location": "Điều 4, Khoản 1, Điểm b",
+      "v1_content": "b) Không đang kỷ luật;",
+      "v2_content": "b) Không có án kỷ luật;"
+    },
+    {
+      "type": "Numerical, Logic Shift (Tagged) & Semantic",
+      "location": "Điều 4, Khoản 1, Điểm c",
+      "v1_content": "c) Xếp loại công chức 03 năm liền kề là hoàn thành tốt nhiệm vụ trở lên.",
+      "v2_content": "c) Kết quả công tác 05 năm (Numerical: 03->05) có thể (Logic Shift: phải->có thể) được xem xét nếu đạt loại xuất sắc."
+    },
+    {
+      "type": "Addition & Table Manipulation (Tagged)",
+      "location": "Điều 6 (Mới)",
+      "v1_content": null,
+      "v2_content": "Điều 6. Danh mục Biểu mẫu áp dụng (Chèn mới toàn bộ một bảng biểu gồm 3 cột, 3 dòng kèm tag 'Phụ lục kiểm tra AI (New row)')"
+    }
+  ]
+}

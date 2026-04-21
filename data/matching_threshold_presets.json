@@ -1,0 +1,310 @@
+{
+  "total_cases": 10,
+  "presets": [
+    {
+      "preset": "conservative",
+      "params": {
+        "unchanged_threshold": 0.96,
+        "modified_threshold": 0.78,
+        "near_unchanged_band": 0.015,
+        "clause_hint_alpha": 0.06,
+        "clause_hint_min_gap": 3
+      },
+      "summary": {
+        "avg_clause_recall": 0.9367,
+        "avg_number_recall": 0.8881,
+        "avg_volume_alignment": 0.5843,
+        "composite_score": 0.8796
+      },
+      "cases": [
+        {
+          "case_name": "Test_01_Difficult",
+          "gt_changes": 23,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 0.6923,
+          "number_recall": 0.6522,
+          "volume_alignment": 0.5652
+        },
+        {
+          "case_name": "Test_02_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 1.0,
+          "number_recall": 0.95,
+          "volume_alignment": 0.5909
+        },
+        {
+          "case_name": "Test_03_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 15,
+          "clause_recall": 1.0,
+          "number_recall": 0.9375,
+          "volume_alignment": 0.6818
+        },
+        {
+          "case_name": "Test_04_Difficult",
+          "gt_changes": 28,
+          "predicted_atomic_changes": 21,
+          "clause_recall": 0.8,
+          "number_recall": 1.0,
+          "volume_alignment": 0.75
+        },
+        {
+          "case_name": "Test_05_Difficult",
+          "gt_changes": 24,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 0.875,
+          "number_recall": 0.7619,
+          "volume_alignment": 0.5417
+        },
+        {
+          "case_name": "Test_06_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 11,
+          "clause_recall": 1.0,
+          "number_recall": 0.9,
+          "volume_alignment": 0.5
+        },
+        {
+          "case_name": "Test_07_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 40,
+          "clause_recall": 1.0,
+          "number_recall": 0.9583,
+          "volume_alignment": 0.1818
+        },
+        {
+          "case_name": "Test_08_Difficult",
+          "gt_changes": 23,
+          "predicted_atomic_changes": 27,
+          "clause_recall": 1.0,
+          "number_recall": 0.913,
+          "volume_alignment": 0.8261
+        },
+        {
+          "case_name": "Test_09_Difficult",
+          "gt_changes": 18,
+          "predicted_atomic_changes": 10,
+          "clause_recall": 1.0,
+          "number_recall": 0.875,
+          "volume_alignment": 0.5556
+        },
+        {
+          "case_name": "Test_10_Difficult",
+          "gt_changes": 20,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 1.0,
+          "number_recall": 0.9333,
+          "volume_alignment": 0.65
+        }
+      ]
+    },
+    {
+      "preset": "balanced",
+      "params": {
+        "unchanged_threshold": 0.95,
+        "modified_threshold": 0.75,
+        "near_unchanged_band": 0.02,
+        "clause_hint_alpha": 0.08,
+        "clause_hint_min_gap": 3
+      },
+      "summary": {
+        "avg_clause_recall": 0.9367,
+        "avg_number_recall": 0.8881,
+        "avg_volume_alignment": 0.589,
+        "composite_score": 0.8801
+      },
+      "cases": [
+        {
+          "case_name": "Test_01_Difficult",
+          "gt_changes": 23,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 0.6923,
+          "number_recall": 0.6522,
+          "volume_alignment": 0.5652
+        },
+        {
+          "case_name": "Test_02_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 1.0,
+          "number_recall": 0.95,
+          "volume_alignment": 0.5909
+        },
+        {
+          "case_name": "Test_03_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 15,
+          "clause_recall": 1.0,
+          "number_recall": 0.9375,
+          "volume_alignment": 0.6818
+        },
+        {
+          "case_name": "Test_04_Difficult",
+          "gt_changes": 28,
+          "predicted_atomic_changes": 21,
+          "clause_recall": 0.8,
+          "number_recall": 1.0,
+          "volume_alignment": 0.75
+        },
+        {
+          "case_name": "Test_05_Difficult",
+          "gt_changes": 24,
+          "predicted_atomic_changes": 12,
+          "clause_recall": 0.875,
+          "number_recall": 0.7619,
+          "volume_alignment": 0.5
+        },
+        {
+          "case_name": "Test_06_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 11,
+          "clause_recall": 1.0,
+          "number_recall": 0.9,
+          "volume_alignment": 0.5
+        },
+        {
+          "case_name": "Test_07_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 39,
+          "clause_recall": 1.0,
+          "number_recall": 0.9583,
+          "volume_alignment": 0.2273
+        },
+        {
+          "case_name": "Test_08_Difficult",
+          "gt_changes": 23,
+          "predicted_atomic_changes": 26,
+          "clause_recall": 1.0,
+          "number_recall": 0.913,
+          "volume_alignment": 0.8696
+        },
+        {
+          "case_name": "Test_09_Difficult",
+          "gt_changes": 18,
+          "predicted_atomic_changes": 10,
+          "clause_recall": 1.0,
+          "number_recall": 0.875,
+          "volume_alignment": 0.5556
+        },
+        {
+          "case_name": "Test_10_Difficult",
+          "gt_changes": 20,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 1.0,
+          "number_recall": 0.9333,
+          "volume_alignment": 0.65
+        }
+      ]
+    },
+    {
+      "preset": "aggressive",
+      "params": {
+        "unchanged_threshold": 0.94,
+        "modified_threshold": 0.72,
+        "near_unchanged_band": 0.03,
+        "clause_hint_alpha": 0.1,
+        "clause_hint_min_gap": 2
+      },
+      "summary": {
+        "avg_clause_recall": 0.9367,
+        "avg_number_recall": 0.8881,
+        "avg_volume_alignment": 0.5877,
+        "composite_score": 0.88
+      },
+      "cases": [
+        {
+          "case_name": "Test_01_Difficult",
+          "gt_changes": 23,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 0.6923,
+          "number_recall": 0.6522,
+          "volume_alignment": 0.5652
+        },
+        {
+          "case_name": "Test_02_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 13,
+          "clause_recall": 1.0,
+          "number_recall": 0.95,
+          "volume_alignment": 0.5909
+        },
+        {
+          "case_name": "Test_03_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 15,
+          "clause_recall": 1.0,
+          "number_recall": 0.9375,
+          "volume_alignment": 0.6818
+        },
+        {
+          "case_name": "Test_04_Difficult",
+          "gt_changes": 28,
+          "predicted_atomic_changes": 21,
+          "clause_recall": 0.8,
+          "number_recall": 1.0,
+          "volume_alignment": 0.75
+        },
+        {
+          "case_name": "Test_05_Difficult",
+          "gt_changes": 24,
+          "predicted_atomic_changes": 12,
+          "clause_recall": 0.875,
+          "number_recall": 0.7619,
+          "volume_alignment": 0.5
+        },
+        {
+          "case_name": "Test_06_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 11,
+          "clause_recall": 1.0,
+          "number_recall": 0.9,
+          "volume_alignment": 0.5
+        },
+        {
+          "case_name": "Test_07_Difficult",
+          "gt_changes": 22,
+          "predicted_atomic_changes": 39,
+          "clause_recall": 1.0,
+          "number_recall": 0.9583,
+          "volume_alignment": 0.2273
+        },
+        {
+          "case_name": "Test_08_Difficult",
+          "gt_changes": 23,
+          "predicted_atomic_changes": 24,
+          "clause_recall": 1.0,
+          "number_recall": 0.913,
+          "volume_alignment": 0.9565
+        },
+        {
+          "case_name": "Test_09_Difficult",
+          "gt_changes": 18,
+          "predicted_atomic_changes": 10,
+          "clause_recall": 1.0,
+          "number_recall": 0.875,
+          "volume_alignment": 0.5556
+        },
+        {
+          "case_name": "Test_10_Difficult",
+          "gt_changes": 20,
+          "predicted_atomic_changes": 11,
+          "clause_recall": 1.0,
+          "number_recall": 0.9333,
+          "volume_alignment": 0.55
+        }
+      ]
+    }
+  ],
+  "recommended": {
+    "preset": "balanced",
+    "composite_score": 0.8801,
+    "params": {
+      "unchanged_threshold": 0.95,
+      "modified_threshold": 0.75,
+      "near_unchanged_band": 0.02,
+      "clause_hint_alpha": 0.08,
+      "clause_hint_min_gap": 3
+    }
+  }
+}

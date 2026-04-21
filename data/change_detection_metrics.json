@@ -1,0 +1,1393 @@
+{
+  "match_threshold": 0.08,
+  "cases": [
+    {
+      "case_name": "Test_01_Difficult",
+      "file_v1": "02-ktnn_v1.docx",
+      "file_v2": "02-ktnn_v2.docx",
+      "gt_changes": 23,
+      "predicted_changes": 13,
+      "tp": 13,
+      "fp": 0,
+      "fn": 10,
+      "precision": 1.0,
+      "recall": 0.5652,
+      "f1": 0.7222,
+      "matched_pairs": [
+        {
+          "pred_index": 0,
+          "gt_index": 0,
+          "score": 0.5026,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng ban hành)",
+          "gt_type": "Formatting Noise & Numerical"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 1,
+          "score": 0.3736,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 1",
+          "gt_location": "Điều 1. Phạm vi điều chỉnh",
+          "gt_type": "Semantic / Paraphrase"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 5,
+          "score": 0.3105,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 6",
+          "gt_location": "Điều 6 và Điều 7",
+          "gt_type": "Structural Swap"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 4,
+          "score": 0.2975,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 5",
+          "gt_location": "Điều 5. Trình tự các bước...",
+          "gt_type": "Formatting Noise"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 6,
+          "score": 0.2882,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 6",
+          "gt_location": "Điều 6 (Bản v2) - Đánh giá hệ thống kiểm soát nội bộ",
+          "gt_type": "Semantic Paraphrase"
+        },
+        {
+          "pred_index": 3,
+          "gt_index": 3,
+          "score": 0.2859,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 4",
+          "gt_location": "Điều 4, Khoản 4",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 10,
+          "gt_index": 12,
+          "score": 0.2606,
+          "pred_clause_id": "Mở đầu > Căn cứ kế hoạch kiểm toán năm, phương án tổ chức kiểm toán năm, danh mục đầu mối kiểm toán do Tổng Kiểm toán nhà nước ban hành; hướng dẫn mục tiêu, trọng yếu, nội dung kiểm toán chủ yếu năm của Kiểm toán nhà nước, thủ trưởng đơn vị chủ trì cuộc kiểm toán tổ chức khảo sát, thu thập thông tin để xây dựng kế hoạch kiểm toán theo trình tự sau: > Điều 9",
+          "gt_location": "Điều 9, Khoản 3, điểm c",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 2,
+          "score": 0.2438,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 4",
+          "gt_location": "Điều 4, Khoản 1",
+          "gt_type": "Logic Shift"
+        },
+        {
+          "pred_index": 12,
+          "gt_index": 21,
+          "score": 0.2436,
+          "pred_clause_id": "Mở đầu > Căn cứ kế hoạch kiểm toán năm, phương án tổ chức kiểm toán năm, danh mục đầu mối kiểm toán do Tổng Kiểm toán nhà nước ban hành; hướng dẫn mục tiêu, trọng yếu, nội dung kiểm toán chủ yếu năm của Kiểm toán nhà nước, thủ trưởng đơn vị chủ trì cuộc kiểm toán tổ chức khảo sát, thu thập thông tin để xây dựng kế hoạch kiểm toán theo trình tự sau: > Điều 19",
+          "gt_location": "Điều 19 (Mới)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 8,
+          "score": 0.2342,
+          "pred_clause_id": "Mở đầu > Căn cứ kế hoạch kiểm toán năm, phương án tổ chức kiểm toán năm, danh mục đầu mối kiểm toán do Tổng Kiểm toán nhà nước ban hành; hướng dẫn mục tiêu, trọng yếu, nội dung kiểm toán chủ yếu năm của Kiểm toán nhà nước, thủ trưởng đơn vị chủ trì cuộc kiểm toán tổ chức khảo sát, thu thập thông tin để xây dựng kế hoạch kiểm toán theo trình tự sau: > Điều 9",
+          "gt_location": "Điều 8. Lập kế hoạch kiểm toán",
+          "gt_type": "Table Manipulation"
+        },
+        {
+          "pred_index": 11,
+          "gt_index": 20,
+          "score": 0.2159,
+          "pred_clause_id": "Mở đầu > Căn cứ kế hoạch kiểm toán năm, phương án tổ chức kiểm toán năm, danh mục đầu mối kiểm toán do Tổng Kiểm toán nhà nước ban hành; hướng dẫn mục tiêu, trọng yếu, nội dung kiểm toán chủ yếu năm của Kiểm toán nhà nước, thủ trưởng đơn vị chủ trì cuộc kiểm toán tổ chức khảo sát, thu thập thông tin để xây dựng kế hoạch kiểm toán theo trình tự sau: > Điều 18",
+          "gt_location": "Điều 18 và Điều 19",
+          "gt_type": "Structural Merge"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 10,
+          "score": 0.1938,
+          "pred_clause_id": "Mở đầu > Căn cứ kế hoạch kiểm toán năm, phương án tổ chức kiểm toán năm, danh mục đầu mối kiểm toán do Tổng Kiểm toán nhà nước ban hành; hướng dẫn mục tiêu, trọng yếu, nội dung kiểm toán chủ yếu năm của Kiểm toán nhà nước, thủ trưởng đơn vị chủ trì cuộc kiểm toán tổ chức khảo sát, thu thập thông tin để xây dựng kế hoạch kiểm toán theo trình tự sau: > Điều 7",
+          "gt_location": "Điều 9, Khoản 1",
+          "gt_type": "Logic Shift / Thẩm quyền"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 9,
+          "score": 0.1474,
+          "pred_clause_id": "Mở đầu > Căn cứ kế hoạch kiểm toán năm, phương án tổ chức kiểm toán năm, danh mục đầu mối kiểm toán do Tổng Kiểm toán nhà nước ban hành; hướng dẫn mục tiêu, trọng yếu, nội dung kiểm toán chủ yếu năm của Kiểm toán nhà nước, thủ trưởng đơn vị chủ trì cuộc kiểm toán tổ chức khảo sát, thu thập thông tin để xây dựng kế hoạch kiểm toán theo trình tự sau: > Điều 8",
+          "gt_location": "Điều 8, Bảng nội dung",
+          "gt_type": "Addition"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_02_Difficult",
+      "file_v1": "03-ktnn_v1.docx",
+      "file_v2": "03-ktnn_v2.docx",
+      "gt_changes": 22,
+      "predicted_changes": 13,
+      "tp": 13,
+      "fp": 0,
+      "fn": 9,
+      "precision": 1.0,
+      "recall": 0.5909,
+      "f1": 0.7429,
+      "matched_pairs": [
+        {
+          "pred_index": 12,
+          "gt_index": 18,
+          "score": 0.5073,
+          "pred_clause_id": "Mở đầu > Mục I: QUY ĐỊNH TỔNG QUÁT > Điều 10",
+          "gt_location": "Điều 10 (Mới)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 3,
+          "score": 0.4735,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 10,
+          "score": 0.4708,
+          "pred_clause_id": "Mở đầu > Mục I: QUY ĐỊNH TỔNG QUÁT > Điều 2",
+          "gt_location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 1",
+          "gt_type": "Numerical (Tagged)"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 7,
+          "score": 0.4265,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 2",
+          "gt_location": "Điều 1 (Đối tượng áp dụng ở bản v2)",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 2,
+          "score": 0.4184,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng)",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 10,
+          "gt_index": 19,
+          "score": 0.3328,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 19",
+          "gt_location": "Chương V: ĐIỀU KHOẢN THI HÀNH",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 4,
+          "score": 0.3039,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Kiểm toán nhà nước số 81/2015/QH13 được sửa đổi, bổ sung bởi Luật số 55/2019/QH14;",
+          "gt_location": "Phần Căn cứ pháp lý và Lời dẫn",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 3,
+          "gt_index": 12,
+          "score": 0.3018,
+          "pred_clause_id": "Mở đầu > Mục I: QUY ĐỊNH TỔNG QUÁT",
+          "gt_location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 2",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 15,
+          "score": 0.2959,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 7",
+          "gt_location": "Điều 7, Khoản 1",
+          "gt_type": "Numerical (Tagged)"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 13,
+          "score": 0.2901,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 3",
+          "gt_location": "Điều 3 (Bản gốc)",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 9,
+          "score": 0.2848,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 1",
+          "gt_location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 1",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 11,
+          "gt_index": 11,
+          "score": 0.2381,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15; > Điều 20",
+          "gt_location": "Điều 2 (Phạm vi điều chỉnh ở v2), Khoản 1",
+          "gt_type": "Paraphrase / Semantic"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 20,
+          "score": 0.2375,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 được sửa đổi, bổ sung bởi Luật số 87/2025/QH15;",
+          "gt_location": "Phần cuối văn bản (Nơi nhận)",
+          "gt_type": "Addition & Table Manipulation"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_03_Difficult",
+      "file_v1": "02-tand.signed_v1.docx",
+      "file_v2": "02-tand.signed_v2.docx",
+      "gt_changes": 22,
+      "predicted_changes": 15,
+      "tp": 15,
+      "fp": 0,
+      "fn": 7,
+      "precision": 1.0,
+      "recall": 0.6818,
+      "f1": 0.8108,
+      "matched_pairs": [
+        {
+          "pred_index": 10,
+          "gt_index": 15,
+          "score": 0.6434,
+          "pred_clause_id": "Mở đầu > Điều 5",
+          "gt_location": "Điều 5 (Mới)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 12,
+          "gt_index": 20,
+          "score": 0.5889,
+          "pred_clause_id": "Mở đầu > Điều 4",
+          "gt_location": "Điều 4, Khoản 1, Điểm c",
+          "gt_type": "Numerical, Logic Shift (Tagged) & Semantic"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 2,
+          "score": 0.5506,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng ban hành)",
+          "gt_type": "Typo & Numerical"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 12,
+          "score": 0.5405,
+          "pred_clause_id": "Mở đầu > Điều 3",
+          "gt_location": "Điều 3 (Bản v2), Khoản 1",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 3,
+          "score": 0.5039,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 14,
+          "gt_index": 21,
+          "score": 0.493,
+          "pred_clause_id": "Mở đầu > Điều 6",
+          "gt_location": "Điều 6 (Mới)",
+          "gt_type": "Addition & Table Manipulation (Tagged)"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 10,
+          "score": 0.4718,
+          "pred_clause_id": "Mở đầu > Điều 2",
+          "gt_location": "Điều 2 (Bản v2), Khoản 2",
+          "gt_type": "Paraphrase (Tagged) & Partial Deletion"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 4,
+          "score": 0.4627,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị quyết số 67/2025/UBTVQH15...",
+          "gt_location": "Phần Căn cứ pháp lý",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 6,
+          "score": 0.4335,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị quyết số 67/2025/UBTVQH15... > Điều 1",
+          "gt_location": "Điều 1 (Bản gốc)",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 11,
+          "gt_index": 9,
+          "score": 0.3768,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị quyết số 67/2025/UBTVQH15... > Điều 3",
+          "gt_location": "Điều 2 (Bản v2), Khoản 1",
+          "gt_type": "Paraphrase (Tagged) & Partial Deletion"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 17,
+          "score": 0.3596,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Điều 4, mở đầu khoản 1",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 13,
+          "gt_index": 16,
+          "score": 0.3399,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị quyết số 67/2025/UBTVQH15... > Điều 4",
+          "gt_location": "Tiêu đề Điều 4",
+          "gt_type": "Semantic"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 8,
+          "score": 0.3381,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị quyết số 67/2025/UBTVQH15... > Điều 2",
+          "gt_location": "Tiêu đề Điều 3 (Bản gốc) đổi thành Điều 2 (Bản v2)",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 1,
+          "score": 0.2191,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15;",
+          "gt_location": "Phần đầu văn bản (Số hiệu)",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 3,
+          "gt_index": 13,
+          "score": 0.2016,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15;",
+          "gt_location": "Điều 3 (Bản v2), Khoản 2",
+          "gt_type": "Silent Deletion"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_04_Difficult",
+      "file_v1": "01-tand_signed_v1.docx",
+      "file_v2": "01-tand_signed_v2.docx",
+      "gt_changes": 28,
+      "predicted_changes": 21,
+      "tp": 21,
+      "fp": 0,
+      "fn": 7,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.8571,
+      "matched_pairs": [
+        {
+          "pred_index": 20,
+          "gt_index": 27,
+          "score": 0.4533,
+          "pred_clause_id": "Phần ký tên & Xác nhận",
+          "gt_location": "Phụ lục III, Phần ngày tháng chữ ký",
+          "gt_type": "Formatting Noise"
+        },
+        {
+          "pred_index": 18,
+          "gt_index": 26,
+          "score": 0.4442,
+          "pred_clause_id": "Phụ lục II",
+          "gt_location": "Phụ lục III, Mẫu tờ khai",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 0,
+          "score": 0.4174,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng ban hành)",
+          "gt_type": "Formatting Noise"
+        },
+        {
+          "pred_index": 17,
+          "gt_index": 6,
+          "score": 0.4124,
+          "pred_clause_id": "Phụ lục I",
+          "gt_location": "Điều 3a (Mới)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 15,
+          "gt_index": 23,
+          "score": 0.4041,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 14",
+          "gt_location": "Điều 14, Khoản 1",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 16,
+          "gt_index": 24,
+          "score": 0.4025,
+          "pred_clause_id": "Phụ lục I",
+          "gt_location": "Phụ lục I và Phụ lục II, Kích thước thẻ",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 1,
+          "score": 0.3809,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 7,
+          "score": 0.332,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 4",
+          "gt_location": "Điều 4, Khoản 4",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 12,
+          "score": 0.323,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 8",
+          "gt_location": "Điều 8, Khoản 2, Điểm b1",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 3,
+          "gt_index": 5,
+          "score": 0.2978,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 3",
+          "gt_location": "Điều 3, Khoản 2",
+          "gt_type": "Logic Shift"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 18,
+          "score": 0.2919,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 8",
+          "gt_location": "Điều 10, Khoản 2, Điểm c",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 12,
+          "gt_index": 19,
+          "score": 0.283,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 11",
+          "gt_location": "Điều 11, Khoản 2, Điểm a5",
+          "gt_type": "Logic Shift / Thẩm quyền"
+        },
+        {
+          "pred_index": 10,
+          "gt_index": 15,
+          "score": 0.2625,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 9",
+          "gt_location": "Điều 9, Phần lời dẫn",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 19,
+          "gt_index": 25,
+          "score": 0.2602,
+          "pred_clause_id": "Phụ lục II",
+          "gt_location": "Phụ lục I và Phụ lục II, Cỡ ảnh",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 11,
+          "gt_index": 17,
+          "score": 0.2467,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 9b",
+          "gt_location": "Điều 9b (Mới)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 13,
+          "score": 0.2345,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 8",
+          "gt_location": "Điều 8, Khoản 4",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 3,
+          "score": 0.2314,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 2",
+          "gt_location": "Điều 2. Đối tượng áp dụng",
+          "gt_type": "Semantic"
+        },
+        {
+          "pred_index": 14,
+          "gt_index": 22,
+          "score": 0.2261,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 13",
+          "gt_location": "Điều 12 (Xử lý vi phạm ở bản v2)",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 9,
+          "score": 0.2175,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 7",
+          "gt_location": "Điều 7, Khoản 1",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 13,
+          "gt_index": 20,
+          "score": 0.1996,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 12",
+          "gt_location": "Điều 12 và Điều 13",
+          "gt_type": "Structural Swap"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 21,
+          "score": 0.1705,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 3a",
+          "gt_location": "Điều 12 (Xử lý vi phạm ở bản v2)",
+          "gt_type": "Typo"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_05_Difficult",
+      "file_v1": "04-tandtc.signed_v1.docx",
+      "file_v2": "04-tandtc.signed_v2.docx",
+      "gt_changes": 24,
+      "predicted_changes": 12,
+      "tp": 12,
+      "fp": 0,
+      "fn": 12,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6667,
+      "matched_pairs": [
+        {
+          "pred_index": 3,
+          "gt_index": 4,
+          "score": 0.6522,
+          "pred_clause_id": "Mở đầu > Điều 1",
+          "gt_location": "Tiêu đề Điều 1",
+          "gt_type": "Semantic"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 2,
+          "score": 0.652,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 18,
+          "score": 0.5802,
+          "pred_clause_id": "Mở đầu > Mục 4. Sửa đổi Điều 19:",
+          "gt_location": "Mục 4 (v2) / Sửa Điều 19",
+          "gt_type": "Logic Shift (Tagged)"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 19,
+          "score": 0.5679,
+          "pred_clause_id": "Mở đầu > Mục 4. Sửa đổi Điều 19: > Điều 2",
+          "gt_location": "Điều 2 (Mới)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 1,
+          "score": 0.554,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng)",
+          "gt_type": "Formatting Noise & Numerical"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 6,
+          "score": 0.4655,
+          "pred_clause_id": "Mở đầu > Mục 1. Sửa đổi khoản 3 Điều 14:",
+          "gt_location": "Khoản 2 (Bản v1) - Sửa đổi khoản 4 Điều 8",
+          "gt_type": "Massive Silent Deletion"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 10,
+          "score": 0.4653,
+          "pred_clause_id": "Mở đầu > Mục 2. Sửa đổi khoản 3 Điều 16:",
+          "gt_location": "Mục 2 (v2) / Sửa Điều 16, Điểm a",
+          "gt_type": "Micro Deletion"
+        },
+        {
+          "pred_index": 10,
+          "gt_index": 21,
+          "score": 0.4494,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 2",
+          "gt_location": "Nội dung Hiệu lực thi hành",
+          "gt_type": "Paraphrase & Numerical"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 13,
+          "score": 0.2642,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 1",
+          "gt_location": "Mục 3 (v2) / Sửa Điều 6, Điểm b",
+          "gt_type": "Semantic (Tagged)"
+        },
+        {
+          "pred_index": 11,
+          "gt_index": 8,
+          "score": 0.2545,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15; > Điều 2",
+          "gt_location": "Mục 1 (v2) / Sửa Điều 14, Điểm c",
+          "gt_type": "Semantic (Tagged)"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 11,
+          "score": 0.2434,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15;",
+          "gt_location": "Mục 2 (v2) / Sửa Điều 16, Điểm b",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 3,
+          "score": 0.2277,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15;",
+          "gt_location": "Phần Căn cứ pháp lý và Lời dẫn",
+          "gt_type": "Massive Silent Deletion & Paraphrase"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_06_Difficult",
+      "file_v1": "02-tt-tand.signed_v1.docx",
+      "file_v2": "02-tt-tand.signed_v2.docx",
+      "gt_changes": 22,
+      "predicted_changes": 11,
+      "tp": 11,
+      "fp": 0,
+      "fn": 11,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6667,
+      "matched_pairs": [
+        {
+          "pred_index": 3,
+          "gt_index": 4,
+          "score": 0.6484,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 ngày 24 tháng 6 năm 2024;",
+          "gt_location": "Phần Căn cứ (Luật Tổ chức TAND)",
+          "gt_type": "Numerical & Formatting Noise"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 2,
+          "score": 0.54,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng)",
+          "gt_type": "Formatting Noise, Typo & Numerical"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 5,
+          "score": 0.5269,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Giáo dục đại học số 08/2012/QH13 ngày 18 tháng 6 năm 2012;",
+          "gt_location": "Phần Căn cứ (Luật Giáo dục đại học)",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 3,
+          "score": 0.5058,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 10,
+          "gt_index": 21,
+          "score": 0.4601,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 35/2024/QH15 ban hành ngày 24/06/2024; > Điều 4",
+          "gt_location": "Điều 4 (Mới)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 12,
+          "score": 0.4477,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Giáo dục đại học số 08/2012/QH13 ngày 18 tháng 6 năm 2012; > Điều 1",
+          "gt_location": "Điều 2 (Bản v2) - Nội dung",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 10,
+          "score": 0.4244,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 35/2024/QH15 ban hành ngày 24/06/2024; > Điều 1",
+          "gt_location": "Điều 1 (Bản v2) - Nội dung",
+          "gt_type": "Typo & Paraphrase"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 6,
+          "score": 0.3668,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Giáo dục đại học số 08/2012/QH13 ngày 18 tháng 6 năm 2012; > Điều 2",
+          "gt_location": "Phần Căn cứ (Lời dẫn ban hành)",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 14,
+          "score": 0.3644,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Giáo dục đại học số 08/2012/QH13 ngày 18 tháng 6 năm 2012; > Điều 3",
+          "gt_location": "Điều 3, Khoản 3 - Phần dẫn",
+          "gt_type": "Logic Shift & Paraphrase"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 16,
+          "score": 0.3325,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Điều 3, Khoản 3 - Điểm a (Dòng 1)",
+          "gt_type": "Micro Deletion & Paraphrase"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 9,
+          "score": 0.2842,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 35/2024/QH15 ban hành ngày 24/06/2024; > Điều 3",
+          "gt_location": "Điều 1 (Bản v2) - Tên điều",
+          "gt_type": "Paraphrase"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_07_Difficult",
+      "file_v1": "03-tand.signed_v1.docx",
+      "file_v2": "03-tand.signed_v2.docx",
+      "gt_changes": 22,
+      "predicted_changes": 39,
+      "tp": 22,
+      "fp": 17,
+      "fn": 0,
+      "precision": 0.5641,
+      "recall": 1.0,
+      "f1": 0.7213,
+      "matched_pairs": [
+        {
+          "pred_index": 15,
+          "gt_index": 3,
+          "score": 0.5729,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Phần Căn cứ pháp lý (Luật Ban hành VBQPPL)",
+          "gt_type": "Silent Deletion & Paraphrase"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 1,
+          "score": 0.5673,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng)",
+          "gt_type": "Numerical & Tagged"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 2,
+          "score": 0.525,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư",
+          "gt_type": "Paraphrase & Tagged"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 0,
+          "score": 0.4745,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Số hiệu)",
+          "gt_type": "Numerical & Tagged"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 7,
+          "score": 0.3982,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 1",
+          "gt_location": "Nội dung Điều 1",
+          "gt_type": "Paraphrase & Tagged"
+        },
+        {
+          "pred_index": 36,
+          "gt_index": 16,
+          "score": 0.3792,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật năm 2015 (đã được sửa đổi, bổ sung năm 2020); > Điều 6",
+          "gt_location": "Điều 6 (Mới)",
+          "gt_type": "Addition & Tagged"
+        },
+        {
+          "pred_index": 37,
+          "gt_index": 18,
+          "score": 0.3364,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 4",
+          "gt_location": "Điều 7 (Hiệu lực thi hành ở v2)",
+          "gt_type": "Numerical, Formatting Noise & Tagged"
+        },
+        {
+          "pred_index": 29,
+          "gt_index": 13,
+          "score": 0.2982,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật năm 2015 (đã được sửa đổi, bổ sung năm 2020); > Điều 5",
+          "gt_location": "Điều 4 (Bản v2) - Nội dung",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 38,
+          "gt_index": 19,
+          "score": 0.2951,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 5",
+          "gt_location": "Điều 8 (Tổ chức thực hiện ở v2), Khoản 1",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 15,
+          "score": 0.2613,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật năm 2015 (đã được sửa đổi, bổ sung năm 2020); > Điều 3",
+          "gt_location": "Điều 5 (Bản v2) - Phần Đề xuất án lệ",
+          "gt_type": "Logic Shift & Tagged"
+        },
+        {
+          "pred_index": 26,
+          "gt_index": 12,
+          "score": 0.2589,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 3",
+          "gt_location": "Cấu trúc Điều 3 (Bản gốc)",
+          "gt_type": "Structural Split & Tagged"
+        },
+        {
+          "pred_index": 3,
+          "gt_index": 4,
+          "score": 0.2513,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020;",
+          "gt_location": "Phần Lời dẫn (Đoạn 1)",
+          "gt_type": "Paraphrase & Micro Deletion"
+        },
+        {
+          "pred_index": 17,
+          "gt_index": 14,
+          "score": 0.2474,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Điều 5 (Bản v2) - Phần Nhiệm vụ Quyền hạn",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 11,
+          "score": 0.2439,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Điều 3 (Chức năng và Nhiệm vụ ở v2) - Ứng dụng CNTT",
+          "gt_type": "Logic Shift & Tagged"
+        },
+        {
+          "pred_index": 20,
+          "gt_index": 10,
+          "score": 0.2299,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Điều 3 (Chức năng và Nhiệm vụ ở v2)",
+          "gt_type": "Massive Silent Deletion & Paraphrase"
+        },
+        {
+          "pred_index": 14,
+          "gt_index": 5,
+          "score": 0.209,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Phần Lời dẫn ban hành (Đoạn 2)",
+          "gt_type": "Paraphrase & Tagged"
+        },
+        {
+          "pred_index": 30,
+          "gt_index": 21,
+          "score": 0.2043,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 3",
+          "gt_location": "Điều 8 (Tổ chức thực hiện ở v2), Khoản 2 (Cuối câu)",
+          "gt_type": "Micro Deletion"
+        },
+        {
+          "pred_index": 12,
+          "gt_index": 6,
+          "score": 0.1772,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Tiêu đề Điều 1",
+          "gt_type": "Semantic Addition"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 9,
+          "score": 0.1697,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Điều 2 (Cơ cấu tổ chức ở v2)",
+          "gt_type": "Table Manipulation, Addition & Tagged"
+        },
+        {
+          "pred_index": 25,
+          "gt_index": 8,
+          "score": 0.1642,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Cấu trúc Điều 2 (Bản gốc)",
+          "gt_type": "Structural Split"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 17,
+          "score": 0.1635,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Số thứ tự Điều khoản cuối",
+          "gt_type": "Structural Shift"
+        },
+        {
+          "pred_index": 22,
+          "gt_index": 20,
+          "score": 0.1467,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020; > Điều 2",
+          "gt_location": "Điều 8 (Tổ chức thực hiện ở v2), Khoản 2",
+          "gt_type": "Typo & Tagged"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_08_Difficult",
+      "file_v1": "03-tand_v1.docx",
+      "file_v2": "03-tand_v2.docx",
+      "gt_changes": 23,
+      "predicted_changes": 26,
+      "tp": 23,
+      "fp": 3,
+      "fn": 0,
+      "precision": 0.8846,
+      "recall": 1.0,
+      "f1": 0.9388,
+      "matched_pairs": [
+        {
+          "pred_index": 25,
+          "gt_index": 21,
+          "score": 0.8139,
+          "pred_clause_id": "Phụ lục II",
+          "gt_location": "Phụ lục II",
+          "gt_type": "Massive Silent Deletion"
+        },
+        {
+          "pred_index": 20,
+          "gt_index": 17,
+          "score": 0.6485,
+          "pred_clause_id": "Mở đầu > Điều 12",
+          "gt_location": "Điều 12 (Bản v2)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 24,
+          "gt_index": 20,
+          "score": 0.6279,
+          "pred_clause_id": "Phụ lục I",
+          "gt_location": "Phụ lục I",
+          "gt_type": "Table Manipulation & Addition"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 1,
+          "score": 0.5758,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng)",
+          "gt_type": "Numerical (Tagged)"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 0,
+          "score": 0.5636,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Số hiệu)",
+          "gt_type": "Numerical (Tagged)"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 4,
+          "score": 0.5146,
+          "pred_clause_id": "Mở đầu > Điều 2",
+          "gt_location": "Điều 1 và Điều 2",
+          "gt_type": "Structural Swap (Tagged)"
+        },
+        {
+          "pred_index": 23,
+          "gt_index": 19,
+          "score": 0.5087,
+          "pred_clause_id": "Mở đầu > Điều 13",
+          "gt_location": "Điều khoản thi hành (Điều 15 gốc -> Điều 13 v2)",
+          "gt_type": "Numerical (Tagged)"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 2,
+          "score": 0.487,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư",
+          "gt_type": "Paraphrase (Tagged)"
+        },
+        {
+          "pred_index": 12,
+          "gt_index": 10,
+          "score": 0.4273,
+          "pred_clause_id": "Mở đầu > Điều 7",
+          "gt_location": "Điều 7. Nguyên tắc tổ chức",
+          "gt_type": "Paraphrase (Tagged)"
+        },
+        {
+          "pred_index": 14,
+          "gt_index": 11,
+          "score": 0.3792,
+          "pred_clause_id": "Mở đầu > Điều 8",
+          "gt_location": "Điều 8. Thẩm quyền - Phó Chánh án TANDTC",
+          "gt_type": "Logic Shift (Tagged) & Micro Deletion"
+        },
+        {
+          "pred_index": 19,
+          "gt_index": 3,
+          "score": 0.3309,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 13",
+          "gt_location": "Phần Căn cứ pháp lý",
+          "gt_type": "Massive Silent Deletion"
+        },
+        {
+          "pred_index": 15,
+          "gt_index": 13,
+          "score": 0.304,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 9",
+          "gt_location": "Điều 9. Thời hạn tổ chức",
+          "gt_type": "Numerical (Tagged)"
+        },
+        {
+          "pred_index": 21,
+          "gt_index": 18,
+          "score": 0.2957,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 14",
+          "gt_location": "Điều 14 (Bản gốc) - Tổ chức thực hiện",
+          "gt_type": "Massive Silent Deletion"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 6,
+          "score": 0.2721,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 1",
+          "gt_location": "Điều 2 (Bản v2) - Phạm vi điều chỉnh",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 18,
+          "gt_index": 16,
+          "score": 0.2526,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 12",
+          "gt_location": "Điều 12 (Trang phục) và Điều 13 (Trang trí) ở bản gốc",
+          "gt_type": "Massive Silent Deletion"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 22,
+          "score": 0.2484,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 3",
+          "gt_location": "Đoạn văn cuối (sau Phụ lục I ở v2)",
+          "gt_type": "Typo, Addition & Logic Shift"
+        },
+        {
+          "pred_index": 13,
+          "gt_index": 12,
+          "score": 0.239,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 8",
+          "gt_location": "Điều 8. Thẩm quyền - Các chức danh khác",
+          "gt_type": "Massive Silent Deletion & Generalization"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 7,
+          "score": 0.2149,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 2",
+          "gt_location": "Điều 4, Khoản 4",
+          "gt_type": "Logic Shift (Tagged)"
+        },
+        {
+          "pred_index": 10,
+          "gt_index": 5,
+          "score": 0.1955,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 6",
+          "gt_location": "Điều 1 (Bản v2) - Đối tượng áp dụng",
+          "gt_type": "Micro Deletion & Paraphrase"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 9,
+          "score": 0.1949,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 5",
+          "gt_location": "Tiêu đề Chương III",
+          "gt_type": "Semantic Addition"
+        },
+        {
+          "pred_index": 22,
+          "gt_index": 14,
+          "score": 0.1934,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 15",
+          "gt_location": "Điều 10. Chương trình Lễ công bố",
+          "gt_type": "Formatting Noise & Semantic"
+        },
+        {
+          "pred_index": 17,
+          "gt_index": 15,
+          "score": 0.1612,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân. > Điều 11",
+          "gt_location": "Điều 11. Tuyên thệ",
+          "gt_type": "Typo (Tagged)"
+        },
+        {
+          "pred_index": 3,
+          "gt_index": 8,
+          "score": 0.1148,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15; Căn cứ Luật Tòa án chuyên biệt tại Trung tâm tài chính quốc tế số 150/2025/QH15; Theo đề nghị của Vụ trưởng Vụ Pháp chế và Quản lý khoa học; Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về biểu trưng và nghi lễ trong công tác cán bộ của Tòa án nhân dân.",
+          "gt_location": "Điều 5, Khoản 1",
+          "gt_type": "Numerical (Tagged)"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_09_Difficult",
+      "file_v1": "04-tt-tand.signed_v1.docx",
+      "file_v2": "04-tt-tand.signed_v2.docx",
+      "gt_changes": 18,
+      "predicted_changes": 10,
+      "tp": 10,
+      "fp": 0,
+      "fn": 8,
+      "precision": 1.0,
+      "recall": 0.5556,
+      "f1": 0.7143,
+      "matched_pairs": [
+        {
+          "pred_index": 3,
+          "gt_index": 4,
+          "score": 0.7079,
+          "pred_clause_id": "Mở đầu > Điều 1",
+          "gt_location": "Điều 1 (Bản v2)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 1,
+          "score": 0.5555,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Ngày tháng)",
+          "gt_type": "Formatting Noise & Numerical"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 2,
+          "score": 0.4526,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 15,
+          "score": 0.4355,
+          "pred_clause_id": "Mở đầu > Điều 8",
+          "gt_location": "Điều 8 (Ngày hiệu lực ở v2) tương ứng Điều 7 (gốc)",
+          "gt_type": "Paraphrase & Numerical"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 13,
+          "score": 0.3893,
+          "pred_clause_id": "Mở đầu > Điều 7",
+          "gt_location": "Điều 7 (Quy định thực hiện ở v2) tương ứng Điều 8 (gốc)",
+          "gt_type": "Logic Shift (Tagged) & Micro Deletion"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 7,
+          "score": 0.3655,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14; > Điều 6",
+          "gt_location": "Điều 6, Điểm a (Bản v2) tương ứng Điểm h (Bản gốc)",
+          "gt_type": "Paraphrase & Typo (Tagged)"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 3,
+          "score": 0.2935,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 ngày 24 tháng 6 năm 2024;",
+          "gt_location": "Phần Căn cứ pháp lý và Lời dẫn",
+          "gt_type": "Massive Silent Deletion"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 14,
+          "score": 0.2729,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14; > Điều 8",
+          "gt_location": "Khoản 2 của Điều Tổ chức thực hiện (Bản gốc)",
+          "gt_type": "Silent Deletion"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 10,
+          "score": 0.2554,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14; > Điều 7",
+          "gt_location": "Điều 6, Điểm c (Bản v2) tương ứng Điểm k (Bản gốc)",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 11,
+          "score": 0.2514,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14;",
+          "gt_location": "Điều 6, Các điểm l, m, n (Bản gốc)",
+          "gt_type": "Massive Silent Deletion"
+        }
+      ]
+    },
+    {
+      "case_name": "Test_10_Difficult",
+      "file_v1": "01-tandtc.signed_v1.docx",
+      "file_v2": "01-tandtc.signed_v2.docx",
+      "gt_changes": 20,
+      "predicted_changes": 13,
+      "tp": 13,
+      "fp": 0,
+      "fn": 7,
+      "precision": 1.0,
+      "recall": 0.65,
+      "f1": 0.7879,
+      "matched_pairs": [
+        {
+          "pred_index": 12,
+          "gt_index": 18,
+          "score": 0.6189,
+          "pred_clause_id": "Mở đầu > Điều 12",
+          "gt_location": "Điều 12 (Bản v2) - Khoản i",
+          "gt_type": "Addition & Logic Shift"
+        },
+        {
+          "pred_index": 10,
+          "gt_index": 17,
+          "score": 0.5278,
+          "pred_clause_id": "Mở đầu > Điều 11",
+          "gt_location": "Nội dung Điều 11 (Tên danh hiệu)",
+          "gt_type": "Semantic"
+        },
+        {
+          "pred_index": 0,
+          "gt_index": 0,
+          "score": 0.5259,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Phần đầu văn bản (Số hiệu)",
+          "gt_type": "Numerical"
+        },
+        {
+          "pred_index": 3,
+          "gt_index": 10,
+          "score": 0.5224,
+          "pred_clause_id": "Mở đầu > Điều 1",
+          "gt_location": "Tiêu đề Điều 2 (Bản gốc)",
+          "gt_type": "Structural Swap, Paraphrase & Tagged"
+        },
+        {
+          "pred_index": 5,
+          "gt_index": 14,
+          "score": 0.5197,
+          "pred_clause_id": "Mở đầu > Điều 1a",
+          "gt_location": "Điều 1a (Mới)",
+          "gt_type": "Addition"
+        },
+        {
+          "pred_index": 8,
+          "gt_index": 7,
+          "score": 0.5148,
+          "pred_clause_id": "Mở đầu > Điều 2",
+          "gt_location": "Tiêu đề Điều 1 (Bản gốc)",
+          "gt_type": "Structural Swap & Paraphrase"
+        },
+        {
+          "pred_index": 9,
+          "gt_index": 11,
+          "score": 0.3606,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị định số 98/2023/NĐ-CP ngày 31 tháng 12 năm 2023 của Chính phủ quy định chi tiết thi hành một số điều của Luật Thi đua, khen thưởng; > Điều 2",
+          "gt_location": "Nội dung Điều Đối tượng thi đua (Khoản 1)",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 1,
+          "gt_index": 3,
+          "score": 0.3505,
+          "pred_clause_id": "Mở đầu",
+          "gt_location": "Tiêu đề Thông tư (Nội dung chính)",
+          "gt_type": "Paraphrase"
+        },
+        {
+          "pred_index": 4,
+          "gt_index": 1,
+          "score": 0.3401,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Thi đua, khen thưởng ngày 15 tháng 6 năm 2022;",
+          "gt_location": "Phần đầu văn bản (Ngày tháng)",
+          "gt_type": "Numerical & Formatting Noise"
+        },
+        {
+          "pred_index": 11,
+          "gt_index": 8,
+          "score": 0.3007,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị định số 98/2023/NĐ-CP ngày 31 tháng 12 năm 2023 của Chính phủ quy định chi tiết thi hành một số điều của Luật Thi đua, khen thưởng; > Điều 11",
+          "gt_location": "Nội dung Điều Phạm vi điều chỉnh (Khoản 1)",
+          "gt_type": "Massive Silent Deletion & Paraphrase"
+        },
+        {
+          "pred_index": 7,
+          "gt_index": 5,
+          "score": 0.2973,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị định số 98/2023/NĐ-CP ngày 31 tháng 12 năm 2023 của Chính phủ quy định chi tiết thi hành một số điều của Luật Thi đua, khen thưởng; > Điều 1",
+          "gt_location": "Phần Lời dẫn ban hành",
+          "gt_type": "Micro Deletion & Paraphrase"
+        },
+        {
+          "pred_index": 6,
+          "gt_index": 4,
+          "score": 0.2834,
+          "pred_clause_id": "Mở đầu > Căn cứ Nghị định số 98/2023/NĐ-CP ngày 31 tháng 12 năm 2023 của Chính phủ quy định chi tiết thi hành một số điều của Luật Thi đua, khen thưởng;",
+          "gt_location": "Phần Căn cứ pháp lý",
+          "gt_type": "Massive Silent Deletion & Paraphrase"
+        },
+        {
+          "pred_index": 2,
+          "gt_index": 13,
+          "score": 0.2774,
+          "pred_clause_id": "Mở đầu > Căn cứ Luật Tổ chức Tòa án nhân dân ngày 24 tháng 11 năm 2014;",
+          "gt_location": "Nội dung Điều Đối tượng thi đua (Khoản 3 gốc)",
+          "gt_type": "Silent Deletion"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_cases": 10,
+    "total_gt": 224,
+    "total_predicted": 173,
+    "tp": 153,
+    "fp": 20,
+    "fn": 71,
+    "precision": 0.8844,
+    "recall": 0.683,
+    "f1": 0.7708,
+    "macro_precision": 0.9449,
+    "macro_recall": 0.6794,
+    "macro_f1": 0.7629
+  }
+}

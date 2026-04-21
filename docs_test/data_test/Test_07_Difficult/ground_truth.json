@@ -1,0 +1,139 @@
+{
+  "pair_id": "03-tand.signed",
+  "difficulty_level": "Rất Khó (Bẫy tag giả, xóa ngầm diện rộng, chẻ nhỏ điều luật, lật logic và chuyển hóa bảng biểu)",
+  "description": "Cặp tài liệu này là một kiệt tác ngụy trang: Tác giả cố tình rải các thẻ tag (Thay đổi A, B, C, D, E, F) để nhử AI, nhưng thực chất đã âm thầm xóa bỏ phần lớn Căn cứ pháp lý, xóa sổ 16 điểm nhiệm vụ của Văn phòng, xóa 2 nhiệm vụ của Vụ GĐT, xé nát 2 Điều luật thành 4 Điều luật mới, lật ngược bản chất 'bắt buộc' thành 'có quyền', và chèn bảng biểu chứa dữ liệu giả.",
+  "changes": [
+    {
+      "type": "Numerical & Tagged",
+      "location": "Phần đầu văn bản (Số hiệu)",
+      "v1_content": "Số: 03/2024/TT-TANDTC",
+      "v2_content": "Số: 08/2025/TT-TANDTC (Thay đổi A: Số hiệu văn bản)"
+    },
+    {
+      "type": "Numerical & Tagged",
+      "location": "Phần đầu văn bản (Ngày tháng)",
+      "v1_content": "ngày 31 tháng 12 năm 2024",
+      "v2_content": "ngày 15 tháng 02 năm 2025 (Thay đổi A: Ngày ban hành)"
+    },
+    {
+      "type": "Paraphrase & Tagged",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "Quy định tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của Văn phòng, Vụ thuộc Tòa án nhân dân cấp cao",
+      "v2_content": "Quy định cơ cấu tổ chức, vai trò, trách nhiệm và thẩm quyền của khối Văn phòng và các Vụ trực thuộc Tòa án nhân dân cấp cao (Thay đổi B: Diễn đạt lại tiêu đề bằng thuật ngữ khác)"
+    },
+    {
+      "type": "Silent Deletion & Paraphrase",
+      "location": "Phần Căn cứ pháp lý (Luật Ban hành VBQPPL)",
+      "v1_content": "Căn cứ Luật Ban hành văn bản quy phạm pháp luật số 80/2015/QH13 ngày 22 tháng 6 năm 2015 đã được sửa đổi, bổ sung một số điều theo Luật số 63/2020/QH14 ngày 18 tháng 6 năm 2020;",
+      "v2_content": "Căn cứ Luật Ban hành văn bản quy phạm pháp luật năm 2015 (đã được sửa đổi, bổ sung năm 2020); (Bị xóa ngầm toàn bộ số hiệu Luật và ngày tháng cụ thể)"
+    },
+    {
+      "type": "Paraphrase & Micro Deletion",
+      "location": "Phần Lời dẫn (Đoạn 1)",
+      "v1_content": "Theo đề nghị của Vụ trưởng Vụ Tổ chức - Cán bộ Tòa án nhân dân tối cao;",
+      "v2_content": "Theo đề nghị của lãnh đạo Vụ Tổ chức - Cán bộ thuộc Tòa án nhân dân tối cao; (Thay 'Vụ trưởng' bằng 'lãnh đạo')"
+    },
+    {
+      "type": "Paraphrase & Tagged",
+      "location": "Phần Lời dẫn ban hành (Đoạn 2)",
+      "v1_content": "Chánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn...",
+      "v2_content": "Chánh án Tòa án nhân dân tối cao ban hành văn bản quy định về mô hình tổ chức, chức năng và các nhiệm vụ trọng yếu... (Thay đổi B: Diễn đạt lại đoạn dẫn nhập)"
+    },
+    {
+      "type": "Semantic Addition",
+      "location": "Tiêu đề Điều 1",
+      "v1_content": "Điều 1. Phạm vi điều chỉnh",
+      "v2_content": "Điều 1. Phạm vi điều chỉnh và Đối tượng áp dụng (Chèn thêm đuôi 'và Đối tượng áp dụng')"
+    },
+    {
+      "type": "Paraphrase & Tagged",
+      "location": "Nội dung Điều 1",
+      "v1_content": "Thông tư này quy định về tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của Văn phòng, Vụ thuộc Tòa án nhân dân cấp cao.",
+      "v2_content": "Văn bản này thiết lập các quy định chi tiết về bộ máy tổ chức, vai trò tham mưu và phạm vi quyền hạn đối với hệ thống Văn phòng và các Vụ chuyên môn... (Thay đổi B: Diễn đạt lại nội dung)"
+    },
+    {
+      "type": "Structural Split",
+      "location": "Cấu trúc Điều 2 (Bản gốc)",
+      "v1_content": "Điều 2. Văn phòng (Chứa toàn bộ cả cơ cấu tổ chức và 16 điểm chức năng nhiệm vụ)",
+      "v2_content": "Bị chẻ đôi thành: 'Điều 2. Cơ cấu tổ chức của Văn phòng' và 'Điều 3. Chức năng và Nhiệm vụ của Văn phòng' ở bản v2."
+    },
+    {
+      "type": "Table Manipulation, Addition & Tagged",
+      "location": "Điều 2 (Cơ cấu tổ chức ở v2)",
+      "v1_content": "Liệt kê cấu trúc nhân sự và phòng ban bằng đoạn văn (điểm a, b).",
+      "v2_content": "Chuyển thành Bảng biểu (STT 1-5). Chèn thêm dòng mới: '5 | Bộ phận An ninh (Mới) | Đảm bảo an toàn trật tự... (Thay đổi E: Thêm dòng mới)'"
+    },
+    {
+      "type": "Massive Silent Deletion & Paraphrase",
+      "location": "Điều 3 (Chức năng và Nhiệm vụ ở v2)",
+      "v1_content": "Danh sách liệt kê 16 nhiệm vụ cụ thể từ a) đến r).",
+      "v2_content": "Toàn bộ 16 điểm bị xóa ngầm, chỉ còn lại 5 gạch đầu dòng tóm tắt chung chung."
+    },
+    {
+      "type": "Logic Shift & Tagged",
+      "location": "Điều 3 (Chức năng và Nhiệm vụ ở v2) - Ứng dụng CNTT",
+      "v1_content": "p) Tổ chức triển khai ứng dụng công nghệ thông tin;",
+      "v2_content": "Văn phòng có thể chủ động triển khai các ứng dụng công nghệ thông tin... (Thay đổi D: Chuyển 'phải' thành 'có quyền/có thể')"
+    },
+    {
+      "type": "Structural Split & Tagged",
+      "location": "Cấu trúc Điều 3 (Bản gốc)",
+      "v1_content": "Điều 3. Vụ thuộc Tòa án nhân dân cấp cao",
+      "v2_content": "Bị xé đôi thành 2 điều luật: 'Điều 4. Các Vụ chuyên môn thuộc...' và 'Điều 5. Nhiệm vụ và Quyền hạn...' (Thay đổi C: Tách Điều 3 gốc thành Điều 4 và Điều 5)"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 4 (Bản v2) - Nội dung",
+      "v1_content": "Tòa án nhân dân cấp cao có các Vụ Giám đốc thẩm, tái thẩm về hình sự, hành chính... Số lượng... do Chánh án TANDTC quyết định.",
+      "v2_content": "Tòa án nhân dân cấp cao duy trì các Vụ Giám đốc thẩm... Việc điều chỉnh số lượng các Vụ này sẽ do Chánh án TANDTC xem xét quyết định dựa trên tình hình thực tế."
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Điều 5 (Bản v2) - Phần Nhiệm vụ Quyền hạn",
+      "v1_content": "Liệt kê 8 điểm từ a) đến h).",
+      "v2_content": "Điểm c) 'Chuẩn bị hồ sơ...' và điểm đ) 'Giải quyết khiếu nại, tố cáo...' đã bị xóa ngầm bốc hơi hoàn toàn."
+    },
+    {
+      "type": "Logic Shift & Tagged",
+      "location": "Điều 5 (Bản v2) - Phần Đề xuất án lệ",
+      "v1_content": "g) Tổng kết thực tiễn xét xử, đề xuất án lệ;",
+      "v2_content": "Các Vụ chuyên môn có quyền yêu cầu các đơn vị liên quan cung cấp tài liệu phục vụ việc tổng kết thực tiễn xét xử và đề xuất án lệ. (Thay đổi D)"
+    },
+    {
+      "type": "Addition & Tagged",
+      "location": "Điều 6 (Mới)",
+      "v1_content": null,
+      "v2_content": "Điều 6. Bảo mật thông tin (Điều mới) (Thay đổi C: Chèn thêm Điều khoản mới hoàn toàn)... Toàn thể công chức, người lao động..."
+    },
+    {
+      "type": "Structural Shift",
+      "location": "Số thứ tự Điều khoản cuối",
+      "v1_content": "Điều 4. Hiệu lực thi hành; Điều 5. Tổ chức thực hiện",
+      "v2_content": "Đẩy lùi thành: Điều 7. Hiệu lực thi hành; Điều 8. Tổ chức thực hiện"
+    },
+    {
+      "type": "Numerical, Formatting Noise & Tagged",
+      "location": "Điều 7 (Hiệu lực thi hành ở v2)",
+      "v1_content": "kể từ ngày 01 tháng 01 năm 2025.",
+      "v2_content": "kể từ ngày 01 tháng 03 năm 2025. (Thay đổi F: Định dạng ngày tháng đậm)"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 8 (Tổ chức thực hiện ở v2), Khoản 1",
+      "v1_content": "Chánh án Tòa án nhân dân cấp cao và cơ quan, tổ chức, cá nhân liên quan có trách nhiệm thi hành...",
+      "v2_content": "Các đơn vị có liên quan chịu trách nhiệm thực thi nghiêm túc các quy định..."
+    },
+    {
+      "type": "Typo & Tagged",
+      "location": "Điều 8 (Tổ chức thực hiện ở v2), Khoản 2",
+      "v1_content": "...Tòa án nhân dân tối cao...",
+      "v2_content": "...Toà án nhân dân tối cao... (Thay đổi F: Lỗi đánh máy/biến thể 'Toà án')"
+    },
+    {
+      "type": "Micro Deletion",
+      "location": "Điều 8 (Tổ chức thực hiện ở v2), Khoản 2 (Cuối câu)",
+      "v1_content": "...để tổng hợp báo cáo Chánh án Tòa án nhân dân tối cao xem xét, quyết định.",
+      "v2_content": "...để xử lý. (Cụm từ báo cáo Chánh án xem xét quyết định bị xóa ngầm và thay bằng cụm 'để xử lý')"
+    }
+  ]
+}

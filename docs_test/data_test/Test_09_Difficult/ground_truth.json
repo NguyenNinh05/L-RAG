@@ -1,0 +1,115 @@
+{
+  "pair_id": "04-tt-tand.signed",
+  "difficulty_level": "Rất Khó (Xóa ngầm tàn bạo, lật logic thẩm quyền, xáo trộn cấu trúc và rải tag giả)",
+  "description": "Cặp tài liệu này là một bài test cực độ về độ nhạy của thuật toán: Tác giả âm thầm xóa toàn bộ Căn cứ pháp lý, Lời dẫn ban hành, Khoản 2 Điều 8 và các điểm l, m, n của Điều 6. Bên cạnh đó, tác giả lật ngược vị trí Điều 7-8, thay đổi bản chất từ 'trách nhiệm thi hành' thành 'QUYỀN chủ động', hô biến định dạng ngày tháng, đánh lại số thứ tự chữ cái, và chèn thêm bảng biểu ở cuối văn bản.",
+  "changes": [
+    {
+      "type": "Numerical",
+      "location": "Phần đầu văn bản (Số hiệu)",
+      "v1_content": "Số: 04/2024/TT-TANDTC",
+      "v2_content": "Số: 09/2024/TT-TANDTC"
+    },
+    {
+      "type": "Formatting Noise & Numerical",
+      "location": "Phần đầu văn bản (Ngày tháng)",
+      "v1_content": "Hà Nội, ngày 31 tháng 12 năm 2024",
+      "v2_content": "Hà Nội, 05/01/2025"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Tiêu đề Thông tư",
+      "v1_content": "Quy định chức năng, nhiệm vụ, quyền hạn của Văn phòng, phòng thuộc Tòa án nhân dân tỉnh... bộ máy giúp việc của Tòa án nhân dân huyện...",
+      "v2_content": "Quy định về thẩm quyền, vai trò và trách nhiệm của khối Văn phòng thuộc Tòa án các tỉnh; các cơ quan trợ giúp pháp lý của Tòa án các huyện..."
+    },
+    {
+      "type": "Massive Silent Deletion",
+      "location": "Phần Căn cứ pháp lý và Lời dẫn",
+      "v1_content": "Căn cứ Luật Tổ chức... Căn cứ Luật Ban hành... Chánh án Tòa án nhân dân tối cao ban hành Thông tư...",
+      "v2_content": "(Toàn bộ 3 đoạn Căn cứ pháp lý và Lời dẫn ban hành đã bị xóa ngầm bốc hơi hoàn toàn)"
+    },
+    {
+      "type": "Addition",
+      "location": "Điều 1 (Bản v2)",
+      "v1_content": null,
+      "v2_content": "Điều 1. Mục tiêu và nguyên tắc\nThiết lập hệ thống tổ chức chặt chẽ, tối ưu hóa nguồn lực nhân sự trong hệ thống Tòa án. (Chèn thêm mới hoàn toàn)"
+    },
+    {
+      "type": "Paraphrase (Tagged)",
+      "location": "Tiêu đề Điều 6",
+      "v1_content": "Điều 6. Nhiệm vụ của bộ máy giúp việc Tòa án nhân dân cấp huyện",
+      "v2_content": "Điều 6. Vai trò của hệ thống trợ giúp Tòa án cấp huyện (B. Paraphrase)"
+    },
+    {
+      "type": "Formatting Noise",
+      "location": "Điều 6 - Đánh số thứ tự khoản/điểm",
+      "v1_content": "Các điểm bắt đầu từ: h), i), k), l), m), n)",
+      "v2_content": "Đánh lại từ đầu: a), b), c)"
+    },
+    {
+      "type": "Paraphrase & Typo (Tagged)",
+      "location": "Điều 6, Điểm a (Bản v2) tương ứng Điểm h (Bản gốc)",
+      "v1_content": "h) Thực hiện công tác bảo vệ chính trị nội bộ, bảo vệ cơ quan, phòng cháy, chữa cháy, y tế của Tòa án nhân dân cấp huyện;",
+      "v2_content": "a) Đảm bảo an ninh trật tự và an toàn phong cháy (F. Typo) trong nội bộ cơ quan;"
+    },
+    {
+      "type": "Micro Deletion",
+      "location": "Điều 6, Điểm a (Bản v2)",
+      "v1_content": "bảo vệ chính trị nội bộ... y tế",
+      "v2_content": "(Các cụm từ 'bảo vệ chính trị nội bộ' và 'y tế' đã bị cắt xén âm thầm khỏi câu paraphrase)"
+    },
+    {
+      "type": "Paraphrase (Tagged)",
+      "location": "Điều 6, Điểm b (Bản v2) tương ứng Điểm i (Bản gốc)",
+      "v1_content": "i) Quản lý, sử dụng phương tiện phục vụ hoạt động của Tòa án nhân dân cấp huyện theo quy định;",
+      "v2_content": "b) Điều phối và khai thác trang thiết bị công tác (B. Paraphrase);"
+    },
+    {
+      "type": "Paraphrase",
+      "location": "Điều 6, Điểm c (Bản v2) tương ứng Điểm k (Bản gốc)",
+      "v1_content": "k) Thực hiện công tác thi đua, khen thưởng theo quy định;",
+      "v2_content": "c) Tổ chức phong trào thi đua và xét duyệt khen thưởng;"
+    },
+    {
+      "type": "Massive Silent Deletion",
+      "location": "Điều 6, Các điểm l, m, n (Bản gốc)",
+      "v1_content": "l) Rà soát, tra cứu... m) Triển khai ứng dụng công nghệ... n) Thực hiện nhiệm vụ, quyền hạn khác...",
+      "v2_content": "(Cả 3 điểm nhiệm vụ này bị xóa ngầm hoàn toàn khỏi Điều 6 của bản v2)"
+    },
+    {
+      "type": "Structural Swap",
+      "location": "Điều 7 và Điều 8",
+      "v1_content": "Điều 7. Hiệu lực thi hành... Điều 8. Tổ chức thực hiện...",
+      "v2_content": "Đảo vị trí và đổi tên: Điều 7. Quy định thực hiện... Điều 8. Ngày hiệu lực..."
+    },
+    {
+      "type": "Logic Shift (Tagged) & Micro Deletion",
+      "location": "Điều 7 (Quy định thực hiện ở v2) tương ứng Điều 8 (gốc)",
+      "v1_content": "Chánh án Tòa án nhân dân cấp tỉnh, Chánh án Tòa án nhân dân cấp huyện và cơ quan, tổ chức, cá nhân liên quan có trách nhiệm thi hành Thông tư này.",
+      "v2_content": "Chánh án Tòa án các cấp có QUYỀN chủ động trong việc triển khai các nội dung của văn bản này phù hợp với đặc thù địa phương (D. Logic). (Xóa ngầm 'cơ quan, tổ chức, cá nhân liên quan')"
+    },
+    {
+      "type": "Silent Deletion",
+      "location": "Khoản 2 của Điều Tổ chức thực hiện (Bản gốc)",
+      "v1_content": "2. Trong quá trình thực hiện nếu có khó khăn, vướng mắc hoặc đề xuất, kiến nghị thì phản ánh về Tòa án nhân dân tối cao...",
+      "v2_content": "(Toàn bộ khoản 2 hướng dẫn giải quyết vướng mắc này đã bị xóa sạch không dấu vết)"
+    },
+    {
+      "type": "Paraphrase & Numerical",
+      "location": "Điều 8 (Ngày hiệu lực ở v2) tương ứng Điều 7 (gốc)",
+      "v1_content": "Thông tư này có hiệu lực thi hành kể từ ngày 01 tháng 01 năm 2025.",
+      "v2_content": "Văn bản pháp quy này có hiệu lực chính thức từ ngày 20 tháng 02 năm 2025."
+    },
+    {
+      "type": "Addition / Table Manipulation",
+      "location": "Phần cuối văn bản",
+      "v1_content": null,
+      "v2_content": "Chèn thêm bảng DANH MỤC CƠ QUAN NHẬN VĂN BẢN gồm 3 cột (STT, Cơ quan, Phân loại) và 3 dòng."
+    },
+    {
+      "type": "Addition",
+      "location": "Phần chữ ký",
+      "v1_content": null,
+      "v2_content": "CHÁNH ÁN(Đã ký) (Chèn thêm khối chữ ký trắng)"
+    }
+  ]
+}

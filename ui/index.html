@@ -3,15 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LegalRAG — So sánh văn bản pháp lý</title>
+    <title>LegalRAG - So sánh văn bản pháp lý</title>
     <meta
       name="description"
-      content="Hệ thống so sánh văn bản pháp lý thông minh sử dụng RAG và LLM"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
+      content="Hệ thống so sánh văn bản pháp lý chạy local với RAG, local LLM và hỏi đáp sau so sánh"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -19,7 +14,6 @@
     <div class="drag-overlay" id="drag-overlay">Thả file PDF hoặc DOCX vào đây</div>
 
     <div class="app">
-      <!-- ── Sidebar ── -->
       <aside class="sidebar">
         <div class="sidebar-header">
           <div class="logo-text">
@@ -31,28 +25,26 @@
         <div class="upload-section">
           <h2>Tài liệu</h2>
           <div class="upload-slots">
-            <!-- Slot A -->
             <label class="upload-slot" id="slot-a" for="input-a">
               <input type="file" id="input-a" accept=".pdf,.docx" />
               <div class="slot-label">
                 <span class="slot-badge">Doc A</span>
                 <div class="slot-info">
                   <div class="slot-title">Tài liệu cũ</div>
-                  <div class="slot-filename" id="name-a" style="display:none"></div>
+                  <div class="slot-filename" id="name-a" style="display: none"></div>
                   <div class="slot-hint" id="hint-a">Chọn file PDF/DOCX</div>
                 </div>
                 <span class="slot-check" id="check-a" style="display: none">✓</span>
               </div>
             </label>
 
-            <!-- Slot B -->
             <label class="upload-slot" id="slot-b" for="input-b">
               <input type="file" id="input-b" accept=".pdf,.docx" />
               <div class="slot-label">
                 <span class="slot-badge">Doc B</span>
                 <div class="slot-info">
                   <div class="slot-title">Tài liệu mới</div>
-                  <div class="slot-filename" id="name-b" style="display:none"></div>
+                  <div class="slot-filename" id="name-b" style="display: none"></div>
                   <div class="slot-hint" id="hint-b">Chọn file PDF/DOCX</div>
                 </div>
                 <span class="slot-check" id="check-b" style="display: none">✓</span>
@@ -64,81 +56,108 @@
         <button class="btn btn-primary" id="btn-compare" disabled onclick="startComparison()">
           <span id="btn-text">So sánh văn bản</span>
         </button>
+        <button class="btn btn-secondary" id="btn-reset" style="display: none" onclick="resetComparison()">
+          Phiên so sánh mới
+        </button>
 
-        <!-- <button class="btn btn-secondary" id="btn-reset" onclick="resetComparison()" style="display:none">
-          So sánh văn bản khác
-        </button> -->
-
-        <!-- Filter bar (hiển thị sau khi có kết quả) -->
-        <div class="filter-section" id="filter-section" style="display:none">
+        <div class="filter-section" id="filter-section" style="display: none">
           <div class="filter-title">Lọc kết quả</div>
           <div class="filter-chips">
             <button class="filter-chip active" data-filter="all" onclick="applyFilter('all')">Tất cả</button>
             <button class="filter-chip modified" data-filter="MODIFIED" onclick="applyFilter('MODIFIED')">Sửa đổi</button>
             <button class="filter-chip added" data-filter="ADDED" onclick="applyFilter('ADDED')">Thêm mới</button>
             <button class="filter-chip deleted" data-filter="DELETED" onclick="applyFilter('DELETED')">Bị xóa</button>
+            <button class="filter-chip modified" data-filter="REPLACED" onclick="applyFilter('REPLACED')">Thay thế</button>
+          </div>
+        </div>
+
+        <div class="history-section">
+          <div class="history-header">
+            <h2>Lịch sử phiên</h2>
+            <button class="btn-link" id="btn-clear-history" onclick="clearAllSessions()">Xóa tất cả</button>
+          </div>
+          <div class="history-list" id="history-list">
+            <div class="history-empty" id="history-empty">Chưa có phiên hoàn tất nào.</div>
           </div>
         </div>
 
         <div class="tech-stack">
-          <div class="tech-stack-title">Technology Stack</div>
+          <div class="tech-stack-title">Công nghệ sử dụng</div>
           <div class="tech-list">
             <div class="tech-item">RAG + Needleman-Wunsch</div>
-            <div class="tech-item">Ollama Qwen3 Embedding</div>
-            <div class="tech-item">ChromaDB Vector Store</div>
+            <div class="tech-item">Ollama Local LLM</div>
+            <div class="tech-item">Kho lưu phiên SQLite</div>
           </div>
         </div>
       </aside>
 
-      <!-- ── Main ── -->
       <main class="main">
         <div class="topbar">
-          <span class="topbar-title">Legal Document Analysis</span>
+          <div class="topbar-meta">
+            <span class="topbar-title" id="topbar-title">Phiên so sánh mới</span>
+            <span class="topbar-subtitle" id="topbar-subtitle">Tải lên hai tài liệu để bắt đầu so sánh.</span>
+          </div>
           <div class="topbar-right">
             <div class="status-indicator">
               <div class="status-dot" id="status-dot"></div>
-              <span id="status-text">Ready</span>
+              <span id="status-text">Sẵn sàng</span>
             </div>
           </div>
         </div>
 
-        <!-- Content area: chat + source panel -->
         <div class="content-area" id="content-area">
-          <!-- Chat area -->
-          <div class="chat-area" id="chat">
-            <!-- Empty state -->
-            <div class="empty-state" id="empty-state">
-              <h2>Hệ thống So sánh Văn bản Pháp lý</h2>
-              <p>
-                Tải lên hai phiên bản văn bản để hệ thống tự động phân tích và so sánh từng điều khoản bằng công nghệ AI.
-              </p>
-              <div class="feature-grid">
-                <div class="feature-card">
-                  <div class="feature-title">Document Processing</div>
-                  <div class="feature-desc">Hỗ trợ PDF &amp; DOCX với phân tích cấu trúc tự động</div>
-                </div>
-                <div class="feature-card">
-                  <div class="feature-title">Semantic Analysis</div>
-                  <div class="feature-desc">So sánh ngữ nghĩa sử dụng vector embedding</div>
-                </div>
-                <div class="feature-card">
-                  <div class="feature-title">LLM Comparison</div>
-                  <div class="feature-desc">Phân tích điều khoản chi tiết bằng AI</div>
-                </div>
-                <div class="feature-card">
-                  <div class="feature-title">Click Citations</div>
-                  <div class="feature-desc">Xem trực tiếp nội dung gốc bôi vàng khi click trích dẫn</div>
+          <div class="chat-wrapper">
+            <div class="chat-area" id="chat">
+              <div class="empty-state" id="empty-state">
+                <h2>Trợ lý So sánh Văn bản Pháp lý</h2>
+                <p>
+                  Hệ thống giữ nguyên luồng so sánh hiện tại, sau đó cho phép hỏi đáp trực tiếp trên phiên đã hoàn tất.
+                </p>
+                <div class="feature-grid">
+                  <div class="feature-card">
+                    <div class="feature-title">So sánh có căn cứ</div>
+                    <div class="feature-desc">Báo cáo và trích dẫn được khóa bởi lớp deterministic.</div>
+                  </div>
+                  <div class="feature-card">
+                    <div class="feature-title">Lịch sử phiên</div>
+                    <div class="feature-desc">Mở lại báo cáo, trích dẫn và lịch sử chat ngay trên ứng dụng cục bộ.</div>
+                  </div>
+                  <div class="feature-card">
+                    <div class="feature-title">Hỏi đáp sau so sánh</div>
+                    <div class="feature-desc">Chỉ bật hỏi đáp sau khi phiên so sánh hoàn tất.</div>
+                  </div>
+                  <div class="feature-card">
+                    <div class="feature-title">Trích dẫn ổn định</div>
+                    <div class="feature-desc">Bấm trích dẫn để mở lại đúng panel bằng chứng sau khi tải lại trang.</div>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <div class="chat-input-container">
+              <div class="chat-input-box">
+                <input
+                  type="text"
+                  id="chat-input"
+                  placeholder="Vui lòng hoàn tất so sánh để bắt đầu hỏi đáp."
+                  disabled
+                />
+                <button class="btn-send" id="btn-send" disabled>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <div class="chat-input-hint" id="chat-input-hint">Vui lòng hoàn tất so sánh để bắt đầu hỏi đáp.</div>
+            </div>
           </div>
 
-          <!-- Source panel (hiện ra khi click citation) -->
-          <div class="source-panel" id="source-panel">
+          <div class="source-panel" id="source-panel" data-mode="report">
             <div class="source-panel-header">
               <div class="source-panel-title">
-                <span id="source-panel-label">Nguồn trích dẫn</span>
-                <span class="source-badge" id="source-badge">MODIFIED</span>
+                <span id="source-panel-label">Báo cáo so sánh</span>
+                <span class="source-badge" id="source-badge">BÁO CÁO</span>
               </div>
               <button class="source-close-btn" id="source-close-btn" onclick="closeSourcePanel()" title="Đóng">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -149,36 +168,83 @@
             </div>
 
             <div class="source-panel-tabs">
-              <button class="source-tab active" id="tab-v1" onclick="switchSourceTab('v1')">File A</button>
-              <button class="source-tab" id="tab-v2" onclick="switchSourceTab('v2')">File B</button>
+              <button class="source-tab active" id="source-tab-report" onclick="switchSourceMode('report')">
+                Báo cáo
+              </button>
+              <button class="source-tab" id="source-tab-evidence" onclick="switchSourceMode('evidence')">
+                Bằng chứng
+              </button>
             </div>
 
             <div class="source-panel-body" id="source-panel-body">
-              <!-- V1 Viewer -->
-              <div class="source-viewer" id="viewer-container-a">
-                <div class="viewer-header">
-                  <span class="source-doc-name" id="source-doc-name-a"></span>
-                  <span class="source-page" id="source-page-a"></span>
+              <div class="source-report-view" id="source-report-view">
+                <div class="drawer-toolbar">
+                  <div class="drawer-toolbar-meta">
+                    <div class="drawer-toolbar-title" id="drawer-report-filename">bao_cao_so_sanh.md</div>
+                    <div class="drawer-toolbar-subtitle" id="drawer-report-subtitle">Mở tệp báo cáo để xem nội dung.</div>
+                  </div>
+                  <div class="drawer-toolbar-actions">
+                    <button class="btn-icon" onclick="toggleAllSections(true)" title="Mở rộng tất cả">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="7 13 12 18 17 13"></polyline>
+                        <polyline points="7 6 12 11 17 6"></polyline>
+                      </svg>
+                    </button>
+                    <button class="btn-icon" onclick="toggleAllSections(false)" title="Thu gọn tất cả">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="7 11 12 6 17 11"></polyline>
+                        <polyline points="7 18 12 13 17 18"></polyline>
+                      </svg>
+                    </button>
+                    <button class="btn-icon" onclick="copyActiveReport(this)" title="Sao chép Markdown">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                    <button class="btn-icon" onclick="downloadActiveReport()" title="Tải xuống Markdown">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <div class="pdf-wrapper">
-                  <iframe id="pdf-frame-a" class="pdf-frame" src=""></iframe>
-                </div>
-                <div class="source-text-block">
-                  <div class="source-text" id="source-text-a"></div>
+
+                <div class="drawer-report-body">
+                  <div class="drawer-empty-state" id="drawer-report-empty">
+                    Báo cáo so sánh sẽ mở tại đây sau khi bạn chọn tệp báo cáo.
+                  </div>
+                  <div class="md-content drawer-md-content" id="drawer-report-content"></div>
                 </div>
               </div>
 
-              <!-- V2 Viewer -->
-              <div class="source-viewer" id="viewer-container-b" style="display: none;">
-                <div class="viewer-header">
-                  <span class="source-doc-name" id="source-doc-name-b"></span>
-                  <span class="source-page" id="source-page-b"></span>
+              <div class="source-evidence-view grid-view" id="source-evidence-view">
+                <div class="source-viewer" id="viewer-container-a">
+                  <div class="viewer-header">
+                    <div class="viewer-header-left">
+                      <span class="source-doc-badge v1">Bản cũ</span>
+                      <span class="source-doc-name" id="source-doc-name-a"></span>
+                    </div>
+                    <span class="source-page" id="source-page-a"></span>
+                  </div>
+                  <div class="source-text-block">
+                    <div class="source-text" id="source-text-a"></div>
+                  </div>
                 </div>
-                <div class="pdf-wrapper">
-                  <iframe id="pdf-frame-b" class="pdf-frame" src=""></iframe>
-                </div>
-                <div class="source-text-block">
-                  <div class="source-text" id="source-text-b"></div>
+
+                <div class="source-viewer" id="viewer-container-b">
+                  <div class="viewer-header">
+                    <div class="viewer-header-left">
+                      <span class="source-doc-badge v2">Bản mới</span>
+                      <span class="source-doc-name" id="source-doc-name-b"></span>
+                    </div>
+                    <span class="source-page" id="source-page-b"></span>
+                  </div>
+                  <div class="source-text-block">
+                    <div class="source-text" id="source-text-b"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -187,8 +253,8 @@
       </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <script src="lib/marked.min.js"></script>
+    <script src="lib/purify.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
