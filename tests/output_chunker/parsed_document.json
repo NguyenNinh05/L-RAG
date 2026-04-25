@@ -1,0 +1,111 @@
+{
+    "doc_id": "doc_02-tt-tand.signed_v1_1777017495",
+    "node_type": "document",
+    "source_path": "/home/haipd/L-RAG/data_test/02-tt-tand.signed_v1.docx",
+    "file_name": "02-tt-tand.signed_v1.docx",
+    "doc_title": "",
+    "doc_number": "02/2024/TT-TANDTC",
+    "signing_date": "2024-12-31",
+    "parties": [],
+    "sections": [
+        {
+            "node_id": "section_89505264505a",
+            "node_type": "section",
+            "section_type": "Chương",
+            "number": "I",
+            "title": ": QUY ĐỊNH CHUNG",
+            "articles": [
+                {
+                    "node_id": "article_8c73219b71e1",
+                    "node_type": "article",
+                    "number": 1,
+                    "title": "Phạm vi điều chỉnh",
+                    "intro": " Thông tư này quy định về tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của các đơn vị thuộc bộ máy giúp việc của Tòa án nhân dân tối cao.",
+                    "clauses": [],
+                    "tables": [],
+                    "page_number": null
+                },
+                {
+                    "node_id": "article_7b3b652af5fb",
+                    "node_type": "article",
+                    "number": 2,
+                    "title": "Đối tượng áp dụng",
+                    "intro": " Thông tư này áp dụng đối với các đơn vị thuộc Tòa án nhân dân tối cao và các cơ quan, tổ chức, cá nhân có liên quan.",
+                    "clauses": [],
+                    "tables": [],
+                    "page_number": null
+                },
+                {
+                    "node_id": "article_19697b98f465",
+                    "node_type": "article",
+                    "number": 3,
+                    "title": "Vụ Pháp chế và Quản lý khoa học",
+                    "intro": "",
+                    "clauses": [
+                        {
+                            "node_id": "clause_752945f45fd1",
+                            "node_type": "clause",
+                            "number": 3,
+                            "content": "Vụ Pháp chế và Quản lý khoa học thực hiện nhiệm vụ, quyền hạn sau đây:",
+                            "points": [
+                                {
+                                    "node_id": "point_aabece9a73be",
+                                    "node_type": "point",
+                                    "label": "a",
+                                    "number": "a)",
+                                    "content": "Xây dựng văn bản quy phạm pháp luật của Hội đồng Thẩm phán Tòa án nhân dân tối cao, Chánh án Tòa án nhân dân tối cao;",
+                                    "tables": [],
+                                    "page_number": null
+                                },
+                                {
+                                    "node_id": "point_20c749d8c60c",
+                                    "node_type": "point",
+                                    "label": "b",
+                                    "number": "b)",
+                                    "content": "Phối hợp với Chính phủ và các Bộ, ngành xây dựng văn bản quy phạm pháp luật, tổng kết thực tiễn xét xử trong các lĩnh vực pháp luật liên quan;",
+                                    "tables": [],
+                                    "page_number": null
+                                },
+                                {
+                                    "node_id": "point_51b1b37050d7",
+                                    "node_type": "point",
+                                    "label": "c",
+                                    "number": "c)",
+                                    "content": "Phát triển án lệ; tổng kết thực tiễn xét xử và bảo đảm áp dụng thống nhất pháp luật trong xét xử;",
+                                    "tables": [],
+                                    "page_number": null
+                                },
+                                {
+                                    "node_id": "point_1b63671c8468",
+                                    "node_type": "point",
+                                    "label": "d",
+                                    "number": "d)",
+                                    "content": "Lập đề nghị xây dựng luật, pháp lệnh, nghị quyết trình Quốc hội, Ủy ban Thường vụ Quốc hội.",
+                                    "tables": [],
+                                    "page_number": null
+                                }
+                            ],
+                            "tables": [],
+                            "page_number": null
+                        }
+                    ],
+                    "tables": [],
+                    "page_number": null
+                }
+            ]
+        }
+    ],
+    "orphan_articles": [],
+    "preamble": "TÒA ÁN NHÂN DÂN TỐI CAO\nSố: 02/2024/TT-TANDTC\nCỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\nHà Nội, ngày 31 tháng 12 năm 2024\nTHÔNG TƯ\nQuy định tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn\ncủa các đơn vị thuộc Tòa án nhân dân tối cao\nCăn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 ngày 24 tháng 6 năm 2024;\nCăn cứ Luật Giáo dục đại học số 08/2012/QH13 ngày 18 tháng 6 năm 2012;\nChánh án Tòa án nhân dân tối cao ban hành Thông tư quy định tổ chức bộ máy, chức năng, nhiệm vụ, quyền hạn của các đơn vị thuộc Tòa án nhân dân tối cao.",
+    "annexes": [],
+    "quality_metrics": {
+        "engine_used": "docling",
+        "avg_confidence": null,
+        "low_confidence_pages": [],
+        "ocr_triggered": false,
+        "total_pages": 0,
+        "parse_duration_seconds": 2.704520306084305,
+        "warnings": []
+    },
+    "ingested_at": "2026-04-24T07:58:15.581924Z"
+}
