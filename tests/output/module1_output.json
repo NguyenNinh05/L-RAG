@@ -1,0 +1,872 @@
+{
+  "doc_id": "doc_01-tand_signed_v1_1777517813",
+  "node_type": "document",
+  "source_path": "/home/haipd/L-RAG/data_test/01-tand_signed_v1.docx",
+  "file_name": "01-tand_signed_v1.docx",
+  "doc_title": "",
+  "doc_number": "01/2026/TT-TANDTC",
+  "signing_date": "2026-01-13",
+  "parties": [],
+  "sections": [
+    {
+      "node_id": "section_e892bc714955",
+      "node_type": "section",
+      "section_type": "Chương",
+      "number": "I",
+      "title": "",
+      "articles": [
+        {
+          "node_id": "article_0e18f00c28af",
+          "node_type": "article",
+          "number": 1,
+          "title": "Phạm vi điều chỉnh",
+          "intro": " Thông tư này quy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm. Các Tòa án quân sự căn cứ vào quy định của Thông tư này và quy định của Bộ Quốc phòng để thực hiện việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm tại Tòa án quân sự.",
+          "clauses": [],
+          "tables": [
+            {
+              "table_id": "tbl_40e604e1",
+              "caption": null,
+              "headers": [
+                "TÒA ÁN NHÂN DÂN TỐI CAO",
+                "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n───────────────────"
+              ],
+              "rows": [],
+              "cells": [
+                {
+                  "row": 0,
+                  "col": 0,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "TÒA ÁN NHÂN DÂN TỐI CAO",
+                  "is_header": true
+                },
+                {
+                  "row": 0,
+                  "col": 1,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n───────────────────",
+                  "is_header": true
+                }
+              ],
+              "num_rows": 1,
+              "num_cols": 2,
+              "source_page": null
+            },
+            {
+              "table_id": "tbl_7f843d69",
+              "caption": null,
+              "headers": [
+                "Số: 01/2026/TT-TANDTC",
+                "Hà Nội, ngày 13 tháng 01 năm 2026"
+              ],
+              "rows": [],
+              "cells": [
+                {
+                  "row": 0,
+                  "col": 0,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "Số: 01/2026/TT-TANDTC",
+                  "is_header": true
+                },
+                {
+                  "row": 0,
+                  "col": 1,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "Hà Nội, ngày 13 tháng 01 năm 2026",
+                  "is_header": true
+                }
+              ],
+              "num_rows": 1,
+              "num_cols": 2,
+              "source_page": null
+            },
+            {
+              "table_id": "tbl_157d2ef6",
+              "caption": null,
+              "headers": [
+                "Nơi nhận:\n- Ủy ban Thường vụ Quốc hội;\n- Ủy ban Pháp luật và Tư pháp của Quốc hội;\n- Ban Chỉ đạo cải cách tư pháp Trung ương;\n- Ban Nội chính Trung ương;\n- Văn phòng Trung ương Đảng;\n- Văn phòng Chủ tịch nước;\n- Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam;\n- Bộ Công an;\n- Bộ Quốc phòng;\n- Bộ Tài chính;\n- Bộ Nội vụ;\n- Các Hội đồng nhân dân cấp tỉnh;\n- Thành viên HĐTP TANDTC;\n- Các đơn vị thuộc TANDTC;\n- TAND và TAQS các cấp;\n- Công báo, Cổng TTĐT Chính phủ;\n- Cổng TTĐT TANDTC (để đăng tải);\n- Lưu: VT (TANDTC, Vụ TCCB).",
+                "CHÁNH ÁN\n\n\nNguyễn Văn Quảng"
+              ],
+              "rows": [],
+              "cells": [
+                {
+                  "row": 0,
+                  "col": 0,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "Nơi nhận:\n- Ủy ban Thường vụ Quốc hội;\n- Ủy ban Pháp luật và Tư pháp của Quốc hội;\n- Ban Chỉ đạo cải cách tư pháp Trung ương;\n- Ban Nội chính Trung ương;\n- Văn phòng Trung ương Đảng;\n- Văn phòng Chủ tịch nước;\n- Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam;\n- Bộ Công an;\n- Bộ Quốc phòng;\n- Bộ Tài chính;\n- Bộ Nội vụ;\n- Các Hội đồng nhân dân cấp tỉnh;\n- Thành viên HĐTP TANDTC;\n- Các đơn vị thuộc TANDTC;\n- TAND và TAQS các cấp;\n- Công báo, Cổng TTĐT Chính phủ;\n- Cổng TTĐT TANDTC (để đăng tải);\n- Lưu: VT (TANDTC, Vụ TCCB).",
+                  "is_header": true
+                },
+                {
+                  "row": 0,
+                  "col": 1,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "CHÁNH ÁN\n\n\nNguyễn Văn Quảng",
+                  "is_header": true
+                }
+              ],
+              "num_rows": 1,
+              "num_cols": 2,
+              "source_page": null
+            },
+            {
+              "table_id": "tbl_9e77eba4",
+              "caption": null,
+              "headers": [
+                "TÒA ÁN NHÂN DÂN TỐI CAO\nĐƠN VỊ/ TÒA ÁN",
+                "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc"
+              ],
+              "rows": [],
+              "cells": [
+                {
+                  "row": 0,
+                  "col": 0,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "TÒA ÁN NHÂN DÂN TỐI CAO\nĐƠN VỊ/ TÒA ÁN",
+                  "is_header": true
+                },
+                {
+                  "row": 0,
+                  "col": 1,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc",
+                  "is_header": true
+                }
+              ],
+              "num_rows": 1,
+              "num_cols": 2,
+              "source_page": null
+            },
+            {
+              "table_id": "tbl_e14592f5",
+              "caption": null,
+              "headers": [
+                "XÁC NHẬN CỦA\nTHỦ TRƯỞNG ĐƠN VỊ/ TÒA ÁN",
+                "......, ngày ... tháng ... năm 20...\nNgười khai"
+              ],
+              "rows": [],
+              "cells": [
+                {
+                  "row": 0,
+                  "col": 0,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "XÁC NHẬN CỦA\nTHỦ TRƯỞNG ĐƠN VỊ/ TÒA ÁN",
+                  "is_header": true
+                },
+                {
+                  "row": 0,
+                  "col": 1,
+                  "row_span": 1,
+                  "col_span": 1,
+                  "content": "......, ngày ... tháng ... năm 20...\nNgười khai",
+                  "is_header": true
+                }
+              ],
+              "num_rows": 1,
+              "num_cols": 2,
+              "source_page": null
+            }
+          ],
+          "page_number": null
+        },
+        {
+          "node_id": "article_0ac9f12ec09a",
+          "node_type": "article",
+          "number": 2,
+          "title": "Đối tượng áp dụng",
+          "intro": " Thông tư này áp dụng đối với Thẩm phán Tòa án nhân dân tối cao, Thẩm phán Tòa án nhân dân, Thẩm phán Tòa án chuyên biệt (sau đây gọi là Thẩm phán); Hội thẩm nhân dân, Hội thẩm quân nhân (sau đây gọi là Hội thẩm) và cơ quan, tổ chức, cá nhân có liên quan.",
+          "clauses": [],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_35e92446333f",
+          "node_type": "article",
+          "number": 3,
+          "title": "Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_54c46425913d",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải đúng đối tượng, tiêu chuẩn, định mức và bảo đảm thống nhất trong Tòa án.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_90903294d25c",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được sử dụng trong hoạt động công vụ theo quy định của pháp luật, không sử dụng cho mục đích khác.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_8a7cddf3cc07",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Mọi vi phạm trong việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải được xử lý theo quy định của pháp luật.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_672a5194ac37",
+              "node_type": "clause",
+              "number": 4,
+              "content": "Trường hợp mất Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm, Thẩm phán, Hội thẩm phải có văn bản trình báo ngay với cơ quan Công an địa phương và báo cáo Thủ trưởng đơn vị, Chánh án Tòa án nơi Thẩm phán, Hội thẩm công tác hoặc thực hiện nhiệm vụ xét xử.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_4bc39e85ffc9",
+          "node_type": "article",
+          "number": 4,
+          "title": "Hành vi bị nghiêm cấm",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_640e9f6c4cf6",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Sử dụng Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm làm ảnh hưởng xấu đến hình ảnh, uy tín của Tòa án.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_3b423e56ec8e",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Cho, mượn, tặng, cầm cố, thế chấp, mua, bán Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_b93a7d6404a6",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Sử dụng Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm thay giấy giới thiệu, căn cước công dân hoặc các giấy tờ tùy thân khác không phải trong hoạt động công vụ theo quy định của pháp luật.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_7b1395aa1597",
+              "node_type": "clause",
+              "number": 4,
+              "content": "Làm giả, sửa chữa, tẩy xóa Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_a6be00a62352",
+          "node_type": "article",
+          "number": 5,
+          "title": "Giấy chứng minh Thẩm phán",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_d7c5a7401804",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Giấy chứng minh Thẩm phán được cấp cho người được bổ nhiệm làm Thẩm phán Tòa án nhân dân tối cao, Thẩm phán Tòa án nhân dân, Thẩm phán Tòa án chuyên biệt.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_f129204f5713",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Mẫu Giấy chứng minh Thẩm phán được quy định tại Phụ lục I ban hành kèm theo Thông tư này.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_e22b84410dea",
+          "node_type": "article",
+          "number": 6,
+          "title": "Giấy chứng minh Hội thẩm",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_f876a6ad3a39",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Giấy chứng minh Hội thẩm được cấp cho người được bầu làm Hội thẩm nhân dân tại Tòa án nhân dân cấp tỉnh và Tòa án nhân dân khu vực; người được cử làm Hội thẩm quân nhân tại Tòa án quân sự quân khu và tương đương, Tòa án quân sự khu vực.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_9758d1e4e095",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Mẫu Giấy chứng minh Hội thẩm được quy định tại Phụ lục II ban hành kèm theo Thông tư này.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_974b4690be66",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Giấy chứng minh Hội thẩm quân nhân có mẫu như Giấy chứng minh Hội thẩm nhân dân, trong đó dòng chữ \"GIẤY CHỨNG MINH HỘI THẨM NHÂN DÂN\" được thay bằng dòng chữ \"GIẤY CHỨNG MINH HỘI THẨM QUÂN NHÂN\".",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        }
+      ]
+    },
+    {
+      "node_id": "section_e89045ee1429",
+      "node_type": "section",
+      "section_type": "Chương",
+      "number": "II",
+      "title": "",
+      "articles": [
+        {
+          "node_id": "article_4eddc1b029f3",
+          "node_type": "article",
+          "number": 7,
+          "title": "Thẩm quyền, định mức cấp Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_2364c05ac6e9",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Chánh án Tòa án nhân dân tối cao cấp Giấy chứng minh Thẩm phán theo định mức mỗi người 01 chiếc vào nhiệm kỳ đầu và được cấp đổi, cấp lại nếu thuộc trường hợp quy định tại Điều 9 của Thông tư này.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_8f0b8d2cf631",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Chánh án Tòa án nhân dân tối cao cấp Giấy chứng minh Hội thẩm theo định mức mỗi người 01 chiếc vào đầu mỗi nhiệm kỳ của Hội thẩm và được cấp đổi, cấp lại nếu thuộc trường hợp quy định tại Điều 9 của Thông tư này.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_795e635e2760",
+          "node_type": "article",
+          "number": 8,
+          "title": "Trình tự, thủ tục cấp mới Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_9a743dbfcf25",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Thẩm phán, Hội thẩm làm hồ sơ đề nghị cấp Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm gửi đến Thủ trưởng đơn vị, Chánh án Tòa án nơi mình công tác hoặc thực hiện nhiệm vụ xét xử.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_b7ce4830fd34",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Hồ sơ đề nghị cấp Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm gồm:",
+              "points": [
+                {
+                  "node_id": "point_1e5fc343c778",
+                  "node_type": "point",
+                  "label": "a",
+                  "number": "a)",
+                  "content": "Tờ khai đề nghị theo mẫu được quy định tại Phụ lục III ban hành kèm theo Thông tư này;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_63561c6e27fd",
+                  "node_type": "point",
+                  "label": "b",
+                  "number": "b)",
+                  "content": "02 ảnh 20 x 30 mm, có túi đựng, ghi rõ họ tên, ngày tháng năm sinh ở phía sau của ảnh, đáp ứng các yêu cầu như sau: b1) Ảnh phông nền trắng, chụp trong 06 tháng gần nhất; b2) Trang phục của Thẩm phán Tòa án nhân dân tối cao, Thẩm phán Tòa án nhân dân công tác tại Tòa án nhân dân, Thẩm phán Tòa án chuyên biệt là công chức trong Tòa án: Áo sơ mi trắng, comple đen, cà vạt, huy hiệu Tòa án. Trang phục của Thẩm phán Tòa án chuyên biệt không là công chức trong Tòa án, Hội thẩm nhân dân: Áo sơ mi trắng, comple đen, cà vạt. Trang phục của Thẩm phán Tòa án nhân dân, Hội thẩm quân nhân công tác tại Tòa án quân sự thực hiện theo quy định của Bộ Quốc phòng; b3) Ảnh được in trên giấy có chất lượng tốt và độ phân giải cao; chất lượng ảnh sắc nét và rõ ràng.",
+                  "tables": [],
+                  "page_number": null
+                }
+              ],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_9246fa5505d4",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Việc cấp mới Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được thực hiện như sau:",
+              "points": [
+                {
+                  "node_id": "point_e1c817d7a3e8",
+                  "node_type": "point",
+                  "label": "a",
+                  "number": "a)",
+                  "content": "Thực hiện tiếp nhận tờ khai, kiểm tra, đối chiếu thông tin và lập danh sách Thẩm phán, Hội thẩm. a1) Thủ trưởng đơn vị thuộc Tòa án nhân dân tối cao thực hiện đối với Thẩm phán Tòa án nhân dân công tác tại đơn vị; a2) Chánh án Tòa án nhân dân cấp tỉnh thực hiện đối với Thẩm phán Tòa án nhân dân, Hội thẩm nhân dân tại Tòa án nhân dân cấp tỉnh và Tòa án nhân dân khu vực; a3) Chánh án Tòa án chuyên biệt tại Trung tâm tài chính quốc tế thực hiện đối với Thẩm phán Tòa án chuyên biệt; a4) Chánh án Tòa án quân sự Trung ương thực hiện đối với Thẩm phán Tòa án nhân dân, Hội thẩm quân nhân tại Tòa án quân sự; a5) Vụ Tổ chức - Cán bộ thực hiện đối với Thẩm phán Tòa án nhân dân tối cao.",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_f882a1854aaf",
+                  "node_type": "point",
+                  "label": "b",
+                  "number": "b)",
+                  "content": "Thủ trưởng đơn vị thuộc Tòa án nhân dân tối cao, Chánh án Tòa án nhân dân cấp tỉnh, Chánh án Tòa án chuyên biệt tại Trung tâm tài chính quốc tế, Chánh án Tòa án quân sự Trung ương đề nghị Chánh án Tòa án nhân dân tối cao (qua Vụ Tổ chức - Cán bộ) cấp Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm.",
+                  "tables": [],
+                  "page_number": null
+                }
+              ],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_b0020550ded5",
+              "node_type": "clause",
+              "number": 4,
+              "content": "Trong thời hạn 10 ngày làm việc, kể từ ngày nhận được đầy đủ hồ sơ đề nghị của các đơn vị, Tòa án, Chánh án Tòa án nhân dân tối cao thực hiện việc cấp Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm theo quy định tại Thông tư này.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_a5e1cbb5e79c",
+          "node_type": "article",
+          "number": 9,
+          "title": "Cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm",
+          "intro": " Việc cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm khi thuộc một trong các trường hợp sau đây:",
+          "clauses": [
+            {
+              "node_id": "clause_0ef2b8b9ff50",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Khi thay đổi thông tin trong Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm;",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_a7f1c611394a",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Thông tin trong Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm đã cấp có sai sót;",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_7d2beb72c55a",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm bị mất, bị hư hỏng không còn giá trị sử dụng.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_301a99c5c720",
+          "node_type": "article",
+          "number": 10,
+          "title": "Trình tự, thủ tục cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_d2259fc5d99d",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Thẩm phán, Hội thẩm làm hồ sơ đề nghị cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm gửi đến Thủ trưởng đơn vị, Chánh án Tòa án nơi mình công tác hoặc thực hiện nhiệm vụ xét xử.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_f6d36f366fab",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Hồ sơ đề nghị cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm gồm:",
+              "points": [
+                {
+                  "node_id": "point_e86ba8b2adfe",
+                  "node_type": "point",
+                  "label": "a",
+                  "number": "a)",
+                  "content": "Tờ khai đề nghị theo mẫu được quy định tại Phụ lục III ban hành kèm theo Thông tư này;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_79510bd9acdc",
+                  "node_type": "point",
+                  "label": "b",
+                  "number": "b)",
+                  "content": "Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm đã được cấp (nếu có);",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_477e1d460ea5",
+                  "node_type": "point",
+                  "label": "c",
+                  "number": "c)",
+                  "content": "02 ảnh 20 x 30 mm, có túi đựng, ghi rõ họ tên, ngày tháng năm sinh ở phía sau của ảnh, đáp ứng các yêu cầu theo quy định tại điểm b khoản 2 Điều 8 của Thông tư này;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_cfd164e9507d",
+                  "node_type": "point",
+                  "label": "d",
+                  "number": "d)",
+                  "content": "Giấy tờ, tài liệu hợp pháp chứng minh việc Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm có sai sót, xác nhận thay đổi thông tin hoặc có bản giải trình về các giấy tờ bị mất, bị hư hỏng, không còn giá trị sử dụng.",
+                  "tables": [],
+                  "page_number": null
+                }
+              ],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_e42573b58fa3",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Việc cấp đổi, cấp lại và thời gian thực hiện cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được thực hiện như quy định tại khoản 3 và khoản 4 Điều 8 của Thông tư này.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_f802cb0f3dee",
+          "node_type": "article",
+          "number": 11,
+          "title": "Thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_1652e01bf186",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Các trường hợp thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm:",
+              "points": [
+                {
+                  "node_id": "point_902285b9a0da",
+                  "node_type": "point",
+                  "label": "a",
+                  "number": "a)",
+                  "content": "Được cấp không đúng quy định;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_0dd8cc099c85",
+                  "node_type": "point",
+                  "label": "b",
+                  "number": "b)",
+                  "content": "Bị hư hỏng không còn giá trị sử dụng;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_fa1bec0fdbb8",
+                  "node_type": "point",
+                  "label": "c",
+                  "number": "c)",
+                  "content": "Thẩm phán nghỉ hưu, thôi việc; Hội thẩm quân nhân thôi phục vụ tại ngũ theo quy định của pháp luật;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_7622466f2e8c",
+                  "node_type": "point",
+                  "label": "d",
+                  "number": "d)",
+                  "content": "Thẩm phán, Hội thẩm thay đổi cơ quan, đơn vị công tác; chức danh, chức vụ công tác (không còn là Thẩm phán hoặc Hội thẩm);",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_de2b452e31ec",
+                  "node_type": "point",
+                  "label": "đ",
+                  "number": "đ)",
+                  "content": "Hội thẩm hết nhiệm kỳ;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_063b5b6f6e22",
+                  "node_type": "point",
+                  "label": "e",
+                  "number": "e)",
+                  "content": "Thẩm phán bị cách chức, miễn nhiệm;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_fd0cb6bc3001",
+                  "node_type": "point",
+                  "label": "g",
+                  "number": "g)",
+                  "content": "Hội thẩm được miễn nhiệm, bãi nhiệm;",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_bce0becf33b5",
+                  "node_type": "point",
+                  "label": "h",
+                  "number": "h)",
+                  "content": "Thẩm phán, Hội thẩm bị truy cứu trách nhiệm hình sự.",
+                  "tables": [],
+                  "page_number": null
+                }
+              ],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_904d9cabf131",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Thực hiện việc thu hồi.",
+              "points": [
+                {
+                  "node_id": "point_9aa25ce2d2b0",
+                  "node_type": "point",
+                  "label": "a",
+                  "number": "a)",
+                  "content": "Trách nhiệm thu hồi. a1) Thủ trưởng đơn vị thuộc Tòa án nhân dân tối cao có trách nhiệm thu hồi Giấy chứng minh Thẩm phán của Thẩm phán Tòa án nhân dân công tác tại đơn vị; a2) Chánh án Tòa án nhân dân cấp tỉnh có trách nhiệm thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm của Thẩm phán Tòa án nhân dân, Hội thẩm nhân dân tại Tòa án nhân dân cấp tỉnh và Tòa án nhân dân khu vực; a3) Chánh án Tòa án chuyên biệt tại Trung tâm tài chính quốc tế có trách nhiệm thu hồi Giấy chứng minh Thẩm phán của Thẩm phán Tòa án chuyên biệt; a4) Chánh án Tòa án quân sự Trung ương có trách nhiệm thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm của Thẩm phán Tòa án nhân dân, Hội thẩm quân nhân tại Tòa án quân sự; a5) Vụ Tổ chức - Cán bộ có trách nhiệm thu hồi Giấy chứng minh Thẩm phán của Thẩm phán Tòa án nhân dân tối cao.",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_a582ec25e4fe",
+                  "node_type": "point",
+                  "label": "b",
+                  "number": "b)",
+                  "content": "Thủ trưởng đơn vị thuộc Tòa án nhân dân tối cao, Chánh án Tòa án nhân dân cấp tỉnh, Chánh án Tòa án chuyên biệt tại Trung tâm tài chính quốc tế, Chánh án Tòa án quân sự Trung ương nộp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm bị thu hồi cho Tòa án nhân dân tối cao (qua Vụ Tổ chức - Cán bộ), kèm theo văn bản báo cáo lý do thu hồi.",
+                  "tables": [],
+                  "page_number": null
+                },
+                {
+                  "node_id": "point_b7863adb9f03",
+                  "node_type": "point",
+                  "label": "c",
+                  "number": "c)",
+                  "content": "Tòa án nhân dân tối cao (qua Vụ Tổ chức - Cán bộ) tiếp nhận các Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm bị thu hồi và thực hiện việc tiêu hủy theo quy định.",
+                  "tables": [],
+                  "page_number": null
+                }
+              ],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_80ccfac72864",
+          "node_type": "article",
+          "number": 12,
+          "title": "Kiểm tra, thanh tra",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_479d38c1adf6",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Thủ trưởng đơn vị thuộc Tòa án nhân dân tối cao, Chánh án Tòa án nhân dân cấp tỉnh, Chánh án Tòa án chuyên biệt tại Trung tâm tài chính quốc tế, Chánh án Tòa án nhân dân khu vực, Chánh án Tòa án quân sự các cấp có trách nhiệm kiểm tra việc sử dụng Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm đối với Thẩm phán, Hội thẩm thuộc thẩm quyền quản lý theo quy định của pháp luật và Thông tư này.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_ef12dac8ff13",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Tòa án nhân dân tối cao thanh tra việc sử dụng Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm đối với Thẩm phán, Hội thẩm trong Tòa án.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        },
+        {
+          "node_id": "article_656a1d963385",
+          "node_type": "article",
+          "number": 13,
+          "title": "Xử lý vi phạm",
+          "intro": " Thẩm phán, Hội thẩm vi phạm quy định về quản lý, sử dụng Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm thì tùy theo tính chất, mức độ, hậu quả vi phạm mà bị xử lý theo quy định của pháp luật.",
+          "clauses": [],
+          "tables": [],
+          "page_number": null
+        }
+      ]
+    },
+    {
+      "node_id": "section_6aa032543a22",
+      "node_type": "section",
+      "section_type": "Chương",
+      "number": "III",
+      "title": "",
+      "articles": [
+        {
+          "node_id": "article_c65a810d3006",
+          "node_type": "article",
+          "number": 14,
+          "title": "Điều khoản thi hành",
+          "intro": "",
+          "clauses": [
+            {
+              "node_id": "clause_8cfd23610d7a",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Thông tư này có hiệu lực thi hành từ ngày 15 tháng 01 năm 2026.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_87018563b370",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Vụ Tổ chức - Cán bộ, Cục Kế hoạch - Tài chính, Tòa án nhân dân cấp tỉnh, Tòa án chuyên biệt tại Trung tâm tài chính quốc tế, Tòa án nhân dân khu vực, Tòa án quân sự các cấp, cơ quan, đơn vị, cá nhân có liên quan trong phạm vi chức năng, nhiệm vụ, quyền hạn của mình chịu trách nhiệm tổ chức thực hiện Thông tư này.",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_1cb1e4a455fb",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Trong quá trình thực hiện nếu có khó khăn, vướng mắc hoặc đề xuất, kiến nghị thì phản ánh về Tòa án nhân dân tối cao (qua Vụ Tổ chức - Cán bộ) để tổng hợp, báo cáo Chánh án Tòa án nhân dân tối cao xem xét, quyết định./. | Nơi nhận:  - Ủy ban Thường vụ Quốc hội;  - Ủy ban Pháp luật và Tư pháp của Quốc hội;  - Ban Chỉ đạo cải cách tư pháp Trung ương;  - Ban Nội chính Trung ương;  - Văn phòng Trung ương Đảng;  - Văn phòng Chủ tịch nước;  - Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam;  - Bộ Công an;  - Bộ Quốc phòng;  - Bộ Tài chính;  - Bộ Nội vụ;  - Các Hội đồng nhân dân cấp tỉnh;  - Thành viên HĐTP TANDTC;  - Các đơn vị thuộc TANDTC;  - TAND và TAQS các cấp;  - Công báo, Cổng TTĐT Chính phủ;  - Cổng TTĐT TANDTC (để đăng tải);  - Lưu: VT (TANDTC, Vụ TCCB).   | CHÁNH ÁN  Nguyễn Văn Quảng   | |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------| PHỤ LỤC I MẪU GIẤY CHỨNG MINH THẨM PHÁN (Ban hành kèm theo Thông tư số 01/TT-TANDTC ngày 13 tháng 01 năm 2026 của Chánh án Tòa án nhân dân tối cao)",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_ed3f51b21820",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Kích thước: chiều dài 95mm, chiều rộng 62mm;",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_562044cfe455",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Mặt trước: nền đỏ, trên cùng là dòng chữ màu vàng \"CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\" phông chữ VnArialH đậm, màu vàng, in hoa, cỡ chữ 10, ở giữa là Quốc huy nước Cộng hòa xã hội chủ nghĩa Việt Nam đường kính 25mm và phía dưới Quốc huy là dòng chữ màu vàng \"GIẤY CHỨNG MINH THẨM PHÁN\" phông chữ VnArialH, màu vàng, in hoa, cỡ chữ 13 (Hình 1);",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_5b9512e596a2",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Mặt sau: nền trắng, có hoa văn chìm hình Quốc huy nước Cộng hòa xã hội chủ nghĩa Việt Nam màu hồng; có một đường gạch chéo màu đỏ rộng 8mm chạy từ góc dưới bên trái lên góc trên bên phải, ở giữa có ngôi sao vàng năm cánh; góc trên bên trái có hình Quốc huy nước Cộng hòa xã hội chủ nghĩa Việt Nam, đường kính 14mm; góc dưới bên trái có ảnh chân dung của Thẩm phán cỡ 20 x 30 mm; có thông tin về họ và tên, ngày, tháng, năm sinh, chức danh, chức vụ, Tòa án nơi công tác, ngày cấp Giấy chứng minh Thẩm phán. Ảnh được đóng dấu chìm của cơ quan có thẩm quyền cấp (Hình 2). PHỤ LỤC II MẪU GIẤY CHỨNG MINH HỘI THẨM NHÂN DÂN (Ban hành kèm theo Thông tư số 01/TT-TANDTC ngày 13 tháng 01 năm 2026 của Chánh án Tòa án nhân dân tối cao)",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_1f6c0d937136",
+              "node_type": "clause",
+              "number": 1,
+              "content": "Kích thước: chiều dài 95mm, chiều rộng 62mm;",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_753ce1d87d9e",
+              "node_type": "clause",
+              "number": 2,
+              "content": "Mặt trước: nền đỏ, trên cùng là dòng chữ màu vàng \"CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\" phông chữ VnArialH đậm, màu vàng, in hoa, cỡ chữ 10, ở giữa là Quốc huy nước Cộng hòa xã hội chủ nghĩa Việt Nam đường kính 25mm và phía dưới Quốc huy là dòng chữ màu vàng \"GIẤY CHỨNG MINH HỘI THẨM NHÂN DÂN\" phông chữ VnArialH, màu vàng, in hoa, cỡ chữ 13 (Hình 1);",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            },
+            {
+              "node_id": "clause_f31c023c5793",
+              "node_type": "clause",
+              "number": 3,
+              "content": "Mặt sau: nền trắng, có hoa văn chìm hình Quốc huy nước Cộng hòa xã hội chủ nghĩa Việt Nam màu hồng; góc trên bên trái có hình Quốc huy nước Cộng hòa xã hội chủ nghĩa Việt Nam, đường kính 14mm; góc dưới bên trái có ảnh chân dung của Hội thẩm nhân dân cỡ 20 x 30 mm; có thông tin về họ và tên, ngày, tháng, năm sinh, Tòa án nơi công tác, nhiệm kỳ, ngày cấp Giấy chứng minh Hội thẩm. Ảnh được đóng dấu chìm của cơ quan có thẩm quyền cấp (Hình 2). PHỤ LỤC III MẪU TỜ KHAI ĐỀ NGHỊ CẤP GIẤY CHỨNG MINH THẨM PHÁN, GIẤY CHỨNG MINH HỘI THẨM (Ban hành kèm theo Thông tư số 01/TT-TANDTC ngày 13 tháng 01 năm 2026 của Chánh án Tòa án nhân dân tối cao) | TÒA ÁN NHÂN DÂN TỐI CAO  ĐƠN VỊ/ TÒA ÁN   | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM  Độc lập - Tự do - Hạnh phúc   | |---------------------------------------------------|---------------------------------------------------------------------------| TỜ KHAI ĐỀ NGHỊ CẤP GIẤY CHỨNG MINH THẨM PHÁN (GIẤY CHỨNG MINH HỘI THẨM NHÂN DÂN, GIẤY CHỨNG MINH HỘI THẨM QUÂN NHÂN) Kính gửi: - Chánh án Tòa án nhân dân tối cao; - Thủ trưởng đơn vị thuộc Tòa án nhân dân tối cao (trường hợp Thẩm phán công tác tại các đơn vị thuộc Tòa án nhân dân tối cao); - Chánh án Tòa án nhân dân tỉnh/ thành phố (trường hợp Thẩm phán, Hội thẩm công tác hoặc thực hiện nhiệm vụ xét xử tại Tòa án nhân dân cấp tỉnh; Tòa án nhân dân khu vực); - Chánh án Tòa án chuyên biệt tại Trung tâm tài chính quốc tế (trường hợp Thẩm phán Tòa án chuyên biệt); - Chánh án Tòa án quân sự Trung ương (trường hợp Thẩm phán, Hội thẩm công tác hoặc thực hiện nhiệm vụ xét xử tại Tòa án quân sự). Họ và tên: ......................................................................................................... Ngày tháng năm sinh: ....................................................................................... Chức danh: ........................................................................................................ Chức vụ: ............................................................................................................. Đơn vị công tác/ nơi thực hiện nhiệm vụ xét xử: ....................................... Nhiệm kỳ Thẩm phán/ Hội thẩm: .................................................................. Lý do cấp đổi, cấp lại (đối với các trường hợp cấp đổi, cấp lại):............. ...................................................................................................................................... ...................................................................................................................................... Mã số định danh: ............................................................................................... Đề nghị Chánh án Tòa án nhân dân tối cao cấp mới (cấp đổi, cấp lại) Giấy chứng minh Thẩm phán (Giấy chứng minh Hội thẩm) cho tôi. Tôi xin cam đoan các thông tin trên là chính xác. | XÁC NHẬN CỦA  THỦ TRƯỞNG ĐƠN VỊ/ TÒA ÁN   | ......, ngày ... tháng ... năm 20...  Người khai   | |---------------------------------------------------|----------------------------------------------------------|",
+              "points": [],
+              "tables": [],
+              "page_number": null
+            }
+          ],
+          "tables": [],
+          "page_number": null
+        }
+      ]
+    }
+  ],
+  "orphan_articles": [],
+  "preamble": "| TÒA ÁN NHÂN DÂN TỐI CAO   | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM  Độc lập - Tự do - Hạnh phúc  ───────────────────   |\n|-------------------------------|------------------------------------------------------------------------------------------------|\n| Số: 01/2026/TT-TANDTC   | Hà Nội, ngày 13 tháng 01 năm 2026   |\n|-------------------------|---------------------------------------|\nTHÔNG TƯ\nQuy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi\nGiấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm\nCăn cứ Luật Tổ chức Tòa án nhân dân số 34/2024/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 81/2025/QH15, Luật số 142/2025/QH15 và Luật số 150/2025/QH15;\nCăn cứ Luật Ban hành văn bản quy phạm pháp luật số 64/2025/QH15 đã được sửa đổi, bổ sung một số điều theo Luật số 87/2025/QH15;\nTheo đề nghị của Vụ trưởng Vụ Tổ chức - Cán bộ Tòa án nhân dân tối cao;\nChánh án Tòa án nhân dân tối cao ban hành Thông tư quy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm:",
+  "annexes": [],
+  "quality_metrics": {
+    "engine_used": "docling",
+    "avg_confidence": null,
+    "low_confidence_pages": [],
+    "ocr_triggered": false,
+    "total_pages": 0,
+    "parse_duration_seconds": 4.8215030105784535,
+    "warnings": []
+  },
+  "ingested_at": "2026-04-30T02:56:53.734285Z"
+}

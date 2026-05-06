@@ -1,0 +1,241 @@
+{
+    "description": "LsuChunker duyệt DOM tree và tạo các LsuChunk dựa trên ranh giới Điều và Khoản.",
+    "stats": {
+        "total": 53,
+        "article_level": 14,
+        "clause_level": 39,
+        "with_tables": 1,
+        "avg_chars": 398.4,
+        "max_chars": 1923,
+        "min_chars": 44,
+        "content_types": {
+            "text": 52,
+            "table": 0,
+            "mixed": 1
+        }
+    },
+    "total_chunks_generated": 53,
+    "sample_chunks": [
+        {
+            "chunk_id": "chunk_7007c5e8be064bd6",
+            "doc_id": "doc_01-tand_signed_v1_1777869404",
+            "source_node_id": "article_a38ac8ad3260",
+            "source_node_type": "article",
+            "breadcrumb": "[Chương I > Điều 1. Phạm vi điều chỉnh]",
+            "content_with_prefix": "[Chương I > Điều 1. Phạm vi điều chỉnh]\nThông tư này quy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm. Các Tòa án quân sự căn cứ vào quy định của Thông tư này và quy định của Bộ Quốc phòng để thực hiện việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm tại Tòa án quân sự.",
+            "raw_content": "Thông tư này quy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm. Các Tòa án quân sự căn cứ vào quy định của Thông tư này và quy định của Bộ Quốc phòng để thực hiện việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm tại Tòa án quân sự.",
+            "content_type": "mixed",
+            "tables_json": [
+                {
+                    "table_id": "tbl_656a6e19",
+                    "headers": [
+                        "TÒA ÁN NHÂN DÂN TỐI CAO",
+                        "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n───────────────────"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "TÒA ÁN NHÂN DÂN TỐI CAO",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n───────────────────",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                },
+                {
+                    "table_id": "tbl_b57b05c2",
+                    "headers": [
+                        "Số: 01/2026/TT-TANDTC",
+                        "Hà Nội, ngày 13 tháng 01 năm 2026"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "Số: 01/2026/TT-TANDTC",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "Hà Nội, ngày 13 tháng 01 năm 2026",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                },
+                {
+                    "table_id": "tbl_322e5da0",
+                    "headers": [
+                        "Nơi nhận:\n- Ủy ban Thường vụ Quốc hội;\n- Ủy ban Pháp luật và Tư pháp của Quốc hội;\n- Ban Chỉ đạo cải cách tư pháp Trung ương;\n- Ban Nội chính Trung ương;\n- Văn phòng Trung ương Đảng;\n- Văn phòng Chủ tịch nước;\n- Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam;\n- Bộ Công an;\n- Bộ Quốc phòng;\n- Bộ Tài chính;\n- Bộ Nội vụ;\n- Các Hội đồng nhân dân cấp tỉnh;\n- Thành viên HĐTP TANDTC;\n- Các đơn vị thuộc TANDTC;\n- TAND và TAQS các cấp;\n- Công báo, Cổng TTĐT Chính phủ;\n- Cổng TTĐT TANDTC (để đăng tải);\n- Lưu: VT (TANDTC, Vụ TCCB).",
+                        "CHÁNH ÁN\n\n\nNguyễn Văn Quảng"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "Nơi nhận:\n- Ủy ban Thường vụ Quốc hội;\n- Ủy ban Pháp luật và Tư pháp của Quốc hội;\n- Ban Chỉ đạo cải cách tư pháp Trung ương;\n- Ban Nội chính Trung ương;\n- Văn phòng Trung ương Đảng;\n- Văn phòng Chủ tịch nước;\n- Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam;\n- Bộ Công an;\n- Bộ Quốc phòng;\n- Bộ Tài chính;\n- Bộ Nội vụ;\n- Các Hội đồng nhân dân cấp tỉnh;\n- Thành viên HĐTP TANDTC;\n- Các đơn vị thuộc TANDTC;\n- TAND và TAQS các cấp;\n- Công báo, Cổng TTĐT Chính phủ;\n- Cổng TTĐT TANDTC (để đăng tải);\n- Lưu: VT (TANDTC, Vụ TCCB).",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "CHÁNH ÁN\n\n\nNguyễn Văn Quảng",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                },
+                {
+                    "table_id": "tbl_3a5743af",
+                    "headers": [
+                        "TÒA ÁN NHÂN DÂN TỐI CAO\nĐƠN VỊ/ TÒA ÁN",
+                        "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "TÒA ÁN NHÂN DÂN TỐI CAO\nĐƠN VỊ/ TÒA ÁN",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                },
+                {
+                    "table_id": "tbl_5bddd88e",
+                    "headers": [
+                        "XÁC NHẬN CỦA\nTHỦ TRƯỞNG ĐƠN VỊ/ TÒA ÁN",
+                        "......, ngày ... tháng ... năm 20...\nNgười khai"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "XÁC NHẬN CỦA\nTHỦ TRƯỞNG ĐƠN VỊ/ TÒA ÁN",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "......, ngày ... tháng ... năm 20...\nNgười khai",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                }
+            ],
+            "article_number": 1,
+            "clause_number": null,
+            "section_title": "Chương I",
+            "page_number": null,
+            "char_count": 335
+        },
+        {
+            "chunk_id": "chunk_360bb3ae55834ecf",
+            "doc_id": "doc_01-tand_signed_v1_1777869404",
+            "source_node_id": "article_7b862ed68d64",
+            "source_node_type": "article",
+            "breadcrumb": "[Chương I > Điều 2. Đối tượng áp dụng]",
+            "content_with_prefix": "[Chương I > Điều 2. Đối tượng áp dụng]\nThông tư này áp dụng đối với Thẩm phán Tòa án nhân dân tối cao, Thẩm phán Tòa án nhân dân, Thẩm phán Tòa án chuyên biệt (sau đây gọi là Thẩm phán); Hội thẩm nhân dân, Hội thẩm quân nhân (sau đây gọi là Hội thẩm) và cơ quan, tổ chức, cá nhân có liên quan.",
+            "raw_content": "Thông tư này áp dụng đối với Thẩm phán Tòa án nhân dân tối cao, Thẩm phán Tòa án nhân dân, Thẩm phán Tòa án chuyên biệt (sau đây gọi là Thẩm phán); Hội thẩm nhân dân, Hội thẩm quân nhân (sau đây gọi là Hội thẩm) và cơ quan, tổ chức, cá nhân có liên quan.",
+            "content_type": "text",
+            "tables_json": [],
+            "article_number": 2,
+            "clause_number": null,
+            "section_title": "Chương I",
+            "page_number": null,
+            "char_count": 254
+        },
+        {
+            "chunk_id": "chunk_7f780b18fce44bda",
+            "doc_id": "doc_01-tand_signed_v1_1777869404",
+            "source_node_id": "article_26b2846fcee2",
+            "source_node_type": "article",
+            "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm]",
+            "content_with_prefix": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm]\nKhoản 1: Việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải đúng đối tượng, tiêu chuẩn, định mức và bảo đảm thốn...\nKhoản 2: Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được sử dụng trong hoạt động công vụ theo quy định của pháp luật, không sử dụng cho mục đích khác.\nKhoản 3: Mọi vi phạm trong việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải được xử lý theo quy định của pháp ...\nKhoản 4: Trường hợp mất Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm, Thẩm phán, Hội thẩm phải có văn bản trình báo ngay với cơ quan Công an địa phương ...",
+            "raw_content": "Khoản 1: Việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải đúng đối tượng, tiêu chuẩn, định mức và bảo đảm thốn...\nKhoản 2: Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được sử dụng trong hoạt động công vụ theo quy định của pháp luật, không sử dụng cho mục đích khác.\nKhoản 3: Mọi vi phạm trong việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải được xử lý theo quy định của pháp ...\nKhoản 4: Trường hợp mất Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm, Thẩm phán, Hội thẩm phải có văn bản trình báo ngay với cơ quan Công an địa phương ...",
+            "content_type": "text",
+            "tables_json": [],
+            "article_number": 3,
+            "clause_number": null,
+            "section_title": "Chương I",
+            "page_number": null,
+            "char_count": 648
+        },
+        {
+            "chunk_id": "chunk_97fdf08b5ff74e1e",
+            "doc_id": "doc_01-tand_signed_v1_1777869404",
+            "source_node_id": "clause_6e04266cb44a",
+            "source_node_type": "clause",
+            "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 1]",
+            "content_with_prefix": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 1]\nViệc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải đúng đối tượng, tiêu chuẩn, định mức và bảo đảm thống nhất trong Tòa án.",
+            "raw_content": "Việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải đúng đối tượng, tiêu chuẩn, định mức và bảo đảm thống nhất trong Tòa án.",
+            "content_type": "text",
+            "tables_json": [],
+            "article_number": 3,
+            "clause_number": 1,
+            "section_title": "Chương I",
+            "page_number": null,
+            "char_count": 170
+        },
+        {
+            "chunk_id": "chunk_f517dcfaabff4469",
+            "doc_id": "doc_01-tand_signed_v1_1777869404",
+            "source_node_id": "clause_42bc026c2e2c",
+            "source_node_type": "clause",
+            "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 2]",
+            "content_with_prefix": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 2]\nGiấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được sử dụng trong hoạt động công vụ theo quy định của pháp luật, không sử dụng cho mục đích khác.",
+            "raw_content": "Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được sử dụng trong hoạt động công vụ theo quy định của pháp luật, không sử dụng cho mục đích khác.",
+            "content_type": "text",
+            "tables_json": [],
+            "article_number": 3,
+            "clause_number": 2,
+            "section_title": "Chương I",
+            "page_number": null,
+            "char_count": 150
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+{
+    "description": "_BreadcrumbBuilder tạo chuỗi context cho mỗi node trong DOM tree.",
+    "article_breadcrumb": "[Chương I > Điều 1. Phạm vi điều chỉnh]",
+    "clause_breadcrumb": "[Chương I > Điều 1. Phạm vi điều chỉnh > Khoản 1]",
+    "point_breadcrumb": "[Chương I > Điều 1. Phạm vi điều chỉnh > Khoản 1 > Điểm a]"
+}

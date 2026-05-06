@@ -1,0 +1,18 @@
+{
+    "description": "HybridGraphBuilder khởi tạo Kuzu Schema, ChromaDB Collection và thực hiện upsert dữ liệu đồ thị + vector.",
+    "build_returned_stats": {
+        "nodes": 53,
+        "edges": 6,
+        "vectors": 53,
+        "elapsed_seconds": 2.58
+    },
+    "internal_graph_stats": {
+        "nodes_by_type": {
+            "clause": 38,
+            "article": 14
+        },
+        "references_edges": 6,
+        "contains_edges": 52,
+        "vectors_total": 53
+    }
+}

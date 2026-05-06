@@ -65,7 +65,7 @@ class BGEM3Manager:
     Manager cho BAAI/bge-m3 embedding model trong Phase 2.
 
     Chạy FP16 để tiết kiệm VRAM (~2x so với FP32) mà hầu như không ảnh hưởng quality.
-
+      
     Ví dụ sử dụng:
         manager = BGEM3Manager()
         embeddings = manager.embed_article_nodes(

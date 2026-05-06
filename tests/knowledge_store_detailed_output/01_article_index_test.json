@@ -1,0 +1,9 @@
+{
+    "description": "_ArticleIndex ánh xạ số hiệu Điều/Khoản thành node_id dùng để tạo REFERENCES edges.",
+    "total_indexed_items": 46,
+    "test_lookup_article": {
+        "query_article_number": "1",
+        "expected_node_id": "article_0d220adb0a15",
+        "actual_node_id": "article_0d220adb0a15"
+    }
+}

@@ -219,6 +219,8 @@ class _SentenceSplitter:
         while start < len(text):
             end = min(start + self.max_chars, len(text))
             chunks.append(text[start:end])
+            if end == len(text):
+                break
             start = end - self.overlap_chars  # overlap
         return chunks
 

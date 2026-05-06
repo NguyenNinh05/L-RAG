@@ -1,0 +1,180 @@
+{
+    "description": "Chi tiết các hàm nội bộ tạo chunk từ Điều và Khoản.",
+    "_process_article_output_chunks": [
+        {
+            "chunk_id": "chunk_70c3489de5894bbf",
+            "doc_id": "test_doc_id",
+            "source_node_id": "article_a38ac8ad3260",
+            "source_node_type": "article",
+            "breadcrumb": "[Chương I > Điều 1. Phạm vi điều chỉnh]",
+            "content_with_prefix": "[Chương I > Điều 1. Phạm vi điều chỉnh]\nThông tư này quy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm. Các Tòa án quân sự căn cứ vào quy định của Thông tư này và quy định của Bộ Quốc phòng để thực hiện việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm tại Tòa án quân sự.",
+            "raw_content": "Thông tư này quy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm. Các Tòa án quân sự căn cứ vào quy định của Thông tư này và quy định của Bộ Quốc phòng để thực hiện việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm tại Tòa án quân sự.",
+            "content_type": "mixed",
+            "tables_json": [
+                {
+                    "table_id": "tbl_656a6e19",
+                    "headers": [
+                        "TÒA ÁN NHÂN DÂN TỐI CAO",
+                        "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n───────────────────"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "TÒA ÁN NHÂN DÂN TỐI CAO",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n───────────────────",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                },
+                {
+                    "table_id": "tbl_b57b05c2",
+                    "headers": [
+                        "Số: 01/2026/TT-TANDTC",
+                        "Hà Nội, ngày 13 tháng 01 năm 2026"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "Số: 01/2026/TT-TANDTC",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "Hà Nội, ngày 13 tháng 01 năm 2026",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                },
+                {
+                    "table_id": "tbl_322e5da0",
+                    "headers": [
+                        "Nơi nhận:\n- Ủy ban Thường vụ Quốc hội;\n- Ủy ban Pháp luật và Tư pháp của Quốc hội;\n- Ban Chỉ đạo cải cách tư pháp Trung ương;\n- Ban Nội chính Trung ương;\n- Văn phòng Trung ương Đảng;\n- Văn phòng Chủ tịch nước;\n- Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam;\n- Bộ Công an;\n- Bộ Quốc phòng;\n- Bộ Tài chính;\n- Bộ Nội vụ;\n- Các Hội đồng nhân dân cấp tỉnh;\n- Thành viên HĐTP TANDTC;\n- Các đơn vị thuộc TANDTC;\n- TAND và TAQS các cấp;\n- Công báo, Cổng TTĐT Chính phủ;\n- Cổng TTĐT TANDTC (để đăng tải);\n- Lưu: VT (TANDTC, Vụ TCCB).",
+                        "CHÁNH ÁN\n\n\nNguyễn Văn Quảng"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "Nơi nhận:\n- Ủy ban Thường vụ Quốc hội;\n- Ủy ban Pháp luật và Tư pháp của Quốc hội;\n- Ban Chỉ đạo cải cách tư pháp Trung ương;\n- Ban Nội chính Trung ương;\n- Văn phòng Trung ương Đảng;\n- Văn phòng Chủ tịch nước;\n- Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam;\n- Bộ Công an;\n- Bộ Quốc phòng;\n- Bộ Tài chính;\n- Bộ Nội vụ;\n- Các Hội đồng nhân dân cấp tỉnh;\n- Thành viên HĐTP TANDTC;\n- Các đơn vị thuộc TANDTC;\n- TAND và TAQS các cấp;\n- Công báo, Cổng TTĐT Chính phủ;\n- Cổng TTĐT TANDTC (để đăng tải);\n- Lưu: VT (TANDTC, Vụ TCCB).",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "CHÁNH ÁN\n\n\nNguyễn Văn Quảng",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                },
+                {
+                    "table_id": "tbl_3a5743af",
+                    "headers": [
+                        "TÒA ÁN NHÂN DÂN TỐI CAO\nĐƠN VỊ/ TÒA ÁN",
+                        "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "TÒA ÁN NHÂN DÂN TỐI CAO\nĐƠN VỊ/ TÒA ÁN",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                },
+                {
+                    "table_id": "tbl_5bddd88e",
+                    "headers": [
+                        "XÁC NHẬN CỦA\nTHỦ TRƯỞNG ĐƠN VỊ/ TÒA ÁN",
+                        "......, ngày ... tháng ... năm 20...\nNgười khai"
+                    ],
+                    "rows": [],
+                    "cells": [
+                        {
+                            "row": 0,
+                            "col": 0,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "XÁC NHẬN CỦA\nTHỦ TRƯỞNG ĐƠN VỊ/ TÒA ÁN",
+                            "is_header": true
+                        },
+                        {
+                            "row": 0,
+                            "col": 1,
+                            "row_span": 1,
+                            "col_span": 1,
+                            "content": "......, ngày ... tháng ... năm 20...\nNgười khai",
+                            "is_header": true
+                        }
+                    ],
+                    "num_rows": 1,
+                    "num_cols": 2
+                }
+            ],
+            "article_number": 1,
+            "clause_number": null,
+            "section_title": "Chương I",
+            "page_number": null,
+            "char_count": 335
+        }
+    ],
+    "_process_clause_output_chunks": [
+        {
+            "chunk_id": "chunk_f4007869141141a0",
+            "doc_id": "test_doc_id",
+            "source_node_id": "clause_e9b363bfdc64",
+            "source_node_type": "clause",
+            "breadcrumb": "[Chương I > Điều 1. Phạm vi điều chỉnh > Khoản 1]",
+            "content_with_prefix": "[Chương I > Điều 1. Phạm vi điều chỉnh > Khoản 1]\nPhạm vi điều chỉnh",
+            "raw_content": "Phạm vi điều chỉnh",
+            "content_type": "text",
+            "tables_json": [],
+            "article_number": 1,
+            "clause_number": 1,
+            "section_title": "Chương I",
+            "page_number": null,
+            "char_count": 18
+        }
+    ]
+}

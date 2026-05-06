@@ -1,0 +1,20 @@
+{
+    "description": "_SentenceSplitter chia nhỏ text quá dài (vượt max_chars) thành các chunk nhỏ hơn.",
+    "max_chars": 50,
+    "overlap_chars": 10,
+    "normal_split": {
+        "input": "Đây là câu thứ nhất. Đây là câu thứ hai có độ dài khá lớn để kiểm tra cắt câu. Và đây là câu cuối cùng.",
+        "output_chunks": [
+            "Đây là câu thứ nhất.",
+            " thứ nhất. Đây là câu thứ hai có độ dài khá lớn để kiểm tra cắt câu.",
+            "a cắt câu. Và đây là câu cuối cùng."
+        ]
+    },
+    "hard_split": {
+        "input": "VănBảnKhôngCóDấuChấmĐượcViếtLiềnNhauĐểKiểmTraTínhNăngHardSplitCủaHệThống",
+        "output_chunks": [
+            "VănBảnKhôngCóDấuChấmĐượcViếtLiềnNhauĐểKiểmTraTínhN",
+            "ểmTraTínhNăngHardSplitCủaHệThống"
+        ]
+    }
+}

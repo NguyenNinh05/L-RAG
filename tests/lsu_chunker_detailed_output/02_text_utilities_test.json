@@ -1,0 +1,33 @@
+{
+    "description": "Các hàm tiện ích xử lý text và table.",
+    "_flatten_clause_content": {
+        "input_clause_content": "Phạm vi điều chỉnh",
+        "input_points": [],
+        "output_flattened": "Phạm vi điều chỉnh"
+    },
+    "_serialize_tables": {
+        "output_serialized": [
+            {
+                "table_id": "tbl_25b9f227",
+                "headers": [
+                    "Cột 1",
+                    "Cột 2"
+                ],
+                "rows": [
+                    [
+                        "1",
+                        "2"
+                    ]
+                ],
+                "cells": [],
+                "num_rows": 1,
+                "num_cols": 2
+            }
+        ]
+    },
+    "_detect_content_type": {
+        "text_only": "text",
+        "table_only": "table",
+        "mixed": "mixed"
+    }
+}

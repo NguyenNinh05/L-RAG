@@ -1,0 +1,184 @@
+[
+  {
+    "chunk_id": "chunk_22f84a44eb544066",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "article_f16562b8f557",
+    "source_node_type": "article",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 1. Phạm vi điều chỉnh]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 1. Phạm vi điều chỉnh]\nThông tư này quy định về:\nKhoản 1: Mẫu Giấy chứng minh Thẩm phán.\nKhoản 2: Việc cấp, đổi, thu hồi Giấy chứng minh.",
+    "raw_content": "Thông tư này quy định về:\nKhoản 1: Mẫu Giấy chứng minh Thẩm phán.\nKhoản 2: Việc cấp, đổi, thu hồi Giấy chứng minh.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 1,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 114
+  },
+  {
+    "chunk_id": "chunk_2a30a1525a974a4e",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "clause_93762cb9c2eb",
+    "source_node_type": "clause",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 1. Phạm vi điều chỉnh > Khoản 1]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 1. Phạm vi điều chỉnh > Khoản 1]\nMẫu Giấy chứng minh Thẩm phán.",
+    "raw_content": "Mẫu Giấy chứng minh Thẩm phán.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 1,
+    "clause_number": 1,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 30
+  },
+  {
+    "chunk_id": "chunk_514399d125834ff1",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "clause_117cda8fa739",
+    "source_node_type": "clause",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 1. Phạm vi điều chỉnh > Khoản 2]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 1. Phạm vi điều chỉnh > Khoản 2]\nViệc cấp, đổi, thu hồi Giấy chứng minh.",
+    "raw_content": "Việc cấp, đổi, thu hồi Giấy chứng minh.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 1,
+    "clause_number": 2,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 39
+  },
+  {
+    "chunk_id": "chunk_b49ad674faba4e7c",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "article_ba9fbd8287e4",
+    "source_node_type": "article",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng]\nThông tư này có hiệu lực thi hành đối với các đối tượng sau đây:\nKhoản 1: Khoản này cố tình viết rất dài để test chức năng chia nhỏ câu của hệ thống. Mỗi câu kết thúc bằng một dấu chấm. Theo quy định hiện hành, các cá nhân, ...\nKhoản 2: Các trường hợp khác bao gồm:\nKhoản 3: Chi tiết kích thước xem tại bảng sau:",
+    "raw_content": "Thông tư này có hiệu lực thi hành đối với các đối tượng sau đây:\nKhoản 1: Khoản này cố tình viết rất dài để test chức năng chia nhỏ câu của hệ thống. Mỗi câu kết thúc bằng một dấu chấm. Theo quy định hiện hành, các cá nhân, ...\nKhoản 2: Các trường hợp khác bao gồm:\nKhoản 3: Chi tiết kích thước xem tại bảng sau:",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 2,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 312
+  },
+  {
+    "chunk_id": "chunk_19c82635feae4ece",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "clause_376b1b391060",
+    "source_node_type": "clause",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 1] [phần 1/4]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 1] [phần 1/4]\nKhoản này cố tình viết rất dài để test chức năng chia nhỏ câu của hệ thống. Mỗi câu kết thúc bằng một dấu chấm.",
+    "raw_content": "Khoản này cố tình viết rất dài để test chức năng chia nhỏ câu của hệ thống. Mỗi câu kết thúc bằng một dấu chấm.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 2,
+    "clause_number": 1,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 111
+  },
+  {
+    "chunk_id": "chunk_9e6cfae57d8f4885",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "clause_376b1b391060",
+    "source_node_type": "clause",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 1] [phần 2/4]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 1] [phần 2/4]\nc bằng một dấu chấm. Theo quy định hiện hành, các cá nhân, tổ chức có trách nhiệm tuân thủ nghiêm ngặt.",
+    "raw_content": "c bằng một dấu chấm. Theo quy định hiện hành, các cá nhân, tổ chức có trách nhiệm tuân thủ nghiêm ngặt.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 2,
+    "clause_number": 1,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 103
+  },
+  {
+    "chunk_id": "chunk_499e180618374672",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "clause_376b1b391060",
+    "source_node_type": "clause",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 1] [phần 3/4]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 1] [phần 3/4]\nuân thủ nghiêm ngặt. Nếu vi phạm sẽ bị xử lý theo pháp luật.",
+    "raw_content": "uân thủ nghiêm ngặt. Nếu vi phạm sẽ bị xử lý theo pháp luật.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 2,
+    "clause_number": 1,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 60
+  },
+  {
+    "chunk_id": "chunk_76dfb7239f624003",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "clause_376b1b391060",
+    "source_node_type": "clause",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 1] [phần 4/4]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 1] [phần 4/4]\nử lý theo pháp luật. Ngoài ra, việc thu hồi giấy chứng minh được thực hiện nhanh chóng.",
+    "raw_content": "ử lý theo pháp luật. Ngoài ra, việc thu hồi giấy chứng minh được thực hiện nhanh chóng.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 2,
+    "clause_number": 1,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 87
+  },
+  {
+    "chunk_id": "chunk_31b4b3e00f1e479f",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "clause_315f59f8ea19",
+    "source_node_type": "clause",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 2]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 2]\nCác trường hợp khác bao gồm:\na) Thẩm phán TAND Tối cao.\nb) Thẩm phán TAND cấp cao.",
+    "raw_content": "Các trường hợp khác bao gồm:\na) Thẩm phán TAND Tối cao.\nb) Thẩm phán TAND cấp cao.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 2,
+    "clause_number": 2,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 82
+  },
+  {
+    "chunk_id": "chunk_bfc8e3b9b4e440c6",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "clause_25f952516293",
+    "source_node_type": "clause",
+    "breadcrumb": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 3]",
+    "content_with_prefix": "[Chương I. QUY ĐỊNH CHUNG > Điều 2. Đối tượng áp dụng > Khoản 3]\nChi tiết kích thước xem tại bảng sau:",
+    "raw_content": "Chi tiết kích thước xem tại bảng sau:",
+    "content_type": "mixed",
+    "tables_json": [
+      {
+        "table_id": "tbl_39da5d75",
+        "headers": [
+          "Loại Giấy",
+          "Kích thước"
+        ],
+        "rows": [
+          [
+            "Thẩm phán",
+            "100x65mm"
+          ],
+          [
+            "Hội thẩm",
+            "95x62mm"
+          ]
+        ],
+        "cells": [],
+        "num_rows": 3,
+        "num_cols": 2
+      }
+    ],
+    "article_number": 2,
+    "clause_number": 3,
+    "section_title": "Chương I. QUY ĐỊNH CHUNG",
+    "char_count": 37
+  },
+  {
+    "chunk_id": "chunk_55be07bb5e60425c",
+    "doc_id": "doc_386a433e46554631",
+    "source_node_id": "article_eaeed968cca6",
+    "source_node_type": "article",
+    "breadcrumb": "[Điều 3. Hiệu lực thi hành]",
+    "content_with_prefix": "[Điều 3. Hiệu lực thi hành]\nĐiều khoản này đứng độc lập không có khoản con. Hiệu lực từ ngày 01/01/2026.",
+    "raw_content": "Điều khoản này đứng độc lập không có khoản con. Hiệu lực từ ngày 01/01/2026.",
+    "content_type": "text",
+    "tables_json": [],
+    "article_number": 3,
+    "char_count": 76
+  }
+]

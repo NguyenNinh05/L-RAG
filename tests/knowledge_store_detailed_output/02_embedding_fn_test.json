@@ -1,0 +1,20 @@
+{
+    "description": "placeholder_embedding_fn trả về zero vectors (sẽ thay bằng model thật trên production).",
+    "input_texts": [
+        "Câu hỏi test số 1",
+        "Câu hỏi test số 2"
+    ],
+    "output_embeddings_shape": "2 x 1024",
+    "sample_vector_preview": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ]
+}

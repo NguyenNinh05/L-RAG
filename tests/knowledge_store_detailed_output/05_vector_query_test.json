@@ -1,0 +1,76 @@
+{
+    "description": "Truy vấn thử ChromaDB. Lưu ý: do đang dùng placeholder (zero vector) nên distance sẽ = 0 và kết quả trả về mang tính tượng trưng, chủ yếu test metadata có đúng không.",
+    "query": "thủ tục tố tụng",
+    "results_count": 3,
+    "top_3_results": [
+        {
+            "chunk_id": "chunk_f04bb9a6c0e5428f",
+            "node_id": "clause_5726639db16c",
+            "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 2]",
+            "document": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 2]\nGiấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được sử dụng trong hoạt động công vụ theo quy định của pháp luật, không sử dụng cho mục đích khác.",
+            "distance": 1.0,
+            "metadata": {
+                "clause_number": "2",
+                "node_id": "clause_5726639db16c",
+                "doc_id": "doc_01-tand_signed_v1_1777869597",
+                "has_tables": false,
+                "chunk_id": "chunk_f04bb9a6c0e5428f",
+                "article_number": "3",
+                "file_name": "",
+                "ingested_at": "2026-05-04T04:40:00.381926+00:00",
+                "content_type": "text",
+                "page_number": 0,
+                "char_count": 150,
+                "node_type": "clause",
+                "section_title": "Chương I",
+                "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 2]"
+            }
+        },
+        {
+            "chunk_id": "chunk_0516bdc1a7ba4e8c",
+            "node_id": "clause_3b75c32bd51f",
+            "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 3]",
+            "document": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 3]\nMọi vi phạm trong việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm phải được xử lý theo quy định của pháp luật.",
+            "distance": 1.0,
+            "metadata": {
+                "node_type": "clause",
+                "file_name": "",
+                "content_type": "text",
+                "ingested_at": "2026-05-04T04:40:00.381926+00:00",
+                "char_count": 155,
+                "node_id": "clause_3b75c32bd51f",
+                "clause_number": "3",
+                "section_title": "Chương I",
+                "article_number": "3",
+                "page_number": 0,
+                "doc_id": "doc_01-tand_signed_v1_1777869597",
+                "has_tables": false,
+                "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 3]",
+                "chunk_id": "chunk_0516bdc1a7ba4e8c"
+            }
+        },
+        {
+            "chunk_id": "chunk_834d5d3024a943a8",
+            "node_id": "clause_fa9398bc6d76",
+            "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 4]",
+            "document": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 4]\nTrường hợp mất Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm, Thẩm phán, Hội thẩm phải có văn bản trình báo ngay với cơ quan Công an địa phương và báo cáo Thủ trưởng đơn vị, Chánh án Tòa án nơi Thẩm phán, Hội thẩm công tác hoặc thực hiện nhiệm vụ xét xử.",
+            "distance": 1.0,
+            "metadata": {
+                "breadcrumb": "[Chương I > Điều 3. Nguyên tắc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 4]",
+                "node_id": "clause_fa9398bc6d76",
+                "node_type": "clause",
+                "page_number": 0,
+                "char_count": 260,
+                "chunk_id": "chunk_834d5d3024a943a8",
+                "article_number": "3",
+                "content_type": "text",
+                "has_tables": false,
+                "file_name": "",
+                "section_title": "Chương I",
+                "doc_id": "doc_01-tand_signed_v1_1777869597",
+                "ingested_at": "2026-05-04T04:40:00.381926+00:00",
+                "clause_number": "4"
+            }
+        }
+    ]
+}
