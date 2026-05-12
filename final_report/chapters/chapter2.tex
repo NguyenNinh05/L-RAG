@@ -1,0 +1,438 @@
+% ============================================================================
+% CHƯƠNG 2: CƠ SỞ LÝ THUYẾT
+% ============================================================================
+\chapter{CƠ SỞ LÝ THUYẾT}
+
+Chương này trình bày nền tảng lý thuyết của hệ thống L-RAG, bao gồm: kiến trúc Retrieval-Augmented Generation và biến thể Pairwise Document Intelligence, các chiến lược chunking cho văn bản pháp lý, mô hình embedding đa ngữ nghĩa, thuật toán alignment trên đồ thị hai phía, và cơ chế chống ảo giác (hallucination) cho mô hình ngôn ngữ lớn.
+
+% ============================================================================
+\section{Kiến trúc Retrieval-Augmented Generation (RAG)}
+% ============================================================================
+
+\subsection{RAG truyền thống}
+
+Retrieval-Augmented Generation (\gls{rag}) là kiến trúc kết hợp giữa truy xuất thông tin (retrieval) và sinh văn bản (generation), lần đầu được giới thiệu bởi Lewis et al. \cite{lewis2020rag} tại NeurIPS 2020. Kiến trúc \gls{rag} truyền thống hoạt động theo cơ chế ba bước:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Indexing}: Chia nhỏ corpus tài liệu thành các chunk, nhúng (embed) thành vector và lưu vào vector database. Mỗi chunk được biểu diễn bởi một vector embedding $d$-chiều, thường được sinh từ các mô hình embedding dựa trên kiến trúc Transformer \cite{vaswani2017attention} như \gls{bert} \cite{devlin2019bert} hoặc các biến thể đa ngôn ngữ.
+    \item \textbf{Retrieval}: Khi có câu truy vấn (query), nhúng query thành vector và tìm kiếm top-$k$ chunk tương đồng nhất trong vector database, thường sử dụng tìm kiếm lân cận gần nhất xấp xỉ (\gls{ann}) với độ đo cosine similarity hoặc Euclidean distance.
+    \item \textbf{Generation}: Ghép query với các chunk đã truy xuất thành một prompt, gửi đến \gls{llm} để sinh câu trả lời có căn cứ từ tài liệu. \gls{llm} đóng vai trò ``synthesizer'' — tổng hợp thông tin từ nhiều chunk để tạo câu trả lời mạch lạc.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto]
+        \tikzstyle{block} = [rectangle, draw, fill=blue!10, text width=3.5cm, text centered, rounded corners, minimum height=1.2cm]
+        \tikzstyle{arrow} = [thick,->,>=stealth]
+
+        \node [block] (corpus) {Corpus\\Tài liệu};
+        \node [block, right=of corpus] (chunk) {Chunking\\\& Embedding};
+        \node [block, right=of chunk] (vecdb) {Vector DB\\(Qdrant/ChromaDB)};
+        \node [block, below=of vecdb] (retrieve) {ANN Search\\Top-k Retrieval};
+        \node [block, below=of retrieve] (llm) {LLM\\Generation};
+        \node [block, left=of llm] (query) {Query\\Câu hỏi};
+
+        \draw [arrow] (corpus) -- (chunk);
+        \draw [arrow] (chunk) -- (vecdb);
+        \draw [arrow] (vecdb) -- (retrieve);
+        \draw [arrow] (query) -- (retrieve);
+        \draw [arrow] (retrieve) -- (llm);
+        \draw [arrow] (llm) -- ++(0,-1) node [below] {Câu trả lời};
+    \end{tikzpicture}
+    \caption{Kiến trúc RAG truyền thống: Corpus $\rightarrow$ Chunk $\rightarrow$ Embed $\rightarrow$ Vector DB $\rightarrow$ Retrieve $\rightarrow$ Generate. Nguồn: Lewis et al. \cite{lewis2020rag}.}
+    \label{fig:rag_traditional}
+\end{figure}
+
+Gao et al. \cite{gao2024retrieval} đã tổng quan hóa toàn diện các biến thể của \gls{rag}, phân loại theo ba trục: (1) khi nào thực hiện retrieval (once, adaptive, iterative), (2) cách tổ chức corpus (flat chunks, hierarchical, graph-based), và (3) cách tích hợp retrieved context vào generation (prompt-based, attention-based, fusion-in-decoder).
+
+\subsection{GraphRAG — Tiếp cận dựa trên đồ thị}
+
+Microsoft Research giới thiệu Graph\gls{rag} \cite{edge2024graphrag} như một bước tiến từ \gls{rag} truyền thống, giải quyết bài toán truy vấn toàn cục (global query) trên tập tài liệu lớn. Graph\gls{rag} hoạt động qua hai giai đoạn:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Graph Construction}: Trích xuất thực thể (entity) và quan hệ (relationship) từ văn bản sử dụng \gls{llm}, xây dựng đồ thị tri thức (knowledge graph). Các cộng đồng thực thể (community) được phát hiện bằng thuật toán Leiden.
+    \item \textbf{Community Summarization}: Với mỗi community, \gls{llm} sinh bản tóm tắt phân cấp. Khi có query toàn cục, hệ thống tổng hợp các community summary liên quan để tạo câu trả lời.
+\end{enumerate}
+
+Tuy nhiên, cả \gls{rag} truyền thống và Graph\gls{rag} đều được thiết kế cho mô hình \textbf{một corpus + một query}. Chúng không được tối ưu cho bài toán so sánh hai tài liệu theo cặp, nơi không có ``query'' từ người dùng và mọi cặp article cần được so sánh exhaustively.
+
+\subsection{Pairwise Document Intelligence Pipeline — Biến thể đề xuất}
+
+Hệ thống L-RAG được thiết kế theo pattern \textbf{Pairwise Document Intelligence Pipeline} — một kiến trúc mới được đề xuất cho bài toán so sánh đúng hai tài liệu (V1 và V2). Điểm khác biệt cốt lõi là: toàn bộ quá trình ``retrieval'' xảy ra ở \textbf{build time} (khi nạp V1+V2), không phải ở query time. Không có người dùng ``hỏi'' gì — hệ thống chủ động so sánh tất cả các cặp article giữa hai phiên bản.
+
+Bảng~\ref{tab:rag_comparison} so sánh ba pattern kiến trúc:
+
+\begin{table}[H]
+    \centering
+    \caption{So sánh các pattern kiến trúc: RAG truyền thống, GraphRAG và Pairwise Document Intelligence (L-RAG)}
+    \label{tab:rag_comparison}
+    \begin{tabularx}{\textwidth}{p{2.2cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+        \toprule
+        \textbf{Đặc điểm} & \textbf{RAG truyền thống} & \textbf{GraphRAG (Microsoft)} & \textbf{L-RAG (Pairwise)}\\
+        \midrule
+        Input & 1 corpus + 1 query & 1 corpus nhiều tài liệu & Đúng 2 tài liệu V1, V2\\
+        Cơ chế chính & ANN search (query $\rightarrow$ top-k chunks) & Entity extraction + graph traversal & Bipartite alignment (Hungarian)\\
+        Có ``query'' không? & Có & Có (global query) & \textbf{Không}\\
+        Vai trò LLM & Synthesize — tạo câu trả lời & Summarize — tóm tắt community & \textbf{Transcribe only} — chỉ ghi nhận thay đổi\\
+        Reranker cần không? & Có (lọc top-k) & Đôi khi & \textbf{Không cần}\\
+        Retrieval timing & Query time & Index time + Query time & \textbf{Build time} (exhaustive)\\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Trong Pairwise Document Intelligence Pipeline, không có bước ``retrieve top-k chunks cho query''. Thay vào đó, mọi article V1 được so sánh với mọi article V2 thông qua ma trận tương đồng $N \times M$ và thuật toán ghép cặp tối ưu Hungarian. \gls{llm} không đóng vai trò synthesizer hay summarizer, mà đóng vai trò ``transcriber'' — chỉ ghi nhận và trích dẫn nguyên văn các thay đổi giữa hai văn bản, không suy diễn.
+
+% ============================================================================
+\section{Document Parsing cho Văn bản Pháp lý}
+% ============================================================================
+
+\subsection{Thách thức trong Parsing Văn bản Pháp lý}
+
+Văn bản pháp lý đặt ra những thách thức đặc thù cho bài toán parsing tài liệu:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Bố cục phức tạp}: Văn bản pháp lý thường có layout đa cột, chứa bảng biểu, chú thích chân trang, và cấu trúc đánh số đa cấp (Chương $\rightarrow$ Điều $\rightarrow$ Khoản $\rightarrow$ Điểm). Công cụ extract text thuần túy không thể tái tạo mối quan hệ phân cấp này.
+    \item \textbf{Bảng biểu có cấu trúc}: Bảng trong văn bản pháp lý chứa thông tin quan trọng (biểu phí, danh mục, khung thời gian). Việc chuyển đổi bảng thành text phẳng (stringify) làm mất cấu trúc 2D, khiến việc so sánh từng ô (cell) trở nên bất khả thi.
+    \item \textbf{Đa dạng định dạng đầu vào}: PDF sinh từ word processor (text-based), PDF scan (image-based, cần \gls{ocr}), và DOCX. Mỗi định dạng yêu cầu pipeline xử lý khác nhau.
+    \item \textbf{Tiếng Việt với dấu thanh}: Ký tự tiếng Việt có dấu thanh phức tạp (tổ hợp nguyên âm + dấu), đòi hỏi \gls{ocr} engine và font encoding chuyên biệt.
+\end{enumerate}
+
+\subsection{Docling — Công cụ Parsing Chính}
+
+IBM Research phát triển Docling \cite{docling2024}, một công cụ document understanding sử dụng vision model cho phân tích layout. Docling được chọn làm parser chính của L-RAG vì các ưu điểm:
+
+\begin{itemize}
+    \item \textbf{Vision-based layout analysis}: Sử dụng mô hình thị giác để nhận diện vùng văn bản, bảng, hình ảnh, và tái tạo reading order chính xác — kể cả với layout đa cột.
+    \item \textbf{Structured table extraction}: Trích xuất bảng dưới dạng cấu trúc dữ liệu JSON với thông tin row\_span, col\_span cho từng ô, cho phép so sánh cell-by-cell.
+    \item \textbf{Multi-format support}: Hỗ trợ cả PDF (text-based), DOCX, PPTX, và hình ảnh.
+\end{itemize}
+
+\subsection{Marker/Surya — Fallback OCR cho PDF Scan}
+
+Với PDF scan (chất lượng thấp, không extract được text trực tiếp), hệ thống sử dụng Marker \cite{marker2024} với Surya OCR engine \cite{surya2024} làm fallback. Quyết định kích hoạt OCR dựa trên hai ngưỡng:
+
+\begin{equation}
+    \text{OCR triggered} = (\text{avg\_confidence} < \theta_{\text{conf}}) \lor \left(\frac{|\text{pages\_low\_conf}|}{|\text{total\_pages}|} > \rho_{\text{ratio}}\right)
+    \label{eq:ocr_trigger}
+\end{equation}
+
+với $\theta_{\text{conf}} = 0.75$ (ngưỡng confidence trung bình) và $\rho_{\text{ratio}} = 0.30$ (tỷ lệ trang có confidence thấp).
+
+\subsection{Xây dựng Legal DOM Tree}
+
+Sau khi có text từ Docling hoặc Marker, hệ thống xây dựng cây \gls{dom} pháp lý (Legal DOM Tree) thông qua một state machine duyệt tuần tự từng dòng văn bản. Các regex pattern nhận diện cấu trúc pháp lý tiếng Việt:
+
+\begin{itemize}
+    \item \textbf{Section} (Chương/Phần/Mục): \texttt{\^{}(Chuong|Phan|Muc)\textbackslash s+(I+|0-9+)}
+    \item \textbf{Article} (Điều): \texttt{\^{}Dieu\textbackslash s+(0-9+)}
+    \item \textbf{Clause} (Khoản): \texttt{\^{}(0-9\{1,2\})\textbackslash .\textbackslash s+}
+    \item \textbf{Point} (Điểm): \texttt{\^{}\textbackslash s*([a-d])\textbackslash)\textbackslash s+}
+\end{itemize}
+
+State machine duy trì ngữ cảnh phân cấp: khi gặp một Article mới, tự động flush Clause và Point hiện tại; khi gặp Section mới, flush toàn bộ Article. Cấu trúc cây pháp lý kết quả được tổ chức như sau:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[sibling distance=6em, level distance=3em, every node/.style={draw, rectangle, rounded corners, align=center, minimum width=2.8cm, font=\footnotesize}]
+        \node [fill=blue!10] {LegalDocument}
+            child { node [fill=green!5] {DocumentSection\\\scriptsize{(Chương I, II,...)}}
+                child { node [fill=yellow!5] {ArticleNode\\\scriptsize{(Điều 1, 2,...)}}
+                    child { node [fill=orange!5] {ClauseNode\\\scriptsize{(Khoản 1, 2,...)}}
+                        child { node [fill=red!5] {PointNode\\\scriptsize{(Điểm a, b,...)}}
+                        }
+                    }
+                }
+            };
+    \end{tikzpicture}
+    \caption{Cấu trúc Legal DOM Tree phân cấp: LegalDocument $\rightarrow$ DocumentSection $\rightarrow$ ArticleNode $\rightarrow$ ClauseNode $\rightarrow$ PointNode}
+    \label{fig:legal_dom_tree}
+\end{figure}
+
+Mỗi node trong cây lưu trữ: định danh duy nhất (node\_id), nội dung văn bản (raw\_text), số thứ tự (ordinal), và các bảng biểu liên quan dưới dạng \texttt{TableData} (không bao giờ stringify thành text phẳng).
+
+% ============================================================================
+\section{Chiến lược Chunking cho Văn bản Pháp lý}
+% ============================================================================
+
+\subsection{Hạn chế của Fixed-size Chunking}
+
+Chiến lược chunking phổ biến trong \gls{rag} truyền thống là chia văn bản theo số ký tự hoặc token cố định (ví dụ: 512 tokens) với overlap (ví dụ: 50 tokens). Cách tiếp cận này có ba hạn chế nghiêm trọng với văn bản pháp lý:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Phá vỡ ranh giới ngữ nghĩa}: Một Điều luật có thể bị cắt ngang giữa chừng, tách rời Khoản 1 khỏi Khoản 2. Điều này khiến embedding model không thể nắm bắt được nội dung hoàn chỉnh của một đơn vị pháp lý.
+    \item \textbf{Mất ngữ cảnh pháp lý}: Khi chunk thiếu breadcrumb (Chương $\rightarrow$ Điều $\rightarrow$ Khoản), embedding model không thể phân biệt ``Khoản 3'' của Điều 5 với ``Khoản 3'' của Điều 15 — hai thực thể pháp lý hoàn toàn khác nhau.
+    \item \textbf{Không tương thích với cấu trúc phân cấp}: Văn bản pháp lý Việt Nam có cấu trúc phân cấp nghiêm ngặt (Chương $\rightarrow$ Điều $\rightarrow$ Khoản $\rightarrow$ Điểm). Fixed-size chunking phá hủy hoàn toàn cấu trúc này, khiến việc so sánh Điều-với-Điều và Khoản-với-Khoản trở nên bất khả thi.
+\end{enumerate}
+
+\subsection{Legal Semantic Unit (LSU) — Chiến lược Chunking Đề xuất}
+
+Để khắc phục các hạn chế trên, chúng tôi đề xuất chiến lược chunking \textbf{Legal Semantic Unit (\gls{lsu})}, hoạt động dựa trên ba nguyên tắc:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Chunk theo ranh giới pháp lý}: Mỗi LSU chunk tương ứng với một đơn vị pháp lý hoàn chỉnh — một Điều (article) hoặc một Khoản (clause). Không chunk cắt ngang ranh giới.
+    \item \textbf{Breadcrumb prefix}: Mỗi chunk được gán breadcrumb mô tả vị trí trong cây pháp lý, ví dụ: ``[Chương II > Điều 5 > Khoản 3]''. Breadcrumb được ghép vào đầu nội dung trước khi embedding, cho phép mô hình embedding ``biết'' vị trí của chunk trong tài liệu.
+    \item \textbf{Hai mức chunk}: Article-level chunk (chứa intro + preview các clause) cho embedding tổng quan về Điều; Clause-level chunk (chứa toàn bộ nội dung Khoản + các Điểm con) cho embedding chi tiết.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm and 1cm, auto]
+        \tikzstyle{lvl} = [rectangle, draw, fill=blue!5, text width=5.5cm, text centered, minimum height=0.8cm, rounded corners]
+        \tikzstyle{chunk} = [rectangle, draw, fill=green!5, text width=7cm, text centered, minimum height=1.2cm, rounded corners, font=\small]
+        \tikzstyle{arrow} = [thick,->,>=stealth]
+
+        \node [lvl] (article) {Article-level Chunk: \small{[Chương II > Điều 5] + Intro + Clause previews}};
+        \node [chunk, below=0.3cm of article] (art_ex) {\footnotesize ``...Quyền và nghĩa vụ của Bên A...[K1: Bên A có quyền...] [K2: Bên A có nghĩa vụ...]''};
+
+        \node [lvl, below=1.2cm of art_ex] (clause) {Clause-level Chunk: \small{[Chương II > Điều 5 > Khoản 1] + Full content + Points}};
+        \node [chunk, below=0.3cm of clause] (cl_ex) {\footnotesize ``...Bên A có quyền yêu cầu Bên B thực hiện đúng...a) Giao hàng...b) Đảm bảo chất lượng...''};
+
+        \draw [arrow, dashed] (article.east) -- ++(1.2,0) |- (clause.east) node [pos=0.25, right, font=\footnotesize] {1 Điều $\rightarrow$ N Khoản};
+    \end{tikzpicture}
+    \caption{Chiến lược LSU Chunking hai mức: Article-level (tổng quan) và Clause-level (chi tiết), với breadcrumb prefix cho mỗi chunk}
+    \label{fig:lsu_chunking}
+\end{figure}
+
+\subsection{Xử lý Khoản Dài}
+
+Với các Khoản có nội dung rất dài ($> 2000$ ký tự), hệ thống áp dụng \texttt{\_SentenceSplitter} — chia tại ranh giới câu (dấu chấm, chấm than, chấm hỏi, chấm phẩy) với overlap 200 ký tự để bảo toàn ngữ cảnh. Các sub-chunk được đánh dấu breadcrumb bổ sung: ``[Chương II > Điều 5 > Khoản 1 [phần 1/3]]''.
+
+\subsection{Bảo toàn Bảng biểu}
+
+Bảng biểu được serialize thành JSON có cấu trúc \texttt{TableData} với thông tin row\_span và col\_span cho từng ô, cho phép so sánh cell-by-cell trong Phase 3. Tuyệt đối không stringify bảng thành text phẳng.
+
+% ============================================================================
+\section{Mô hình Embedding Đa ngữ nghĩa}
+% ============================================================================
+
+\subsection{BGE-M3 — Embedding Đa Ngôn ngữ, Đa Chức năng}
+
+BAAI (Beijing Academy of Artificial Intelligence) giới thiệu BGE-M3 \cite{chen2024bge}, một mô hình embedding đa chức năng hỗ trợ:
+
+\begin{itemize}
+    \item \textbf{Multi-Lingual}: Hỗ trợ trên 100 ngôn ngữ, bao gồm tiếng Việt — yếu tố quan trọng cho bài toán của chúng tôi.
+    \item \textbf{Multi-Functionality}: Một lần forward pass duy nhất sinh ra ba loại vector: dense (1024 chiều, cho tìm kiếm ngữ nghĩa), sparse (BM25-style lexical weights, cho tìm kiếm từ khóa), và ColBERT-style multi-vector \cite{colbert2021} (cho late-interaction retrieval).
+    \item \textbf{Multi-Granularity}: Hỗ trợ embedding ở nhiều mức: từ, câu, đoạn, và tài liệu dài đến 8192 tokens.
+\end{itemize}
+
+BGE-M3 được huấn luyện bằng self-knowledge distillation trên corpus đa ngôn ngữ quy mô lớn, cho chất lượng vượt trội so với các mô hình embedding đa ngôn ngữ khác (multilingual-E5, LaBSE) trên nhiều benchmark.
+
+\subsection{Chiến lược Dual Embedding}
+
+L-RAG tạo ra \textbf{hai vector embedding riêng biệt} cho mỗi LSU node, phục vụ hai mục đích khác nhau:
+
+\begin{table}[H]
+    \centering
+    \caption{Chiến lược Dual Embedding cho mỗi LSU Node}
+    \label{tab:dual_embedding}
+    \begin{tabularx}{\textwidth}{p{2.2cm} p{4.5cm} p{5.5cm} X}
+        \toprule
+        \textbf{Loại Embedding} & \textbf{Đầu vào} & \textbf{Ví dụ} & \textbf{Vai trò trong Alignment}\\
+        \midrule
+        Structural & \texttt{"Dieu \{ordinal\}: \{title\}"} & ``Điều 5: Quyền và nghĩa vụ của Bên A'' & Nhận diện article dựa trên vị trí và tiêu đề\\
+        Semantic & \texttt{"[breadcrumb]\textbackslash n\{full text\}"} & ``[Chương II > Điều 5 > Khoản 3]\textbackslash n Bên A có quyền...'' & Nhận diện article dựa trên nội dung ngữ nghĩa\\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{itemize}
+    \item \textbf{Structural embedding}: Được sinh từ tiêu đề và số thứ tự của article/clause. Độ dài tối đa 512 tokens. Dùng để phát hiện các article bị đánh số lại hoặc đảo vị trí (reorder).
+    \item \textbf{Semantic embedding}: Được sinh từ toàn bộ nội dung văn bản kèm breadcrumb prefix. Độ dài tối đa 1024 tokens. Dùng để so sánh nội dung ngữ nghĩa giữa hai article.
+\end{itemize}
+
+Mô hình được tải ở chế độ \gls{fp16} (16-bit floating point), giảm một nửa \gls{vram} so với FP32 ($\sim$2GB thay vì $\sim$4GB) trong khi chất lượng embedding gần như không đổi.
+
+% ============================================================================
+\section{Thuật toán Alignment trên Đồ thị Hai phía}
+% ============================================================================
+
+\subsection{Bài toán Bipartite Matching}
+
+Cho tập $N$ article của V1 và $M$ article của V2. Bài toán đặt ra là tìm ánh xạ tối ưu giữa hai tập hợp sao cho tổng độ tương đồng là lớn nhất. Đây chính là bài toán \textbf{assignment problem} cổ điển trên đồ thị hai phía (bipartite graph).
+
+Không giống như bài toán retrieval trong \gls{rag} truyền thống (tìm top-$k$ chunk gần nhất cho một query), bài toán alignment trong L-RAG là \textbf{exhaustive} và \textbf{symmetric}: mỗi article V1 cần được so sánh với \textbf{tất cả} article V2, và mỗi article chỉ được ghép cặp tối đa một lần.
+
+\subsection{Công thức Ma trận Tương đồng Đa Trọng số}
+
+Với mỗi cặp article $(i, j)$ (V1\_$i$, V2\_$j$), độ tương đồng được tính bởi công thức đa trọng số:
+
+\begin{equation}
+    S[i][j] = \alpha \cdot \cos(\mathbf{e}_i^{V1}, \mathbf{e}_j^{V2})
+            + \beta \cdot \text{JaroWinkler}(t_i^{V1}, t_j^{V2})
+            + \gamma \cdot \left(1 - \left|\frac{i}{N-1} - \frac{j}{M-1}\right|\right)
+    \label{eq:similarity}
+\end{equation}
+
+trong đó:
+
+\begin{itemize}
+    \item $\cos(\mathbf{e}_i^{V1}, \mathbf{e}_j^{V2})$: Cosine similarity giữa vector semantic embedding của article $i$ (V1) và article $j$ (V2). Đây là trọng số chính ($\alpha = 0.6$), phản ánh độ tương đồng về nội dung ngữ nghĩa.
+    \item $\text{JaroWinkler}(t_i^{V1}, t_j^{V2})$: Jaro-Winkler similarity \cite{winkler1990string} giữa tiêu đề (title) của hai article. Trọng số $\beta = 0.3$, ưu tiên các article có tiêu đề giống nhau (phổ biến trong văn bản pháp lý khi Điều bị đánh số lại).
+    \item $1 - |\frac{i}{N-1} - \frac{j}{M-1}|$: Ordinal proximity — độ gần về vị trí. Trọng số $\gamma = 0.1$, giả định article có vị trí tương đối gần nhau trong hai phiên bản có khả năng tương đồng cao hơn.
+\end{itemize}
+
+Ràng buộc: $\alpha + \beta + \gamma = 1.0$, với $\alpha = 0.6$, $\beta = 0.3$, $\gamma = 0.1$ được xác định qua thực nghiệm.
+
+\subsection{Thuật toán Hungarian (Kuhn-Munkres)}
+
+Thuật toán Hungarian \cite{kuhn1955hungarian}, còn gọi là thuật toán Kuhn-Munkres, giải bài toán assignment tối ưu với độ phức tạp $O(\max(N, M)^3)$. Hệ thống sử dụng implementation trong SciPy \cite{scipy2020} thông qua hàm \texttt{scipy.optimize.linear\_sum\_assignment}.
+
+Ma trận chi phí được định nghĩa là $C[i][j] = 1.0 - S[i][j]$ (biến bài toán tối đa hóa tương đồng thành bài toán tối thiểu hóa chi phí). Sau khi giải, mỗi cặp $(i, j)$ được phân loại:
+
+\begin{itemize}
+    \item $S[i][j] \geq \theta_{\text{match}}$: \textbf{MATCHED} — cặp article tương đồng ($\theta_{\text{match}} = 0.65$)
+    \item $S[i][j] < \theta_{\text{match}}$: Bị loại, article $i$ và $j$ trở thành unmatched
+\end{itemize}
+
+\subsection{Phát hiện Split/Merge (1-nhiều và nhiều-1)}
+
+Sau bước Hungarian matching, các article unmatched còn lại được kiểm tra cho trường hợp split (một article V1 $\rightarrow$ nhiều article V2) và merge (nhiều article V1 $\rightarrow$ một article V2):
+
+\begin{equation}
+    \text{score\_split} = \cos(\text{embed}(T_{\text{V1}}), \text{embed}(T_{\text{V2,a}} \parallel T_{\text{V2,b}}))
+    \label{eq:split_merge}
+\end{equation}
+
+\begin{equation}
+    \text{score\_merge} = \cos(\text{embed}(T_{\text{V1,a}} \parallel T_{\text{V1,b}}), \text{embed}(T_{\text{V2}}))
+    \label{eq:merge}
+\end{equation}
+
+với $\parallel$ là phép nối chuỗi (concatenation). Ngưỡng xác nhận split/merge: $\theta_{\text{split\_merge}} = 0.80$, cao hơn ngưỡng match thông thường để tránh false positive.
+
+% ============================================================================
+\section{Cơ chế Chống Ảo giác (Anti-Hallucination)}
+% ============================================================================
+
+\subsection{Phân loại Ảo giác trong LLM}
+
+Ảo giác (hallucination) là hiện tượng \gls{llm} sinh ra thông tin không có trong dữ liệu đầu vào, được phân loại bởi Huang et al. \cite{huang2025survey} và Ji et al. \cite{ji2023survey} thành ba loại chính:
+
+\begin{table}[H]
+    \centering
+    \caption{Phân loại Ảo giác trong LLM và cơ chế phát hiện của L-RAG}
+    \label{tab:hallucination_types}
+    \begin{tabularx}{\textwidth}{X X X X}
+        \toprule
+        \textbf{Loại} & \textbf{Mô tả} & \textbf{Ví dụ} & \textbf{Phát hiện bởi}\\
+        \midrule
+        Factual Hallucination (Evidence) & LLM trích dẫn câu không tồn tại trong văn bản gốc & ``Bên A phải thanh toán 500 triệu'' (văn bản ghi 300 triệu) & Tầng 2: Evidence Verification\\
+        Numerical Hallucination & Số liệu sai lệch & ``Thời hạn 30 ngày'' (văn bản ghi 45 ngày) & Tầng 3: Numerical Verification\\
+        Semantic Distortion & LLM diễn giải sai ý nghĩa & ``Được phép'' $\rightarrow$ ``Bắt buộc'' & Tầng 2 (fuzzy match)\\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Trong bối cảnh pháp lý, ảo giác có thể gây hậu quả nghiêm trọng: một số liệu sai trong hợp đồng có thể dẫn đến tranh chấp pháp lý. Do đó, yêu cầu Zero Hallucination là ràng buộc tuyệt đối của hệ thống.
+
+\subsection{Kiến trúc Xác minh Đa tầng}
+
+L-RAG triển khai cơ chế chống ảo giác qua ba tầng bảo vệ:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=1.8cm, auto]
+        \tikzstyle{tier} = [rectangle, draw, fill=blue!5, text width=5.5cm, text centered, minimum height=1.3cm, rounded corners]
+        \tikzstyle{decision} = [diamond, draw, fill=yellow!10, text width=2cm, text centered, minimum height=1cm, aspect=2.5, inner sep=0pt, font=\small]
+        \tikzstyle{reject} = [rectangle, draw, fill=red!10, text width=2.8cm, text centered, minimum height=0.8cm, rounded corners, font=\footnotesize]
+        \tikzstyle{arrow} = [thick,->,>=stealth]
+
+        \node [tier] (t1) {\textbf{Tầng 1: Prompt Constraints}\\Temperature = 0.05, 6 RULEs, JSON mode, Verbatim-only};
+        \node [decision, below=0.8cm of t1] (d1) {Conf. $\geq 0.4$?};
+        \node [tier, below=0.8cm of d1] (t2) {\textbf{Tầng 2: Evidence Verification}\\Exact $\rightarrow$ Normalized $\rightarrow$ Fuzzy (threshold 0.85)};
+        \node [decision, below=0.8cm of t2] (d2) {Evidence found?};
+        \node [tier, below=0.8cm of d2] (t3) {\textbf{Tầng 3: Numerical Verification}\\8 regex patterns, 100\% numbers must match};
+        \node [decision, below=0.8cm of t3] (d3) {Numbers match?};
+        \node [tier, fill=green!10, below=0.8cm of d3] (pass) {\textbf{PASSED} \checkmark\ ACU được chấp nhận};
+
+        \node [reject, right=3cm of d1] (r1) {REJECTED\\Pre-filter};
+        \node [reject, right=3cm of d2] (r2) {REJECTED\\Hallucination};
+        \node [reject, right=3cm of d3] (r3) {REJECTED\\Num. Error};
+
+        \draw [arrow] (t1) -- (d1);
+        \draw [arrow] (d1) -- node [left, font=\footnotesize] {Yes} (t2);
+        \draw [arrow] (d1) -- node [above, font=\footnotesize] {No} (r1);
+        \draw [arrow] (t2) -- (d2);
+        \draw [arrow] (d2) -- node [left, font=\footnotesize] {Yes} (t3);
+        \draw [arrow] (d2) -- node [above, font=\footnotesize] {No} (r2);
+        \draw [arrow] (t3) -- (d3);
+        \draw [arrow] (d3) -- node [left, font=\footnotesize] {Yes} (pass);
+        \draw [arrow] (d3) -- node [above, font=\footnotesize] {No} (r3);
+    \end{tikzpicture}
+    \caption{Kiến trúc 3 tầng xác minh chống ảo giác của L-RAG}
+    \label{fig:antihallucination}
+\end{figure}
+
+\subsubsection{Tầng 1 — Ràng buộc Prompt (Prompt-level)}
+
+\gls{llm} được ràng buộc chặt chẽ bởi system prompt với 6 quy tắc bắt buộc (RULE 1--6):
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Verbatim Citation Only}: Mọi evidence phải là copy-paste chính xác từ văn bản gốc
+    \item \textbf{One Change Per ACU}: Mỗi ACU chỉ mô tả đúng một thay đổi
+    \item \textbf{Accurate Classification}: Phân loại chính xác 6 change\_type
+    \item \textbf{Evidence Rules Per Type}: Addition chỉ có evidence V2, Deletion chỉ có evidence V1
+    \item \textbf{No Inference}: Không suy diễn ý nghĩa pháp lý, chỉ ghi nhận thay đổi
+    \item \textbf{Confidence Calibration}: 1.0 = chắc chắn tuyệt đối, $<0.5$ = không chắc chắn
+\end{enumerate}
+
+Nhiệt độ (temperature) được đặt ở mức cực thấp $T = 0.05$ để đầu ra gần như deterministic, giảm thiểu tối đa sự ``sáng tạo'' của \gls{llm}. Ngoài ra, chế độ JSON mode (\texttt{response\_format=\{"type": "json\_object"\}}) buộc \gls{llm} sinh output có cấu trúc, giảm thiểu nhiễu văn bản tự do.
+
+\subsubsection{Tầng 2 — Xác minh Bằng chứng (Evidence Verification)}
+
+Đây là tầng hiệu quả nhất trong việc phát hiện ảo giác. Mỗi chuỗi \texttt{verbatim\_evidence} trong ACU được kiểm tra xem có thực sự xuất hiện trong \texttt{raw\_text} của văn bản gốc hay không, qua ba bước cascading:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Exact substring match}: Kiểm tra evidence có phải là substring chính xác của raw\_text không
+    \item \textbf{Whitespace-normalized match}: Chuẩn hóa khoảng trắng (thay mọi dãy whitespace bằng một dấu cách), kiểm tra lại. Xử lý artifact từ \gls{ocr} hoặc PDF extraction.
+    \item \textbf{Fuzzy sliding-window match}: Sử dụng \texttt{difflib.SequenceMatcher} \cite{python2024difflib} quét sliding window trên raw\_text (window từ 80\% đến 150\% độ dài evidence, stride = len(evidence)/4). Chấp nhận nếu tỷ lệ khớp $\geq 0.85$.
+\end{enumerate}
+
+Nếu cả ba bước đều thất bại, ACU bị đánh dấu là \texttt{FAILED\_EVIDENCE} (hallucination) và bị loại bỏ. ACU có confidence $< 0.4$ bị loại từ trước khi vào verification (pre-filter).
+
+\subsubsection{Tầng 3 — Xác minh Số liệu (Numerical Verification)}
+
+Áp dụng riêng cho ACU có \texttt{change\_type = "numerical"}. Tầng này sử dụng 8 regex pattern chuyên biệt cho định dạng số trong tiếng Việt:
+
+\begin{itemize}
+    \item Ngày tháng: \texttt{\textbackslash b(\textbackslash d\{1,2\}[./-]\textbackslash d\{1,2\}[./-]\textbackslash d\{2,4\})\textbackslash b}
+    \item Phần trăm: \texttt{\textbackslash b(\textbackslash d+(?:[.,]\textbackslash d+)?)\textbackslash s*\%}
+    \item Tiền tệ VN: \texttt{\textbackslash b(\textbackslash d\{1,3\}(?:[.]\textbackslash d\{3\})+(?:[.,]\textbackslash d+)?)\textbackslash s*(?:dong|VND|D|d)}
+    \item Số thập phân, số nguyên đơn và kép
+\end{itemize}
+
+Tất cả các số trích xuất từ \texttt{original\_value} và \texttt{new\_value} của ACU phải được tìm thấy trong raw\_text tương ứng. Yêu cầu \textbf{100\% strict mode} — chỉ cần một số không khớp, ACU bị loại.
+
+\subsection{Phân tích các Nguyên nhân Ảo giác}
+
+White et al. \cite{white2023prompt} chỉ ra rằng chất lượng prompt có ảnh hưởng quyết định đến khả năng kiểm soát ảo giác. Bốn nguyên nhân chính gây ảo giác trong bài toán so sánh văn bản:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Nhiệt độ cao ($T > 0.3$)}: LLM trở nên ``sáng tạo'', sinh ra văn bản không có trong input
+    \item \textbf{Maximum likelihood bias}: LLM có xu hướng sinh ra văn bản ``nghe có vẻ hợp lý'' nhưng không có thật
+    \item \textbf{Giới hạn context window}: Với văn bản quá dài, LLM ``quên'' phần đầu, dẫn đến suy diễn sai
+    \item \textbf{Prompt ambiguity}: Prompt không rõ ràng khiến LLM hiểu sai nhiệm vụ
+\end{enumerate}
+
+L-RAG giải quyết cả bốn nguyên nhân: (1) $T = 0.05$ cực thấp, (2) và (4) prompt với 6 RULEs chặt chẽ, (3) mỗi lần LLM chỉ nhận một cặp article (dưới 8K tokens) thay vì toàn bộ tài liệu.
+
+\subsection{Đánh giá Chất lượng với RAGAS}
+
+Khung đánh giá RAGAS \cite{es2024ragas} cung cấp các metric tự động cho hệ thống \gls{rag}, trong đó \textbf{Faithfulness} (độ trung thực) là metric quan trọng nhất cho bài toán Zero-Hallucination. Faithfulness đo lường tỷ lệ các claim trong output có thể được quy về (attributable to) context đầu vào. Mục tiêu: Faithfulness $\geq 0.90$.
+
+% ============================================================================
+\section{Tổng kết Chương}
+% ============================================================================
+
+Chương này đã trình bày nền tảng lý thuyết cho toàn bộ hệ thống L-RAG:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Pairwise Document Intelligence}: Kiến trúc đề xuất khác biệt với RAG truyền thống và GraphRAG — retrieval ở build time, không có query, LLM đóng vai trò transcriber.
+    \item \textbf{Document Parsing}: Docling với vision model cho layout analysis, Marker/Surya fallback cho PDF scan, state machine DOM builder với regex tiếng Việt.
+    \item \textbf{LSU Chunking}: Chiến lược chunking dựa trên ranh giới pháp lý, breadcrumb prefix, hai mức article-level và clause-level.
+    \item \textbf{Dual Embedding}: BGE-M3 sinh đồng thời structural và semantic embedding cho mỗi node.
+    \item \textbf{Hungarian Alignment}: Ma trận tương đồng đa trọng số $(\alpha=0.6, \beta=0.3, \gamma=0.1)$ + Hungarian matching + split/merge detection.
+    \item \textbf{3-Tier Anti-Hallucination}: Prompt constraints (T=0.05) $\rightarrow$ Evidence verification (3-step cascade) $\rightarrow$ Numerical verification (8 regex patterns, 100\% strict).
+\end{enumerate}
+
+Các cơ chế này tạo thành nền tảng vững chắc cho thiết kế hệ thống được trình bày chi tiết trong Chương 3.

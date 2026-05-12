@@ -1,0 +1,297 @@
+% ============================================================================
+% TÀI LIỆU THAM KHẢO — L-RAG Final Report
+% ============================================================================
+
+% ============================================================================
+% 1. FOUNDATIONAL MODELS & ARCHITECTURES
+% ============================================================================
+
+@inproceedings{vaswani2017attention,
+  author    = {Ashish Vaswani and Noam Shazeer and Niki Parmar and Jakob Uszkoreit and Llion Jones and Aidan N. Gomez and Lukasz Kaiser and Illia Polosukhin},
+  title     = {Attention Is All You Need},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {30},
+  year      = {2017}
+}
+
+@inproceedings{devlin2019bert,
+  author    = {Jacob Devlin and Ming-Wei Chang and Kenton Lee and Kristina Toutanova},
+  title     = {{BERT}: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+  booktitle = {Proceedings of the Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)},
+  pages     = {4171--4186},
+  year      = {2019}
+}
+
+% ============================================================================
+% 2. RAG & RETRIEVAL-AUGMENTED SYSTEMS
+% ============================================================================
+
+@inproceedings{lewis2020rag,
+  author    = {Patrick Lewis and Ethan Perez and Aleksandra Piktus and Fabio Petroni and Vladimir Karpukhin and Naman Goyal and Heinrich K{\"u}ttler and Mike Lewis and Wen-tau Yih and Tim Rockt{\"a}schel and Sebastian Riedel and Douwe Kiela},
+  title     = {Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {33},
+  pages     = {9459--9474},
+  year      = {2020}
+}
+
+@misc{gao2024retrieval,
+  author    = {Yunfan Gao and Yun Xiong and Xinyu Gao and Kangxiang Jia and Jinliu Pan and Yuxi Bi and Yi Dai and Jiawei Sun and Haofen Wang},
+  title     = {Retrieval-Augmented Generation for Large Language Models: A Survey},
+  year      = {2024},
+  eprint    = {2312.10997},
+  archivePrefix = {arXiv}
+}
+
+@misc{edge2024graphrag,
+  author    = {Darren Edge and Ha Trinh and Newman Cheng and Joshua Bradley and Alex Chao and Apurva Mody and Steven Truitt and Daniela Bar-Lev and Michele Catasta and Rangan Majumder and Jonathan Larson},
+  title     = {From Local to Global: A Graph {RAG} Approach to Query-Focused Summarization},
+  year      = {2024},
+  eprint    = {2404.16130},
+  archivePrefix = {arXiv}
+}
+
+% ============================================================================
+% 3. DOCUMENT PARSING & OCR
+% ============================================================================
+
+@misc{docling2024,
+  author    = {{IBM Research}},
+  title     = {Docling: Document Understanding and Conversion},
+  year      = {2024},
+  howpublished = {\url{https://github.com/DS4SD/docling}}
+}
+
+@misc{marker2024,
+  author    = {Vik Paruchuri},
+  title     = {Marker: Convert {PDF} to Markdown Quickly and Accurately},
+  year      = {2024},
+  howpublished = {\url{https://github.com/VikParuchuri/marker}}
+}
+
+@misc{surya2024,
+  author    = {Vik Paruchuri},
+  title     = {Surya: Multilingual Document {OCR} Toolkit},
+  year      = {2024},
+  howpublished = {\url{https://github.com/VikParuchuri/surya}}
+}
+
+% ============================================================================
+% 4. EMBEDDING MODELS
+% ============================================================================
+
+@misc{chen2024bge,
+  author    = {Jianlv Chen and Shitao Xiao and Peitian Zhang and Kun Luo and Defu Lian and Zheng Liu},
+  title     = {{BGE M3-Embedding}: Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation},
+  year      = {2024},
+  eprint    = {2402.03216},
+  archivePrefix = {arXiv}
+}
+
+@misc{colbert2021,
+  author    = {Omar Khattab and Matei Zaharia},
+  title     = {{ColBERT}: Efficient and Effective Passage Search via Contextualized Late Interaction over {BERT}},
+  year      = {2021},
+  eprint    = {2004.12832},
+  archivePrefix = {arXiv}
+}
+
+% ============================================================================
+% 5. ALGORITHMS: HUNGARIAN, STRING MATCHING, OPTIMIZATION
+% ============================================================================
+
+@article{kuhn1955hungarian,
+  author    = {Harold W. Kuhn},
+  title     = {The Hungarian Method for the Assignment Problem},
+  journal   = {Naval Research Logistics Quarterly},
+  volume    = {2},
+  number    = {1-2},
+  pages     = {83--97},
+  year      = {1955}
+}
+
+@article{winkler1990string,
+  author    = {William E. Winkler},
+  title     = {String Comparator Metrics and Enhanced Decision Rules in the {Fellegi-Sunter} Model of Record Linkage},
+  journal   = {Proceedings of the Section on Survey Research Methods, American Statistical Association},
+  pages     = {354--359},
+  year      = {1990}
+}
+
+@misc{scipy2020,
+  author    = {Pauli Virtanen and Ralf Gommers and Travis E. Oliphant and Matt Haberland and Tyler Reddy and David Cournapeau and Evgeni Burovski and Pearu Peterson and Warren Weckesser and Jonathan Bright and St{\'e}fan J. van der Walt and Matthew Brett and Joshua Wilson and K. Jarrod Millman and Nikolay Mayorov and Andrew R. J. Nelson and Eric Jones and Robert Kern and Eric Larson and C. J. Carey and Ilhan Polat and Yu Feng and Eric W. Moore and Jake VanderPlas and Denis Laxalde and Josef Perktold and Robert Cimrman and Ian Henriksen and E. A. Quintero and Charles R. Harris and Anne M. Archibald and Ant{\^o}nio H. Ribeiro and Fabian Pedregosa and Paul van Mulbregt and {SciPy 1.0 Contributors}},
+  title     = {{SciPy} 1.0: Fundamental Algorithms for Scientific Computing in {Python}},
+  journal   = {Nature Methods},
+  volume    = {17},
+  pages     = {261--272},
+  year      = {2020}
+}
+
+@article{needleman1970general,
+  author    = {Saul B. Needleman and Christian D. Wunsch},
+  title     = {A General Method Applicable to the Search for Similarities in the Amino Acid Sequence of Two Proteins},
+  journal   = {Journal of Molecular Biology},
+  volume    = {48},
+  number    = {3},
+  pages     = {443--453},
+  year      = {1970}
+}
+
+% ============================================================================
+% 6. LLM MODELS & INFERENCE
+% ============================================================================
+
+@misc{qwen2025,
+  author    = {{Qwen Team}},
+  title     = {{Qwen2.5}: A Party of Foundation Models},
+  year      = {2025},
+  howpublished = {\url{https://qwenlm.github.io/blog/qwen2.5/}}
+}
+
+@misc{llamacpp2024,
+  author    = {Georgi Gerganov and Contributors},
+  title     = {llama.cpp: {LLM} Inference in {C/C++}},
+  year      = {2024},
+  howpublished = {\url{https://github.com/ggerganov/llama.cpp}}
+}
+
+% ============================================================================
+% 7. VECTOR & GRAPH DATABASES
+% ============================================================================
+
+@misc{qdrant2024,
+  author    = {{Qdrant Team}},
+  title     = {Qdrant: Vector Database for the Next Generation of {AI} Applications},
+  year      = {2024},
+  howpublished = {\url{https://github.com/qdrant/qdrant}}
+}
+
+@misc{chromadb2024,
+  author    = {{Chroma Team}},
+  title     = {{ChromaDB}: The Open-source {AI} Application Database},
+  year      = {2024},
+  howpublished = {\url{https://github.com/chroma-core/chroma}}
+}
+
+@misc{kuzu2024,
+  author    = {{K{\^u}zu Team}},
+  title     = {{K{\^u}zu}: An Embeddable Property Graph Database Management System},
+  year      = {2024},
+  howpublished = {\url{https://github.com/kuzudb/kuzu}}
+}
+
+% ============================================================================
+% 8. HALLUCINATION IN LLMs
+% ============================================================================
+
+@misc{huang2025survey,
+  author    = {Lei Huang and Weijiang Yu and Weitao Ma and Weihong Zhong and Zhangyin Feng and Haotian Wang and Qianglong Chen and Weihua Peng and Xiaocheng Feng and Bing Qin and Ting Liu},
+  title     = {A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions},
+  year      = {2025},
+  eprint    = {2311.05232},
+  archivePrefix = {arXiv}
+}
+
+@article{ji2023survey,
+  author    = {Ziwei Ji and Nayeon Lee and Rita Frieske and Tiezheng Yu and Dan Su and Yan Xu and Etsuko Ishii and Ye Jin Bang and Andrea Madotto and Pascale Fung},
+  title     = {Survey of Hallucination in Natural Language Generation},
+  journal   = {ACM Computing Surveys},
+  volume    = {55},
+  number    = {12},
+  pages     = {1--38},
+  year      = {2023}
+}
+
+% ============================================================================
+% 9. PROMPT ENGINEERING
+% ============================================================================
+
+@misc{white2023prompt,
+  author    = {Jules White and Quchen Fu and Sam Hays and Michael Sandborn and Carlos Olea and Henry Gilbert and Ashraf Elnashar and Jesse Spencer-Smith and Douglas C. Schmidt},
+  title     = {A Prompt Pattern Catalog to Enhance Prompt Engineering with {ChatGPT}},
+  year      = {2023},
+  eprint    = {2302.11382},
+  archivePrefix = {arXiv}
+}
+
+@misc{openai2024jsonmode,
+  author    = {{OpenAI}},
+  title     = {Introducing Structured Outputs in the {API}},
+  year      = {2024},
+  howpublished = {\url{https://openai.com/index/introducing-structured-outputs-in-the-api/}}
+}
+
+% ============================================================================
+% 10. EVALUATION FRAMEWORKS
+% ============================================================================
+
+@misc{es2024ragas,
+  author    = {Shahul Es and Jithin James and Luis Espinosa-Anke and Steven Schockaert},
+  title     = {{RAGAS}: Automated Evaluation of Retrieval Augmented Generation},
+  year      = {2024},
+  eprint    = {2309.15217},
+  archivePrefix = {arXiv}
+}
+
+% ============================================================================
+% 11. VIETNAMESE NLP
+% ============================================================================
+
+@inproceedings{nguyen2023vile,
+  author    = {Ha-Thanh Nguyen and Viet-Ha Nguyen and Thi-Hai-Yen Vu},
+  title     = {A Vietnamese Legal Document Retrieval System},
+  booktitle = {Proceedings of the 17th International Workshop on Semantic Evaluation (SemEval)},
+  year      = {2023}
+}
+
+@misc{phobert2020,
+  author    = {Dat Quoc Nguyen and Anh Tuan Nguyen},
+  title     = {{PhoBERT}: Pre-trained Language Models for {Vietnamese}},
+  year      = {2020},
+  eprint    = {2003.00744},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{nguyen2019vlsp,
+  author    = {Thai-Binh Nguyen and Quang-Huy Nguyen and Thi-Hanh Nguyen},
+  title     = {Vietnamese Word Segmentation with {RNN} and {CRF}},
+  booktitle = {Proceedings of VLSP Workshop},
+  year      = {2019}
+}
+
+% ============================================================================
+% 12. LEGAL AI & NLP
+% ============================================================================
+
+@inproceedings{chalkidis2020legal,
+  author    = {Ilias Chalkidis and Manos Fergadiotis and Prodromos Malakasiotis and Nikolaos Aletras and Ion Androutsopoulos},
+  title     = {{LEGAL-BERT}: The Muppets Straight Out of Law School},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2020},
+  pages     = {2898--2904},
+  year      = {2020}
+}
+
+% ============================================================================
+% 13. SOFTWARE & TOOLS
+% ============================================================================
+
+@misc{pydantic2024,
+  author    = {{Pydantic Team}},
+  title     = {Pydantic: Data Validation Using {Python} Type Annotations},
+  year      = {2024},
+  howpublished = {\url{https://github.com/pydantic/pydantic}}
+}
+
+@misc{python2024difflib,
+  author    = {{Python Software Foundation}},
+  title     = {difflib — Helpers for Computing Deltas},
+  year      = {2024},
+  howpublished = {\url{https://docs.python.org/3/library/difflib.html}}
+}
+
+@misc{nvidia2024rtx4090,
+  author    = {{NVIDIA}},
+  title     = {{NVIDIA GeForce RTX 4090}},
+  year      = {2024},
+  howpublished = {\url{https://www.nvidia.com/en-us/geforce/graphics-cards/40-series/rtx-4090/}}
+}

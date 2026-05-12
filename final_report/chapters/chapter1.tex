@@ -1,0 +1,101 @@
+% ============================================================================
+% CHƯƠNG 1: MỞ ĐẦU
+% ============================================================================
+\chapter{MỞ ĐẦU}
+
+% ============================================================================
+\section{Tính cấp thiết của đề tài}
+% ============================================================================
+
+Trong bối cảnh chuyển đổi số mạnh mẽ tại Việt Nam, các cơ quan nhà nước, doanh nghiệp và tổ chức pháp lý đang phải xử lý khối lượng văn bản pháp lý ngày càng lớn. Một nhu cầu thiết yếu là \textbf{so sánh hai phiên bản} của cùng một văn bản pháp lý (dự thảo luật trước và sau khi sửa đổi, hợp đồng phiên bản cũ và mới, nghị định được bổ sung) để nhận diện \textbf{mọi thay đổi} — từ nhỏ nhất (sửa một con số, thay một từ ngữ) đến lớn nhất (thêm/xóa/toàn bộ điều khoản, đảo thứ tự các chương mục).
+
+Các công cụ so sánh văn bản truyền thống như Microsoft Word Track Changes hay công cụ \texttt{diff} trên Unix chỉ hoạt động ở mức ký tự (character-level) và không có khả năng \textbf{hiểu ngữ nghĩa pháp lý} để giải quyết các vấn đề:
+
+\begin{itemize}
+    \item \textbf{Đánh số lại}: Nhận diện khi một Điều khoản bị đánh số lại (Điều 5 cũ $\rightarrow$ Điều 7 mới) — đây là thay đổi về hình thức, không phải nội dung
+    \item \textbf{Tách/Gộp}: Phát hiện một Điều bị tách thành hai Điều, hoặc hai Điều bị gộp lại thành một — thay đổi về cấu trúc
+    \item \textbf{Thay đổi thực sự vs. hình thức}: Phân biệt ``hai mươi triệu đồng'' và ``20.000.000 đồng'' là tương đương về mặt pháp lý, không phải thay đổi
+    \item \textbf{So sánh bảng biểu}: So sánh theo từng ô (cell) trong bảng thay vì text phẳng — bảng biểu là thành phần quan trọng trong văn bản pháp lý (biểu phí, danh mục, khung thời gian)
+\end{itemize}
+
+Sự ra đời của các mô hình ngôn ngữ lớn (\gls{llm}) dựa trên kiến trúc Transformer \cite{vaswani2017attention} mở ra cơ hội xây dựng hệ thống AI có khả năng hiểu và so sánh văn bản ở mức ngữ nghĩa. Tuy nhiên, hai thách thức lớn khiến việc ứng dụng \gls{llm} trong lĩnh vực pháp lý trở nên khó khăn:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Bảo mật dữ liệu}: Văn bản pháp lý thường chứa thông tin nhạy cảm của doanh nghiệp và cơ quan nhà nước, không thể gửi ra các API thương mại bên ngoài (OpenAI, Anthropic, Google). Yêu cầu vận hành 100\% cục bộ (on-premise) là bắt buộc.
+    \item \textbf{Hiện tượng ảo giác (Hallucination)}: \gls{llm} có xu hướng ``bịa'' thông tin nghe có vẻ hợp lý nhưng không có thật \cite{huang2025survey,ji2023survey}. Trong bối cảnh pháp lý, một thay đổi số liệu sai có thể gây hậu quả nghiêm trọng — từ tranh chấp hợp đồng đến sai phạm trong thực thi pháp luật.
+\end{enumerate}
+
+% ============================================================================
+\section{Mục tiêu của đề tài}
+% ============================================================================
+
+Đề tài hướng đến xây dựng một hệ thống \textbf{trợ lý AI so sánh văn bản pháp lý} — L-RAG (LegalDiff) — với bốn mục tiêu chính:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Vận hành 100\% cục bộ (offline)}: Toàn bộ pipeline từ parse tài liệu, embedding, alignment, đến generative comparison đều vận hành trên máy chủ nội bộ với NVIDIA RTX 4090 (24GB VRAM), không gọi bất kỳ API bên ngoài nào. Đảm bảo bảo mật tuyệt đối cho dữ liệu pháp lý.
+    \item \textbf{Zero Hallucination}: Mọi thay đổi được báo cáo phải có bằng chứng trích dẫn nguyên văn (\textit{verbatim evidence}) từ tài liệu gốc. Cơ chế xác minh đa tầng (3 tầng) đảm bảo loại bỏ mọi thông tin bịa đặt trước khi đưa vào báo cáo cuối cùng.
+    \item \textbf{So sánh toàn diện}: Phát hiện mọi loại thay đổi: số liệu (numerical), thuật ngữ (terminology), cấu trúc (structural), thêm mới (addition), xóa bỏ (deletion), và đảo thứ tự (reorder). Bao gồm cả các thay đổi phức tạp như tách (split) và gộp (merge) điều khoản.
+    \item \textbf{Hiểu cấu trúc pháp lý Việt Nam}: Nhận diện và bảo toàn cấu trúc phân cấp Chương $\rightarrow$ Điều $\rightarrow$ Khoản $\rightarrow$ Điểm đặc thù của văn bản pháp lý Việt Nam, cho phép so sánh ở từng cấp độ tương ứng.
+\end{enumerate}
+
+% ============================================================================
+\section{Đối tượng và Phạm vi nghiên cứu}
+% ============================================================================
+
+\subsection{Đối tượng}
+
+Đối tượng nghiên cứu của đề tài là các văn bản pháp lý tiếng Việt, bao gồm: luật, nghị định, thông tư, quyết định, hợp đồng, và các văn bản quy phạm pháp luật khác. Đầu vào là hai phiên bản (V1 = bản gốc, V2 = bản sửa đổi) của cùng một văn bản, ở định dạng PDF hoặc DOCX.
+
+\subsection{Phạm vi}
+
+\begin{itemize}
+    \item \textbf{Về ngôn ngữ}: Tiếng Việt. Cấu trúc pháp lý được thiết kế riêng cho hệ thống Civil Law (Chương/Điều/Khoản/Điểm) của Việt Nam.
+    \item \textbf{Về phần cứng}: NVIDIA RTX 4090 (24GB VRAM), triển khai trên máy chủ Ubuntu 22.04 LTS.
+    \item \textbf{Về quy mô}: Văn bản pháp lý thông thường (dưới 200 điều). Với văn bản lớn hơn, cần hierarchical matching để giảm độ phức tạp.
+    \item \textbf{Về chức năng}: So sánh văn bản theo cặp, không hỗ trợ so sánh đa phiên bản ($> 2$) hoặc truy vấn tự do.
+\end{itemize}
+
+% ============================================================================
+\section{Phương pháp nghiên cứu}
+% ============================================================================
+
+Đề tài áp dụng phương pháp nghiên cứu \textbf{thiết kế và thực nghiệm} (design science research):
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Phân tích bài toán}: Khảo sát các công cụ so sánh văn bản hiện có, xác định khoảng trống và yêu cầu đặc thù của văn bản pháp lý tiếng Việt.
+    \item \textbf{Thiết kế kiến trúc}: Đề xuất kiến trúc Pairwise Document Intelligence Pipeline gồm 3 Phase — giải pháp thay thế cho RAG truyền thống và GraphRAG.
+    \item \textbf{Triển khai hệ thống}: Xây dựng 11 module Python trên nền tảng các công nghệ mã nguồn mở (Docling, BGE-M3, Kuzu, ChromaDB, Qdrant, Qwen2.5, llama.cpp).
+    \item \textbf{Đánh giá thực nghiệm}: Xây dựng golden dataset với 9 loại mutation, đánh giá định lượng trên 3 Phase với các metric: SPR, F1-Alignment, FPR, Citation Accuracy, Faithfulness (RAGAS).
+\end{enumerate}
+
+% ============================================================================
+\section{Đóng góp chính của đề tài}
+% ============================================================================
+
+Đề tài có năm đóng góp chính:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Kiến trúc Pairwise Document Intelligence Pipeline}: Đề xuất một kiến trúc mới cho bài toán so sánh văn bản theo cặp, khắc phục các hạn chế của RAG truyền thống (yêu cầu query) và GraphRAG (phụ thuộc entity extraction bằng LLM). Toàn bộ quá trình retrieval diễn ra ở build time thông qua exhaustive pairwise comparison.
+
+    \item \textbf{Chiến lược LSU Chunking}: Đề xuất phương pháp chunking dựa trên đơn vị ngữ nghĩa pháp lý (Legal Semantic Unit) với breadcrumb prefix, thay thế cho fixed-size chunking truyền thống vốn phá vỡ cấu trúc phân cấp của văn bản pháp lý.
+
+    \item \textbf{Công thức Alignment Đa trọng số}: Đề xuất ma trận tương đồng kết hợp ba thành phần (cosine semantic + Jaro-Winkler string + ordinal proximity) với trọng số được tối ưu qua thực nghiệm, kết hợp với Hungarian Algorithm cho bipartite matching tối ưu và split/merge detection.
+
+    \item \textbf{Cơ chế Zero-Hallucination 3 tầng}: Thiết kế và triển khai pipeline xác minh đa tầng (prompt constraints + evidence verification + numerical verification) giúp giảm tỷ lệ dương tính giả (FPR) từ 8.3\% xuống 0.7\%.
+
+    \item \textbf{Hệ thống hoàn chỉnh cho tiếng Việt}: Xây dựng hệ thống end-to-end đầu tiên (theo hiểu biết của nhóm) cho bài toán so sánh văn bản pháp lý tiếng Việt chạy hoàn toàn cục bộ, sẵn sàng triển khai thực tế.
+\end{enumerate}
+
+% ============================================================================
+\section{Cấu trúc luận văn}
+% ============================================================================
+
+Luận văn được tổ chức thành 5 chương:
+
+\begin{itemize}
+    \item \textbf{Chương 1 — Mở đầu}: Giới thiệu bài toán, mục tiêu, phạm vi, phương pháp nghiên cứu và đóng góp chính.
+    \item \textbf{Chương 2 — Cơ sở lý thuyết}: Trình bày nền tảng lý thuyết về RAG và biến thể, document parsing, chiến lược chunking, mô hình embedding, thuật toán alignment, và cơ chế chống ảo giác.
+    \item \textbf{Chương 3 — Thiết kế hệ thống}: Mô tả kiến trúc tổng thể 3-Phase, thiết kế data models, và chi tiết 11 module từ ingestion đến generative comparison.
+    \item \textbf{Chương 4 — Triển khai \& Đánh giá}: Trình bày môi trường triển khai, phương pháp đánh giá, và kết quả thực nghiệm định lượng trên cả ba Phase với phân tích chuyên sâu.
+    \item \textbf{Chương 5 — Kết luận}: Tổng kết kết quả đạt được, phân tích hạn chế và đề xuất hướng phát triển trong tương lai.
+\end{itemize}

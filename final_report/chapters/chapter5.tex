@@ -1,0 +1,215 @@
+% ============================================================================
+% CHƯƠNG 5: KẾT LUẬN
+% ============================================================================
+\chapter{KẾT LUẬN}
+
+% ============================================================================
+\section{Tổng kết kết quả đạt được}
+% ============================================================================
+
+Luận văn đã xây dựng thành công hệ thống L-RAG (LegalDiff) — một trợ lý AI so sánh văn bản pháp lý tiếng Việt vận hành hoàn toàn cục bộ, dựa trên kiến trúc Pairwise Document Intelligence Pipeline. Hệ thống đạt được ba trụ cột kết quả chính:
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+
+    \item \textbf{Trụ cột 1 — LSU Chunking bảo toàn cấu trúc pháp lý}:
+    \begin{itemize}
+        \item Đề xuất phương pháp chunking dựa trên đơn vị ngữ nghĩa pháp lý (Legal Semantic Unit), khắc phục hạn chế của fixed-size chunking trong việc bảo toàn cấu trúc phân cấp Chương $\rightarrow$ Điều $\rightarrow$ Khoản $\rightarrow$ Điểm
+        \item Structure Preservation Rate (SPR) đạt \textbf{98.5\%} — cải thiện +31.2\% so với fixed-size chunking (67.3\%)
+        \item Table Cell Accuracy đạt \textbf{96.8\%} nhờ giữ nguyên cấu trúc JSON của bảng thay vì stringify thành text phẳng
+        \item Ordinal Accuracy đạt \textbf{100\%} nhờ cơ chế breadcrumb prefix tự động gán số thứ tự theo vị trí trong cây phân cấp
+        \item Kích thước chunk tối ưu được xác định là 2000 ký tự — cân bằng giữa semantic completeness và embedding quality
+    \end{itemize}
+
+    \item \textbf{Trụ cột 2 — Hungarian Alignment đa trọng số}:
+    \begin{itemize}
+        \item Đề xuất công thức similarity matrix kết hợp ba thành phần: $\alpha \cdot \text{Cosine}_{semantic} + \beta \cdot \text{JaroWinkler}_{string} + \gamma \cdot \text{OrdinalProximity}$, với bộ trọng số tối ưu $(\alpha=0.6, \beta=0.3, \gamma=0.1)$ được xác định qua thực nghiệm
+        \item Áp dụng Hungarian Algorithm cho bipartite matching tối ưu, thay thế greedy matching truyền thống
+        \item F1-Alignment đạt \textbf{0.942} — cải thiện +11.2\% so với greedy (0.847)
+        \item Split/Merge Detection Rate đạt \textbf{0.85} — cải thiện +21.4\%, với cơ chế phát hiện 1-to-many và many-to-1 dựa trên similarity threshold 0.80
+        \item Ngưỡng match tối ưu $\theta = 0.65$ được xác nhận qua phân tích đường cong precision-recall
+    \end{itemize}
+
+    \item \textbf{Trụ cột 3 — Cơ chế Zero-Hallucination 3 tầng}:
+    \begin{itemize}
+        \item Thiết kế pipeline xác minh đa tầng: (1) Prompt constraints với 6 RULE hệ thống + temperature = 0.05 + JSON mode, (2) Evidence verification với cascade exact $\rightarrow$ normalized $\rightarrow$ fuzzy (ngưỡng 0.85), (3) Numerical verification với 8 regex patterns cho số tiếng Việt (strict mode 100\%)
+        \item False Positive Rate (FPR) giảm từ 8.3\% xuống \textbf{0.7\%} — cải thiện \textbf{91.6\%}, đáp ứng yêu cầu dưới 1\% của ứng dụng pháp lý
+        \item Citation Accuracy đạt \textbf{99.3\%}, Numerical Change Accuracy đạt \textbf{100\%}
+        \item Faithfulness Score (RAGAS) đạt \textbf{0.967} — vượt xa ngưỡng mục tiêu 0.90
+        \item Phân tích chi tiết phân bố hallucination: Evidence bịa đặt (58.2\%), Numerical sai (20.0\%), Low Confidence (14.5\%), Short Evidence (7.3\%)
+    \end{itemize}
+
+\end{enumerate}
+
+% ============================================================================
+\section{Mức độ hoàn thành mục tiêu}
+% ============================================================================
+
+Bảng~\ref{tab:goal_summary} tổng hợp mức độ hoàn thành các mục tiêu đề ra trong Chương 1, đối chiếu với kết quả thực nghiệm từ Chương 4.
+
+\begin{table}[H]
+    \centering
+    \caption{Tổng hợp mức độ hoàn thành mục tiêu toàn hệ thống}
+    \label{tab:goal_summary}
+    \begin{tabularx}{\textwidth}{X c c c c}
+        \toprule
+        \textbf{Mục tiêu} & \textbf{Chỉ tiêu} & \textbf{Thực tế} & \textbf{Kết quả} & \textbf{Ghi chú}\\
+        \midrule
+        \multicolumn{5}{c}{\textbf{Phase 1 — Ingestion \& Chunking}}\\
+        \midrule
+        SPR (Bảo toàn cấu trúc) & $\geq$ 98\% & 98.5\% & \textcolor{green}{\textbf{ĐẠT}} & Vượt 0.5\%\\
+        Table Cell Accuracy & $\geq$ 95\% & 96.8\% & \textcolor{green}{\textbf{ĐẠT}} & Vượt 1.8\%\\
+        Ordinal Accuracy & 100\% & 100\% & \textcolor{green}{\textbf{ĐẠT}} & Tuyệt đối\\
+        \midrule
+        \multicolumn{5}{c}{\textbf{Phase 2 — Alignment}}\\
+        \midrule
+        Alignment Precision & $\geq$ 0.95 & 0.953 & \textcolor{green}{\textbf{ĐẠT}} & Vượt 0.003\\
+        Alignment Recall & $\geq$ 0.92 & 0.931 & \textcolor{green}{\textbf{ĐẠT}} & Vượt 0.011\\
+        F1-Alignment & $\geq$ 0.93 & 0.942 & \textcolor{green}{\textbf{ĐẠT}} & Vượt 0.012\\
+        Split/Merge Detection & $\geq$ 0.85 & 0.85 & \textcolor{green}{\textbf{ĐẠT}} & Đúng ngưỡng\\
+        \midrule
+        \multicolumn{5}{c}{\textbf{Phase 3 — Anti-Hallucination}}\\
+        \midrule
+        FPR (Hallucination) & $<$ 1\% & 0.7\% & \textcolor{green}{\textbf{ĐẠT}} & Dưới ngưỡng\\
+        Citation Accuracy & 100\% & 99.3\% & \textcolor{orange}{\textbf{CHƯA ĐẠT}} & Thiếu 0.7\%\\
+        Numerical Accuracy & 100\% & 100\% & \textcolor{green}{\textbf{ĐẠT}} & Tuyệt đối\\
+        Change Detection Recall & $\geq$ 95\% & 92.6\% & \textcolor{orange}{\textbf{CHƯA ĐẠT}} & Thiếu 2.4\%\\
+        Faithfulness (RAGAS) & $\geq$ 0.90 & 0.967 & \textcolor{green}{\textbf{ĐẠT}} & Vượt xa\\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\textbf{Tỷ lệ hoàn thành}: 10/12 mục tiêu đạt (83.3\%), 2/12 mục tiêu cần cải thiện trong tương lai (Citation Accuracy và Change Detection Recall).
+
+Điểm đáng ghi nhận là hai mục tiêu chưa đạt đều nằm ở Phase 3 — pha có độ phức tạp cao nhất trong toàn bộ pipeline do phụ thuộc vào LLM sinh. Trong khi đó, Phase 1 (deterministic parsing + rule-based chunking) và Phase 2 (mathematical optimization + embedding) đều vượt hoặc đạt mọi chỉ tiêu, khẳng định tính đúng đắn của các quyết định thiết kế ở hai pha đầu.
+
+% ============================================================================
+\section{Hạn chế hiện tại}
+% ============================================================================
+
+Mặc dù đạt được nhiều kết quả tích cực, hệ thống vẫn còn một số hạn chế cần được thừa nhận và tiếp tục giải quyết:
+
+\begin{enumerate}[label=(\arabic*)]
+
+    \item \textbf{Change Detection Recall chưa đạt mục tiêu} (92.6\% vs 95\%):
+    \begin{itemize}
+        \item Nguyên nhân chính: fuzzy match với ngưỡng cố định 0.85 đôi khi loại bỏ nhầm evidence hợp lệ từ văn bản có lỗi OCR hoặc văn bản được diễn đạt lại (paraphrase) ở mức độ nhẹ
+        \item Một số thay đổi tinh tế (1--2 từ trong câu dài) bị LLM Qwen2.5-7B bỏ qua do temperature = 0.05 khiến mô hình thiên về an toàn
+        \item Trade-off cố hữu: giảm FPR đồng nghĩa với giảm recall — bài toán tối ưu Pareto giữa precision và recall vẫn cần nghiên cứu thêm
+    \end{itemize}
+
+    \item \textbf{Citation Accuracy chưa đạt 100\%} (99.3\%):
+    \begin{itemize}
+        \item 0.7\% ACU còn lại có evidence không khớp hoàn toàn sau khi normalize, thường do khác biệt về whitespace, dấu câu, hoặc cách viết hoa tiếng Việt
+        \item Vietnamese text normalizer hiện tại xử lý chưa triệt để các biến thể: ``khoản 1'' vs ``Khoản 1'', ``điều 5'' vs ``Điều 5'', dấu cách dư thừa
+    \end{itemize}
+
+    \item \textbf{Split/Merge Detection vừa đạt ngưỡng} (0.85):
+    \begin{itemize}
+        \item Các trường hợp 1-to-many và many-to-1 phức tạp (một Điều bị tách làm ba, hoặc ba Điều bị gộp thành một) vẫn là thách thức
+        \item Phương pháp hiện tại dựa trên cosine similarity của merged text, chưa thực sự ``hiểu'' quan hệ ngữ nghĩa giữa các phần bị tách/gộp
+        \item Chưa có cơ chế phát hiện split/merge ở mức Khoản (sub-article level)
+    \end{itemize}
+
+    \item \textbf{Hiệu năng trên văn bản quy mô lớn}:
+    \begin{itemize}
+        \item Với văn bản $>$ 200 điều, ma trận similarity $N \times M$ dẫn đến Hungarian Algorithm có độ phức tạp $O(\max(N,M)^3)$ — có thể gây chậm đáng kể
+        \item Chưa có cơ chế hierarchical matching (align theo Chương trước, rồi mới đến Điều) để giảm không gian tìm kiếm
+        \item Embedding $N + M$ chunk qua BGE-M3 có thể vượt quá VRAM nếu mỗi văn bản có $>$ 500 chunk
+    \end{itemize}
+
+    \item \textbf{Phụ thuộc vào chất lượng Document Parser}:
+    \begin{itemize}
+        \item Docling hoạt động tốt với PDF sinh từ word processor (Microsoft Word, LibreOffice) nhưng gặp khó khăn với PDF scan chất lượng thấp hoặc PDF có layout phức tạp (multi-column, footnotes, sidebars)
+        \item Khi fallback sang OCR pipeline (Marker/Surya), độ chính xác tổng thể của hệ thống suy giảm dây chuyền: OCR errors $\rightarrow$ chunking errors $\rightarrow$ alignment errors $\rightarrow$ hallucination tăng
+        \item Một số văn bản pháp lý Việt Nam vẫn được lưu hành dưới dạng scan ảnh — đây là thực tế triển khai không thể bỏ qua
+    \end{itemize}
+
+    \item \textbf{Giới hạn về ngôn ngữ và hệ thống pháp lý}:
+    \begin{itemize}
+        \item Hệ thống được thiết kế riêng cho văn bản pháp lý tiếng Việt thuộc hệ thống Civil Law (Chương/Điều/Khoản/Điểm). Cấu trúc pháp lý của Common Law (Part/Section/Subsection/Paragraph) chưa được hỗ trợ
+        \item BGE-M3 là multilingual embedding model nhưng chất lượng embedding cho tiếng Việt có thể chưa tối ưu bằng model chuyên biệt được fine-tune trên corpus tiếng Việt
+        \item Qwen2.5-7B được huấn luyện đa ngôn ngữ, nhưng khả năng suy luận pháp lý tiếng Việt chuyên sâu còn hạn chế so với các mô hình lớn hơn (14B, 32B, 72B)
+    \end{itemize}
+
+\end{enumerate}
+
+% ============================================================================
+\section{Hướng phát triển}
+% ============================================================================
+
+Từ những kết quả đạt được và hạn chế đã xác định, các hướng phát triển tiếp theo được đề xuất:
+
+\begin{enumerate}[label=\textbf{(\arabic*)}]
+
+    \item \textbf{Cải thiện Recall và Citation Accuracy}:
+    \begin{itemize}
+        \item Phát triển cơ chế fuzzy threshold thích ứng (adaptive): tự động nới lỏng ngưỡng (0.75--0.80) cho văn bản có điểm OCR thấp, và thắt chặt (0.88--0.92) cho văn bản chất lượng cao
+        \item Tích hợp lightweight cross-encoder reranker (vd: BGE-Reranker-v2-m3) để chấm điểm lại các ACU bị đánh dấu ambiguity trước khi đưa vào quyết định cuối cùng
+        \item Cải thiện Vietnamese text normalizer: xử lý triệt để biến thể dấu câu (dấu chấm, dấu phẩy, dấu hai chấm), whitespace, cách viết hoa trong văn bản pháp lý, và quy tắc viết số (``mười'' vs ``10'')
+    \end{itemize}
+
+    \item \textbf{Triển khai Hierarchical Matching cho văn bản lớn}:
+    \begin{itemize}
+        \item Thiết kế chiến lược alignment phân cấp: align theo Chương $\rightarrow$ trong mỗi cặp Chương align theo Điều $\rightarrow$ trong mỗi cặp Điều align theo Khoản
+        \item Giảm độ phức tạp từ $O(\max(N,M)^3)$ xuống $O(\sum_{k=1}^{K} \max(N_k, M_k)^3)$ với $K$ là số Chương — hiệu quả đặc biệt với văn bản 200+ điều
+        \item Tận dụng graph references từ Phase 1 (Kuzu DB) để cung cấp context về quan hệ cross-reference giữa các Điều
+    \end{itemize}
+
+    \item \textbf{Nâng cao khả năng phát hiện Split/Merge}:
+    \begin{itemize}
+        \item Xây dựng split/merge detector chuyên biệt sử dụng chính LLM với prompt được thiết kế riêng để phân tích quan hệ ngữ nghĩa giữa các chunk, thay vì chỉ dựa vào similarity threshold
+        \item Áp dụng sequence alignment ở mức câu (Smith-Waterman \cite{needleman1970general}) trong mỗi cặp article để phát hiện chính xác vị trí tách/gộp
+        \item Mở rộng phát hiện split/merge xuống mức Khoản (sub-article level), cho phép phát hiện trường hợp một Khoản bị tách thành hai Khoản
+    \end{itemize}
+
+    \item \textbf{Cải thiện chất lượng embedding cho tiếng Việt}:
+    \begin{itemize}
+        \item Đánh giá có hệ thống các embedding model chuyên biệt cho tiếng Việt: PhoBERT \cite{phobert2020}, ViT5, Vin-BERT trên bài toán alignment văn bản pháp lý
+        \item Fine-tune BGE-M3 trên corpus pháp lý tiếng Việt (luật, nghị định, thông tư) sử dụng contrastive learning — đây là hướng tiềm năng nhất để cải thiện chất lượng semantic matching
+        \item Xây dựng contrastive dataset từ các cặp Điều khoản tương đương trong các phiên bản sửa đổi của cùng một luật (positive pairs) và các Điều khoản khác loại (negative pairs)
+    \end{itemize}
+
+    \item \textbf{Mở rộng hỗ trợ đa ngôn ngữ và đa hệ thống pháp lý}:
+    \begin{itemize}
+        \item Mở rộng LSU parser để nhận diện cấu trúc pháp lý Common Law (Part $\rightarrow$ Section $\rightarrow$ Subsection $\rightarrow$ Paragraph) và hệ thống luật của các quốc gia ASEAN khác
+        \item Hỗ trợ văn bản song ngữ Việt--Anh — nhu cầu thực tế trong các hiệp định thương mại, hợp đồng quốc tế
+        \item Đánh giá khả năng tổng quát hóa của hệ thống trên bộ dữ liệu đa ngôn ngữ như EUR-Lex, UN Treaty Collection
+    \end{itemize}
+
+    \item \textbf{Xây dựng giao diện người dùng và triển khai thực tế}:
+    \begin{itemize}
+        \item Phát triển Web UI (FastAPI backend + React frontend) cho phép người dùng tải lên hai văn bản và nhận báo cáo so sánh trực quan
+        \item Hiển thị song song hai phiên bản (side-by-side diff view) với các thay đổi được highlight theo loại: thêm/xóa/sửa/đảo
+        \item Hỗ trợ export báo cáo dạng PDF có chữ ký số, đáp ứng yêu cầu về giá trị pháp lý của tài liệu đầu ra
+    \end{itemize}
+
+    \item \textbf{Đánh giá với chuyên gia pháp lý và mở rộng bộ dữ liệu}:
+    \begin{itemize}
+        \item Xây dựng golden dataset quy mô lớn: $\geq$ 100 cặp văn bản pháp lý với ground truth được gán nhãn thủ công bởi chuyên gia pháp lý (luật sư, chuyên viên pháp chế)
+        \item Tổ chức user study: 3--5 luật sư đánh giá chất lượng báo cáo trên 20+ cặp văn bản thực tế, đo lường usefulness score (1--5), time saved, và trust level
+        \item Đánh giá end-to-end: thời gian xử lý trung bình, tỷ lệ phát hiện thay đổi theo từng loại, và khả năng phát hiện các thay đổi ``nguy hiểm'' (thay đổi số tiền, thời hạn, nghĩa vụ pháp lý)
+    \end{itemize}
+
+\end{enumerate}
+
+% ============================================================================
+\section{Kết luận}
+% ============================================================================
+
+Luận văn đã đặt ra và giải quyết thành công bài toán xây dựng hệ thống AI so sánh văn bản pháp lý tiếng Việt vận hành hoàn toàn cục bộ. Ba đóng góp cốt lõi của luận văn là:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Kiến trúc Pairwise Document Intelligence Pipeline}: Một kiến trúc mới cho bài toán so sánh văn bản theo cặp, hoạt động ở build time thông qua exhaustive pairwise comparison mà không yêu cầu query từ người dùng. Kiến trúc này khắc phục hạn chế của RAG truyền thống (phụ thuộc vào query) và GraphRAG (phụ thuộc vào entity extraction bằng LLM), đồng thời cho phép xây dựng alignment toàn cục giữa hai tài liệu.
+
+    \item \textbf{Cơ chế Zero-Hallucination đa tầng}: Pipeline xác minh ba tầng (prompt constraints + evidence verification + numerical verification) đã giảm tỷ lệ dương tính giả 91.6\% — từ 8.3\% xuống 0.7\% — đáp ứng yêu cầu khắt khe của ứng dụng pháp lý. Việc chứng minh rằng LLM một mình không đủ tin cậy, và xác minh đa tầng là bắt buộc, là một đóng góp có giá trị cho cộng đồng nghiên cứu Legal AI.
+
+    \item \textbf{Hệ thống end-to-end cho tiếng Việt}: Theo hiểu biết của nhóm, đây là hệ thống đầu tiên giải quyết bài toán so sánh văn bản pháp lý tiếng Việt từ đầu vào PDF/DOCX đến báo cáo có cấu trúc, vận hành 100\% on-premise. Toàn bộ 11 module từ parsing đến generative comparison đều sử dụng công nghệ mã nguồn mở và có thể triển khai trên phần cứng consumer-grade (RTX 4090).
+\end{enumerate}
+
+Kết quả thực nghiệm trên golden dataset với 9 loại mutation đã xác nhận tính khả thi của kiến trúc đề xuất: SPR 98.5\%, F1-Alignment 0.942, FPR 0.7\%, Numerical Accuracy 100\%, và Faithfulness 0.967. Hệ thống đã đạt 10/12 mục tiêu đề ra, với hai mục tiêu còn lại (Citation Accuracy và Recall) ở mức rất gần ngưỡng và có lộ trình cải thiện rõ ràng.
+
+Những hạn chế còn tồn tại — đặc biệt là recall trong phát hiện thay đổi, chất lượng phụ thuộc vào document parser, và hiệu năng trên văn bản quy mô lớn — là những vấn đề có thể giải quyết được trong các nghiên cứu tiếp theo. Các hướng phát triển được đề xuất (adaptive threshold, hierarchical matching, fine-tune embedding tiếng Việt, Web UI) cung cấp một lộ trình cụ thể để đưa hệ thống từ mức nghiên cứu (research prototype) lên mức sản phẩm triển khai thực tế.
+
+Về mặt ý nghĩa thực tiễn, L-RAG hướng đến phục vụ ba nhóm người dùng chính trong hệ sinh thái pháp lý Việt Nam: (1) \textbf{luật sư và chuyên viên pháp chế} cần rà soát thay đổi trong hợp đồng và văn bản pháp lý, (2) \textbf{cơ quan nhà nước} cần so sánh dự thảo luật trước và sau khi tiếp thu ý kiến, và (3) \textbf{doanh nghiệp} cần theo dõi tác động của văn bản pháp luật mới đến hoạt động kinh doanh. Với khả năng vận hành hoàn toàn cục bộ, hệ thống đáp ứng được yêu cầu bảo mật dữ liệu nghiêm ngặt của cả ba nhóm đối tượng này.
+
+Tóm lại, luận văn đã chứng minh rằng \textbf{Pairwise Document Intelligence Pipeline} — với ba trụ cột LSU Chunking, Hungarian Alignment, và Zero-Hallucination Verification — là một hướng tiếp cận khả thi và hiệu quả cho bài toán so sánh văn bản pháp lý. Trong dài hạn, nhóm hướng đến xây dựng một công cụ AI đáng tin cậy, minh bạch và bảo mật, đóng góp vào tiến trình chuyển đổi số của ngành tư pháp và hành chính công tại Việt Nam.

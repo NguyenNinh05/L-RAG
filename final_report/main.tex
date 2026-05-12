@@ -1,0 +1,354 @@
+% ============================================================================
+% LUẬN VĂN TỐT NGHIỆP
+% Đề tài: Nghiên cứu trợ lý so sánh văn bản pháp lý chạy cục bộ dùng
+%          Pairwise Document Intelligence Pipeline
+% Nhóm 05 — PTIT
+% ============================================================================
+
+\documentclass[12pt, a4paper]{report}
+
+% ============================================================================
+% PACKAGES
+% ============================================================================
+\usepackage[utf8]{vietnam}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{colortbl}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+\usepackage{setspace}
+\usepackage[acronym]{glossaries}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, shapes, shapes.geometric, calc, backgrounds, fit}
+\usepackage{cite}
+\usepackage{url}
+\usepackage{changepage}
+\usepackage{needspace}
+\usepackage{placeins}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% Page geometry
+\geometry{
+    left=2.5cm,
+    right=2cm,
+    top=2.5cm,
+    bottom=2.5cm,
+    bindingoffset=0cm
+}
+
+% Line spacing
+\onehalfspacing
+
+% Tight float spacing — reduce wasted whitespace
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{4pt}
+
+% Tighter lists
+\setlist{nosep, leftmargin=*, itemsep=0pt, topsep=0pt, partopsep=0pt, parsep=0pt}
+
+% Prevent large vertical gaps
+\raggedbottom
+
+% ============================================================================
+% CODE LISTING STYLE
+% ============================================================================
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{codegreen}{rgb}{0.0,0.6,0.0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    framesep=5pt,
+    rulecolor=\color{codegray},
+}
+\lstset{style=mystyle}
+
+%\floatpagefraction — handled by \raggedbottom
+
+% ============================================================================
+% HYPERREF SETUP
+% ============================================================================
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    filecolor=darkblue,
+    urlcolor=darkblue,
+    citecolor=darkblue,
+    pdftitle={Luận văn tốt nghiệp - L-RAG: Trợ lý so sánh văn bản pháp lý sử dụng Pairwise Document Intelligence Pipeline},
+    pdfauthor={Nhóm 05 - Vũ Đình Hiếu, Nguyễn Văn Ninh, Dương Anh Đức},
+    pdfsubject={Hệ thống AI so sánh văn bản pháp lý tiếng Việt, chạy 100\% cục bộ, Zero Hallucination},
+    pdfkeywords={Pairwise Document Intelligence, Legal Document Comparison, Zero-Hallucination, Vietnamese NLP, RAG, LLM, Hungarian Algorithm, BGE-M3}
+}
+
+% ============================================================================
+% GLOSSARIES / ACRONYMS
+% ============================================================================
+\makeglossaries
+
+\newacronym{rag}{RAG}{Retrieval-Augmented Generation}
+\newacronym{llm}{LLM}{Large Language Model}
+\newacronym{lsu}{LSU}{Legal Semantic Unit}
+\newacronym{acu}{ACU}{Atomic Comparison Unit}
+\newacronym{fpr}{FPR}{False Positive Rate}
+\newacronym{dom}{DOM}{Document Object Model}
+\newacronym{ocr}{OCR}{Optical Character Recognition}
+\newacronym{vram}{VRAM}{Video Random Access Memory}
+\newacronym{spri}{SPR}{Structure Preservation Rate}
+\newacronym{api}{API}{Application Programming Interface}
+\newacronym{ann}{ANN}{Approximate Nearest Neighbor}
+\newacronym{bm25}{BM25}{Best Matching 25}
+\newacronym{bge}{BGE}{BAAI General Embedding}
+\newacronym{vn}{VN}{Việt Nam}
+\newacronym{json}{JSON}{JavaScript Object Notation}
+\newacronym{pdf}{PDF}{Portable Document Format}
+\newacronym{docx}{DOCX}{Microsoft Word Open XML Document}
+\newacronym{cpu}{CPU}{Central Processing Unit}
+\newacronym{gpu}{GPU}{Graphics Processing Unit}
+\newacronym{bert}{BERT}{Bidirectional Encoder Representations from Transformers}
+\newacronym{fp16}{FP16}{16-bit Floating Point}
+\newacronym{int4}{INT4}{4-bit Integer Quantization}
+\newacronym{ner}{NER}{Named Entity Recognition}
+\newacronym{gguf}{GGUF}{GPT-Generated Unified Format}
+\newacronym{hnsw}{HNSW}{Hierarchical Navigable Small World}
+\newacronym{colbert}{ColBERT}{Contextualized Late Interaction over BERT}
+
+\begin{document}
+
+% ============================================================================
+% COVER PAGE — BÌA LUẬN VĂN
+% ============================================================================
+\thispagestyle{empty}
+
+\begin{center}
+
+{\fontsize{14}{16}\selectfont \textbf{BỘ THÔNG TIN VÀ TRUYỀN THÔNG}}\\[0.3cm]
+{\fontsize{14}{16}\selectfont \textbf{HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG}}\\[0.5cm]
+
+\vspace{0.5cm}
+% Logo PTIT — uncomment when logo file is available:
+% \includegraphics[width=4cm]{images/ptit_logo.png}
+\vspace{0.5cm}
+
+\rule{\linewidth}{2pt}\\[1.5cm]
+
+{\fontsize{18}{20}\selectfont \textbf{BÁO CÁO THỰC TẬP CƠ SỞ}}\\[1.5cm]
+
+\rule{\linewidth}{1pt}\\[1.5cm]
+
+{\fontsize{16}{18}\selectfont \textbf{Nghiên cứu trợ lý so sánh văn bản pháp lý}}\\[0.3cm]
+{\fontsize{16}{18}\selectfont \textbf{chạy cục bộ sử dụng}}\\[0.3cm]
+{\fontsize{16}{18}\selectfont \textbf{Pairwise Document Intelligence Pipeline}}\\[2cm]
+
+{\fontsize{14}{16}\selectfont \textbf{NHÓM SINH VIÊN THỰC HIỆN}}\\[1cm]
+
+\begin{tabular}{lll}
+    \textbf{Họ và tên} & \textbf{Mã sinh viên} & \textbf{Lớp}\\
+    \hline
+    Vũ Đình Hiếu & B23DCCE036 & D23CQCE06-B\\
+    Nguyễn Văn Ninh & B23DCAT232 & D23CQCE06-B\\
+    Dương Anh Đức & B23DCCE018 & D23CQCE06-B\\
+\end{tabular}
+
+\vspace{1.5cm}
+
+{\fontsize{14}{16}\selectfont \textbf{GIẢNG VIÊN HƯỚNG DẪN}}\\[0.5cm]
+{\fontsize{14}{16}\selectfont \textbf{Nguyễn Tất Thắng}}\\[2cm]
+
+{\fontsize{12}{14}\selectfont Hà Nội, tháng 05 năm 2026}
+
+\end{center}
+
+\newpage
+
+% ============================================================================
+% EMPTY PAGE
+% ============================================================================
+\thispagestyle{empty}
+\
+\newpage
+
+% ============================================================================
+% LỜI CAM ĐOAN
+% ============================================================================
+\chapter*{LỜI CAM ĐOAN}
+\addcontentsline{toc}{chapter}{LỜI CAM ĐOAN}
+
+Nhóm chúng tôi xin cam đoan đây là công trình nghiên cứu của riêng nhóm, được thực hiện dưới sự hướng dẫn của Nguyễn Tất Thắng. Các số liệu, kết quả trình bày trong luận văn là trung thực và chưa từng được công bố trong bất kỳ công trình nào khác. Các tài liệu tham khảo và trích dẫn đều được ghi rõ nguồn gốc.
+
+Mọi module trong hệ thống L-RAG đều được triển khai 100\% cục bộ (offline), không sử dụng bất kỳ API thương mại bên ngoài nào. Mã nguồn của hệ thống được công khai tại \url{https://github.com/group05/L-RAG}.
+
+\vspace{2cm}
+
+\begin{flushright}
+    Hà Nội, ngày 15 tháng 05 năm 2026\\
+    \vspace{1cm}
+    Nhóm sinh viên thực hiện\\
+    \vspace{2cm}
+    Vũ Đình Hiếu \hspace{1cm} Nguyễn Văn Ninh \hspace{1cm} Dương Anh Đức
+\end{flushright}
+
+\newpage
+
+% ============================================================================
+% LỜI CẢM ƠN
+% ============================================================================
+\chapter*{LỜI CẢM ƠN}
+\addcontentsline{toc}{chapter}{LỜI CẢM ƠN}
+
+Nhóm chúng tôi xin bày tỏ lòng biết ơn sâu sắc đến Nguyễn Tất Thắng, người đã tận tình hướng dẫn, định hướng nghiên cứu và đưa ra những góp ý quý báu trong suốt quá trình thực hiện luận văn này.
+
+Chúng tôi cũng xin cảm ơn các thầy cô trong Khoa Kỹ thuật Điện tử, Học viện Công nghệ Bưu chính Viễn thông đã trang bị cho chúng tôi những kiến thức nền tảng cần thiết để thực hiện nghiên cứu này.
+
+Đặc biệt, chúng tôi trân trọng cảm ơn cộng đồng mã nguồn mở đã phát triển và duy trì các công cụ quan trọng được sử dụng trong dự án này, bao gồm: IBM Research với Docling, BAAI với mô hình BGE-M3, Qwen Team với Qwen2.5, Google DeepMind với mô hình Transformer, cùng các dự án llama.cpp, Qdrant, ChromaDB và Kuzu.
+
+Cuối cùng, chúng tôi xin gửi lời cảm ơn đến gia đình và bạn bè đã luôn ủng hộ, động viên và tạo điều kiện tốt nhất để chúng tôi hoàn thành luận văn này.
+
+\vspace{1cm}
+
+\begin{flushright}
+    Hà Nội, tháng 05 năm 2026\\
+    Nhóm 05
+\end{flushright}
+
+\newpage
+
+% ============================================================================
+% TABLE OF CONTENTS
+% ============================================================================
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+% ============================================================================
+% DANH MỤC TỪ VIẾT TẮT
+% ============================================================================
+\chapter*{DANH MỤC TỪ VIẾT TẮT}
+\addcontentsline{toc}{chapter}{DANH MỤC TỪ VIẾT TẮT}
+
+\begin{longtable}{p{3cm} p{10cm}}
+    \textbf{Từ viết tắt} & \textbf{Ý nghĩa}\\
+    \hline
+    ACU & Atomic Comparison Unit — Đơn vị so sánh nguyên tử\\
+    ANN & Approximate Nearest Neighbor — Lân cận gần nhất xấp xỉ\\
+    BGE-M3 & BAAI General Embedding — Mô hình embedding đa ngôn ngữ, đa chức năng của BAAI\\
+    BM25 & Best Matching 25 — Thuật toán xếp hạng văn bản dựa trên tần suất từ\\
+    BERT & Bidirectional Encoder Representations from Transformers\\
+    ColBERT & Contextualized Late Interaction over BERT — Mô hình retrieval late-interaction\\
+    CPU & Central Processing Unit — Bộ xử lý trung tâm\\
+    DOCX & Microsoft Word Open XML Document — Định dạng tài liệu Word\\
+    DOM & Document Object Model — Mô hình đối tượng tài liệu\\
+    FPR & False Positive Rate — Tỷ lệ dương tính giả\\
+    FP16 & 16-bit Floating Point — Số thực dấu phẩy động 16 bit\\
+    GGUF & GPT-Generated Unified Format — Định dạng model lượng tử hóa\\
+    GPU & Graphics Processing Unit — Bộ xử lý đồ họa\\
+    HNSW & Hierarchical Navigable Small World — Cấu trúc chỉ mục vector xấp xỉ\\
+    JSON & JavaScript Object Notation — Định dạng trao đổi dữ liệu\\
+    LLM & Large Language Model — Mô hình ngôn ngữ lớn\\
+    LSU & Legal Semantic Unit — Đơn vị ngữ nghĩa pháp lý\\
+    NER & Named Entity Recognition — Nhận dạng thực thể có tên\\
+    OCR & Optical Character Recognition — Nhận dạng ký tự quang học\\
+    PDF & Portable Document Format — Định dạng tài liệu di động\\
+    RAG & Retrieval-Augmented Generation — Sinh văn bản tăng cường truy xuất\\
+    SPR & Structure Preservation Rate — Tỷ lệ bảo toàn cấu trúc\\
+    VRAM & Video Random Access Memory — Bộ nhớ truy cập ngẫu nhiên đồ họa\\
+    \hline
+    \textbf{Công nghệ} & \textbf{Mô tả}\\
+    \hline
+    ChromaDB & Cơ sở dữ liệu vector nhúng (embedded), persistent storage\\
+    Docling & Công cụ parse tài liệu của IBM Research, hỗ trợ vision model cho layout analysis\\
+    Hungarian Algorithm & Thuật toán ghép cặp tối ưu trên đồ thị hai phía (Kuhn-Munkres)\\
+    Jaro-Winkler & Độ đo tương đồng chuỗi ký tự, ưu tiên tiền tố giống nhau\\
+    Kuzu & Hệ quản trị cơ sở dữ liệu đồ thị nhúng (embedded graph DBMS)\\
+    llama.cpp & Framework inference C/C++ cho LLM, hỗ trợ lượng tử hóa GGUF\\
+    Marker & Công cụ chuyển đổi PDF sang Markdown, dùng cho PDF scan\\
+    Qdrant & Vector database mã nguồn mở, hỗ trợ multi-vector (dense + sparse)\\
+    Qwen2.5 & Mô hình ngôn ngữ lớn mã nguồn mở của Alibaba (Qwen Team)\\
+    RAGAS & Khung đánh giá tự động cho hệ thống RAG (RAG Assessment)\\
+    SequenceMatcher & Công cụ so khớp chuỗi của Python (difflib)\\
+    Surya & Bộ công cụ OCR đa ngôn ngữ, dùng cho PDF scan\\
+    \hline
+\end{longtable}
+\newpage
+
+% ============================================================================
+% DANH MỤC HÌNH ẢNH
+% ============================================================================
+\renewcommand{\listfigurename}{DANH MỤC HÌNH ẢNH}
+\listoffigures
+\addcontentsline{toc}{chapter}{DANH MỤC HÌNH ẢNH}
+\newpage
+
+% ============================================================================
+% DANH MỤC BẢNG
+% ============================================================================
+\renewcommand{\listtablename}{DANH MỤC BẢNG}
+\listoftables
+\addcontentsline{toc}{chapter}{DANH MỤC BẢNG}
+\newpage
+
+% ============================================================================
+% MAIN CONTENT
+% ============================================================================
+\pagenumbering{arabic}
+
+% --- Chapter 1: Mở đầu ---
+\input{chapters/chapter1}
+
+% --- Chapter 2: Cơ sở lý thuyết ---
+\input{chapters/chapter2}
+
+% --- Chapter 3: Thiết kế hệ thống ---
+\input{chapters/chapter3}
+
+% --- Chapter 4: Triển khai & Đánh giá ---
+\input{chapters/chapter4}
+
+% --- Chapter 5: Kết luận ---
+\input{chapters/chapter5}
+
+% ============================================================================
+% TÀI LIỆU THAM KHẢO
+% ============================================================================
+\bibliographystyle{ieeetr}
+\bibliography{refs}
+\addcontentsline{toc}{chapter}{TÀI LIỆU THAM KHẢO}
+
+\end{document}
