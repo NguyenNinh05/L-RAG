@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -71,6 +72,10 @@ class PipelineRunConfig:
     llm_base_url: str = "http://localhost:8000/v1"
     llm_model_name: str = "Qwen/Qwen2.5-7B-Instruct"
     max_concurrency: int = 4
+
+    # Callback — gọi tại ranh giới phase: cb(pct, phase, message)
+    # None → không gọi (chạy như cũ), dùng cho CLI/testing
+    progress_callback: Callable[[int, str, str], None] | None = None
 
     # Flags
     skip_phase3: bool = False  # True để chỉ chạy Phase 1+2
@@ -152,10 +157,19 @@ class LegalDiffPipeline:
     async def _run_async(self) -> dict[str, Any]:
         """Async implementation của pipeline."""
         cfg = self._cfg
+        cb = cfg.progress_callback
         result: dict[str, Any] = {}
+
+        def _notify(pct: int, phase: str, msg: str) -> None:
+            if cb:
+                try:
+                    cb(pct, phase, msg)
+                except Exception:
+                    pass  # callback is advisory only
 
         # ── Phase 1: Ingestion ──────────────────────────────────────────
         logger.info("[Phase 1] Ingestion bắt đầu: %s | %s", cfg.file_v1, cfg.file_v2)
+        _notify(10, "ingestion", "Đang phân tích tài liệu...")
 
         from src.ingestion import LegalDocumentParser, LsuChunker
 
@@ -180,6 +194,7 @@ class LegalDiffPipeline:
             len(doc_v2.iter_all_articles()),
             len(chunks_v2),
         )
+        _notify(30, "alignment", "Đang nhúng vector BGE-M3...")
 
         # ── Phase 2: Alignment ──────────────────────────────────────────
         logger.info("[Phase 2] Alignment bắt đầu...")
@@ -215,9 +230,11 @@ class LegalDiffPipeline:
         result["catalog"] = catalog
 
         logger.info("[Phase 2] Done. %s", catalog.summary())
+        _notify(55, "comparison", "Đang sinh báo cáo so sánh...")
 
         if cfg.skip_phase3:
             logger.info("[Phase 3] Skipped (skip_phase3=True).")
+            _notify(100, "done", "Hoàn thành!")
             return result
 
         # ── Phase 3: Generative Comparison ─────────────────────────────
@@ -249,4 +266,5 @@ class LegalDiffPipeline:
         result["reports"] = reports
 
         logger.info("[Phase 3] Done. %d reports generated.", len(reports))
+        _notify(95, "done", "Đang lưu kết quả...")
         return result

@@ -153,3 +153,31 @@ test/*
 # LaTeX Report (báo cáo)
 # ============================================================
 latex_report/
+
+# ============================================================
+# Project — Claude Code local settings
+# ============================================================
+.claude/settings.local.json
+
+# ============================================================
+# Data — Processed (runtime data)
+# ============================================================
+data/processed/*
+!data/processed/.gitkeep
+
+# ============================================================
+# Backend — Storage (uploaded files, runtime artifacts)
+# ============================================================
+backend/storage/uploads/*
+backend/storage/processed/*
+backend/storage/reports/*
+!backend/storage/uploads/.gitkeep
+!backend/storage/processed/.gitkeep
+!backend/storage/reports/.gitkeep
+
+# ============================================================
+# Test — Output files
+# ============================================================
+tests/**/output.txt
+tests/**/output/
+tests/**/detailed_output/

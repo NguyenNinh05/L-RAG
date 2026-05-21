@@ -1,0 +1,17 @@
+# LegalDiff Backend — .gitignore
+
+.env
+__pycache__/
+*.pyc
+*.pyo
+
+# Storage
+backend/storage/uploads/*
+backend/storage/processed/*
+backend/storage/reports/*
+!backend/storage/uploads/.gitkeep
+!backend/storage/processed/.gitkeep
+!backend/storage/reports/.gitkeep
+
+# Alembic
+*.egg-info/
