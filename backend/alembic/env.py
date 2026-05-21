@@ -6,11 +6,22 @@ import os
 import sys
 from logging.config import fileConfig
 
+# Load backend/.env before anything else
+from pathlib import Path
+_env_file = Path(__file__).resolve().parent.parent / ".env"
+if _env_file.exists():
+    with open(_env_file) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, _, val = line.partition("=")
+                os.environ.setdefault(key.strip(), val.strip())
+
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-# Ensure backend package is importable
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+# Ensure project root is importable (for "backend" package)
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
 from backend.models.base import Base
 from backend.models import User, Document, ComparisonJob, ComparisonReportModel  # noqa: F401
@@ -23,7 +34,7 @@ if config.config_file_name is not None:
 # Override sqlalchemy.url from env
 db_url = os.getenv(
     "DATABASE_URL_SYNC",
-    "postgresql://legaldiff:legaldiff_secret@localhost:5432/legaldiff",
+    "postgresql://postgres:hieu1205@localhost:5432/legaldiff",
 )
 config.set_main_option("sqlalchemy.url", db_url)
 
