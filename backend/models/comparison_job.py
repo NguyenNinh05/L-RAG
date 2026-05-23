@@ -7,7 +7,6 @@ from __future__ import annotations
 from enum import Enum
 from typing import TYPE_CHECKING
 import uuid
-from datetime import datetime
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
