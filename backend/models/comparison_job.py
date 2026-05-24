@@ -4,6 +4,7 @@ backend/models/comparison_job.py — ComparisonJob ORM model.
 
 from __future__ import annotations
 
+from datetime import datetime
 from enum import Enum
 from typing import TYPE_CHECKING
 import uuid

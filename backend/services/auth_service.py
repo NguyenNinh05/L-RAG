@@ -4,22 +4,26 @@ backend/services/auth_service.py — Password hashing + JWT token management.
 
 from __future__ import annotations
 
+import base64
+import hashlib
 from datetime import datetime, timedelta, timezone
 
-import jwt
-from passlib.context import CryptContext
+import bcrypt
+from jose import jwt
 
 from backend.config import get_backend_config
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def _password_bytes(password: str) -> bytes:
+    return base64.b64encode(hashlib.sha256(password.encode("utf-8")).digest())
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(_password_bytes(password), bcrypt.gensalt()).decode("utf-8")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
+    return bcrypt.checkpw(_password_bytes(plain), hashed.encode("utf-8"))
 
 
 def create_access_token(user_id: str, username: str) -> str:
