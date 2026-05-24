@@ -31,22 +31,24 @@ class JobService:
         config_overrides: dict | None = None,
     ) -> ComparisonJob:
         # Validate documents exist and belong to user
-        v1 = await db.execute(
+        v1_result = await db.execute(
             select(Document).where(
                 Document.id == document_v1_id,
                 Document.user_id == user_id,
             )
         )
-        if not v1.scalar_one_or_none():
+        v1_doc = v1_result.scalar_one_or_none()
+        if not v1_doc:
             raise ValueError("Document V1 not found")
 
-        v2 = await db.execute(
+        v2_result = await db.execute(
             select(Document).where(
                 Document.id == document_v2_id,
                 Document.user_id == user_id,
             )
         )
-        if not v2.scalar_one_or_none():
+        v2_doc = v2_result.scalar_one_or_none()
+        if not v2_doc:
             raise ValueError("Document V2 not found")
 
         cfg = get_backend_config()
@@ -64,8 +66,6 @@ class JobService:
         await db.refresh(job)
 
         # Resolve absolute file paths
-        v1_doc = v1.scalar_one_or_none()
-        v2_doc = v2.scalar_one_or_none()
         v1_path = str(self._storage.get_absolute_path(v1_doc.storage_path))
         v2_path = str(self._storage.get_absolute_path(v2_doc.storage_path))
 
