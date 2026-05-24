@@ -35,6 +35,7 @@ requests
 tenacity
 tqdm
 nest-asyncio
+openai>=1.0.0
 
 # =============================================================
 # Phase 2: Comparison & Alignment Pipeline

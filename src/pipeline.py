@@ -72,6 +72,11 @@ class PipelineRunConfig:
     llm_base_url: str = "http://localhost:8000/v1"
     llm_model_name: str = "Qwen/Qwen2.5-7B-Instruct"
     max_concurrency: int = 4
+    max_tokens_acu: int = 4096
+    max_tokens_summary: int = 1024
+    llm_timeout_seconds: float = 120.0
+    llm_max_retries: int = 3
+    max_comparison_pairs: int | None = None
 
     # Callback — gọi tại ranh giới phase: cb(pct, phase, message)
     # None → không gọi (chạy như cũ), dùng cho CLI/testing
@@ -125,6 +130,8 @@ class LegalDiffPipeline:
             llm_base_url=cfg["llm"]["base_url"],
             llm_model_name=cfg["llm"]["model_name"],
             max_concurrency=cfg["comparison"]["max_concurrency"],
+            max_tokens_acu=cfg["llm"]["max_tokens_acu"],
+            max_tokens_summary=cfg["llm"]["max_tokens_summary"],
         )
         return cls(run_config=run_cfg)
 
@@ -247,11 +254,17 @@ class LegalDiffPipeline:
             llm_base_url=cfg.llm_base_url,
             llm_model_name=cfg.llm_model_name,
             max_concurrency=cfg.max_concurrency,
+            max_tokens_acu=cfg.max_tokens_acu,
+            max_tokens_summary=cfg.max_tokens_summary,
+            timeout_seconds=cfg.llm_timeout_seconds,
+            max_retries=cfg.llm_max_retries,
         )
         gen_pipeline = GenerativeComparisonPipeline(config=pipeline_cfg)
 
         # Chỉ xử lý matched pairs cho generative comparison
         matched = catalog.matched_pairs
+        if cfg.max_comparison_pairs is not None:
+            matched = matched[: cfg.max_comparison_pairs]
         requests = [
             ComparisonRequest(
                 pair_id=pair.pair_id,

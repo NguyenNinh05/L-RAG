@@ -1,0 +1,23 @@
+{
+  "id": "47db02fa-1713-4b99-a226-1fa513abbe79",
+  "job_id": "41726c8e-fddf-491b-97be-e9c32d242dae",
+  "pair_id": "pair_ddd84bde05ff",
+  "match_type": "matched",
+  "location_context": "",
+  "total_acus": 0,
+  "passed_acus": 0,
+  "rejected_acus": 0,
+  "hallucination_rate": 0.0,
+  "created_at": "2026-05-24T11:21:12.902103Z",
+  "executive_summary": {
+    "risk_flags": [],
+    "generated_at": "2026-05-24T10:57:08.168215Z",
+    "recommendation": "",
+    "critical_changes": [],
+    "overall_assessment": "Không phát hiện thay đổi nào được xác minh giữa hai phiên bản văn bản.",
+    "numerical_changes_summary": ""
+  },
+  "markdown_report": "# 📋 Báo cáo So sánh Văn bản Pháp lý\n\n**Report ID:** `report_c5ef3e391922`  \n**Tài liệu V1:** `N/A`  \n**Tài liệu V2:** `N/A`  \n**Vị trí:** Toàn bộ văn bản  \n**Thời điểm:** 24/05/2026 10:57 UTC  \n\n---\n\n## 📊 Thống kê Tổng quan\n\n| Chỉ số | Giá trị |\n|--------|---------|\n| Tổng ACU phát hiện | **0** |\n| ACU đã xác minh (PASSED) | **0** |\n| ACU bị bác bỏ | **0** |\n| Tỷ lệ ảo giác | **0.0%** |\n\n---\n\n## 🔍 Tóm tắt Điều hành\n\n**Đánh giá tổng thể:**  \nKhông phát hiện thay đổi nào được xác minh giữa hai phiên bản văn bản.\n\n---\n\n## ✅ Các Thay đổi Đã Xác minh\n\n> _Không phát hiện thay đổi nào qua quá trình xác minh._\n\n---\n\n_Báo cáo được tạo tự động bởi L-RAG Phase 3 — Generative Comparison Pipeline. Mọi ACU đã được xác minh qua 3 tầng kiểm tra Zero-Hallucination._",
+  "verified_acus": [],
+  "rejected_acus_detail": []
+}

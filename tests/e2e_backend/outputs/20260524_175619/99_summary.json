@@ -1,0 +1,25 @@
+{
+  "finished_at": "2026-05-24T18:37:20",
+  "output_dir": "/home/haipd/L-RAG/tests/e2e_backend/outputs/20260524_175619",
+  "job_id": "41726c8e-fddf-491b-97be-e9c32d242dae",
+  "final_status": {
+    "id": "41726c8e-fddf-491b-97be-e9c32d242dae",
+    "status": "completed",
+    "current_phase": "done",
+    "progress_pct": 100,
+    "error_message": null,
+    "celery_task_id": "52708c99-bfe4-48d6-a8b8-b7103b255eb9",
+    "captured_at": "2026-05-24T18:37:20"
+  },
+  "catalog_summary_keys": [
+    "catalog_id",
+    "created_at",
+    "pairs",
+    "summary",
+    "thresholds",
+    "v1_doc_id",
+    "v2_doc_id"
+  ],
+  "report_count": 3,
+  "note": "Fetched after the polling script timed out; the backend job completed successfully afterward."
+}

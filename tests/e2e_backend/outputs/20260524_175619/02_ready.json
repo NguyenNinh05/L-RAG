@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "database": "connected",
+  "redis": "connected",
+  "worker": "available",
+  "llm_server": "disconnected"
+}

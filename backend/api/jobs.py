@@ -179,12 +179,15 @@ async def get_job_catalog(
 
 
 def _to_job_response(job: ComparisonJob) -> JobResponse:
+    document_v1 = job.__dict__.get("document_v1")
+    document_v2 = job.__dict__.get("document_v2")
+
     return JobResponse(
         id=job.id,
         document_v1_id=job.document_v1_id,
         document_v2_id=job.document_v2_id,
-        v1_filename=getattr(getattr(job, "document_v1", None), "original_filename", ""),
-        v2_filename=getattr(getattr(job, "document_v2", None), "original_filename", ""),
+        v1_filename=getattr(document_v1, "original_filename", ""),
+        v2_filename=getattr(document_v2, "original_filename", ""),
         status=job.status,
         current_phase=job.current_phase,
         progress_pct=job.progress_pct,

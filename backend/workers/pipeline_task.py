@@ -242,7 +242,7 @@ def _store_results(job_id_str: str, result: dict) -> None:
                 rejected_acus=getattr(report, "total_acus_rejected", 0),
                 hallucination_rate=getattr(report, "hallucination_rate", 0.0),
                 executive_summary=(
-                    report.executive_summary.model_dump()
+                    report.executive_summary.model_dump(mode="json")
                     if getattr(report, "executive_summary", None)
                     else None
                 ),
@@ -254,7 +254,7 @@ def _store_results(job_id_str: str, result: dict) -> None:
                 rejected_acus_detail=[
                     {
                         "acu": v.acu.to_dict() if hasattr(v, "acu") and hasattr(v.acu, "to_dict") else {},
-                        "status": getattr(v, "status", "failed"),
+                        "status": getattr(getattr(v, "status", "failed"), "value", getattr(v, "status", "failed")),
                         "reason": getattr(v, "rejection_reason", ""),
                     }
                     for v in getattr(report, "rejected_acus", [])

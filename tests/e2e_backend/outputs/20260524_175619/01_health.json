@@ -1,0 +1,7 @@
+{
+  "status": "ok",
+  "database": "unknown",
+  "redis": "unknown",
+  "worker": "unknown",
+  "llm_server": "unknown"
+}

@@ -24,8 +24,9 @@ redis>=5.0.0
 # Config
 pyyaml>=6.0
 
-# HTTP (for health checks)
+# HTTP / LLM client
 httpx>=0.26.0
+openai>=1.0.0
 
 # Existing pipeline dependencies (used by worker)
 # — these are already in ../requirements.txt

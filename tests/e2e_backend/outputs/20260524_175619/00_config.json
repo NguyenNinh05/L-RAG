@@ -1,0 +1,18 @@
+{
+  "started_at": "2026-05-24T17:56:19",
+  "api_base_url": "http://localhost:8001",
+  "llm_base_url": "http://localhost:11434/v1",
+  "llm_model_name": "llama3:70b",
+  "redis_url": "redis://localhost:6379/0",
+  "doc_v1": "/home/haipd/L-RAG/data_test/01-tand_signed_v1.docx",
+  "doc_v2": "/home/haipd/L-RAG/data_test/01-tand_signed_v2.docx",
+  "output_dir": "/home/haipd/L-RAG/tests/e2e_backend/outputs/20260524_175619",
+  "timeout_seconds": 540,
+  "poll_seconds": 3.0,
+  "max_concurrency": 1,
+  "max_comparison_pairs": 3,
+  "max_tokens_acu": 512,
+  "max_tokens_summary": 256,
+  "llm_timeout_seconds": 240.0,
+  "llm_max_retries": 0
+}

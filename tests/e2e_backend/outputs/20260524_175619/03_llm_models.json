@@ -1,0 +1,11 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "llama3:70b",
+      "object": "model",
+      "created": 1774190252,
+      "owned_by": "library"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "document_v1_id": "b63de7c3-95f3-4555-b6a9-42479c70439d",
+  "document_v2_id": "523d6345-0841-4ba4-8769-8ecb980caf29",
+  "skip_phase3": false,
+  "config_overrides": {
+    "llm_base_url": "http://localhost:11434/v1",
+    "llm_model_name": "llama3:70b",
+    "max_concurrency": 1,
+    "max_comparison_pairs": 3,
+    "max_tokens_acu": 512,
+    "max_tokens_summary": 256,
+    "llm_timeout_seconds": 240.0,
+    "llm_max_retries": 0,
+    "output_dir": "/home/haipd/L-RAG/tests/e2e_backend/outputs/20260524_175619/pipeline_outputs",
+    "qdrant_path": "/home/haipd/L-RAG/tests/e2e_backend/outputs/20260524_175619/qdrant_db",
+    "collection_name": "e2e_20260524_175619"
+  }
+}

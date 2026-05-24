@@ -122,6 +122,16 @@ class PipelineConfig(BaseModel):
         gt=0,
         description="Max tokens cho Executive Summary call",
     )
+    timeout_seconds: float = Field(
+        default=120.0,
+        gt=0,
+        description="Timeout mỗi LLM request",
+    )
+    max_retries: int = Field(
+        default=3,
+        ge=0,
+        description="Số lần retry mỗi LLM request",
+    )
 
     # Verification settings
     fuzzy_threshold: float = Field(
@@ -583,6 +593,8 @@ class GenerativeComparisonPipeline:
                 model_name=self._cfg.llm_model_name,
                 temperature=self._cfg.acu_temperature,
                 max_tokens=self._cfg.max_tokens_acu,
+                timeout_seconds=self._cfg.timeout_seconds,
+                max_retries=self._cfg.max_retries,
             )
         )
 
@@ -593,6 +605,8 @@ class GenerativeComparisonPipeline:
                 model_name=self._cfg.llm_model_name,
                 temperature=self._cfg.summary_temperature,
                 max_tokens=self._cfg.max_tokens_summary,
+                timeout_seconds=self._cfg.timeout_seconds,
+                max_retries=self._cfg.max_retries,
             )
         )
 

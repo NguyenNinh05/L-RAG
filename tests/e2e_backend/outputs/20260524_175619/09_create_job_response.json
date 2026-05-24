@@ -1,0 +1,20 @@
+{
+  "id": "41726c8e-fddf-491b-97be-e9c32d242dae",
+  "document_v1_id": "b63de7c3-95f3-4555-b6a9-42479c70439d",
+  "document_v2_id": "523d6345-0841-4ba4-8769-8ecb980caf29",
+  "v1_filename": "",
+  "v2_filename": "",
+  "status": "pending",
+  "current_phase": "queued",
+  "progress_pct": 0,
+  "error_message": null,
+  "total_pairs": null,
+  "matched_count": null,
+  "added_count": null,
+  "deleted_count": null,
+  "split_count": null,
+  "merge_count": null,
+  "created_at": "2026-05-24T10:56:20.685506Z",
+  "started_at": null,
+  "completed_at": null
+}

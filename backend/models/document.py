@@ -30,7 +30,7 @@ class Document(Base, TimestampMixin):
     original_filename: Mapped[str] = mapped_column(String(255), nullable=False)
     storage_path: Mapped[str] = mapped_column(String(512), nullable=False)
     file_size_bytes: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
-    mime_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    mime_type: Mapped[str | None] = mapped_column(String(255), nullable=True)
     content_hash_sha256: Mapped[str | None] = mapped_column(
         String(64), nullable=True, index=True
     )

@@ -1,0 +1,5 @@
+{"event": "progress", "job_id": "41726c8e-fddf-491b-97be-e9c32d242dae", "progress_pct": 5, "current_phase": "ingestion", "message": "Đang phân tích tài liệu...", "captured_at": "2026-05-24T17:56:20"}
+{"event": "progress", "job_id": "41726c8e-fddf-491b-97be-e9c32d242dae", "progress_pct": 10, "current_phase": "ingestion", "message": "Đang parse tài liệu...", "captured_at": "2026-05-24T17:56:20"}
+{"event": "progress", "job_id": "41726c8e-fddf-491b-97be-e9c32d242dae", "progress_pct": 10, "current_phase": "ingestion", "message": "Đang phân tích tài liệu...", "captured_at": "2026-05-24T17:56:20"}
+{"event": "progress", "job_id": "41726c8e-fddf-491b-97be-e9c32d242dae", "progress_pct": 30, "current_phase": "alignment", "message": "Đang nhúng vector BGE-M3...", "captured_at": "2026-05-24T17:56:20"}
+{"event": "progress", "job_id": "41726c8e-fddf-491b-97be-e9c32d242dae", "progress_pct": 55, "current_phase": "comparison", "message": "Đang sinh báo cáo so sánh...", "captured_at": "2026-05-24T17:56:37"}
