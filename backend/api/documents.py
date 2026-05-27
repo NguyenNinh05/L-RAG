@@ -83,3 +83,4 @@ async def delete_document(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found")
+    

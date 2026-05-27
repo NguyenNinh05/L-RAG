@@ -181,3 +181,5 @@ backend/storage/reports/*
 tests/**/output.txt
 tests/**/output/
 tests/**/detailed_output/
+tests/e2e_backend/outputs/*
+
