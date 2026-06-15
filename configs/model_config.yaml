@@ -10,8 +10,8 @@ embedding:
   # device: "cuda"  # uncomment để force GPU
 
 llm:
-  model_name: "Qwen/Qwen2.5-7B-Instruct"
-  base_url: "http://localhost:8000/v1"
+  model_name: "qwen2.5:7b"
+  base_url: "http://localhost:11434/v1"
   api_key: "not-needed"
   temperature_acu: 0.05       # Tầng 1 — cực thấp, anti-hallucination
   temperature_summary: 0.3    # Tầng 4 — cho phép diễn đạt tự nhiên hơn

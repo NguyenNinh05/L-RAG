@@ -9,6 +9,13 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from functools import lru_cache
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load .env from backend directory first, then fallback to current working directory
+backend_dir = Path(__file__).resolve().parent
+load_dotenv(backend_dir / ".env", override=True)
+load_dotenv(override=True)
 
 
 @dataclass(frozen=True)
