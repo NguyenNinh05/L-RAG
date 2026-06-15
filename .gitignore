@@ -185,3 +185,5 @@ tests/**/output/
 tests/**/detailed_output/
 tests/e2e_backend/outputs/*
 
+
+.claude/*
