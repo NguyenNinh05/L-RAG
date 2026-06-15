@@ -148,7 +148,9 @@ test_*.py
 scratch_*.py
 
 test/*
-
+tests/tand_signed_comparison_output/*
+tests/output/*
+guide.md    
 # ============================================================
 # LaTeX Report (báo cáo)
 # ============================================================
