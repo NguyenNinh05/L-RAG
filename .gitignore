@@ -184,6 +184,13 @@ tests/**/output.txt
 tests/**/output/
 tests/**/detailed_output/
 tests/e2e_backend/outputs/*
+tests/knowledge_store_detailed_output/*
+tests/lsu_chunker_detailed_output/*
+tests/output/*
+tests/tand_signed_comparison_output/*
 
+data/*
+
+data_test/*
 
 .claude/*
