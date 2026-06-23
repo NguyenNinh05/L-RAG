@@ -2,9 +2,9 @@
     "description": "Chi tiết các hàm nội bộ tạo chunk từ Điều và Khoản.",
     "_process_article_output_chunks": [
         {
-            "chunk_id": "chunk_70c3489de5894bbf",
+            "chunk_id": "chunk_4bca8ebf999a49f9",
             "doc_id": "test_doc_id",
-            "source_node_id": "article_a38ac8ad3260",
+            "source_node_id": "article_cdaf8413c510",
             "source_node_type": "article",
             "breadcrumb": "[Chương I > Điều 1. Phạm vi điều chỉnh]",
             "content_with_prefix": "[Chương I > Điều 1. Phạm vi điều chỉnh]\nThông tư này quy định về mẫu, việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm. Các Tòa án quân sự căn cứ vào quy định của Thông tư này và quy định của Bộ Quốc phòng để thực hiện việc quản lý, sử dụng, cấp, đổi, thu hồi Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm tại Tòa án quân sự.",
@@ -12,7 +12,7 @@
             "content_type": "mixed",
             "tables_json": [
                 {
-                    "table_id": "tbl_656a6e19",
+                    "table_id": "tbl_4e41f5aa",
                     "headers": [
                         "TÒA ÁN NHÂN DÂN TỐI CAO",
                         "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\n───────────────────"
@@ -40,7 +40,7 @@
                     "num_cols": 2
                 },
                 {
-                    "table_id": "tbl_b57b05c2",
+                    "table_id": "tbl_1539229c",
                     "headers": [
                         "Số: 01/2026/TT-TANDTC",
                         "Hà Nội, ngày 13 tháng 01 năm 2026"
@@ -68,7 +68,7 @@
                     "num_cols": 2
                 },
                 {
-                    "table_id": "tbl_322e5da0",
+                    "table_id": "tbl_f407c422",
                     "headers": [
                         "Nơi nhận:\n- Ủy ban Thường vụ Quốc hội;\n- Ủy ban Pháp luật và Tư pháp của Quốc hội;\n- Ban Chỉ đạo cải cách tư pháp Trung ương;\n- Ban Nội chính Trung ương;\n- Văn phòng Trung ương Đảng;\n- Văn phòng Chủ tịch nước;\n- Ủy ban Trung ương Mặt trận Tổ quốc Việt Nam;\n- Bộ Công an;\n- Bộ Quốc phòng;\n- Bộ Tài chính;\n- Bộ Nội vụ;\n- Các Hội đồng nhân dân cấp tỉnh;\n- Thành viên HĐTP TANDTC;\n- Các đơn vị thuộc TANDTC;\n- TAND và TAQS các cấp;\n- Công báo, Cổng TTĐT Chính phủ;\n- Cổng TTĐT TANDTC (để đăng tải);\n- Lưu: VT (TANDTC, Vụ TCCB).",
                         "CHÁNH ÁN\n\n\nNguyễn Văn Quảng"
@@ -96,7 +96,7 @@
                     "num_cols": 2
                 },
                 {
-                    "table_id": "tbl_3a5743af",
+                    "table_id": "tbl_76078a2d",
                     "headers": [
                         "TÒA ÁN NHÂN DÂN TỐI CAO\nĐƠN VỊ/ TÒA ÁN",
                         "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc"
@@ -124,7 +124,7 @@
                     "num_cols": 2
                 },
                 {
-                    "table_id": "tbl_5bddd88e",
+                    "table_id": "tbl_2a3eec0e",
                     "headers": [
                         "XÁC NHẬN CỦA\nTHỦ TRƯỞNG ĐƠN VỊ/ TÒA ÁN",
                         "......, ngày ... tháng ... năm 20...\nNgười khai"
@@ -161,9 +161,9 @@
     ],
     "_process_clause_output_chunks": [
         {
-            "chunk_id": "chunk_f4007869141141a0",
+            "chunk_id": "chunk_f66f7d6664f54f5b",
             "doc_id": "test_doc_id",
-            "source_node_id": "clause_e9b363bfdc64",
+            "source_node_id": "clause_00a77f2a43f8",
             "source_node_type": "clause",
             "breadcrumb": "[Chương I > Điều 1. Phạm vi điều chỉnh > Khoản 1]",
             "content_with_prefix": "[Chương I > Điều 1. Phạm vi điều chỉnh > Khoản 1]\nPhạm vi điều chỉnh",

@@ -1,0 +1,1627 @@
+{
+  "01-tand_signed": {
+    "pair_name": "01-tand_signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/01-tand_signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/01-tand_signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/01-tand_signed.json",
+    "phase1": {
+      "v1_articles": 14,
+      "v2_articles": 16,
+      "v1_chunks": 53,
+      "v2_chunks": 57,
+      "time": 0.5425721029751003
+    },
+    "phase2": {
+      "matched": 14,
+      "added": 2,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.5016770870424807
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 26,
+      "acus_passed": 26,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 172.03078487399034
+    },
+    "ground_truth": {
+      "total_changes": 24,
+      "categories": {
+        "F": 4,
+        "B": 5,
+        "D": 2,
+        "C": 3,
+        "A": 9,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 16,
+      "pipeline_total": 26,
+      "pipeline_matched": 16,
+      "recall": 0.6666666666666666,
+      "precision": 0.6153846153846154
+    },
+    "per_category": {
+      "F": {
+        "gt_total": 4,
+        "detected": 4
+      },
+      "B": {
+        "gt_total": 5,
+        "detected": 3
+      },
+      "D": {
+        "gt_total": 2,
+        "detected": 2
+      },
+      "C": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 9,
+        "detected": 6
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 1
+      }
+    },
+    "total_time": 173.07570987404324,
+    "errors": []
+  },
+  "01-tandtc.signed": {
+    "pair_name": "01-tandtc.signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/01-tandtc.signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/01-tandtc.signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/01-tandtc.signed.json",
+    "phase1": {
+      "v1_articles": 3,
+      "v2_articles": 5,
+      "v1_chunks": 9,
+      "v2_chunks": 8,
+      "time": 0.05541485012508929
+    },
+    "phase2": {
+      "matched": 3,
+      "added": 2,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.07162722293287516
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 5,
+      "acus_passed": 5,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 31.912492848932743
+    },
+    "ground_truth": {
+      "total_changes": 24,
+      "categories": {
+        "F": 4,
+        "B": 5,
+        "D": 2,
+        "C": 3,
+        "A": 9,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 0,
+      "pipeline_total": 5,
+      "pipeline_matched": 0,
+      "recall": 0.0,
+      "precision": 0.0
+    },
+    "per_category": {
+      "F": {
+        "gt_total": 4,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 5,
+        "detected": 0
+      },
+      "D": {
+        "gt_total": 2,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 9,
+        "detected": 0
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 32.039829588960856,
+    "errors": []
+  },
+  "02-ktnn": {
+    "pair_name": "02-ktnn",
+    "v1_file": "/home/haipd/L-RAG/data_test/02-ktnn_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/02-ktnn_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/02-ktnn.json",
+    "phase1": {
+      "v1_articles": 22,
+      "v2_articles": 22,
+      "v1_chunks": 83,
+      "v2_chunks": 74,
+      "time": 0.11429767590016127
+    },
+    "phase2": {
+      "matched": 21,
+      "added": 1,
+      "deleted": 1,
+      "split": 0,
+      "merged": 0,
+      "time": 0.19797508395276964
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 29,
+      "acus_passed": 28,
+      "acus_rejected": 1,
+      "hallucination_rate": 0.034482758620689655,
+      "time": 149.78987993416376
+    },
+    "ground_truth": {
+      "total_changes": 21,
+      "categories": {
+        "A": 9,
+        "B": 2,
+        "D": 2,
+        "C": 4,
+        "F": 3,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 12,
+      "pipeline_total": 28,
+      "pipeline_matched": 12,
+      "recall": 0.5714285714285714,
+      "precision": 0.42857142857142855
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 9,
+        "detected": 6
+      },
+      "B": {
+        "gt_total": 2,
+        "detected": 2
+      },
+      "D": {
+        "gt_total": 2,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 4,
+        "detected": 2
+      },
+      "F": {
+        "gt_total": 3,
+        "detected": 2
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 150.10244192299433,
+    "errors": []
+  },
+  "02-tand.signed": {
+    "pair_name": "02-tand.signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/02-tand.signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/02-tand.signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/02-tand.signed.json",
+    "phase1": {
+      "v1_articles": 4,
+      "v2_articles": 5,
+      "v1_chunks": 10,
+      "v2_chunks": 9,
+      "time": 0.0430787168443203
+    },
+    "phase2": {
+      "matched": 1,
+      "added": 4,
+      "deleted": 3,
+      "split": 0,
+      "merged": 0,
+      "time": 0.5259792269207537
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 4,
+      "acus_passed": 4,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 14.991100140148774
+    },
+    "ground_truth": {
+      "total_changes": 19,
+      "categories": {
+        "F": 1,
+        "A": 3,
+        "B": 6,
+        "C": 6,
+        "D": 2,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 4,
+      "pipeline_total": 4,
+      "pipeline_matched": 4,
+      "recall": 0.21052631578947367,
+      "precision": 1.0
+    },
+    "per_category": {
+      "F": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 3,
+        "detected": 1
+      },
+      "B": {
+        "gt_total": 6,
+        "detected": 2
+      },
+      "C": {
+        "gt_total": 6,
+        "detected": 0
+      },
+      "D": {
+        "gt_total": 2,
+        "detected": 1
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 15.56042183097452,
+    "errors": []
+  },
+  "02-tt-tand.signed": {
+    "pair_name": "02-tt-tand.signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/02-tt-tand.signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/02-tt-tand.signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/02-tt-tand.signed.json",
+    "phase1": {
+      "v1_articles": 3,
+      "v2_articles": 4,
+      "v1_chunks": 4,
+      "v2_chunks": 5,
+      "time": 0.04859057301655412
+    },
+    "phase2": {
+      "matched": 2,
+      "added": 2,
+      "deleted": 1,
+      "split": 0,
+      "merged": 0,
+      "time": 0.0758254500105977
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 8,
+      "acus_passed": 8,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 33.23875707015395
+    },
+    "ground_truth": {
+      "total_changes": 21,
+      "categories": {
+        "F": 4,
+        "A": 3,
+        "B": 7,
+        "C": 4,
+        "D": 1,
+        "E": 2
+      }
+    },
+    "change_detection": {
+      "gt_detected": 5,
+      "pipeline_total": 8,
+      "pipeline_matched": 5,
+      "recall": 0.23809523809523808,
+      "precision": 0.625
+    },
+    "per_category": {
+      "F": {
+        "gt_total": 4,
+        "detected": 2
+      },
+      "A": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 7,
+        "detected": 2
+      },
+      "C": {
+        "gt_total": 4,
+        "detected": 1
+      },
+      "D": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "E": {
+        "gt_total": 2,
+        "detected": 0
+      }
+    },
+    "total_time": 33.36353061487898,
+    "errors": []
+  },
+  "03-ktnn": {
+    "pair_name": "03-ktnn",
+    "v1_file": "/home/haipd/L-RAG/data_test/03-ktnn_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/03-ktnn_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/03-ktnn.json",
+    "phase1": {
+      "v1_articles": 6,
+      "v2_articles": 4,
+      "v1_chunks": 14,
+      "v2_chunks": 6,
+      "time": 0.05407567205838859
+    },
+    "phase2": {
+      "matched": 3,
+      "added": 1,
+      "deleted": 3,
+      "split": 0,
+      "merged": 0,
+      "time": 0.07615978410467505
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 5,
+      "acus_passed": 5,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 27.414947582175955
+    },
+    "ground_truth": {
+      "total_changes": 18,
+      "categories": {
+        "A": 4,
+        "B": 4,
+        "C": 6,
+        "F": 2,
+        "D": 1,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 5,
+      "pipeline_total": 5,
+      "pipeline_matched": 5,
+      "recall": 0.2777777777777778,
+      "precision": 1.0
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 4,
+        "detected": 1
+      },
+      "B": {
+        "gt_total": 4,
+        "detected": 3
+      },
+      "C": {
+        "gt_total": 6,
+        "detected": 0
+      },
+      "F": {
+        "gt_total": 2,
+        "detected": 1
+      },
+      "D": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 27.545857835095376,
+    "errors": []
+  },
+  "03-tand.signed": {
+    "pair_name": "03-tand.signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/03-tand.signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/03-tand.signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/03-tand.signed.json",
+    "phase1": {
+      "v1_articles": 5,
+      "v2_articles": 8,
+      "v1_chunks": 15,
+      "v2_chunks": 19,
+      "time": 0.060293772956356406
+    },
+    "phase2": {
+      "matched": 5,
+      "added": 3,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.05942704412154853
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 12,
+      "acus_passed": 12,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 119.04487725091167
+    },
+    "ground_truth": {
+      "total_changes": 15,
+      "categories": {
+        "A": 5,
+        "B": 2,
+        "C": 2,
+        "D": 2,
+        "F": 3,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 1,
+      "pipeline_total": 12,
+      "pipeline_matched": 1,
+      "recall": 0.06666666666666667,
+      "precision": 0.08333333333333333
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 5,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 2,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 2,
+        "detected": 1
+      },
+      "D": {
+        "gt_total": 2,
+        "detected": 0
+      },
+      "F": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 119.16480355896056,
+    "errors": []
+  },
+  "03-tand": {
+    "pair_name": "03-tand",
+    "v1_file": "/home/haipd/L-RAG/data_test/03-tand_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/03-tand_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/03-tand.json",
+    "phase1": {
+      "v1_articles": 15,
+      "v2_articles": 13,
+      "v1_chunks": 42,
+      "v2_chunks": 24,
+      "time": 0.16811225307174027
+    },
+    "phase2": {
+      "matched": 12,
+      "added": 1,
+      "deleted": 3,
+      "split": 0,
+      "merged": 0,
+      "time": 0.22843158710747957
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 31,
+      "acus_passed": 30,
+      "acus_rejected": 1,
+      "hallucination_rate": 0.03225806451612903,
+      "time": 233.26352827693336
+    },
+    "ground_truth": {
+      "total_changes": 17,
+      "categories": {
+        "A": 3,
+        "B": 3,
+        "F": 3,
+        "C": 4,
+        "E": 2,
+        "D": 2
+      }
+    },
+    "change_detection": {
+      "gt_detected": 3,
+      "pipeline_total": 30,
+      "pipeline_matched": 3,
+      "recall": 0.17647058823529413,
+      "precision": 0.1
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "F": {
+        "gt_total": 3,
+        "detected": 1
+      },
+      "C": {
+        "gt_total": 4,
+        "detected": 1
+      },
+      "E": {
+        "gt_total": 2,
+        "detected": 1
+      },
+      "D": {
+        "gt_total": 2,
+        "detected": 0
+      }
+    },
+    "total_time": 233.6603303530719,
+    "errors": []
+  },
+  "04-tandtc.signed": {
+    "pair_name": "04-tandtc.signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/04-tandtc.signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/04-tandtc.signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/04-tandtc.signed.json",
+    "phase1": {
+      "v1_articles": 2,
+      "v2_articles": 4,
+      "v1_chunks": 7,
+      "v2_chunks": 4,
+      "time": 0.05655682203359902
+    },
+    "phase2": {
+      "matched": 2,
+      "added": 2,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.18829129706136882
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 2,
+      "acus_passed": 2,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 9.902659590123221
+    },
+    "ground_truth": {
+      "total_changes": 15,
+      "categories": {
+        "A": 3,
+        "B": 3,
+        "C": 5,
+        "F": 2,
+        "D": 1,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 2,
+      "pipeline_total": 2,
+      "pipeline_matched": 2,
+      "recall": 0.13333333333333333,
+      "precision": 1.0
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 3,
+        "detected": 1
+      },
+      "B": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 5,
+        "detected": 0
+      },
+      "F": {
+        "gt_total": 2,
+        "detected": 1
+      },
+      "D": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 10.147757143015042,
+    "errors": []
+  },
+  "04-tt-tand.signed": {
+    "pair_name": "04-tt-tand.signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/04-tt-tand.signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/04-tt-tand.signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/04-tt-tand.signed.json",
+    "phase1": {
+      "v1_articles": 3,
+      "v2_articles": 4,
+      "v1_chunks": 5,
+      "v2_chunks": 5,
+      "time": 0.05652072699740529
+    },
+    "phase2": {
+      "matched": 3,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.0649943039752543
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 9,
+      "acus_passed": 9,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 44.61531971208751
+    },
+    "ground_truth": {
+      "total_changes": 14,
+      "categories": {
+        "A": 3,
+        "B": 4,
+        "C": 4,
+        "F": 1,
+        "D": 1,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 5,
+      "pipeline_total": 9,
+      "pipeline_matched": 5,
+      "recall": 0.35714285714285715,
+      "precision": 0.5555555555555556
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 3,
+        "detected": 1
+      },
+      "B": {
+        "gt_total": 4,
+        "detected": 2
+      },
+      "C": {
+        "gt_total": 4,
+        "detected": 0
+      },
+      "F": {
+        "gt_total": 1,
+        "detected": 1
+      },
+      "D": {
+        "gt_total": 1,
+        "detected": 1
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 44.7370662081521,
+    "errors": []
+  },
+  "05-bvhttdl": {
+    "pair_name": "05-bvhttdl",
+    "v1_file": "/home/haipd/L-RAG/data_test/05-bvhttdl_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/05-bvhttdl_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/05-bvhttdl.json",
+    "phase1": {
+      "v1_articles": 1,
+      "v2_articles": 2,
+      "v1_chunks": 1,
+      "v2_chunks": 2,
+      "time": 0.032887246925383806
+    },
+    "phase2": {
+      "matched": 1,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.08338697883300483
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 0,
+      "acus_passed": 0,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 0.4019171230029315
+    },
+    "ground_truth": {
+      "total_changes": 11,
+      "categories": {
+        "A": 3,
+        "F": 1,
+        "C": 2,
+        "B": 1,
+        "D": 1,
+        "E": 3
+      }
+    },
+    "change_detection": {
+      "gt_detected": 0,
+      "pipeline_total": 0,
+      "pipeline_matched": 0,
+      "recall": 0.0,
+      "precision": 0.0
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "F": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 2,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "D": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "E": {
+        "gt_total": 3,
+        "detected": 0
+      }
+    },
+    "total_time": 0.518407397903502,
+    "errors": []
+  },
+  "05-byt": {
+    "pair_name": "05-byt",
+    "v1_file": "/home/haipd/L-RAG/data_test/05-byt_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/05-byt_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/05-byt.json",
+    "phase1": {
+      "v1_articles": 2,
+      "v2_articles": 3,
+      "v1_chunks": 2,
+      "v2_chunks": 3,
+      "time": 0.04747679713182151
+    },
+    "phase2": {
+      "matched": 1,
+      "added": 2,
+      "deleted": 1,
+      "split": 0,
+      "merged": 0,
+      "time": 0.08650729898363352
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 5,
+      "acus_passed": 5,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 22.31844749697484
+    },
+    "ground_truth": {
+      "total_changes": 14,
+      "categories": {
+        "A": 3,
+        "F": 1,
+        "B": 4,
+        "C": 3,
+        "D": 1,
+        "E": 2
+      }
+    },
+    "change_detection": {
+      "gt_detected": 3,
+      "pipeline_total": 5,
+      "pipeline_matched": 3,
+      "recall": 0.21428571428571427,
+      "precision": 0.6
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "F": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 4,
+        "detected": 1
+      },
+      "C": {
+        "gt_total": 3,
+        "detected": 1
+      },
+      "D": {
+        "gt_total": 1,
+        "detected": 1
+      },
+      "E": {
+        "gt_total": 2,
+        "detected": 0
+      }
+    },
+    "total_time": 22.452682588016614,
+    "errors": []
+  },
+  "06-bvhttdl": {
+    "pair_name": "06-bvhttdl",
+    "v1_file": "/home/haipd/L-RAG/data_test/06-bvhttdl_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/06-bvhttdl_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/06-bvhttdl.json",
+    "phase1": {
+      "v1_articles": 2,
+      "v2_articles": 4,
+      "v1_chunks": 4,
+      "v2_chunks": 4,
+      "time": 0.03614608710631728
+    },
+    "phase2": {
+      "matched": 2,
+      "added": 2,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.04566504014655948
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 6,
+      "acus_passed": 6,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 27.869390570092946
+    },
+    "ground_truth": {
+      "total_changes": 14,
+      "categories": {
+        "A": 3,
+        "F": 1,
+        "B": 4,
+        "C": 3,
+        "D": 1,
+        "E": 2
+      }
+    },
+    "change_detection": {
+      "gt_detected": 0,
+      "pipeline_total": 6,
+      "pipeline_matched": 0,
+      "recall": 0.0,
+      "precision": 0.0
+    },
+    "per_category": {
+      "A": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "F": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 4,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "D": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "E": {
+        "gt_total": 2,
+        "detected": 0
+      }
+    },
+    "total_time": 27.951392591930926,
+    "errors": []
+  },
+  "100-nqcp_signed": {
+    "pair_name": "100-nqcp_signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/100-nqcp_signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/100-nqcp_signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/100-nqcp_signed.json",
+    "phase1": {
+      "v1_articles": 3,
+      "v2_articles": 4,
+      "v1_chunks": 16,
+      "v2_chunks": 17,
+      "time": 0.04639390506781638
+    },
+    "phase2": {
+      "matched": 3,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.07357602403499186
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 2,
+      "acus_passed": 2,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 87.61074028909206
+    },
+    "ground_truth": {
+      "total_changes": 10,
+      "categories": {
+        "D": 6,
+        "C": 1,
+        "A": 2,
+        "B": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 1,
+      "pipeline_total": 2,
+      "pipeline_matched": 1,
+      "recall": 0.1,
+      "precision": 0.5
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 6,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 1,
+        "detected": 1
+      },
+      "A": {
+        "gt_total": 2,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 87.73103293497115,
+    "errors": []
+  },
+  "20-bgddt": {
+    "pair_name": "20-bgddt",
+    "v1_file": "/home/haipd/L-RAG/data_test/20-bgddt_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/20-bgddt_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/20-bgddt.json",
+    "phase1": {
+      "v1_articles": 6,
+      "v2_articles": 7,
+      "v1_chunks": 43,
+      "v2_chunks": 44,
+      "time": 0.05370440008118749
+    },
+    "phase2": {
+      "matched": 6,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.05814973800443113
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 2,
+      "acus_passed": 1,
+      "acus_rejected": 1,
+      "hallucination_rate": 0.5,
+      "time": 12.479005352826789
+    },
+    "ground_truth": {
+      "total_changes": 13,
+      "categories": {
+        "D": 3,
+        "C": 7,
+        "A": 2,
+        "B": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 0,
+      "pipeline_total": 1,
+      "pipeline_matched": 0,
+      "recall": 0.0,
+      "precision": 0.0
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 7,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 2,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 12.591489494079724,
+    "errors": []
+  },
+  "21-bgddt": {
+    "pair_name": "21-bgddt",
+    "v1_file": "/home/haipd/L-RAG/data_test/21-bgddt_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/21-bgddt_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/21-bgddt.json",
+    "phase1": {
+      "v1_articles": 13,
+      "v2_articles": 14,
+      "v1_chunks": 56,
+      "v2_chunks": 57,
+      "time": 0.5608060210943222
+    },
+    "phase2": {
+      "matched": 13,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.0870225690305233
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 5,
+      "acus_passed": 3,
+      "acus_rejected": 2,
+      "hallucination_rate": 0.4,
+      "time": 27.823265915969387
+    },
+    "ground_truth": {
+      "total_changes": 16,
+      "categories": {
+        "D": 11,
+        "C": 3,
+        "A": 1,
+        "B": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 1,
+      "pipeline_total": 3,
+      "pipeline_matched": 1,
+      "recall": 0.0625,
+      "precision": 0.3333333333333333
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 11,
+        "detected": 1
+      },
+      "C": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 28.471332381945103,
+    "errors": []
+  },
+  "22-bgddt": {
+    "pair_name": "22-bgddt",
+    "v1_file": "/home/haipd/L-RAG/data_test/22-bgddt_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/22-bgddt_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/22-bgddt.json",
+    "phase1": {
+      "v1_articles": 17,
+      "v2_articles": 18,
+      "v1_chunks": 73,
+      "v2_chunks": 76,
+      "time": 0.3987801589537412
+    },
+    "phase2": {
+      "matched": 17,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.1257693860679865
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 9,
+      "acus_passed": 8,
+      "acus_rejected": 1,
+      "hallucination_rate": 0.1111111111111111,
+      "time": 71.8338765760418
+    },
+    "ground_truth": {
+      "total_changes": 21,
+      "categories": {
+        "D": 15,
+        "A": 1,
+        "C": 4,
+        "B": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 1,
+      "pipeline_total": 8,
+      "pipeline_matched": 1,
+      "recall": 0.047619047619047616,
+      "precision": 0.125
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 15,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 4,
+        "detected": 1
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 72.35871156002395,
+    "errors": []
+  },
+  "29-cd.signed": {
+    "pair_name": "29-cd.signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/29-cd.signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/29-cd.signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/29-cd.signed.json",
+    "phase1": {
+      "v1_articles": 0,
+      "v2_articles": 6,
+      "v1_chunks": 0,
+      "v2_chunks": 6,
+      "time": 0.09692494501359761
+    },
+    "phase2": {
+      "matched": 0,
+      "added": 0,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 4.756799899041653e-05
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 0,
+      "acus_passed": 0,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 0.007305641891434789
+    },
+    "ground_truth": {
+      "total_changes": 20,
+      "categories": {
+        "D": 13,
+        "C": 5,
+        "A": 1,
+        "B": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 0,
+      "pipeline_total": 0,
+      "pipeline_matched": 0,
+      "recall": 0.0,
+      "precision": 0.0
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 13,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 5,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 0.10455083311535418,
+    "errors": []
+  },
+  "29-ttlt29": {
+    "pair_name": "29-ttlt29",
+    "v1_file": "/home/haipd/L-RAG/data_test/29-ttlt29_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/29-ttlt29_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/29-ttlt29.json",
+    "phase1": {
+      "v1_articles": 3,
+      "v2_articles": 4,
+      "v1_chunks": 46,
+      "v2_chunks": 47,
+      "time": 0.2732184180058539
+    },
+    "phase2": {
+      "matched": 3,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.11629180191084743
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 7,
+      "acus_passed": 7,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 1060.3314213340636
+    },
+    "ground_truth": {
+      "total_changes": 11,
+      "categories": {
+        "D": 5,
+        "C": 4,
+        "A": 1,
+        "B": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 1,
+      "pipeline_total": 7,
+      "pipeline_matched": 1,
+      "recall": 0.09090909090909091,
+      "precision": 0.14285714285714285
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 5,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 4,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 1
+      }
+    },
+    "total_time": 1060.7211547009647,
+    "errors": []
+  },
+  "33-hd.signed": {
+    "pair_name": "33-hd.signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/33-hd.signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/33-hd.signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/33-hd.signed.json",
+    "phase1": {
+      "v1_articles": 0,
+      "v2_articles": 2,
+      "v1_chunks": 0,
+      "v2_chunks": 26,
+      "time": 0.3977383829187602
+    },
+    "phase2": {
+      "matched": 0,
+      "added": 0,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 3.745919093489647e-05
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 0,
+      "acus_passed": 0,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 0.007949934108182788
+    },
+    "ground_truth": {
+      "total_changes": 241,
+      "categories": {
+        "C": 1,
+        "B": 1,
+        "A": 1,
+        "D": 238
+      }
+    },
+    "change_detection": {
+      "gt_detected": 0,
+      "pipeline_total": 0,
+      "pipeline_matched": 0,
+      "recall": 0.0,
+      "precision": 0.0
+    },
+    "per_category": {
+      "C": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "D": {
+        "gt_total": 238,
+        "detected": 0
+      }
+    },
+    "total_time": 0.4064181160647422,
+    "errors": []
+  },
+  "39-btc": {
+    "pair_name": "39-btc",
+    "v1_file": "/home/haipd/L-RAG/data_test/39-btc_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/39-btc_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/39-btc.json",
+    "phase1": {
+      "v1_articles": 6,
+      "v2_articles": 7,
+      "v1_chunks": 30,
+      "v2_chunks": 31,
+      "time": 0.1438838578760624
+    },
+    "phase2": {
+      "matched": 6,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.058424466056749225
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 6,
+      "acus_passed": 6,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 46.95220543211326
+    },
+    "ground_truth": {
+      "total_changes": 10,
+      "categories": {
+        "D": 7,
+        "B": 1,
+        "A": 1,
+        "C": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 3,
+      "pipeline_total": 6,
+      "pipeline_matched": 3,
+      "recall": 0.3,
+      "precision": 0.5
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 7,
+        "detected": 1
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 1
+      },
+      "A": {
+        "gt_total": 1,
+        "detected": 0
+      },
+      "C": {
+        "gt_total": 1,
+        "detected": 1
+      }
+    },
+    "total_time": 47.154775578994304,
+    "errors": []
+  },
+  "40-btc": {
+    "pair_name": "40-btc",
+    "v1_file": "/home/haipd/L-RAG/data_test/40-btc_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/40-btc_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/40-btc.json",
+    "phase1": {
+      "v1_articles": 2,
+      "v2_articles": 3,
+      "v1_chunks": 11,
+      "v2_chunks": 12,
+      "time": 0.018468064023181796
+    },
+    "phase2": {
+      "matched": 2,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.04547726106829941
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 2,
+      "acus_passed": 2,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 12.084075344027951
+    },
+    "ground_truth": {
+      "total_changes": 9,
+      "categories": {
+        "D": 4,
+        "A": 2,
+        "C": 2,
+        "B": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 2,
+      "pipeline_total": 2,
+      "pipeline_matched": 2,
+      "recall": 0.2222222222222222,
+      "precision": 1.0
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 4,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 2,
+        "detected": 2
+      },
+      "C": {
+        "gt_total": 2,
+        "detected": 0
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 12.148196981055662,
+    "errors": []
+  },
+  "41-btc": {
+    "pair_name": "41-btc",
+    "v1_file": "/home/haipd/L-RAG/data_test/41-btc_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/41-btc_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/41-btc.json",
+    "phase1": {
+      "v1_articles": 6,
+      "v2_articles": 7,
+      "v1_chunks": 21,
+      "v2_chunks": 22,
+      "time": 0.04499452211894095
+    },
+    "phase2": {
+      "matched": 6,
+      "added": 1,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.07465151697397232
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 8,
+      "acus_passed": 7,
+      "acus_rejected": 1,
+      "hallucination_rate": 0.125,
+      "time": 66.9065447889734
+    },
+    "ground_truth": {
+      "total_changes": 11,
+      "categories": {
+        "D": 4,
+        "A": 2,
+        "C": 4,
+        "B": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 4,
+      "pipeline_total": 7,
+      "pipeline_matched": 4,
+      "recall": 0.36363636363636365,
+      "precision": 0.5714285714285714
+    },
+    "per_category": {
+      "D": {
+        "gt_total": 4,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 2,
+        "detected": 2
+      },
+      "C": {
+        "gt_total": 4,
+        "detected": 2
+      },
+      "B": {
+        "gt_total": 1,
+        "detected": 0
+      }
+    },
+    "total_time": 67.02641908009537,
+    "errors": []
+  }
+}

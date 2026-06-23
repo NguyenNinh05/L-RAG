@@ -4,10 +4,10 @@
     "sample_references": [
         {
             "source_clause": "Điều 7 Khoản 1",
-            "source_node_id": "clause_74b8b57f4bcc",
+            "source_node_id": "clause_9a6c37fd5b40",
             "references": [
                 {
-                    "target_node_id": "article_78d16c34cced",
+                    "target_node_id": "article_4f94184039fb",
                     "target_type": "article",
                     "target_breadcrumb": "[Chương II > Điều 9. Cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm]",
                     "context": "ợc cấp đổi, cấp lại nếu thuộc trường hợp quy định tại Điều 9 của Thông tư này."
@@ -16,10 +16,10 @@
         },
         {
             "source_clause": "Điều 7 Khoản 2",
-            "source_node_id": "clause_520d21ad0228",
+            "source_node_id": "clause_6b7bac297202",
             "references": [
                 {
-                    "target_node_id": "article_78d16c34cced",
+                    "target_node_id": "article_4f94184039fb",
                     "target_type": "article",
                     "target_breadcrumb": "[Chương II > Điều 9. Cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm]",
                     "context": "ợc cấp đổi, cấp lại nếu thuộc trường hợp quy định tại Điều 9 của Thông tư này."
@@ -28,16 +28,16 @@
         },
         {
             "source_clause": "Điều 10 Khoản 2",
-            "source_node_id": "clause_887793286280",
+            "source_node_id": "clause_60a086d10962",
             "references": [
                 {
-                    "target_node_id": "article_038efdcb1a58",
+                    "target_node_id": "article_905b42142b0f",
                     "target_type": "article",
                     "target_breadcrumb": "[Chương II > Điều 8. Trình tự, thủ tục cấp mới Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm]",
                     "context": "ứng các yêu cầu theo quy định tại điểm b khoản 2 Điều 8 của Thông tư này; Giấy tờ, tài liệu hợp pháp chứn"
                 },
                 {
-                    "target_node_id": "clause_fd675b725ce1",
+                    "target_node_id": "clause_4a1362296206",
                     "target_type": "clause",
                     "target_breadcrumb": "[Chương II > Điều 8. Trình tự, thủ tục cấp mới Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 2]",
                     "context": "ảnh, đáp ứng các yêu cầu theo quy định tại điểm b khoản 2 Điều 8 của Thông tư này; Giấy tờ, tài liệu hợp pháp chứn"
@@ -46,16 +46,16 @@
         },
         {
             "source_clause": "Điều 10 Khoản 3",
-            "source_node_id": "clause_b0600428b9ba",
+            "source_node_id": "clause_1c86d3902880",
             "references": [
                 {
-                    "target_node_id": "article_038efdcb1a58",
+                    "target_node_id": "article_905b42142b0f",
                     "target_type": "article",
                     "target_breadcrumb": "[Chương II > Điều 8. Trình tự, thủ tục cấp mới Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm]",
                     "context": "ược thực hiện như quy định tại khoản 3 và khoản 4 Điều 8 của Thông tư này."
                 },
                 {
-                    "target_node_id": "clause_ef082b833bad",
+                    "target_node_id": "clause_90af8639f23e",
                     "target_type": "clause",
                     "target_breadcrumb": "[Chương II > Điều 8. Trình tự, thủ tục cấp mới Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm > Khoản 4]",
                     "context": "i thẩm được thực hiện như quy định tại khoản 3 và khoản 4 Điều 8 của Thông tư này."

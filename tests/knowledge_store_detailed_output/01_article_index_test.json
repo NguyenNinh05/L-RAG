@@ -3,7 +3,7 @@
     "total_indexed_items": 46,
     "test_lookup_article": {
         "query_article_number": "1",
-        "expected_node_id": "article_0d220adb0a15",
-        "actual_node_id": "article_0d220adb0a15"
+        "expected_node_id": "article_f9ba2e7e5419",
+        "actual_node_id": "article_f9ba2e7e5419"
     }
 }

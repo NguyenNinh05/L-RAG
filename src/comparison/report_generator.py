@@ -617,7 +617,6 @@ class GenerativeComparisonPipeline:
                 strict_numerical=self._cfg.strict_numerical,
             )
         )
-
         logger.info(
             "GenerativeComparisonPipeline khởi tạo: model=%s, max_concurrency=%d",
             self._cfg.llm_model_name,

@@ -464,6 +464,27 @@ class QdrantManager:
             },
         }
 
+    def close(self) -> None:
+        """Đóng Qdrant client, giải phóng resources (file lock, memory)."""
+        try:
+            self._client.close()
+            logger.debug("QdrantManager: client đã được đóng.")
+        except Exception as e:
+            logger.debug("QdrantManager: close() gặp lỗi (non-fatal): %s", e)
+
+    def __enter__(self) -> "QdrantManager":
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        self.close()
+        return False
+
+    def __del__(self) -> None:
+        try:
+            self.close()
+        except Exception:
+            pass
+
     @property
     def client(self) -> QdrantClient:
         """Expose raw client nếu cần truy cập nâng cao."""

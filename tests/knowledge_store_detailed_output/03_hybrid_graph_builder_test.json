@@ -4,12 +4,12 @@
         "nodes": 53,
         "edges": 6,
         "vectors": 53,
-        "elapsed_seconds": 2.58
+        "elapsed_seconds": 2.43
     },
     "internal_graph_stats": {
         "nodes_by_type": {
-            "clause": 38,
-            "article": 14
+            "article": 14,
+            "clause": 38
         },
         "references_edges": 6,
         "contains_edges": 52,
