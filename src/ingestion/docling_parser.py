@@ -79,6 +79,19 @@ _RE_SECTION = re.compile(
     re.IGNORECASE | re.UNICODE,
 )
 
+# --- FALLBACK patterns cho văn bản KHÔNG dùng cấu trúc "Điều" ---------------
+# Một số văn bản (Hướng dẫn, Công điện, Quyết định...) dùng đánh số trực tiếp
+# "1.", "2." / "a)", "b)" / "I.", "II." thay vì "Điều X". Khi primary pass
+# không tìm thấy "Điều" nào, fallback coi mục số thứ tự cấp cao nhất là article.
+_RE_FB_SECTION = re.compile(  # "I.", "II.", "III." (Roman, không có prefix "Chương")
+    r"^(?P<number>[IVXLCDM]+)\.\s+(?P<title>.+)$",
+    re.UNICODE,
+)
+_RE_FB_ARTICLE = re.compile(  # "1.", "2." — mục số thứ tự cấp cao nhất
+    r"^(?P<number>\d{1,3})\.\s+(?P<content>.+)$",
+    re.UNICODE,
+)
+
 
 # ---------------------------------------------------------------------------
 # Confidence Checker
@@ -706,12 +719,151 @@ class LegalDocumentParser:
 
         doc.preamble = "\n".join(preamble_lines).strip()
 
+        # ── FALLBACK: văn bản không dùng cấu trúc "Điều" ────────────────
+        # Nếu primary pass không tạo ra article nào (vd: Hướng dẫn, Công điện
+        # dùng "1.", "2." trực tiếp), chạy fallback coi mục số thứ tự là article.
+        # Tránh recall = 0 cho toàn bộ cặp.
+        if len(list(doc.iter_all_articles())) == 0:
+            fb_doc = self._build_dom_numbered_fallback(lines, path)
+            if len(list(fb_doc.iter_all_articles())) > 0:
+                logger.info(
+                    "[DOM] Primary pass: 0 'Điều' articles → áp dụng numbered "
+                    "fallback: %d pseudo-articles.",
+                    len(list(fb_doc.iter_all_articles())),
+                )
+                # Giữ nguyên doc_id/metadata, thay thế cấu trúc
+                fb_doc.doc_id = doc.doc_id
+                fb_doc.preamble = doc.preamble
+                fb_doc.doc_number = doc.doc_number
+                fb_doc.signing_date = doc.signing_date
+                doc = fb_doc
+
         # Gắn tables vào article theo page number (best-effort mapping)
         self._attach_tables_to_nodes(doc, tables_by_page)
 
         # Trích xuất metadata tài liệu từ preamble
         self._extract_doc_metadata(doc)
 
+        return doc
+
+    def _build_dom_numbered_fallback(
+        self,
+        lines: list[str],
+        path: Path,
+    ) -> LegalDocument:
+        """
+        Fallback DOM builder cho văn bản KHÔNG dùng cấu trúc "Điều"
+        (Hướng dẫn, Công điện, Quyết định, ...).
+
+        Coi:
+          - "1.", "2.", ...  → pseudo-articles
+          - "a)", "b)", ...  → points (gom vào 1 clause mặc định)
+          - "I.", "II.", ... → sections (Roman)
+        Mọi content khác nối tiếp vào article hiện tại. Tránh recall = 0 cho
+        toàn bộ cặp khi văn bản không có "Điều".
+        """
+        doc = LegalDocument(
+            doc_id=f"doc_{path.stem}_{int(time.time())}",
+            source_path=str(path),
+            file_name=path.name,
+        )
+        current_section: DocumentSection | None = None
+        current_article: ArticleNode | None = None
+        current_clause: ClauseNode | None = None
+        current_point: PointNode | None = None
+
+        def flush_point() -> None:
+            nonlocal current_point
+            if current_point and current_clause:
+                current_clause.points.append(current_point)
+                current_point = None
+
+        def flush_clause() -> None:
+            nonlocal current_clause
+            flush_point()
+            if current_clause and current_article:
+                current_article.clauses.append(current_clause)
+                current_clause = None
+
+        def flush_article() -> None:
+            nonlocal current_article
+            flush_clause()
+            if current_article:
+                if current_section:
+                    current_section.articles.append(current_article)
+                else:
+                    doc.orphan_articles.append(current_article)
+                current_article = None
+
+        def flush_section() -> None:
+            nonlocal current_section
+            flush_article()
+            if current_section:
+                doc.sections.append(current_section)
+                current_section = None
+
+        for raw_line in lines:
+            line = raw_line.strip()
+            if line in {"---", "***", "___", ""}:
+                continue
+            # Bỏ markdown table rows (văn bản dạng bảng — không phải structural)
+            if line.startswith("|") and line.endswith("|"):
+                continue
+            line = re.sub(r"^#{1,6}\s+", "", line)
+            line = re.sub(r"\*{1,3}(.*?)\*{1,3}", r"\1", line).strip()
+            # Bỏ artifact "\_" / "\-" đầu dòng do docling
+            line = re.sub(r"^\\[_\-]+\s*", "", line).strip()
+            if re.match(r"^[─━─\-]{3,}$", line):
+                continue
+            if not line:
+                continue
+
+            # Section (Roman): "I.", "II."
+            m = _RE_FB_SECTION.match(line)
+            if m:
+                flush_section()
+                current_section = DocumentSection(
+                    section_type="Phần",
+                    number=m.group("number").strip(),
+                    title=m.group("title").strip(),
+                )
+                continue
+
+            # Article (numbered): "1.", "2."
+            m = _RE_FB_ARTICLE.match(line)
+            if m:
+                flush_article()
+                current_article = ArticleNode(
+                    number=m.group("number").strip(),
+                    title="",
+                )
+                current_article.intro = m.group("content").strip()
+                continue
+
+            # Point: "a)", "b)"
+            m = _RE_POINT.match(line)
+            if m and current_article:
+                if current_clause is None:
+                    current_clause = ClauseNode(number="1", content="")
+                flush_point()
+                current_point = PointNode(
+                    label=m.group("label"),
+                    number=f"{m.group('label')})",
+                    content=m.group("content").strip(),
+                )
+                continue
+
+            # Continuation text
+            if current_point:
+                current_point.content += " " + line
+            elif current_clause:
+                current_clause.content += " " + line
+            elif current_article:
+                current_article.intro += " " + line
+
+        flush_section()
+        if current_article:
+            flush_article()
         return doc
 
     def _inject_markdown_tables(

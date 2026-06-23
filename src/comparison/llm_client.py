@@ -30,6 +30,54 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
+# Truncation recovery — salvage complete JSON objects from a truncated response
+# ---------------------------------------------------------------------------
+
+
+def _extract_complete_json_objects(text: str) -> list[dict[str, Any]]:
+    """
+    Trích tất cả object {...} hoàn chỉnh (brace-balanced) từ text, kể cả khi
+    text bị cắt ngắn giữa chừng (finish_reason=length).
+
+    Dùng cho response có dạng `{"acus": [{...}, {...}, {... CẮT}` — lấy được
+    các ACU object đã đóng ngoặc đầy đủ, bỏ object cuối đang dở.
+
+    Dùng stack vị trí các '{': mỗi khi gặp '}' khớp, snippet text[start:end+1]
+    là 1 object hoàn chỉnh. Lọc giữ các object có khóa "change_type" (= ACU),
+    bỏ wrapper `{"acus": ...}` và các object con không phải ACU.
+    """
+    objects: list[dict[str, Any]] = []
+    stack: list[int] = []
+    in_str = False
+    esc = False
+
+    for i, ch in enumerate(text):
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            stack.append(i)
+        elif ch == "}":
+            if stack:
+                start = stack.pop()
+                snippet = text[start:i + 1]
+                try:
+                    obj = json.loads(snippet)
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(obj, dict) and "change_type" in obj:
+                    objects.append(obj)
+    return objects
+
+
+# ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 
@@ -306,8 +354,10 @@ class LocalLLMClient:
         """
         Parse JSON từ LLM response.
 
-        Xử lý các trường hợp LLM wrap JSON trong markdown code block:
-            ```json\n{...}\n```
+        Xử lý các trường hợp:
+          - LLM wrap JSON trong markdown code block: ```json\n{...}\n```
+          - Response bị CẮT NGẮN (finish_reason=length) khi danh sách ACU dài
+            vượt max_tokens → salvage các ACU object hoàn chỉnh trước điểm cắt.
         """
         text = raw.strip()
 
@@ -338,6 +388,15 @@ class LocalLLMClient:
                     return json.loads(json_match.group())
                 except json.JSONDecodeError:
                     pass
+
+            # Truncation recovery: salvage các ACU object hoàn chỉnh
+            acus = _extract_complete_json_objects(text)
+            if acus:
+                logger.warning(
+                    "Truncation recovery: JSON bị cắt ngắn → salvage %d ACU hoàn chỉnh.",
+                    len(acus),
+                )
+                return {"acus": acus}
 
             raise ValueError(
                 f"LocalLLMClient: Không thể parse JSON từ response. "

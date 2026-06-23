@@ -183,9 +183,11 @@ hai đoạn văn bản pháp lý và xác định CÁC THAY ĐỔI NGUYÊN TỬ 
 - `verbatim_evidence_v2` PHẢI là copy-paste NGUYÊN VĂN từ <v2_text>.
 - NGHIÊM CẤM paraphrase, tóm tắt, hoặc tạo ra bất kỳ chuỗi văn bản nào không có trong input.
 
-### RULE 2: MỖI ACU CHỈ MÔ TẢ 1 THAY ĐỔI DUY NHẤT
+### RULE 2: MỖI ACU CHỈ MÔ TẢ 1 THAY ĐỔI DUY NHẤT — TÁCH MỊN TỐI ĐA
 - Không gộp nhiều thay đổi vào 1 ACU.
 - Nếu có 3 thay đổi, tạo 3 ACU riêng biệt.
+- Tách từng con số, từng ngày, từng cụm từ đổi thành 1 ACU riêng.
+  VD: đổi "30 ngày → 45 ngày" VÀ "500.000 đồng → 600.000 đồng" là 2 ACU, không phải 1.
 
 ### RULE 3: PHÂN LOẠI CHÍNH XÁC change_type
 - "numerical"   → Thay đổi con số, ngày tháng, phần trăm, tiền tệ, thời hạn.
@@ -208,6 +210,27 @@ hai đoạn văn bản pháp lý và xác định CÁC THAY ĐỔI NGUYÊN TỬ 
 - confidence = 1.0 → Chắc chắn 100%, evidence rõ ràng.
 - confidence = 0.7–0.9 → Khá chắc chắn.
 - confidence < 0.5 → Không chắc, có thể là cách diễn đạt khác của cùng nội dung.
+- BẮT BUỘC điền confidence cho MỌI ACU (kể cả reorder/addition/deletion).
+
+### RULE 7: KHÔNG BỎ QUA THAY ĐỔI NHỎ
+- Mọi khác biệt đều phải được báo cáo: đổi ngày tháng, lỗi chính tả, đổi dấu câu,
+  đổi thứ tự từ, thêm/bớt một chữ. Mỗi cái = 1 ACU riêng.
+- KHÔNG tự quyết "thay đổi này quá nhỏ nên bỏ qua". Nhiệm vụ của bạn là LIỆT KÊ toàn bộ.
+
+### RULE 8: THAY ĐỔI LOGIC / NGHĨA PHÁP LÝ (RẤT QUAN TRỌNG)
+- Khi V2 ĐẢO NGHĨA so với V1 (đổi "không" ↔ "có thể/được", "bắt buộc" ↔ "không bắt buộc",
+  thêm/bớt "nếu…", "trừ khi…", "chỉ khi…", đổi điều kiện/phạm vi đối tượng) → đây là
+  thay đổi quan trọng, dễ bị bỏ sót.
+- Phân loại: đổi từ đòn bẩy nghĩa → "terminology"; đổi mệnh đề điều kiện → "structural".
+- Đặt confidence CAO (0.85–1.0) cho logic-shift. KHÔNG gộp với thay đổi nhỏ khác.
+
+## VÍ DỤ (few-shot — cách tách ACU)
+<v1_text>Bên A phải thanh toán 500.000 đồng trong vòng 30 ngày. Bên A không được chuyển nhượng.</v1_text>
+<v2_text>Bên A phải thanh toán 600.000 đồng trong vòng 30 ngày. Bên A có thể chuyển nhượng nếu được bên B đồng ý.</v2_text>
+→ Trả về 2 ACU:
+  1. {"change_type":"numerical","original_value":"500.000 đồng","new_value":"600.000 đồng", ...}
+  2. {"change_type":"terminology","original_value":"không được chuyển nhượng","new_value":"có thể chuyển nhượng nếu được bên B đồng ý","confidence":0.95, ...}
+→ "30 ngày" KHÔNG đổi → KHÔNG tạo ACU.
 
 ## FORMAT OUTPUT:
 Trả về DUY NHẤT một JSON object hợp lệ với schema sau. KHÔNG thêm bất kỳ text nào ngoài JSON:
@@ -791,6 +814,15 @@ class GenerativeComparisonPipeline:
             breadcrumb_v2=request.breadcrumb_v2,
             match_type=request.match_type,
         )
+
+        # S4 — inject deterministic logic-signal hint (Category D awareness)
+        try:
+            from .logic_detector import build_logic_hint
+            hint = build_logic_hint(request.raw_text_v1, request.raw_text_v2)
+            if hint:
+                user_prompt += hint
+        except Exception:
+            pass  # hint là best-effort, không được làm hỏng pipeline
 
         try:
             raw_json = await self._acu_llm.chat_json(

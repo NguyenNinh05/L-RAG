@@ -214,9 +214,17 @@ class VerificationEngine:
         if not result.is_passed:
             return result
 
-        # ---- Tầng 3: Numerical Verification (chỉ nếu applicable) ----
+        # ---- Tầng 3: Numerical Verification ----
+        # S5: trước đây chỉ chạy cho change_type=NUMERICAL. Mở rộng cho BẤT KỲ ACU nào
+        # chứa số trong original_value/new_value → bắt số liệu halluc trong
+        # terminology/structural/addition ACUs (vd: bgddt table misreads bịa con số).
         if acu.change_type == ChangeType.NUMERICAL:
             result = self._verify_numerical(result, raw_text_v1, raw_text_v2)
+        else:
+            has_numbers = bool(extract_numbers(acu.original_value or "")) or \
+                bool(extract_numbers(acu.new_value or ""))
+            if has_numbers:
+                result = self._verify_numerical(result, raw_text_v1, raw_text_v2)
 
         return result
 

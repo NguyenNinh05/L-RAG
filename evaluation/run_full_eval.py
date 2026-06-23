@@ -35,6 +35,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+
 # Ensure project root is on sys.path (needed when run from anywhere)
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
@@ -111,12 +113,23 @@ class PairEvalResult:
     gt_categories: dict[str, int] = field(default_factory=dict)
 
     # Change detection metrics (at article level)
-    gt_changes_detected: int = 0  # GT changes found in pipeline output
+    gt_changes_detected: int = 0  # GT changes found in pipeline output (substring)
     pipeline_changes_total: int = 0  # Total ACUs from pipeline
-    pipeline_changes_matched: int = 0  # Pipeline ACUs matching a GT change
+    pipeline_changes_matched: int = 0  # Pipeline ACUs matching a GT change (substring)
 
-    # Per-category metrics
+    # S2 — Semantic + article-level metrics (honest recall)
+    gt_changes_detected_semantic: int = 0
+    pipeline_changes_matched_semantic: int = 0
+    gt_with_article: int = 0          # GT changes có article number parse được
+    gt_article_covered: int = 0       # trong số đó, pipeline chạm đúng article
+
+    # Per-category metrics (theo substring matcher — giữ backward compat)
     per_category: dict[str, dict[str, int]] = field(default_factory=dict)
+    # Per-category theo semantic matcher
+    per_category_semantic: dict[str, dict[str, int]] = field(default_factory=dict)
+
+    # Persisted ACU dicts (S2 — để re-score offline + debug)
+    all_acus: list[dict] = field(default_factory=list)
 
     # Timing
     phase1_time: float = 0.0
@@ -328,6 +341,137 @@ def match_gt_to_acus(
 
 
 # ---------------------------------------------------------------------------
+# Semantic matcher (S2) — BGE-M3 many-to-many GT↔ACU matching
+# ---------------------------------------------------------------------------
+
+# Ngưỡng cosine để chấp nhận match ngữ nghĩa (calibrate trên golden).
+SEMANTIC_MATCH_THRESHOLD = 0.55
+
+
+def _gt_change_text(gt: dict) -> str:
+    """Biểu diễn text của 1 GT change để embed (gộp original + modified + location)."""
+    orig = (gt.get("original_text") or "").strip()
+    mod = (gt.get("modified_text") or "").strip()
+    loc = (gt.get("location") or "").strip()
+    parts: list[str] = []
+    if orig:
+        parts.append(orig)
+    if mod:
+        parts.append("→ " + mod)
+    if loc:
+        parts.append("@ " + loc)
+    return " | ".join(parts) if parts else (gt.get("change_type") or "change")
+
+
+def _acu_text(acu: dict) -> str:
+    """Biểu diễn text của 1 ACU để embed (original/new + verbatim evidence + location)."""
+    ov = (acu.get("original_value") or "").strip()
+    nv = (acu.get("new_value") or "").strip()
+    ev1 = (acu.get("verbatim_evidence_v1") or "").strip()
+    ev2 = (acu.get("verbatim_evidence_v2") or "").strip()
+    loc = (acu.get("location_v1") or acu.get("location_v2") or "").strip()
+    parts: list[str] = []
+    if ov:
+        parts.append(ov)
+    if nv:
+        parts.append("→ " + nv)
+    if ev1:
+        parts.append(ev1[:160])
+    if ev2:
+        parts.append(ev2[:160])
+    if loc:
+        parts.append("@ " + loc)
+    return " | ".join(parts) if parts else "acu"
+
+
+def semantic_match_gt_to_acus(
+    gt_changes: list[dict],
+    acus: list[dict],
+    embed_manager: Any,
+    threshold: float = SEMANTIC_MATCH_THRESHOLD,
+) -> tuple[set[int], set[int], list[float]]:
+    """
+    Semantic many-to-many matching dùng BGE-M3.
+
+    Một GT change được tính là "detected" nếu TỐI THIỂU 1 ACU có cosine ≥ threshold.
+    Một ACU có thể thỏa nhiều GT (phá giả định 1:1 của substring matcher) → phản ánh
+    đúng trường hợp 1 ACU thô phủ nhiều micro-edit của GT.
+
+    Returns:
+        (matched_gt_idx, matched_acu_idx, best_sim_per_gt)
+    """
+    if not gt_changes or not acus or embed_manager is None:
+        return set(), set(), []
+
+    gt_texts = [_gt_change_text(g) for g in gt_changes]
+    ac_texts = [_acu_text(a) for a in acus]
+
+    try:
+        gt_vecs = embed_manager.embed_texts_semantic(gt_texts)  # (G, 1024)
+        ac_vecs = embed_manager.embed_texts_semantic(ac_texts)  # (A, 1024)
+    except Exception as exc:
+        logger.warning("Semantic match: embedding failed (%s) — fallback rỗng.", exc)
+        return set(), set(), []
+
+    if gt_vecs.shape[0] == 0 or ac_vecs.shape[0] == 0:
+        return set(), set(), []
+
+    # Vectors đã L2-normalize → dot product = cosine similarity
+    sim = gt_vecs @ ac_vecs.T  # (G, A)
+
+    matched_gt: set[int] = set()
+    matched_ac: set[int] = set()
+    best_sim: list[float] = []
+    for i in range(sim.shape[0]):
+        row = sim[i]
+        j = int(np.argmax(row))
+        s = float(row[j])
+        best_sim.append(s)
+        if s >= threshold:
+            matched_gt.add(i)
+            matched_ac.add(j)
+    return matched_gt, matched_ac, best_sim
+
+
+def article_coverage(
+    gt_changes: list[dict],
+    matched_article_nums: set[str],
+    acus: list[dict],
+) -> tuple[int, int]:
+    """
+    Article-level coverage (không phụ thuộc matcher chuỗi/ngữ nghĩa).
+    Đo: pipeline có "chạm" đúng article chứa GT change không?
+
+    Một GT change được "cover" nếu:
+      - article number trong location của nó CÓ trong tập article đã align, HOẶC
+      - có ≥1 ACU có location cùng article number.
+
+    Returns:
+        (gt_with_article, gt_covered) — gt_with_article = số GT có article number
+        parse được; gt_covered = số GT trong đó được pipeline chạm tới article.
+    """
+    acu_articles: set[str] = set()
+    for acu in acus:
+        for fld in ("location_v1", "location_v2"):
+            an = extract_article_number(acu.get(fld, ""))
+            if an:
+                acu_articles.add(an)
+
+    reached = matched_article_nums | acu_articles
+
+    gt_with_article = 0
+    gt_covered = 0
+    for gt in gt_changes:
+        an = extract_article_number(gt.get("location", ""))
+        if not an:
+            continue
+        gt_with_article += 1
+        if an in reached:
+            gt_covered += 1
+    return gt_with_article, gt_covered
+
+
+# ---------------------------------------------------------------------------
 # Per-pair evaluation
 # ---------------------------------------------------------------------------
 
@@ -464,6 +608,17 @@ async def evaluate_pair(
         gen_pipeline = GenerativeComparisonPipeline(config=pipeline_cfg)
 
         matched_pairs = catalog.matched_pairs
+
+        # S2 — article numbers đã được align (cho article-coverage metric).
+        # DiffPair không có breadcrumb field → trích "Điều X" từ text gốc của pair.
+        matched_article_nums: set[str] = set()
+        for mp in matched_pairs:
+            for txt in list(mp.v1_texts) + list(mp.v2_texts):
+                if not txt:
+                    continue
+                for m in re.finditer(r"Điều\s+(\d+[a-z]?)", txt, re.IGNORECASE):
+                    matched_article_nums.add(m.group(1))
+
         requests = [
             ComparisonRequest(
                 pair_id=pair.pair_id,
@@ -568,7 +723,7 @@ async def evaluate_pair(
         result.gt_changes_detected = len(matched_gt_ids)
         result.pipeline_changes_matched = len(matched_acu_indices)
 
-        # Per-category breakdown (done once at pair level)
+        # Per-category breakdown (done once at pair level) — theo substring matcher
         for gt_idx, gt_change in enumerate(gt_changes):
             cat = gt_change.get("category", "?")
             if cat not in result.per_category:
@@ -576,6 +731,29 @@ async def evaluate_pair(
             result.per_category[cat]["gt_total"] += 1
             if gt_idx in matched_gt_ids:
                 result.per_category[cat]["detected"] += 1
+
+        # ── S2: Semantic matching (BGE-M3, many-to-many) ───────────────
+        matched_gt_sem, matched_ac_sem, _best_sim = semantic_match_gt_to_acus(
+            gt_changes, all_acu_dicts, embed_manager
+        )
+        result.gt_changes_detected_semantic = len(matched_gt_sem)
+        result.pipeline_changes_matched_semantic = len(matched_ac_sem)
+
+        for gt_idx, gt_change in enumerate(gt_changes):
+            cat = gt_change.get("category", "?")
+            if cat not in result.per_category_semantic:
+                result.per_category_semantic[cat] = {"gt_total": 0, "detected": 0}
+            result.per_category_semantic[cat]["gt_total"] += 1
+            if gt_idx in matched_gt_sem:
+                result.per_category_semantic[cat]["detected"] += 1
+
+        # ── S2: Article-level coverage ─────────────────────────────────
+        result.gt_with_article, result.gt_article_covered = article_coverage(
+            gt_changes, matched_article_nums, all_acu_dicts
+        )
+
+        # ── S2: Persist ACU dicts (re-score offline + debug) ───────────
+        result.all_acus = all_acu_dicts
 
         result.total_acus_generated = total_acus_passed + total_acus_rejected
         result.total_acus_passed = total_acus_passed
@@ -627,10 +805,26 @@ def compute_aggregate_metrics(results: list[PairEvalResult]) -> dict[str, Any]:
     total_split = sum(r.aligned_split for r in results)
     total_merged = sum(r.aligned_merged for r in results)
 
-    # Change detection recall/precision/F1
+    # Change detection recall/precision/F1 — substring matcher (legacy)
     recall = total_gt_detected / total_gt_changes if total_gt_changes > 0 else 0.0
     precision = total_pipe_matched / total_pipe_changes if total_pipe_changes > 0 else 0.0
     f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+
+    # S2 — Semantic matcher (BGE-M3, many-to-many) — honest recall
+    total_gt_detected_sem = sum(r.gt_changes_detected_semantic for r in results)
+    total_pipe_matched_sem = sum(r.pipeline_changes_matched_semantic for r in results)
+    recall_sem = (total_gt_detected_sem / total_gt_changes
+                  if total_gt_changes > 0 else 0.0)
+    precision_sem = (total_pipe_matched_sem / total_pipe_changes
+                     if total_pipe_changes > 0 else 0.0)
+    f1_sem = (2 * precision_sem * recall_sem / (precision_sem + recall_sem)
+              if (precision_sem + recall_sem) > 0 else 0.0)
+
+    # S2 — Article-level coverage
+    total_gt_with_art = sum(r.gt_with_article for r in results)
+    total_gt_art_covered = sum(r.gt_article_covered for r in results)
+    recall_article = (total_gt_art_covered / total_gt_with_art
+                      if total_gt_with_art > 0 else 0.0)
 
     # Hallucination rate
     hal_rate = total_acus_rejected / total_acus_gen if total_acus_gen > 0 else 0.0
@@ -648,12 +842,31 @@ def compute_aggregate_metrics(results: list[PairEvalResult]) -> dict[str, Any]:
         stats["recall"] = (stats["detected"] / stats["gt_total"]
                            if stats["gt_total"] > 0 else 0.0)
 
+    # S2 — Per-category aggregation theo semantic matcher
+    per_cat_sem_agg: dict[str, dict] = {}
+    for r in results:
+        for cat, stats in r.per_category_semantic.items():
+            if cat not in per_cat_sem_agg:
+                per_cat_sem_agg[cat] = {"gt_total": 0, "detected": 0}
+            per_cat_sem_agg[cat]["gt_total"] += stats["gt_total"]
+            per_cat_sem_agg[cat]["detected"] += stats["detected"]
+    for cat, stats in per_cat_sem_agg.items():
+        stats["recall"] = (stats["detected"] / stats["gt_total"]
+                           if stats["gt_total"] > 0 else 0.0)
+
     # Timing
     total_time = sum(r.total_time for r in results)
     avg_time = total_time / n if n > 0 else 0.0
 
     # Pairs with errors
     error_pairs = [r.pair_name for r in results if r.errors]
+    # S5 — pairs flagged for high hallucination (>15%) — cần review
+    halluc_flagged_pairs = [
+        {"pair": r.pair_name, "hallucination_rate": round(r.hallucination_rate, 4),
+         "rejected": r.total_acus_rejected, "total": r.total_acus_generated}
+        for r in results
+        if r.hallucination_rate > 0.15 and r.total_acus_generated > 0
+    ]
     # A pair actually ran Phase 3 only if phase3_time > 0 (not just "didn't error").
     # Pairs failing at Phase 2 return early and never reach Phase 3.
     phase3_pairs = sum(1 for r in results if r.phase3_time > 0)
@@ -663,6 +876,9 @@ def compute_aggregate_metrics(results: list[PairEvalResult]) -> dict[str, Any]:
         "num_pairs_with_phase3": phase3_pairs,
         "num_pairs_with_errors": len(error_pairs),
         "error_pairs": error_pairs,
+
+        # S5 — hallucination flags
+        "halluc_flagged_pairs": halluc_flagged_pairs,
 
         # Ingestion
         "total_v1_articles": total_v1_articles,
@@ -690,6 +906,18 @@ def compute_aggregate_metrics(results: list[PairEvalResult]) -> dict[str, Any]:
         "pipeline_changes_total": total_pipe_changes,
         "pipeline_changes_matched": total_pipe_matched,
 
+        # S2 — Semantic (honest) recall
+        "change_recall_semantic": round(recall_sem, 4),
+        "change_precision_semantic": round(precision_sem, 4),
+        "change_f1_semantic": round(f1_sem, 4),
+        "gt_changes_detected_semantic": total_gt_detected_sem,
+        "pipeline_changes_matched_semantic": total_pipe_matched_sem,
+
+        # S2 — Article-level coverage
+        "gt_with_article": total_gt_with_art,
+        "gt_article_covered": total_gt_art_covered,
+        "change_recall_article": round(recall_article, 4),
+
         # ACU quality
         "total_acus_generated": total_acus_gen,
         "total_acus_passed": total_acus_passed,
@@ -698,6 +926,7 @@ def compute_aggregate_metrics(results: list[PairEvalResult]) -> dict[str, Any]:
 
         # Per-category
         "per_category": per_cat_agg,
+        "per_category_semantic": per_cat_sem_agg,
 
         # Timing
         "total_time_seconds": round(total_time, 1),
@@ -755,6 +984,13 @@ def print_aggregate_report(metrics: dict[str, Any]) -> None:
     print(f"  ⭐ RECALL              : {metrics['change_recall']:.2%}")
     print(f"  ⭐ PRECISION            : {metrics['change_precision']:.2%}")
     print(f"  ⭐ F1 SCORE             : {metrics['change_f1']:.2%}")
+
+    print(f"\n  🧠 RECALL (semantic, BGE-M3)   : {metrics.get('change_recall_semantic', 0):.2%}")
+    print(f"  🧠 PRECISION (semantic)         : {metrics.get('change_precision_semantic', 0):.2%}")
+    print(f"  🧠 F1 (semantic)                : {metrics.get('change_f1_semantic', 0):.2%}")
+    print(f"  📑 RECALL (article coverage)    : {metrics.get('change_recall_article', 0):.2%}"
+          f"  ({metrics.get('gt_article_covered', 0)}/{metrics.get('gt_with_article', 0)} GT có article)")
+    print(f"     ↳ semantic = recall 'thật' (many-to-many, phá trần 1:1).")
 
     print(f"\n{'─' * 50}")
     print("✅  ACU QUALITY (Phase 3)")
@@ -948,8 +1184,19 @@ async def main_async(args: argparse.Namespace) -> None:
                            if result.gt_total_changes > 0 else 0.0),
                 "precision": (result.pipeline_changes_matched / result.pipeline_changes_total
                               if result.pipeline_changes_total > 0 else 0.0),
+                # S2 — semantic + article
+                "gt_detected_semantic": result.gt_changes_detected_semantic,
+                "pipeline_matched_semantic": result.pipeline_changes_matched_semantic,
+                "recall_semantic": (result.gt_changes_detected_semantic / result.gt_total_changes
+                                    if result.gt_total_changes > 0 else 0.0),
+                "recall_article": (result.gt_article_covered / result.gt_with_article
+                                   if result.gt_with_article > 0 else 0.0),
+                "gt_with_article": result.gt_with_article,
+                "gt_article_covered": result.gt_article_covered,
             },
             "per_category": result.per_category,
+            "per_category_semantic": result.per_category_semantic,
+            "acus": result.all_acus,
             "total_time": result.total_time,
             "errors": result.errors,
         }
@@ -972,6 +1219,10 @@ async def main_async(args: argparse.Namespace) -> None:
                 r.gt_changes_detected / r.gt_total_changes if r.gt_total_changes > 0 else 0.0,
                 r.pipeline_changes_matched / r.pipeline_changes_total if r.pipeline_changes_total > 0 else 0.0
             ),
+            "recall_semantic": (r.gt_changes_detected_semantic / r.gt_total_changes
+                                if r.gt_total_changes > 0 else 0.0),
+            "recall_article": (r.gt_article_covered / r.gt_with_article
+                               if r.gt_with_article > 0 else 0.0),
             "hallucination_rate": r.hallucination_rate,
             "errors": r.errors,
         }

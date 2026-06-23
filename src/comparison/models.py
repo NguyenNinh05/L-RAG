@@ -135,12 +135,13 @@ class ACUOutput(BaseModel):
 
     # --- Confidence ---
     confidence: float = Field(
-        ...,
+        default=0.5,
         ge=0.0,
         le=1.0,
         description=(
             "Mức độ tự tin của LLM về ACU này [0.0, 1.0]. "
-            "Dưới 0.5 → nên xem xét thủ công."
+            "Dưới 0.5 → nên xem xét thủ công. "
+            "Default 0.5 nếu LLM quên điền (tránh validation reject mất ACU)."
         ),
     )
 
