@@ -27,11 +27,6 @@ export function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
-  // Redirect if already logged in
-  if (token) {
-    return <Navigate to="/" replace />
-  }
-
   const {
     register: reg,
     handleSubmit,
@@ -39,6 +34,11 @@ export function RegisterPage() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   })
+
+  // Redirect if already logged in (hooks must come first)
+  if (token) {
+    return <Navigate to="/" replace />
+  }
 
   const onSubmit = async (data: RegisterFormData) => {
     setError(null)

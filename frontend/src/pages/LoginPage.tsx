@@ -21,12 +21,6 @@ export function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Redirect if already logged in
-  if (token) {
-    const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/'
-    return <Navigate to={from} replace />
-  }
-
   const {
     register,
     handleSubmit,
@@ -34,6 +28,12 @@ export function LoginPage() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
+
+  // Redirect if already logged in (hooks must come first)
+  if (token) {
+    const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/'
+    return <Navigate to={from} replace />
+  }
 
   const onSubmit = async (data: LoginFormData) => {
     setError(null)

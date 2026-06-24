@@ -16,8 +16,17 @@ export function getJob(id: string): Promise<Job> {
   return api.get<Job>(`/jobs/${id}`)
 }
 
-export function listJobs(): Promise<Job[]> {
-  return api.get<Job[]>('/jobs')
+interface PaginatedResponse<T> {
+  items: T[]
+  total: number
+  page: number
+  page_size: number
+  total_pages: number
+}
+
+export async function listJobs(): Promise<Job[]> {
+  const res = await api.get<PaginatedResponse<Job>>('/jobs')
+  return res.items ?? []
 }
 
 export function cancelJob(id: string): Promise<void> {
