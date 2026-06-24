@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/auth'
 import { useState } from 'react'
+import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom'
 
 const loginSchema = z.object({
   login: z.string().min(1, 'Vui lòng nhập email hoặc tên đăng nhập'),
@@ -15,7 +16,16 @@ type LoginFormData = z.infer<typeof loginSchema>
 export function LoginPage() {
   const { t } = useTranslation()
   const login = useAuthStore((s) => s.login)
+  const token = useAuthStore((s) => s.token)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // Redirect if already logged in
+  if (token) {
+    const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/'
+    return <Navigate to={from} replace />
+  }
 
   const {
     register,
@@ -32,6 +42,8 @@ export function LoginPage() {
         ...(data.login.includes('@') ? { email: data.login } : { username: data.login }),
         password: data.password,
       })
+      const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/'
+      navigate(from, { replace: true })
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Đăng nhập thất bại')
     }
@@ -91,9 +103,9 @@ export function LoginPage() {
 
         <p className="mt-4 text-center text-sm text-muted-foreground">
           Chưa có tài khoản?{' '}
-          <a href="/register" className="font-medium text-accent hover:underline">
+          <Link to="/register" className="font-medium text-accent hover:underline">
             {t('auth.register')}
-          </a>
+          </Link>
         </p>
       </div>
     </div>

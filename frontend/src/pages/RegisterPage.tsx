@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/auth'
 import { useState } from 'react'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 
 const registerSchema = z
   .object({
@@ -22,7 +23,14 @@ type RegisterFormData = z.infer<typeof registerSchema>
 export function RegisterPage() {
   const { t } = useTranslation()
   const register = useAuthStore((s) => s.register)
+  const token = useAuthStore((s) => s.token)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
+
+  // Redirect if already logged in
+  if (token) {
+    return <Navigate to="/" replace />
+  }
 
   const {
     register: reg,
@@ -40,6 +48,7 @@ export function RegisterPage() {
         email: data.email,
         password: data.password,
       })
+      navigate('/', { replace: true })
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Đăng ký thất bại')
     }
@@ -131,9 +140,9 @@ export function RegisterPage() {
 
         <p className="mt-4 text-center text-sm text-muted-foreground">
           Đã có tài khoản?{' '}
-          <a href="/login" className="font-medium text-accent hover:underline">
+          <Link to="/login" className="font-medium text-accent hover:underline">
             {t('auth.login')}
-          </a>
+          </Link>
         </p>
       </div>
     </div>
