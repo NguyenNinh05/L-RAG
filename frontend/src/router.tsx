@@ -6,6 +6,9 @@ const LoginPage = lazy(() => import('@/pages/LoginPage').then((m) => ({ default:
 const RegisterPage = lazy(() =>
   import('@/pages/RegisterPage').then((m) => ({ default: m.RegisterPage })),
 )
+const CreateJobPage = lazy(() =>
+  import('@/pages/CreateJobPage').then((m) => ({ default: m.CreateJobPage })),
+)
 
 function Loading() {
   return (
@@ -47,7 +50,7 @@ export const router = createBrowserRouter([
         path: '/compare',
         element: (
           <Suspense fallback={<Loading />}>
-            <div className="p-8"><h1 className="text-2xl">Compare — coming in M2</h1></div>
+            <CreateJobPage />
           </Suspense>
         ),
       },
