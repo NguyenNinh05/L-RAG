@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/auth'
 import type { DocumentMeta } from '@/types/document'
 
 export async function uploadDocument(file: File): Promise<DocumentMeta> {
@@ -5,11 +6,16 @@ export async function uploadDocument(file: File): Promise<DocumentMeta> {
   formData.append('file', file)
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
-  const token = localStorage.getItem('legaldiff-auth')
+  const token = useAuthStore.getState().token
+
+  const headers: HeadersInit = {}
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
 
   const res = await fetch(`${API_BASE}/documents/upload`, {
     method: 'POST',
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    headers,
     body: formData,
   })
 

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 
 const LoginPage = lazy(() => import('@/pages/LoginPage').then((m) => ({ default: m.LoginPage })))
@@ -10,6 +10,12 @@ const CreateJobPage = lazy(() =>
   import('@/pages/CreateJobPage').then((m) => ({ default: m.CreateJobPage })),
 )
 const ReportPage = lazy(() => import('@/pages/ReportPage').then((m) => ({ default: m.ReportPage })))
+const DashboardPage = lazy(() =>
+  import('@/pages/DashboardPage').then((m) => ({ default: m.DashboardPage })),
+)
+const LibraryPage = lazy(() =>
+  import('@/pages/LibraryPage').then((m) => ({ default: m.LibraryPage })),
+)
 
 function Loading() {
   return (
@@ -43,7 +49,7 @@ export const router = createBrowserRouter([
         path: '/',
         element: (
           <Suspense fallback={<Loading />}>
-            <Navigate to="/compare" replace />
+            <DashboardPage />
           </Suspense>
         ),
       },
@@ -67,7 +73,7 @@ export const router = createBrowserRouter([
         path: '/library',
         element: (
           <Suspense fallback={<Loading />}>
-            <div className="p-8"><h1 className="text-2xl">Library — coming in M5</h1></div>
+            <LibraryPage />
           </Suspense>
         ),
       },
