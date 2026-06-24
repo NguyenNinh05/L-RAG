@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { api, setTokenGetter } from '@/api/client'
+import { api, setTokenGetter, setOnUnauthorized } from '@/api/client'
 import type { User, LoginPayload, RegisterPayload, AuthResponse } from '@/types/auth'
 
 interface AuthState {
@@ -44,3 +44,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
 // Wire up the token getter so api client can read the current token
 setTokenGetter(() => useAuthStore.getState().token)
+
+// Wire up the 401 handler — clears auth state on unauthorized responses
+setOnUnauthorized(() => useAuthStore.getState().logout())
