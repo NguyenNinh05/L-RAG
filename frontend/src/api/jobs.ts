@@ -19,3 +19,7 @@ export function getJob(id: string): Promise<Job> {
 export function listJobs(): Promise<Job[]> {
   return api.get<Job[]>('/jobs')
 }
+
+export function cancelJob(id: string): Promise<void> {
+  return api.post<void>(`/jobs/${id}/cancel`)
+}
