@@ -9,6 +9,7 @@ const RegisterPage = lazy(() =>
 const CreateJobPage = lazy(() =>
   import('@/pages/CreateJobPage').then((m) => ({ default: m.CreateJobPage })),
 )
+const ReportPage = lazy(() => import('@/pages/ReportPage').then((m) => ({ default: m.ReportPage })))
 
 function Loading() {
   return (
@@ -58,7 +59,7 @@ export const router = createBrowserRouter([
         path: '/report/:id',
         element: (
           <Suspense fallback={<Loading />}>
-            <div className="p-8"><h1 className="text-2xl">Report — coming in M4</h1></div>
+            <ReportPage />
           </Suspense>
         ),
       },
