@@ -1,5 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react'
+import { useAuthStore } from '@/stores/auth'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type MessageHandler = (data: any) => void
 
 const WS_BASE = import.meta.env.VITE_WS_BASE_URL || '/ws'
@@ -14,7 +16,8 @@ export function useWebSocket(jobId: string | null, onMessage: MessageHandler) {
   const connect = useCallback(() => {
     if (!jobId) return
 
-    const ws = new WebSocket(`${WS_BASE}/jobs/${jobId}/progress`)
+    const token = useAuthStore.getState().token
+    const ws = new WebSocket(`${WS_BASE}/jobs/${jobId}?token=${encodeURIComponent(token || '')}`)
     wsRef.current = ws
 
     ws.onmessage = (event) => {
