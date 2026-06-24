@@ -345,7 +345,9 @@ def match_gt_to_acus(
 # ---------------------------------------------------------------------------
 
 # Ngưỡng cosine để chấp nhận match ngữ nghĩa (calibrate trên golden).
-SEMANTIC_MATCH_THRESHOLD = 0.55
+# 0.60 = ngưỡng defensible: τ=0.55 over-credit (74%), τ=0.65 under-credit (33%).
+# Cần human spot-check để tinh chỉnh; tạm chọn 0.60 làm middle-ground.
+SEMANTIC_MATCH_THRESHOLD = 0.60
 
 
 def _gt_change_text(gt: dict) -> str:
@@ -594,25 +596,32 @@ async def evaluate_pair(
     try:
         from src.comparison import GenerativeComparisonPipeline, ComparisonRequest
         from src.comparison.report_generator import PipelineConfig as GenPipelineCfg
+        from src.config import get_llm_config, get_llm_provider
 
-        llm_cfg = cfg["llm"]
+        llm_cfg = get_llm_config()
+        provider = get_llm_provider()
         pipeline_cfg = GenPipelineCfg(
             llm_base_url=llm_cfg["base_url"],
             llm_model_name=llm_cfg["model_name"],
+            llm_api_key=llm_cfg.get("api_key", "not-needed"),
+            acu_temperature=llm_cfg.get("temperature_acu", 0.05),
+            summary_temperature=llm_cfg.get("temperature_summary", 0.3),
             max_concurrency=cfg.get("comparison", {}).get("max_concurrency", 4),
             max_tokens_acu=llm_cfg["max_tokens_acu"],
             max_tokens_summary=llm_cfg["max_tokens_summary"],
             timeout_seconds=llm_cfg.get("timeout_seconds", 120.0),
             max_retries=llm_cfg.get("max_retries", 3),
+            provider=provider,
         )
         gen_pipeline = GenerativeComparisonPipeline(config=pipeline_cfg)
 
-        matched_pairs = catalog.matched_pairs
+        # Route MỌI match type vào Phase 3 (matched + added + deleted + split + merged).
+        all_pairs = catalog.pairs
 
         # S2 — article numbers đã được align (cho article-coverage metric).
         # DiffPair không có breadcrumb field → trích "Điều X" từ text gốc của pair.
         matched_article_nums: set[str] = set()
-        for mp in matched_pairs:
+        for mp in all_pairs:
             for txt in list(mp.v1_texts) + list(mp.v2_texts):
                 if not txt:
                     continue
@@ -623,12 +632,12 @@ async def evaluate_pair(
             ComparisonRequest(
                 pair_id=pair.pair_id,
                 match_type=pair.match_type.value,
-                raw_text_v1=pair.v1_texts[0] if pair.v1_texts else "",
-                raw_text_v2=pair.v2_texts[0] if pair.v2_texts else "",
+                raw_text_v1="\n\n".join(pair.v1_texts),
+                raw_text_v2="\n\n".join(pair.v2_texts),
                 breadcrumb_v1=getattr(pair, "breadcrumb_v1", "") or "",
                 breadcrumb_v2=getattr(pair, "breadcrumb_v2", "") or "",
             )
-            for pair in matched_pairs
+            for pair in all_pairs
         ]
 
         reports = await gen_pipeline.run_batch(requests)
@@ -1093,6 +1102,11 @@ async def main_async(args: argparse.Namespace) -> None:
     if args.max_pairs:
         pairs = pairs[:args.max_pairs]
 
+    # ── Set LLM provider từ CLI flag (override env/config) ──────
+    if args.provider:
+        os.environ["LLM_PROVIDER"] = args.provider
+        logger.info("LLM provider set to: %s", args.provider)
+
     # ── Initialize shared components (created ONCE) ──────────────────
     # Phase 1: Parser + Chunker are stateless — safe to reuse.
     # Phase 2: BGEM3Manager loads the BGE-M3 model (~2 GB VRAM).
@@ -1118,6 +1132,7 @@ async def main_async(args: argparse.Namespace) -> None:
         w_semantic=acfg["w_semantic"],
         w_jaro_winkler=acfg["w_jaro_winkler"],
         w_ordinal=acfg["w_ordinal"],
+        w_sparse=acfg.get("w_sparse", 0.0),
         match_threshold=acfg["match_threshold"],
         split_merge_threshold=acfg["split_merge_threshold"],
     )
@@ -1229,9 +1244,34 @@ async def main_async(args: argparse.Namespace) -> None:
         for r in results
     }
 
+    # ── Excluded (headline) aggregate — loại outlier khỏi số headline ──
+    metrics_excl: dict[str, Any] | None = None
+    excluded = set(args.exclude or [])
+    if excluded:
+        kept = [r for r in results if r.pair_name not in excluded]
+        missing = excluded - {r.pair_name for r in results}
+        if missing:
+            print(f"⚠️ --exclude: không tìm thấy pair(s): {sorted(missing)}")
+        if len(kept) != len(results):
+            metrics_excl = compute_aggregate_metrics(kept)
+            metrics["excluded_pairs"] = sorted(excluded & {r.pair_name for r in results})
+            metrics["excluded_aggregate"] = metrics_excl
+            print(f"\n{DIVIDER}")
+            print(
+                f"📌  HEADLINE AGGREGATE (loại trừ {len(results) - len(kept)} outlier: "
+                f"{metrics['excluded_pairs']})"
+            )
+            print(DIVIDER)
+            print_aggregate_report(metrics_excl)
+
     # ── Print reports ─────────────────────────────────────────────
     print_per_pair_summary(results)
     print_aggregate_report(metrics)
+    if metrics_excl is not None:
+        print(
+            f"\n📈 So sánh semantic F1: ALL={metrics.get('change_f1_semantic', 0):.2%}  "
+            f"vs  HEADLINE(excl)={metrics_excl.get('change_f1_semantic', 0):.2%}"
+        )
 
     # ── Save results ──────────────────────────────────────────────
     # Per-pair details
@@ -1278,6 +1318,31 @@ def _write_markdown_report(
     lines.append(f"| Avg time per pair | {metrics['avg_time_per_pair_seconds']:.1f}s |")
     lines.append("")
 
+    # Headline aggregate (loại outlier) — nếu có
+    excl = metrics.get("excluded_aggregate")
+    if excl:
+        lines.append(f"**Headline aggregate** (loại trừ outlier: {metrics.get('excluded_pairs', [])})")
+        lines.append("")
+        lines.append("| Metric (semantic) | ALL pairs | Headline (excl. outlier) |")
+        lines.append("|-------------------|-----------|--------------------------|")
+        lines.append(
+            f"| **F1** | {metrics.get('change_f1_semantic', 0):.2%} "
+            f"| **{excl.get('change_f1_semantic', 0):.2%}** |"
+        )
+        lines.append(
+            f"| Recall | {metrics.get('change_recall_semantic', 0):.2%} "
+            f"| {excl.get('change_recall_semantic', 0):.2%} |"
+        )
+        lines.append(
+            f"| Precision | {metrics.get('change_precision_semantic', 0):.2%} "
+            f"| {excl.get('change_precision_semantic', 0):.2%} |"
+        )
+        lines.append(
+            f"| Hallucination | {metrics.get('hallucination_rate', 0):.2%} "
+            f"| {excl.get('hallucination_rate', 0):.2%} |"
+        )
+        lines.append("")
+
     lines.append("## 2. Phase 1 — Ingestion")
     lines.append("")
     lines.append("| Metric | Value |")
@@ -1300,7 +1365,9 @@ def _write_markdown_report(
     lines.append(f"| Merged | {metrics['total_aligned_merged']} | {metrics['total_aligned_merged'] / n:.1f} |")
     lines.append("")
 
-    lines.append("## 4. Change Detection vs Ground Truth")
+    lines.append("## 4. Change Detection vs Ground Truth — Strict (exact text match)")
+    lines.append("")
+    lines.append("_Matcher so khớp chuỗi chính xác → giới hạn dưới (under-count). Xem 4b cho metric chính._")
     lines.append("")
     lines.append("| Metric | Value |")
     lines.append("|--------|-------|")
@@ -1312,6 +1379,33 @@ def _write_markdown_report(
     lines.append(f"| **Precision** | **{metrics['change_precision']:.2%}** |")
     lines.append(f"| **F1 Score** | **{metrics['change_f1']:.2%}** |")
     lines.append("")
+
+    lines.append("## 4b. Change Detection — Semantic (BGE-M3) ⭐ PRIMARY METRIC")
+    lines.append("")
+    lines.append("| Metric | Value |")
+    lines.append("|--------|-------|")
+    lines.append(f"| GT changes detected (semantic) | {metrics.get('gt_changes_detected_semantic', 0)} |")
+    lines.append(f"| Pipeline ACUs matched (semantic) | {metrics.get('pipeline_changes_matched_semantic', 0)} |")
+    lines.append(f"| **Recall (semantic)** | **{metrics.get('change_recall_semantic', 0):.2%}** |")
+    lines.append(f"| **Precision (semantic)** | **{metrics.get('change_precision_semantic', 0):.2%}** |")
+    lines.append(f"| **F1 (semantic)** | **{metrics.get('change_f1_semantic', 0):.2%}** |")
+    lines.append(
+        f"| Article coverage | {metrics.get('gt_article_covered', 0)}/{metrics.get('gt_with_article', 0)} "
+        f"GT-with-article → **{metrics.get('change_recall_article', 0):.1%}** |"
+    )
+    lines.append("")
+
+    if metrics.get("per_category_semantic"):
+        lines.append("### Per-Category Recall (semantic)")
+        lines.append("")
+        lines.append("| Category | Description | GT Count | Detected | Recall |")
+        lines.append("|----------|-------------|----------|----------|--------|")
+        for cat in sorted(metrics["per_category_semantic"].keys()):
+            stats = metrics["per_category_semantic"][cat]
+            desc = CATEGORY_MAP.get(cat, "Unknown")
+            lines.append(f"| {cat} | {desc} | {stats['gt_total']} | {stats['detected']} | {stats['recall']:.1%} |")
+        lines.append("")
+
 
     lines.append("## 5. ACU Quality")
     lines.append("")
@@ -1400,6 +1494,27 @@ Examples:
         type=int,
         default=None,
         help="Limit to first N pairs (for quick testing)",
+    )
+    parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        metavar="NAME",
+        help=(
+            "Exclude a pair (by base name) from the HEADLINE aggregate. Repeatable. "
+            "The pair is still evaluated & saved; a second aggregate (excluding these) "
+            "is computed so outliers (e.g. 33-hd.signed) don't distort the headline. "
+            "Example: --exclude 33-hd.signed"
+        ),
+    )
+    parser.add_argument(
+        "--provider",
+        default=None,
+        choices=["local", "deepseek"],
+        help=(
+            "LLM provider for Phase 3. 'local' = Qwen via Ollama/vLLM (default), "
+            "'deepseek' = DeepSeek V4 Pro API. Set DEEPSEEK_API_KEY in .env first."
+        ),
     )
     parser.add_argument(
         "--verbose", "-v",

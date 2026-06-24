@@ -26,6 +26,10 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+# Bonus cộng thêm khi hai article CÙNG số điều (vd "Điều 5" ↔ "Điều 5").
+# Legal articles hiếm khi đổi số trừ khi renumber → đây là tín hiệu nhận diện mạnh.
+ARTICLE_NUMBER_BONUS: float = 0.15
+
 
 # ---------------------------------------------------------------------------
 # NodeRecord — lightweight wrapper dùng nội bộ trong alignment
@@ -42,6 +46,11 @@ class NodeRecord:
     ordinal: int         # vị trí thứ tự trong tài liệu (0-indexed)
     semantic_vec: np.ndarray = field(default_factory=lambda: np.array([]))
 
+    # Sparse (lexical, BM25-like) weights từ BGE-M3 — {token_index: weight}
+    semantic_sparse_vec: dict[int, float] = field(default_factory=dict)
+    # Số điều (str) — dùng cho article-number exact-match bonus
+    article_number: str = ""
+
     # Giữ tham chiếu object gốc để lấy clauses sau (hierarchical)
     article_ref: "ArticleNode | None" = None  # type: ignore[name-defined]
     clause_ref: "ClauseNode | None" = None    # type: ignore[name-defined]
@@ -57,27 +66,33 @@ class AlignmentConfig:
     """
     Cấu hình trọng số cho Similarity formula.
 
-    S[i][j] = w_semantic * Cosine(Semantic)
+    S[i][j] = w_semantic * Cosine(Semantic_dense)
              + w_jaro_winkler * JaroWinkler(Title)
              + w_ordinal * OrdinalProximity
+             + w_sparse * SparseOverlap(lexical, BGE-M3)
+             (+ article-number exact-match bonus, xem compute_similarity_matrix)
 
-    Tổng w_semantic + w_jaro_winkler + w_ordinal phải = 1.0
+    Tổng w_semantic + w_jaro_winkler + w_ordinal + w_sparse phải = 1.0
     """
 
     w_semantic: float = 0.6
     w_jaro_winkler: float = 0.3
     w_ordinal: float = 0.1
+    w_sparse: float = 0.0  # mặc định tắt; bật khi NodeRecord có sparse vec
     match_threshold: float = 0.65
     split_merge_threshold: float = 0.80
     embed_batch_size: int = 32
 
     def __post_init__(self) -> None:
-        total = self.w_semantic + self.w_jaro_winkler + self.w_ordinal
+        total = (
+            self.w_semantic + self.w_jaro_winkler
+            + self.w_ordinal + self.w_sparse
+        )
         if abs(total - 1.0) > 1e-6:
             raise ValueError(
                 f"Tổng trọng số phải = 1.0, nhận được {total:.4f}. "
                 f"(w_semantic={self.w_semantic}, w_jaro={self.w_jaro_winkler}, "
-                f"w_ord={self.w_ordinal})"
+                f"w_ord={self.w_ordinal}, w_sparse={self.w_sparse})"
             )
 
 
@@ -111,6 +126,57 @@ def cosine_similarity_matrix(
     v2_mat = _l2_normalize(v2_mat)
 
     return (v1_mat @ v2_mat.T).astype(np.float32)  # (N, M)
+
+
+def _normalize_sparse(vec: dict[int, float]) -> dict[int, float]:
+    """L2-normalize một sparse vector (dict index→weight). Trả về {} nếu rỗng."""
+    if not vec:
+        return {}
+    norm = sum(w * w for w in vec.values()) ** 0.5
+    if norm == 0.0:
+        return {}
+    return {k: w / norm for k, w in vec.items()}
+
+
+def sparse_overlap_matrix(
+    v1_records: list[NodeRecord],
+    v2_records: list[NodeRecord],
+) -> np.ndarray:
+    """
+    Ma trận cosine similarity giữa các sparse (lexical) vector của BGE-M3.
+
+    Mỗi entry = cosine(sparse_i, sparse_j) ∈ [0, 1] (trọng số ≥ 0).
+    Bù đắp cho dense semantic: bắt các exact-match term (số điều, tên riêng,
+    thuật ngữ pháp lý) mà dense embedding có thể làm mờ.
+
+    Returns:
+        np.ndarray shape (N, M), dtype float32.
+    """
+    N, M = len(v1_records), len(v2_records)
+    mat = np.zeros((N, M), dtype=np.float32)
+    if N == 0 or M == 0:
+        return mat
+
+    nv1 = [_normalize_sparse(getattr(r, "semantic_sparse_vec", {}) or {}) for r in v1_records]
+    nv2 = [_normalize_sparse(getattr(r, "semantic_sparse_vec", {}) or {}) for r in v2_records]
+
+    for i in range(N):
+        ai = nv1[i]
+        if not ai:
+            continue
+        for j in range(M):
+            bj = nv2[j]
+            if not bj:
+                continue
+            # dot product qua các key chung; duyệt dict nhỏ hơn
+            if len(ai) <= len(bj):
+                dot = sum(w * bj.get(k, 0.0) for k, w in ai.items())
+            else:
+                dot = sum(w * ai.get(k, 0.0) for k, w in bj.items())
+            mat[i, j] = dot
+
+    np.clip(mat, 0.0, 1.0, out=mat)
+    return mat
 
 
 def jaro_winkler_matrix(
@@ -192,7 +258,24 @@ def compute_similarity_matrix(
         config.w_semantic * sem_matrix
         + config.w_jaro_winkler * jaro_matrix
         + config.w_ordinal * ord_matrix
-    ).astype(np.float32)
+    )
+
+    # Chiến lược E — sparse (lexical) overlap term
+    if config.w_sparse > 0.0:
+        sp_matrix = sparse_overlap_matrix(v1_records, v2_records)
+        S = S + config.w_sparse * sp_matrix
+
+    S = S.astype(np.float32)
+
+    # Chiến lược E — article-number exact-match bonus (cộng thêm, rồi clamp)
+    for i, r1 in enumerate(v1_records):
+        an1 = (getattr(r1, "article_number", "") or "").strip()
+        if not an1:
+            continue
+        for j, r2 in enumerate(v2_records):
+            an2 = (getattr(r2, "article_number", "") or "").strip()
+            if an2 and an1 == an2:
+                S[i, j] += ARTICLE_NUMBER_BONUS
 
     np.clip(S, 0.0, 1.0, out=S)
     return S

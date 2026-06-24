@@ -71,11 +71,14 @@ class PipelineRunConfig:
     # Phase 3
     llm_base_url: str = "http://localhost:8000/v1"
     llm_model_name: str = "Qwen/Qwen2.5-7B-Instruct"
+    llm_api_key: str = "not-needed"
     max_concurrency: int = 4
     max_tokens_acu: int = 4096
     max_tokens_summary: int = 1024
     llm_timeout_seconds: float = 120.0
     llm_max_retries: int = 3
+    llm_temperature_acu: float = 0.05
+    llm_temperature_summary: float = 0.3
     max_comparison_pairs: int | None = None
 
     # Callback — gọi tại ranh giới phase: cb(pct, phase, message)
@@ -110,16 +113,18 @@ class LegalDiffPipeline:
         self._cfg = run_config or PipelineRunConfig()
 
     @classmethod
-    def from_config(cls, config_path: str | None = None) -> "LegalDiffPipeline":
+    def from_config(cls, config_path: str | None = None, provider: str | None = None) -> "LegalDiffPipeline":
         """
         Khởi tạo từ YAML config.
 
         Args:
             config_path: Đường dẫn đến pipeline_config.yaml.
                          None → dùng configs/ trong project root.
+            provider:    "local" (Qwen), "deepseek" (DeepSeek API), hoặc None (auto).
         """
-        from src.config import get_config
+        from src.config import get_config, get_llm_config
         cfg = get_config()
+        llm_cfg = get_llm_config(provider=provider)
 
         run_cfg = PipelineRunConfig(
             kuzu_db_path=cfg["ingestion"]["kuzu_db_path"],
@@ -127,11 +132,16 @@ class LegalDiffPipeline:
             confidence_threshold=cfg["ingestion"]["confidence_threshold"],
             max_chunk_chars=cfg["ingestion"]["max_chunk_chars"],
             match_threshold=cfg["alignment"]["match_threshold"],
-            llm_base_url=cfg["llm"]["base_url"],
-            llm_model_name=cfg["llm"]["model_name"],
+            llm_base_url=llm_cfg["base_url"],
+            llm_model_name=llm_cfg["model_name"],
+            llm_api_key=llm_cfg.get("api_key", "not-needed"),
             max_concurrency=cfg["comparison"]["max_concurrency"],
-            max_tokens_acu=cfg["llm"]["max_tokens_acu"],
-            max_tokens_summary=cfg["llm"]["max_tokens_summary"],
+            max_tokens_acu=llm_cfg["max_tokens_acu"],
+            max_tokens_summary=llm_cfg["max_tokens_summary"],
+            llm_timeout_seconds=llm_cfg.get("timeout_seconds", 120.0),
+            llm_max_retries=llm_cfg.get("max_retries", 3),
+            llm_temperature_acu=llm_cfg.get("temperature_acu", 0.05),
+            llm_temperature_summary=llm_cfg.get("temperature_summary", 0.3),
         )
         return cls(run_config=run_cfg)
 
@@ -219,6 +229,7 @@ class LegalDiffPipeline:
             w_semantic=acfg["w_semantic"],
             w_jaro_winkler=acfg["w_jaro_winkler"],
             w_ordinal=acfg["w_ordinal"],
+            w_sparse=acfg.get("w_sparse", 0.0),
             match_threshold=acfg["match_threshold"],
             split_merge_threshold=acfg["split_merge_threshold"],
         )
@@ -250,29 +261,36 @@ class LegalDiffPipeline:
         from src.comparison import GenerativeComparisonPipeline, ComparisonRequest
         from src.comparison import PipelineConfig as GenPipelineCfg
 
+        provider = llm_cfg.get("provider", "local")
         pipeline_cfg = GenPipelineCfg(
             llm_base_url=cfg.llm_base_url,
             llm_model_name=cfg.llm_model_name,
+            llm_api_key=cfg.llm_api_key,
+            acu_temperature=cfg.llm_temperature_acu,
+            summary_temperature=cfg.llm_temperature_summary,
             max_concurrency=cfg.max_concurrency,
             max_tokens_acu=cfg.max_tokens_acu,
             max_tokens_summary=cfg.max_tokens_summary,
             timeout_seconds=cfg.llm_timeout_seconds,
             max_retries=cfg.llm_max_retries,
+            provider=provider,
         )
         gen_pipeline = GenerativeComparisonPipeline(config=pipeline_cfg)
 
-        # Chỉ xử lý matched pairs cho generative comparison
-        matched = catalog.matched_pairs
+        # Xử lý MỌI match type cho generative comparison — không chỉ matched.
+        # Added/deleted/split/merged cũng được LLM phân tích (guidance_map trong
+        # report_generator đã xử lý từng type). Concatenate multi-text cho split/merged.
+        all_pairs = catalog.pairs
         if cfg.max_comparison_pairs is not None:
-            matched = matched[: cfg.max_comparison_pairs]
+            all_pairs = all_pairs[: cfg.max_comparison_pairs]
         requests = [
             ComparisonRequest(
                 pair_id=pair.pair_id,
                 match_type=pair.match_type.value,
-                raw_text_v1=pair.v1_texts[0] if pair.v1_texts else "",
-                raw_text_v2=pair.v2_texts[0] if pair.v2_texts else "",
+                raw_text_v1="\n\n".join(pair.v1_texts),
+                raw_text_v2="\n\n".join(pair.v2_texts),
             )
-            for pair in matched
+            for pair in all_pairs
         ]
 
         reports = await gen_pipeline.run_batch(requests, max_concurrency=cfg.max_concurrency)

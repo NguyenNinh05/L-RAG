@@ -215,6 +215,9 @@ class LegalAlignmentEngine:
                     raw_text=payload.raw_text,
                     ordinal=payload.ordinal if payload.ordinal is not None else i,
                     semantic_vec=np.array(emb.semantic_dense, dtype=np.float32),
+                    # Chiến lược E — sparse lexical + số điều cho similarity
+                    semantic_sparse_vec=dict(emb.semantic_sparse or {}),
+                    article_number=payload.article_number or "",
                 )
             )
         return records

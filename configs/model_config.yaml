@@ -10,7 +10,12 @@ embedding:
   # device: "cuda"  # uncomment để force GPU
 
 llm:
-  model_name: "qwen2.5:7b"
+  # Provider: "local" (Qwen/Ollama) hoặc "deepseek" (DeepSeek V4 Pro API).
+  # Có thể override qua biến môi trường LLM_PROVIDER hoặc CLI --provider.
+  provider: "local"
+
+  # --- Local provider (Qwen via Ollama/vLLM) ---
+  model_name: "qwen2.5:14b"
   base_url: "http://localhost:11434/v1"
   api_key: "not-needed"
   temperature_acu: 0.05       # Tầng 1 — cực thấp, anti-hallucination
@@ -19,6 +24,22 @@ llm:
   max_tokens_summary: 1024
   timeout_seconds: 120.0
   max_retries: 3
+
+# Cấu hình cho từng provider (merged vào llm config khi provider được chọn).
+# Section này KHÔNG bị override bởi pipeline_config.yaml.
+provider_presets:
+  deepseek:
+    model_name: "deepseek-chat"               # override qua env DEEPSEEK_MODEL
+    base_url: "https://api.deepseek.com/v1"   # override qua env DEEPSEEK_BASE_URL
+    api_key: ""                                # LUÔN load từ env DEEPSEEK_API_KEY
+    # DeepSeek V4 Pro có khả năng reasoning mạnh — dùng temperature thấp hơn
+    # cho structured JSON output vì model đã đủ deterministic ở low temp.
+    temperature_acu: 0.0        # Zero-temperature cho ACU extraction (JSON mode)
+    temperature_summary: 0.2    # Thấp hơn Qwen — DeepSeek diễn đạt tự nhiên hơn ở low temp
+    max_tokens_acu: 8192        # DeepSeek hỗ trợ output dài
+    max_tokens_summary: 1024
+    timeout_seconds: 180.0      # API call có thể chậm hơn local
+    max_retries: 3
 
 ingestion:
   confidence_threshold: 0.75  # Ngưỡng OCR fallback (Docling → Marker)

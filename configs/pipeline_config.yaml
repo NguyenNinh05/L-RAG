@@ -11,12 +11,15 @@ ingestion:
 
 alignment:
   # Trọng số Similarity Matrix — phải tổng = 1.0
-  w_semantic: 0.6
-  w_jaro_winkler: 0.3
+  # (E) w_sparse: lexical BM25-like overlap từ BGE-M3; bonus article-number exact-match
+  # được cộng thêm trong compute_similarity_matrix (không nằm trong tổng trọng số).
+  w_semantic: 0.5
+  w_jaro_winkler: 0.25
   w_ordinal: 0.1
+  w_sparse: 0.15
 
   # Ngưỡng matching
-  match_threshold: 0.65
+  match_threshold: 0.60
   split_merge_threshold: 0.80
 
   embed_batch_size: 32
@@ -36,7 +39,7 @@ comparison:
   numerical_context_window: 50
 
   # Pre-filter trước verification
-  min_confidence_to_include: 0.4
+  min_confidence_to_include: 0.2
 
   # Concurrency
   max_concurrency: 4

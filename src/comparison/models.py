@@ -145,6 +145,17 @@ class ACUOutput(BaseModel):
         ),
     )
 
+    # --- Reasoning (DeepSeek strategy: Chain-of-Thought before output) ---
+    reasoning: str = Field(
+        default="",
+        description=(
+            "Giải thích ngắn gọn lý do đây là một thay đổi (1-2 câu tiếng Việt). "
+            "Dùng cho DeepSeek self-verification — giúp model tự kiểm tra ACU "
+            "của chính nó trước khi đưa vào Verification Engine. "
+            "Rỗng nếu LLM không hỗ trợ (Qwen)."
+        ),
+    )
+
     # --- Metadata (được điền bởi pipeline, không phải LLM) ---
     pair_id: str = Field(
         default="",

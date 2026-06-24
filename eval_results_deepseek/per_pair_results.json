@@ -1,0 +1,321 @@
+{
+  "01-tand_signed": {
+    "pair_name": "01-tand_signed",
+    "v1_file": "/home/haipd/L-RAG/data_test/01-tand_signed_v1.docx",
+    "v2_file": "/home/haipd/L-RAG/data_test/01-tand_signed_v2.docx",
+    "gt_file": "/home/haipd/L-RAG/data_test/01-tand_signed.json",
+    "phase1": {
+      "v1_articles": 14,
+      "v2_articles": 16,
+      "v1_chunks": 53,
+      "v2_chunks": 57,
+      "time": 0.5409077941440046
+    },
+    "phase2": {
+      "matched": 14,
+      "added": 2,
+      "deleted": 0,
+      "split": 0,
+      "merged": 0,
+      "time": 0.5522224539890885
+    },
+    "phase3": {
+      "skipped": false,
+      "acus_generated": 21,
+      "acus_passed": 21,
+      "acus_rejected": 0,
+      "hallucination_rate": 0.0,
+      "time": 47.80341764795594
+    },
+    "ground_truth": {
+      "total_changes": 24,
+      "categories": {
+        "F": 4,
+        "B": 5,
+        "D": 2,
+        "C": 3,
+        "A": 9,
+        "E": 1
+      }
+    },
+    "change_detection": {
+      "gt_detected": 17,
+      "pipeline_total": 21,
+      "pipeline_matched": 17,
+      "recall": 0.7083333333333334,
+      "precision": 0.8095238095238095,
+      "gt_detected_semantic": 23,
+      "pipeline_matched_semantic": 16,
+      "recall_semantic": 0.9583333333333334,
+      "recall_article": 0.45,
+      "gt_with_article": 20,
+      "gt_article_covered": 9
+    },
+    "per_category": {
+      "F": {
+        "gt_total": 4,
+        "detected": 2
+      },
+      "B": {
+        "gt_total": 5,
+        "detected": 4
+      },
+      "D": {
+        "gt_total": 2,
+        "detected": 2
+      },
+      "C": {
+        "gt_total": 3,
+        "detected": 0
+      },
+      "A": {
+        "gt_total": 9,
+        "detected": 8
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 1
+      }
+    },
+    "per_category_semantic": {
+      "F": {
+        "gt_total": 4,
+        "detected": 4
+      },
+      "B": {
+        "gt_total": 5,
+        "detected": 5
+      },
+      "D": {
+        "gt_total": 2,
+        "detected": 2
+      },
+      "C": {
+        "gt_total": 3,
+        "detected": 2
+      },
+      "A": {
+        "gt_total": 9,
+        "detected": 9
+      },
+      "E": {
+        "gt_total": 1,
+        "detected": 1
+      }
+    },
+    "acus": [
+      {
+        "change_type": "terminology",
+        "original_value": "áp dụng đối với",
+        "new_value": "có hiệu lực thi hành đối với",
+        "verbatim_evidence_v1": "Thông tư này áp dụng đối với",
+        "verbatim_evidence_v2": "Thông tư này có hiệu lực thi hành đối với",
+        "location_v1": "Đối tượng áp dụng",
+        "location_v2": "Đối tượng áp dụng",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "reorder",
+        "original_value": "cơ quan, tổ chức, cá nhân",
+        "new_value": "các tổ chức, cơ quan, cá nhân",
+        "verbatim_evidence_v1": "cơ quan, tổ chức, cá nhân",
+        "verbatim_evidence_v2": "các tổ chức, cơ quan, cá nhân",
+        "location_v1": "Đối tượng áp dụng",
+        "location_v2": "Đối tượng áp dụng",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "structural",
+        "original_value": "không sử dụng cho mục đích khác",
+        "new_value": "có thể được sử dụng cho các mục đích khác nếu được Chánh án Tòa án nhân dân tối cao phê duyệt bằng văn bản",
+        "verbatim_evidence_v1": "không sử dụng cho mục đích khác",
+        "verbatim_evidence_v2": "có thể được sử dụng cho các mục đích khác nếu được Chánh án Tòa án nhân dân tối cao phê duyệt bằng văn bản",
+        "location_v1": "Khoản 2",
+        "location_v2": "Khoản 2",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "terminology",
+        "original_value": "Làm giả, sửa chữa, tẩy xóa",
+        "new_value": "Giả mạo, cải tạo hoặc tiêu hủy thông tin trên",
+        "verbatim_evidence_v1": "Làm giả, sửa chữa, tẩy xóa Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm.",
+        "verbatim_evidence_v2": "Giả mạo, cải tạo hoặc tiêu hủy thông tin trên Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm dưới bất kỳ hình thức nào.",
+        "location_v1": "Điểm 4",
+        "location_v2": "Điểm 4",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "terminology",
+        "original_value": "Hội thẩm quân nhân",
+        "new_value": "Hội thảm quân nhân",
+        "verbatim_evidence_v1": "người được cử làm Hội thẩm quân nhân",
+        "verbatim_evidence_v2": "người được cử làm Hội thảm quân nhân",
+        "location_v1": "Khoản 1",
+        "location_v2": "Khoản 1",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "numerical",
+        "original_value": "01 chiếc",
+        "new_value": "02 chiếc",
+        "verbatim_evidence_v1": "01 chiếc",
+        "verbatim_evidence_v2": "02 chiếc",
+        "location_v1": "Khoản 1",
+        "location_v2": "Khoản 1",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "numerical",
+        "original_value": "20 x 30 mm",
+        "new_value": "25 x 35 mm",
+        "verbatim_evidence_v1": "02 ảnh 20 x 30 mm",
+        "verbatim_evidence_v2": "02 ảnh 25 x 35 mm",
+        "location_v1": "2.b",
+        "location_v2": "2.b",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "numerical",
+        "original_value": "06 tháng gần nhất",
+        "new_value": "03 tháng gần nhất",
+        "verbatim_evidence_v1": "chụp trong 06 tháng gần nhất",
+        "verbatim_evidence_v2": "chụp trong 03 tháng gần nhất",
+        "location_v1": "2.b.b1",
+        "location_v2": "2.b.b1",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "numerical",
+        "original_value": "10 ngày làm việc",
+        "new_value": "15 ngày làm việc",
+        "verbatim_evidence_v1": "Trong thời hạn 10 ngày làm việc",
+        "verbatim_evidence_v2": "Trong thời hạn 15 ngày làm việc",
+        "location_v1": "4",
+        "location_v2": "4",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "structural",
+        "original_value": "Việc cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm khi thuộc một trong các trường hợp sau đây:",
+        "new_value": "Việc cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được thực hiện khi có một trong các căn cứ sau:",
+        "verbatim_evidence_v1": "Việc cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm khi thuộc một trong các trường hợp sau đây:",
+        "verbatim_evidence_v2": "Việc cấp đổi, cấp lại Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm được thực hiện khi có một trong các căn cứ sau:",
+        "location_v1": "",
+        "location_v2": "",
+        "confidence": 0.95
+      },
+      {
+        "change_type": "addition",
+        "original_value": "",
+        "new_value": "|   STT | Căn cứ cấp đổi, cấp lại                                                  | Loại giấy tờ cần cung cấp bổ sung                                                         | |-----------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------| |         1 | Thay đổi thông tin trong Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm | Quyết định bổ nhiệm, quyết định thay đổi thông tin                                            | |         2 | Thông tin trong Giấy chứng minh đã cấp có sai sót                            | Tài liệu xác nhận thông tin đúng                                                              | |         3 | Giấy chứng minh bị mất, hư hỏng không còn giá trị sử dụng                    | Biên bản trình báo công an (đối với trường hợp mất) hoặc Giấy chứng minh cũ (đối với hư hỏng) | |         4 | Giấy chứng minh hết hạn sử dụng theo quy định mới                            | Giấy chứng minh cũ và quyết định tiếp tục bổ nhiệm/bầu                                        |",
+        "verbatim_evidence_v1": "",
+        "verbatim_evidence_v2": "|   STT | Căn cứ cấp đổi, cấp lại                                                  | Loại giấy tờ cần cung cấp bổ sung                                                         | |-----------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------| |         1 | Thay đổi thông tin trong Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm | Quyết định bổ nhiệm, quyết định thay đổi thông tin                                            | |         2 | Thông tin trong Giấy chứng minh đã cấp có sai sót                            | Tài liệu xác nhận thông tin đúng                                                              | |         3 | Giấy chứng minh bị mất, hư hỏng không còn giá trị sử dụng                    | Biên bản trình báo công an (đối với trường hợp mất) hoặc Giấy chứng minh cũ (đối với hư hỏng) | |         4 | Giấy chứng minh hết hạn sử dụng theo quy định mới                            | Giấy chứng minh cũ và quyết định tiếp tục bổ nhiệm/bầu                                        |",
+        "location_v1": "",
+        "location_v2": "",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "addition",
+        "original_value": "",
+        "new_value": "4 | Giấy chứng minh hết hạn sử dụng theo quy định mới | Giấy chứng minh cũ và quyết định tiếp tục bổ nhiệm/bầu",
+        "verbatim_evidence_v1": "",
+        "verbatim_evidence_v2": "4 | Giấy chứng minh hết hạn sử dụng theo quy định mới | Giấy chứng minh cũ và quyết định tiếp tục bổ nhiệm/bầu",
+        "location_v1": "",
+        "location_v2": "",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "numerical",
+        "original_value": "20 x 30 mm",
+        "new_value": "25 x 35 mm",
+        "verbatim_evidence_v1": "02 ảnh 20 x 30 mm",
+        "verbatim_evidence_v2": "02 ảnh 25 x 35 mm",
+        "location_v1": "Điểm c khoản 2",
+        "location_v2": "Điểm c khoản 2",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "terminology",
+        "original_value": "Vụ Tổ chức - Cán bộ có trách nhiệm thu hồi Giấy chứng minh Thẩm phán của Thẩm phán Tòa án nhân dân tối cao.",
+        "new_value": "Chánh án Tòa án nhân dân tối cao có trách nhiệm thu hồi Giấy chứng minh Thẩm phán của Thẩm phán Tòa án nhân dân tối cao.",
+        "verbatim_evidence_v1": "a5) Vụ Tổ chức - Cán bộ có trách nhiệm thu hồi Giấy chứng minh Thẩm phán của Thẩm phán Tòa án nhân dân tối cao.",
+        "verbatim_evidence_v2": "a5) Chánh án Tòa án nhân dân tối cao có trách nhiệm thu hồi Giấy chứng minh Thẩm phán của Thẩm phán Tòa án nhân dân tối cao.",
+        "location_v1": "2.a) a5",
+        "location_v2": "2.a) a5",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "terminology",
+        "original_value": "Thẩm phán",
+        "new_value": "Thẩn phán",
+        "verbatim_evidence_v1": "Thẩm phán",
+        "verbatim_evidence_v2": "Thẩn phán",
+        "location_v1": "",
+        "location_v2": "",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "terminology",
+        "original_value": "tùy theo",
+        "new_value": "căn cứ vào",
+        "verbatim_evidence_v1": "tùy theo",
+        "verbatim_evidence_v2": "căn cứ vào",
+        "location_v1": "",
+        "location_v2": "",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "numerical",
+        "original_value": "15 tháng 01 năm 2026",
+        "new_value": "20 tháng 02 năm 2026",
+        "verbatim_evidence_v1": "Thông tư này có hiệu lực thi hành từ ngày 15 tháng 01 năm 2026.",
+        "verbatim_evidence_v2": "Thông tư này có hiệu lực thi hành từ ngày 20 tháng 02 năm 2026.",
+        "location_v1": "Điều khoản thi hành, khoản 1",
+        "location_v2": "Điều khoản thi hành, khoản 1",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "numerical",
+        "original_value": "chiều dài 95mm, chiều rộng 62mm",
+        "new_value": "chiều dài 100mm, chiều rộng 65mm",
+        "verbatim_evidence_v1": "1. Kích thước: chiều dài 95mm, chiều rộng 62mm;",
+        "verbatim_evidence_v2": "1. Kích thước: chiều dài 100mm, chiều rộng 65mm;",
+        "location_v1": "Phụ lục I, mục 1",
+        "location_v2": "Phụ lục I, mục 1",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "numerical",
+        "original_value": "20 x 30 mm",
+        "new_value": "25 x 35 mm",
+        "verbatim_evidence_v1": "góc dưới bên trái có ảnh chân dung của Thẩm phán cỡ 20 x 30 mm;",
+        "verbatim_evidence_v2": "góc dưới bên trái có ảnh chân dung của Thẩm phán cỡ 25 x 35 mm;",
+        "location_v1": "Phụ lục I, mục 3",
+        "location_v2": "Phụ lục I, mục 3",
+        "confidence": 1.0
+      },
+      {
+        "change_type": "structural",
+        "original_value": "......, ngày ... tháng ... năm 20...",
+        "new_value": "......, ngày.../tháng.../năm 20...",
+        "verbatim_evidence_v1": "......, ngày ... tháng ... năm 20...",
+        "verbatim_evidence_v2": "......, ngày.../tháng.../năm 20...",
+        "location_v1": "Phụ lục III, phần cuối",
+        "location_v2": "Phụ lục III, phần cuối",
+        "confidence": 0.9
+      },
+      {
+        "change_type": "addition",
+        "original_value": "",
+        "new_value": "Bảo mật thông tin trên Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm",
+        "verbatim_evidence_v1": "",
+        "verbatim_evidence_v2": "a. Bảo mật thông tin trên Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm\n1. Thông tin cá nhân của Thẩm phán, Hội thẩm ghi trên Giấy chứng minh phải được bảo mật theo quy định của pháp luật về bảo vệ dữ liệu cá nhân.\n2. Cơ quan, tổ chức tiếp nhận Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm trong quá trình kiểm tra, đối chiếu phải có trách nhiệm bảo mật thông tin, không được sao chép, lưu trữ dữ liệu cá nhân của Thẩm phán, Hội thẩm khi chưa được sự đồng ý của người có liên quan.\n3. Tòa án nhân dân tối cao có trách nhiệm ban hành quy trình bảo mật dữ liệu liên quan đến việc cấp, quản lý Giấy chứng minh Thẩm phán, Giấy chứng minh Hội thẩm.",
+        "location_v1": "",
+        "location_v2": "a",
+        "confidence": 1.0
+      }
+    ],
+    "total_time": 48.89727576705627,
+    "errors": []
+  }
+}

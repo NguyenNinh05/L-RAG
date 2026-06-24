@@ -1,6 +1,6 @@
 # L-RAG Pipeline Evaluation Report
 
-**Generated:** 2026-06-24 16:49:28
+**Generated:** 2026-06-24 17:46:22
 **Pairs evaluated:** 1
 
 ## 1. Overview
@@ -10,8 +10,8 @@
 | Total document pairs | 1 |
 | Pairs with Phase 3 (LLM) | 1 |
 | Pairs with errors | 0 |
-| Total wall time | 410.3s |
-| Avg time per pair | 410.3s |
+| Total wall time | 338.6s |
+| Avg time per pair | 338.6s |
 
 ## 2. Phase 1 — Ingestion
 
@@ -39,41 +39,41 @@ _Matcher so khớp chuỗi chính xác → giới hạn dưới (under-count). X
 | Metric | Value |
 |--------|-------|
 | Total GT changes | 24 |
-| GT changes detected | 0 |
-| Pipeline ACUs (matched) | 0 |
-| Pipeline ACUs (total passed) | 5 |
-| **Recall** | **0.00%** |
-| **Precision** | **0.00%** |
-| **F1 Score** | **0.00%** |
+| GT changes detected | 18 |
+| Pipeline ACUs (matched) | 18 |
+| Pipeline ACUs (total passed) | 29 |
+| **Recall** | **75.00%** |
+| **Precision** | **62.07%** |
+| **F1 Score** | **67.92%** |
 
 ## 4b. Change Detection — Semantic (BGE-M3) ⭐ PRIMARY METRIC
 
 | Metric | Value |
 |--------|-------|
-| GT changes detected (semantic) | 7 |
-| Pipeline ACUs matched (semantic) | 4 |
-| **Recall (semantic)** | **29.17%** |
-| **Precision (semantic)** | **80.00%** |
-| **F1 (semantic)** | **42.75%** |
-| Article coverage | 5/20 GT-with-article → **25.0%** |
+| GT changes detected (semantic) | 21 |
+| Pipeline ACUs matched (semantic) | 17 |
+| **Recall (semantic)** | **87.50%** |
+| **Precision (semantic)** | **58.62%** |
+| **F1 (semantic)** | **70.21%** |
+| Article coverage | 6/20 GT-with-article → **30.0%** |
 
 ### Per-Category Recall (semantic)
 
 | Category | Description | GT Count | Detected | Recall |
 |----------|-------------|----------|----------|--------|
-| A | Thay đổi con số | 9 | 0 | 0.0% |
-| B | Diễn đạt lại ngữ nghĩa | 5 | 2 | 40.0% |
-| C | Thay đổi cấu trúc | 3 | 2 | 66.7% |
+| A | Thay đổi con số | 9 | 9 | 100.0% |
+| B | Diễn đạt lại ngữ nghĩa | 5 | 5 | 100.0% |
+| C | Thay đổi cấu trúc | 3 | 3 | 100.0% |
 | D | Thay đổi logic pháp lý | 2 | 2 | 100.0% |
 | E | Xử lý bảng biểu | 1 | 1 | 100.0% |
-| F | Nhiễu định dạng | 4 | 0 | 0.0% |
+| F | Nhiễu định dạng | 4 | 1 | 25.0% |
 
 ## 5. ACU Quality
 
 | Metric | Value |
 |--------|-------|
-| Total ACUs generated | 5 |
-| ACUs passed verification | 5 |
+| Total ACUs generated | 29 |
+| ACUs passed verification | 29 |
 | ACUs rejected (hallucination) | 0 |
 | **Hallucination Rate** | **0.00%** |
 
@@ -81,18 +81,18 @@ _Matcher so khớp chuỗi chính xác → giới hạn dưới (under-count). X
 
 | Category | Description | GT Count | Detected | Recall |
 |----------|-------------|----------|----------|--------|
-| A | Thay đổi con số | 9 | 0 | 0.0% |
-| B | Diễn đạt lại ngữ nghĩa | 5 | 0 | 0.0% |
+| A | Thay đổi con số | 9 | 7 | 77.8% |
+| B | Diễn đạt lại ngữ nghĩa | 5 | 4 | 80.0% |
 | C | Thay đổi cấu trúc | 3 | 0 | 0.0% |
-| D | Thay đổi logic pháp lý | 2 | 0 | 0.0% |
-| E | Xử lý bảng biểu | 1 | 0 | 0.0% |
-| F | Nhiễu định dạng | 4 | 0 | 0.0% |
+| D | Thay đổi logic pháp lý | 2 | 2 | 100.0% |
+| E | Xử lý bảng biểu | 1 | 1 | 100.0% |
+| F | Nhiễu định dạng | 4 | 4 | 100.0% |
 
 ## 7. Per-Pair Details
 
 | Pair | V1 Art | V2 Art | Matched | GT Chg | Recall | Prec | F1 | ACUs | Hal% | Time |
 |------|--------|--------|---------|--------|--------|------|----|------|------|------|
-| 01-tand_signed | 14 | 16 | 14 | 24 | 0.0% | 0.0% | 0.00 | 5 | 0.0% | 410s |
+| 01-tand_signed | 14 | 16 | 14 | 24 | 75.0% | 62.1% | 0.68 | 29 | 0.0% | 339s |
 
 ---
 

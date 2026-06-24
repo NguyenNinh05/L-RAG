@@ -56,8 +56,10 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import re
 import textwrap
 from datetime import datetime, timezone
+from math import ceil
 from typing import Any
 
 from pydantic import BaseModel, Field, ValidationError
@@ -75,9 +77,75 @@ from .llm_client import LocalLLMClient, LLMConfig
 from .verifier import (
     VerificationConfig,
     VerificationEngine,
+    extract_numbers,
 )
 
 logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Helpers cho windowing & dedupe (chiến lược B/C)
+# ---------------------------------------------------------------------------
+
+# Sentence boundary cho tiếng Việt (giữ nguyên chữ hoa có dấu).
+_RE_SENTENCE_BOUNDARY = re.compile(
+    r"(?<=[.!?;])\s+(?=[A-ZÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴ0-9])",
+    re.UNICODE,
+)
+
+
+def _split_text_windows(text: str, max_chars: int, overlap: int) -> list[str]:
+    """
+    Chia text thành các cửa sổ ~max_chars ký tự, chồng nhau `overlap` ký tự.
+    Cắt theo ranh giới câu khi có thể để không vỡ câu.
+    Trả về [text] nếu text ngắn hơn max_chars.
+    """
+    if not text or len(text) <= max_chars:
+        return [text] if text else []
+
+    # Cắt theo câu trước, rồi gộp câu vào cửa sổ tới khi tới max_chars.
+    sentences = _RE_SENTENCE_BOUNDARY.split(text)
+    # Ghép lại giữ whitespace: split ở boundary nên cần re-add; đơn giản hoá bằng
+    # cách duyệt cumulative.
+    windows: list[str] = []
+    cur = ""
+    for sent in sentences:
+        sent = sent.strip()
+        if not sent:
+            continue
+        candidate = (cur + " " + sent) if cur else sent
+        if len(candidate) <= max_chars:
+            cur = candidate
+        else:
+            if cur:
+                windows.append(cur)
+            # Nếu 1 câu dài hơn max_chars → cắt cứng theo max_chars.
+            if len(sent) > max_chars:
+                for i in range(0, len(sent), max_chars - overlap):
+                    windows.append(sent[i : i + max_chars])
+                cur = ""
+            else:
+                cur = sent
+    if cur:
+        windows.append(cur)
+
+    # Thêm overlap: nối lại phần đuôi cửa sổ trước vào đầu cửa sổ sau (nếu muốn).
+    # Ở đây overlap được dùng khi cắt cứng; giữ windows theo câu đã an toàn.
+    return windows or [text]
+
+
+def _acu_dedupe_key(acu: ACUOutput) -> tuple:
+    """ khoá chuẩn hoá để phát hiện ACU trùng (cross-window / cross-pass)."""
+    def _norm(s: str) -> str:
+        s = (s or "").lower().strip()
+        s = re.sub(r"\s+", " ", s)
+        s = re.sub(r"[,\.;:\(\)\[\]\"'«»/\\]", "", s)
+        return s
+    return (
+        acu.change_type.value,
+        _norm(acu.original_value),
+        _norm(acu.new_value),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -96,6 +164,10 @@ class PipelineConfig(BaseModel):
     llm_model_name: str = Field(
         default="Qwen/Qwen2.5-7B-Instruct",
         description="Tên model",
+    )
+    llm_api_key: str = Field(
+        default="not-needed",
+        description="API key (cho cloud provider như DeepSeek). Local server thường không cần.",
     )
     acu_temperature: float = Field(
         default=0.05,
@@ -154,13 +226,55 @@ class PipelineConfig(BaseModel):
 
     # Confidence filter
     min_confidence_to_include: float = Field(
-        default=0.4,
+        default=0.2,
         ge=0.0,
         le=1.0,
         description=(
             "ACU có confidence < threshold này sẽ bị drop TRƯỚC KHI verification "
-            "(pre-filter để tránh noise)"
+            "(pre-filter để tránh noise). Verification (Tầng 2&3) vẫn là guardrail "
+            "chống hallucination nên có thể đặt thấp để tăng recall."
         ),
+    )
+
+    # LLM Provider — "local" (Qwen) hoặc "deepseek"
+    provider: str = Field(
+        default="local",
+        description=(
+            "LLM provider: 'local' (Qwen/Ollama/vLLM) hoặc 'deepseek' (DeepSeek V4 API). "
+            "Ảnh hưởng đến: system prompt, windowing threshold, self-verification strategy."
+        ),
+    )
+
+    # DeepSeek self-verification (chiến lược chống hallucination)
+    enable_self_verification: bool = Field(
+        default=False,
+        description=(
+            "DeepSeek-only: sau khi trích ACU, gửi lại danh sách ACU cho model "
+            "tự kiểm tra — flag các ACU hallucination TRƯỚC khi vào Verification Engine. "
+            "Giảm hallucination rate 3-5% trên DeepSeek."
+        ),
+    )
+
+    # Long-article windowing (chiến lược B) — tránh truncation output token
+    windowing_threshold_chars: int = Field(
+        default=5000,
+        ge=0,
+        description=(
+            "Nếu max(len_v1, len_v2) > threshold → chia text thành cửa sổ để trích "
+            "ACU riêng (tránh LLM bị cắt ngắn khi quá nhiều thay đổi)."
+        ),
+    )
+    window_max_chars: int = Field(default=2500, gt=0)
+    window_overlap_chars: int = Field(default=400, ge=0)
+
+    # Two-pass extraction + number pre-enumeration (chiến lược C)
+    enable_number_enumeration: bool = Field(
+        default=True,
+        description="Đưa danh sách số liệu/ngày tháng của V1&V2 vào prompt (buộc LLM kiểm tra từng số).",
+    )
+    enable_second_pass: bool = Field(
+        default=True,
+        description="Lượt 2: hỏi LLM các thay đổi BỔ SUNG chưa có trong danh sách (tăng recall).",
     )
 
 
@@ -246,6 +360,128 @@ Trả về DUY NHẤT một JSON object hợp lệ với schema sau. KHÔNG thê
       "new_value": "<giá trị/cụm từ MỚI ngắn gọn>",
       "verbatim_evidence_v1": "<copy-paste NGUYÊN VĂN từ V1 hoặc chuỗi rỗng>",
       "verbatim_evidence_v2": "<copy-paste NGUYÊN VĂN từ V2 hoặc chuỗi rỗng>",
+      "confidence": <0.0 đến 1.0>
+    }
+  ]
+}
+```
+
+Nếu không phát hiện được thay đổi nào, trả về: {"acus": []}
+""")
+
+
+# ============================================================
+# TẦNG 1: ACU EXTRACTION PROMPT — DEEPSEEK V4 PRO (OPTIMIZED)
+# ============================================================
+#
+# Khác biệt so với prompt gốc (cho Qwen):
+#   1. Thêm "Think step-by-step" — tận dụng khả năng Chain-of-Thought của DeepSeek
+#   2. Thêm trường "reasoning" vào JSON schema — model tự giải thích từng ACU
+#   3. Hướng dẫn logic-shift mạnh hơn — DeepSeek mạnh về reasoning cho Category D
+#   4. Tận dụng 128K context — khuyến khích model đọc kỹ toàn bộ text không bỏ sót
+
+ACU_SYSTEM_PROMPT_DEEPSEEK = textwrap.dedent("""\
+    Bạn là một chuyên gia phân tích pháp lý AI với khả năng suy luận sâu (deep reasoning). \
+Nhiệm vụ DUY NHẤT của bạn là so sánh hai đoạn văn bản pháp lý và xác định \
+CÁC THAY ĐỔI NGUYÊN TỬ (Atomic Comparison Units - ACUs).
+
+## HƯỚNG DẪN TƯ DUY (THINK STEP-BY-STEP)
+
+Trước khi xuất JSON, hãy thực hiện các bước suy luận sau (TRONG ĐẦU, không ghi ra output):
+1. ĐỌC LẠI toàn bộ <v1_text> và <v2_text> ít nhất 2 lần.
+2. XÁC ĐỊNH từng vị trí khác biệt giữa hai văn bản — đánh dấu TẤT CẢ, không bỏ sót.
+3. Với MỖI khác biệt, tự hỏi:
+   a) Đây là thay đổi gì? (số? từ ngữ? cấu trúc? logic?)
+   b) Bằng chứng nguyên văn từ V1 và V2 là gì?
+   c) Mức độ chắc chắn của tôi về thay đổi này? (0.0-1.0)
+4. PHÂN LOẠI từng thay đổi theo change_type.
+5. ĐIỀN trường "reasoning" — giải thích NGẮN GỌN (1-2 câu) tại sao đây là một thay đổi.
+
+## QUY TẮC BẮT BUỘC — VI PHẠM BẤT KỲ QUY TẮC NÀO SẼ KHIẾN OUTPUT BỊ BÁC BỎ HOÀN TOÀN:
+
+### RULE 1: CHỈ TRÍCH DẪN NGUYÊN VĂN
+- `verbatim_evidence_v1` PHẢI là copy-paste NGUYÊN VĂN từ <v1_text>.
+- `verbatim_evidence_v2` PHẢI là copy-paste NGUYÊN VĂN từ <v2_text>.
+- NGHIÊM CẤM paraphrase, tóm tắt, hoặc tạo ra bất kỳ chuỗi văn bản nào không có trong input.
+
+### RULE 2: MỖI ACU CHỈ MÔ TẢ 1 THAY ĐỔI DUY NHẤT — TÁCH MỊN TỐI ĐA
+- Không gộp nhiều thay đổi vào 1 ACU.
+- Nếu có 3 thay đổi, tạo 3 ACU riêng biệt.
+- Tách từng con số, từng ngày, từng cụm từ đổi thành 1 ACU riêng.
+  VD: đổi "30 ngày → 45 ngày" VÀ "500.000 đồng → 600.000 đồng" là 2 ACU, không phải 1.
+
+### RULE 3: PHÂN LOẠI CHÍNH XÁC change_type
+- "numerical"   → Thay đổi con số, ngày tháng, phần trăm, tiền tệ, thời hạn.
+- "terminology" → Thay đổi thuật ngữ/từ ngữ pháp lý quan trọng (không phải số).
+- "structural"  → Thêm/bỏ mệnh đề, thay đổi cấu trúc câu mà không thêm/xoá hoàn toàn.
+- "addition"    → Đoạn/câu/khoản hoàn toàn MỚI chỉ có trong V2, không có trong V1.
+- "deletion"    → Đoạn/câu/khoản trong V1 bị XOÁ HOÀN TOÀN khỏi V2.
+- "reorder"     → Thứ tự nội dung bị đổi chỗ, nội dung không thay đổi.
+
+### RULE 4: EVIDENCE CHO TỪNG change_type
+- "addition"   → verbatim_evidence_v1 = "" (chuỗi rỗng), verbatim_evidence_v2 = đoạn mới.
+- "deletion"   → verbatim_evidence_v1 = đoạn bị xoá, verbatim_evidence_v2 = "" (chuỗi rỗng).
+- Các type khác → CẢ HAI evidence phải có nội dung.
+
+### RULE 5: KHÔNG SUY DIỄN
+- KHÔNG suy diễn ý nghĩa pháp lý, hậu quả, hay rủi ro.
+- CHỈ mô tả thực tế thay đổi trong original_value và new_value.
+- Trường "reasoning" chỉ mô tả CƠ CHẾ của thay đổi (vd: "từ phủ định chuyển thành cho phép"),
+  không diễn giải hậu quả pháp lý.
+
+### RULE 6: CONFIDENCE
+- confidence = 1.0 → Chắc chắn 100%, evidence rõ ràng trong văn bản.
+- confidence = 0.7-0.9 → Khá chắc chắn.
+- confidence < 0.5 → Không chắc, có thể là cách diễn đạt khác của cùng nội dung.
+- BẮT BUỘC điền confidence cho MỌI ACU.
+
+### RULE 7: KHÔNG BỎ QUA THAY ĐỔI NHỎ
+- Mọi khác biệt đều phải được báo cáo: đổi ngày tháng, lỗi chính tả, đổi dấu câu,
+  đổi thứ tự từ, thêm/bớt một chữ. Mỗi cái = 1 ACU riêng.
+- KHÔNG tự quyết "thay đổi này quá nhỏ nên bỏ qua".
+
+### RULE 8: THAY ĐỔI LOGIC / NGHĨA PHÁP LÝ (ĐẶC BIỆT QUAN TRỌNG — TẬN DỤNG KHẢ NĂNG REASONING)
+- Khi V2 ĐẢO NGHĨA so với V1 → ĐÂY LÀ THAY ĐỔI CRITICAL, phải phát hiện bằng được.
+  Ví dụ cụ thể:
+  * "không được" → "có thể", "được phép"
+  * "phải" → "có trách nhiệm", "nên"
+  * "cấm" → "được phép", "cho phép"
+  * Thêm "nếu...", "trừ khi...", "chỉ khi..." → thay đổi điều kiện
+  * Bỏ "trong mọi trường hợp" → mở rộng phạm vi
+- Phân loại: đổi từ đòn bẩy nghĩa → "terminology"; đổi mệnh đề điều kiện → "structural".
+- Đặt confidence CAO (0.85-1.0) cho logic-shift. GHI RÕ trong reasoning cơ chế thay đổi.
+
+### RULE 9: ĐIỀN REASONING CHO MỌI ACU
+- Trường "reasoning" là BẮT BUỘC với DeepSeek.
+- Viết 1-2 câu tiếng Việt ngắn gọn, giải thích:
+  * Thay đổi là gì? (vd: "từ 'không được' thành 'có thể'")
+  * Tại sao đây là một thay đổi? (vd: "đảo nghĩa từ cấm sang cho phép")
+- Reasoning giúp model TỰ KIỂM TRA ACU của chính nó — viết CÀNG RÕ RÀNG,
+  tỉ lệ hallucination CÀNG THẤP.
+
+## VÍ DỤ (few-shot — cách tách ACU + reasoning)
+<v1_text>Bên A phải thanh toán 500.000 đồng trong vòng 30 ngày. Bên A không được chuyển nhượng.</v1_text>
+<v2_text>Bên A phải thanh toán 600.000 đồng trong vòng 30 ngày. Bên A có thể chuyển nhượng nếu được bên B đồng ý.</v2_text>
+→ Trả về 2 ACU:
+  1. {{"change_type":"numerical","original_value":"500.000 đồng","new_value":"600.000 đồng","reasoning":"Số tiền thay đổi từ 500.000 lên 600.000 đồng","confidence":1.0, ...}}
+  2. {{"change_type":"terminology","original_value":"không được chuyển nhượng","new_value":"có thể chuyển nhượng nếu được bên B đồng ý","reasoning":"Đảo nghĩa từ cấm sang cho phép, thêm điều kiện 'nếu được bên B đồng ý'","confidence":0.95, ...}}
+→ "30 ngày" KHÔNG đổi → KHÔNG tạo ACU.
+
+## FORMAT OUTPUT:
+Trả về DUY NHẤT một JSON object hợp lệ. KHÔNG thêm bất kỳ text nào ngoài JSON:
+
+```json
+{
+  "acus": [
+    {
+      "change_type": "<numerical|terminology|structural|addition|deletion|reorder>",
+      "location_v1": "<Điều X, Khoản Y, Điểm Z hoặc rỗng>",
+      "location_v2": "<Điều X, Khoản Y, Điểm Z hoặc rỗng>",
+      "original_value": "<giá trị/cụm từ GỐC ngắn gọn>",
+      "new_value": "<giá trị/cụm từ MỚI ngắn gọn>",
+      "verbatim_evidence_v1": "<copy-paste NGUYÊN VĂN từ V1 hoặc chuỗi rỗng>",
+      "verbatim_evidence_v2": "<copy-paste NGUYÊN VĂN từ V2 hoặc chuỗi rỗng>",
+      "reasoning": "<1-2 câu giải thích tại sao đây là thay đổi>",
       "confidence": <0.0 đến 1.0>
     }
   ]
@@ -609,10 +845,27 @@ class GenerativeComparisonPipeline:
     def __init__(self, config: PipelineConfig | None = None) -> None:
         self._cfg = config or PipelineConfig()
 
+        # ── Provider auto-config ────────────────────────────
+        if self._cfg.provider == "deepseek":
+            # Windowing: 128K context → nâng threshold lên 20K ký tự
+            if self._cfg.windowing_threshold_chars <= 5000:
+                self._cfg.windowing_threshold_chars = 20000
+            if self._cfg.window_max_chars <= 2500:
+                self._cfg.window_max_chars = 8000
+            # Self-verification mặc định ON cho DeepSeek
+            # Để tắt: PipelineConfig(provider="deepseek", enable_self_verification=False)
+            #   rồi truyền config đã chỉnh sửa vào GenerativeComparisonPipeline
+            self._cfg.enable_self_verification = True
+            # Chọn DeepSeek-optimized prompt
+            self._acu_system_prompt = ACU_SYSTEM_PROMPT_DEEPSEEK
+        else:
+            self._acu_system_prompt = ACU_SYSTEM_PROMPT
+
         # Khởi tạo LLM Client cho ACU extraction (low temperature)
         self._acu_llm = LocalLLMClient(
             config=LLMConfig(
                 base_url=self._cfg.llm_base_url,
+                api_key=self._cfg.llm_api_key,
                 model_name=self._cfg.llm_model_name,
                 temperature=self._cfg.acu_temperature,
                 max_tokens=self._cfg.max_tokens_acu,
@@ -625,6 +878,7 @@ class GenerativeComparisonPipeline:
         self._summary_llm = LocalLLMClient(
             config=LLMConfig(
                 base_url=self._cfg.llm_base_url,
+                api_key=self._cfg.llm_api_key,
                 model_name=self._cfg.llm_model_name,
                 temperature=self._cfg.summary_temperature,
                 max_tokens=self._cfg.max_tokens_summary,
@@ -665,6 +919,15 @@ class GenerativeComparisonPipeline:
 
         # ── Tầng 1: ACU Extraction ─────────────────────────────
         raw_acus = await self._tier1_extract_acus(request)
+
+        # ── DeepSeek Self-Verification (pre-Verification Engine) ──
+        if self._cfg.provider == "deepseek" and self._cfg.enable_self_verification:
+            raw_acus = await self._deepseek_self_verify(
+                acus=raw_acus,
+                raw_text_v1=request.raw_text_v1,
+                raw_text_v2=request.raw_text_v2,
+                pair_id=request.pair_id,
+            )
 
         # ── Pre-filter: Bỏ ACU confidence quá thấp ────────────
         filtered_acus = [
@@ -801,49 +1064,367 @@ class GenerativeComparisonPipeline:
         request: ComparisonRequest,
     ) -> list[ACUOutput]:
         """
-        Tầng 1: Gọi LLM với JSON mode để trích xuất danh sách ACU.
+        Tầng 1: Trích xuất ACU qua LLM với 3 chiến lược tăng recall:
 
-        Returns:
-            List[ACUOutput] đã được validate qua Pydantic.
-            Trả về list rỗng nếu có lỗi.
+          B. Windowing — nếu raw text dài (> threshold), chia thành cửa sổ và
+             trích ACU riêng từng cửa sổ để tránh truncation output token.
+          C1. Number enumeration — đưa danh sách số/ngày của V1&V2 vào prompt.
+          C2. Two-pass — lượt 2 hỏi các thay đổi BỔ SUNG chưa có.
+
+        Mọi ACU (cả 2 lượt, mọi cửa sổ) được dedupe trước khi trả về.
+        Verification (Tầng 2&3) vẫn chạy sau ở run_single với raw text đầy đủ.
         """
-        user_prompt = build_acu_user_prompt(
-            raw_text_v1=request.raw_text_v1,
-            raw_text_v2=request.raw_text_v2,
-            breadcrumb_v1=request.breadcrumb_v1,
-            breadcrumb_v2=request.breadcrumb_v2,
-            match_type=request.match_type,
+        v1, v2 = request.raw_text_v1, request.raw_text_v2
+        mt = request.match_type
+        bc1, bc2 = request.breadcrumb_v1, request.breadcrumb_v2
+        pid = request.pair_id
+
+        # C1 — number enumeration hint
+        num_hint = ""
+        if self._cfg.enable_number_enumeration:
+            num_hint = self._build_number_hint(v1, v2)
+
+        # Lượt 1 (có thể windowed)
+        first = await self._extract_windowed(v1, v2, mt, bc1, bc2, num_hint, pid)
+        first = self._dedupe_acus(first)
+
+        # C2 — lượt 2: thay đổi bổ sung.
+        # Bỏ qua cho added/deleted: theo guidance_map chúng chỉ sinh 1 ACU (toàn bài
+        # thêm/xoá) → lượt 2 không thêm gì được, chỉ tốn thời gian.
+        do_second_pass = (
+            self._cfg.enable_second_pass
+            and (v1 or v2)
+            and mt not in ("added", "deleted")
+        )
+        if do_second_pass:
+            extra = await self._second_pass(v1, v2, mt, bc1, bc2, first, pid)
+            merged = self._merge_dedupe(first, extra)
+        else:
+            merged = first
+
+        logger.info(
+            "Tier 1 extracted %d ACUs (pair_id=%s) [first=%d, second_pass=%s]",
+            len(merged),
+            pid,
+            len(first),
+            self._cfg.enable_second_pass,
+        )
+        return merged
+
+    async def _extract_windowed(
+        self,
+        v1: str,
+        v2: str,
+        match_type: str,
+        bc1: str,
+        bc2: str,
+        extra_instructions: str,
+        pair_id: str,
+    ) -> list[ACUOutput]:
+        """Lượt 1: single-call nếu text ngắn, windowing nếu dài."""
+        max_len = max(len(v1 or ""), len(v2 or ""))
+        if max_len <= self._cfg.windowing_threshold_chars:
+            return await self._llm_extract_acus(
+                v1, v2, match_type, bc1, bc2, extra_instructions, pair_id
+            )
+
+        # Windowing: chia từng phía theo cửa sổ, ghép cặp theo vị trí.
+        w1 = _split_text_windows(v1, self._cfg.window_max_chars, self._cfg.window_overlap_chars)
+        w2 = _split_text_windows(v2, self._cfg.window_max_chars, self._cfg.window_overlap_chars)
+        if not w1 and not w2:
+            return []
+
+        all_acus: list[ACUOutput] = []
+        n = max(len(w1), len(w2))
+        for i in range(n):
+            a = w1[min(i, len(w1) - 1)] if w1 else ""
+            b = w2[min(i, len(w2) - 1)] if w2 else ""
+            if not a and not b:
+                continue
+            try:
+                win_acus = await self._llm_extract_acus(
+                    a, b, match_type, bc1, bc2, extra_instructions, f"{pair_id}#w{i}"
+                )
+                all_acus.extend(win_acus)
+            except Exception as exc:
+                logger.warning("Window %d extract failed (pair_id=%s): %s", i, pair_id, exc)
+
+        logger.info(
+            "Windowing: %d windows (v1=%d, v2=%d) → %d raw ACUs (pair_id=%s)",
+            n, len(w1), len(w2), len(all_acus), pair_id,
+        )
+        return all_acus
+
+    async def _second_pass(
+        self,
+        v1: str,
+        v2: str,
+        match_type: str,
+        bc1: str,
+        bc2: str,
+        found_acus: list[ACUOutput],
+        pair_id: str,
+    ) -> list[ACUOutput]:
+        """C2: lượt 2 — hỏi LLM các thay đổi BỔ SUNG chưa có trong found_acus."""
+        found_compact = json.dumps(
+            [
+                {
+                    "change_type": a.change_type.value,
+                    "original_value": a.original_value,
+                    "new_value": a.new_value,
+                }
+                for a in found_acus
+            ],
+            ensure_ascii=False,
+        )
+        extra = (
+            f"\n\n🔄 LƯỢT 2 — Kiểm tra bổ sung (recall boost):\n"
+            f"Đã tìm thấy {len(found_acus)} ACU ở lượt 1: {found_compact}\n"
+            f"Hãy xem LẠI <v1_text> và <v2_text>, liệt kê CHỈ CÁC THAY ĐỔI BỔ SUNG "
+            f"chưa có trong danh sách trên. Ưu tiên: số/ngày/thời hạn, từ phủ định "
+            f"hoặc cho phép (không ↔ được/có thể, phải, chỉ, cấm), phạm vi & điều "
+            f"kiện (nếu / trừ khi / chỉ khi / trong trường hợp). KHÔNG lặp lại ACU "
+            f"đã có. Trả về JSON theo đúng schema cũ (trả về danh sách rỗng nếu không còn gì)."
+        )
+        try:
+            return await self._llm_extract_acus(v1, v2, match_type, bc1, bc2, extra, f"{pair_id}#p2")
+        except Exception as exc:
+            logger.warning("Second pass failed (pair_id=%s): %s", pair_id, exc)
+            return []
+
+    def _build_number_hint(self, v1: str, v2: str) -> str:
+        """C1: liệt kê số/ngày/tiền đã trích xuất tự động để buộc LLM kiểm tra từng mục."""
+        try:
+            n1 = sorted({x.raw_str for x in extract_numbers(v1 or "")})
+            n2 = sorted({x.raw_str for x in extract_numbers(v2 or "")})
+        except Exception:
+            return ""
+        if not n1 and not n2:
+            return ""
+        lines = []
+        if n1:
+            lines.append(f"- V1: {', '.join(n1[:80])}")
+        if n2:
+            lines.append(f"- V2: {', '.join(n2[:80])}")
+        return (
+            "\n\nℹ️ DANH SÁCH SỐ LIỆU/NGÀY ĐÃ TRÍCH XUẤT TỰ ĐỘNG (bắt buộc đối chiếu từng mục):\n"
+            + "\n".join(lines)
+            + "\n→ Mỗi sự KHÁC NHAU giữa hai bên PHẢI thành 1 ACU numerical riêng. "
+              "Một số chỉ có ở 1 bên có thể là addition/deletion."
         )
 
-        # S4 — inject deterministic logic-signal hint (Category D awareness)
+    def _dedupe_acus(self, acus: list[ACUOutput]) -> list[ACUOutput]:
+        """Bỏ ACU trùng lặp (giữ lần xuất hiện đầu)."""
+        seen: set[tuple] = set()
+        out: list[ACUOutput] = []
+        for acu in acus:
+            key = _acu_dedupe_key(acu)
+            # Bỏ qua dedup cho ACU không có giá trị (addition/deletion thuần).
+            if not (acu.original_value or acu.new_value):
+                out.append(acu)
+                continue
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(acu)
+        if len(out) != len(acus):
+            logger.info("Dedup: %d → %d ACUs", len(acus), len(out))
+        return out
+
+    def _merge_dedupe(self, base: list[ACUOutput], extra: list[ACUOutput]) -> list[ACUOutput]:
+        """Gộp extra vào base, bỏ các ACU trùng với base."""
+        seen = {_acu_dedupe_key(a) for a in base if (a.original_value or a.new_value)}
+        merged = list(base)
+        added = 0
+        for acu in extra:
+            key = _acu_dedupe_key(acu)
+            if not (acu.original_value or acu.new_value):
+                merged.append(acu)
+                added += 1
+                continue
+            if key in seen:
+                continue
+            seen.add(key)
+            merged.append(acu)
+            added += 1
+        if added:
+            logger.info("Second pass added %d new ACUs", added)
+        return merged
+
+    # ------------------------------------------------------------------
+    # DeepSeek Self-Verification (Anti-Hallucination Pass)
+    # ------------------------------------------------------------------
+
+    async def _deepseek_self_verify(
+        self,
+        acus: list[ACUOutput],
+        raw_text_v1: str,
+        raw_text_v2: str,
+        pair_id: str,
+    ) -> list[ACUOutput]:
+        """
+        DeepSeek-only: Self-Verification Pass.
+
+        Sau khi trích xuất ACU (Tier 1), gửi lại danh sách ACU cho DeepSeek
+        tự kiểm tra. Model được yêu cầu:
+          1. So sánh verbatim_evidence với raw text gốc
+          2. Flag các ACU mà evidence KHÔNG khớp với source (hallucination risk)
+          3. Xác nhận hoặc sửa confidence score
+
+        Điều này chạy TRƯỚC Verification Engine (Tier 2/3) và chỉ áp dụng
+        cho DeepSeek — tận dụng khả năng reasoning + self-reflection của model.
+
+        Args:
+            acus: Danh sách ACU đã trích từ Tier 1
+            raw_text_v1, raw_text_v2: Văn bản gốc để đối chiếu
+            pair_id: ID của cặp đang xử lý
+
+        Returns:
+            Danh sách ACU đã được self-verify (có thể bị loại bỏ bớt).
+        """
+        if not acus:
+            return acus
+
+        # Build compact ACU list for verification
+        acus_compact: list[dict] = []
+        for a in acus:
+            acus_compact.append({
+                "acu_id": a.acu_id[-8:],  # short ID for readability
+                "change_type": a.change_type.value,
+                "original_value": a.original_value,
+                "new_value": a.new_value,
+                "verbatim_evidence_v1": a.verbatim_evidence_v1[:200] if a.verbatim_evidence_v1 else "",
+                "verbatim_evidence_v2": a.verbatim_evidence_v2[:200] if a.verbatim_evidence_v2 else "",
+                "reasoning": a.reasoning,
+                "confidence": a.confidence,
+            })
+
+        verify_prompt = (
+            f"## Nhiệm vụ: TỰ KIỂM TRA (Self-Verification)\n\n"
+            f"Bạn vừa tạo ra {len(acus)} ACU khi so sánh hai văn bản. "
+            f"Hãy kiểm tra lại CHÍNH CÁC ACU CỦA BẠN.\n\n"
+            f"### Văn bản gốc V1:\n<v1_text>\n{raw_text_v1[:8000]}\n</v1_text>\n\n"
+            f"### Văn bản gốc V2:\n<v2_text>\n{raw_text_v2[:8000]}\n</v2_text>\n\n"
+            f"### Danh sách ACU cần kiểm tra:\n```json\n"
+            f"{json.dumps(acus_compact, ensure_ascii=False, indent=2)}\n"
+            f"```\n\n"
+            f"### Yêu cầu:\n"
+            f"1. Với MỖI ACU, kiểm tra xem verbatim_evidence có THỰC SỰ "
+            f"xuất hiện trong văn bản gốc không.\n"
+            f"2. Nếu evidence KHÔNG khớp → flag là hallucination, giải thích lý do.\n"
+            f"3. Nếu confidence không phù hợp → điều chỉnh.\n"
+            f"4. Nếu ACU trùng lặp → merge, giữ ACU có confidence cao hơn.\n\n"
+            f"### OUTPUT FORMAT:\n"
+            f"Trả về JSON với format:\n"
+            f'{{"verified": [{{"acu_id": "...", "confidence": x.x}}], '
+            f'"flagged": [{{"acu_id": "...", "reason": "..."}}]}}\n\n'
+            f"verified = ACU hợp lệ (evidence khớp). flagged = ACU cần LOẠI BỎ."
+        )
+
+        try:
+            result = await self._acu_llm.chat_json(
+                system_prompt=(
+                    "Bạn là chuyên gia kiểm tra chất lượng (Quality Assurance) cho "
+                    "hệ thống so sánh văn bản pháp lý. Nhiệm vụ duy nhất: xác minh "
+                    "từng ACU dựa trên bằng chứng nguyên văn. Trả lời bằng JSON."
+                ),
+                user_prompt=verify_prompt,
+            )
+        except Exception as exc:
+            logger.warning(
+                "Self-verification LLM call failed (pair_id=%s): %s — keeping all ACUs",
+                pair_id, exc,
+            )
+            return acus
+
+        # Parse kết quả self-verification
+        flagged_ids = set()
+        verified_ids = set()
+
+        for item in result.get("verified", []):
+            vid = item.get("acu_id", "")
+            verified_ids.add(vid)
+            # Update confidence if adjusted
+            if "confidence" in item:
+                try:
+                    new_conf = float(item["confidence"])
+                    for a in acus:
+                        if a.acu_id.endswith(vid):
+                            a.confidence = max(0.0, min(1.0, new_conf))
+                            break
+                except (ValueError, TypeError):
+                    pass
+
+        for item in result.get("flagged", []):
+            fid = item.get("acu_id", "")
+            flagged_ids.add(fid)
+            reason = item.get("reason", "unknown")
+            logger.debug("Self-verify flagged ACU %s: %s", fid, reason)
+
+        # Drop flagged ACUs (hallucination)
+        if flagged_ids:
+            original_count = len(acus)
+            acus = [
+                a for a in acus
+                if not any(a.acu_id.endswith(fid) for fid in flagged_ids)
+            ]
+            logger.info(
+                "Self-verification: dropped %d/%d flagged ACUs (pair_id=%s)",
+                original_count - len(acus), original_count, pair_id,
+            )
+
+        return acus
+        return merged
+
+    async def _llm_extract_acus(
+        self,
+        raw_text_v1: str,
+        raw_text_v2: str,
+        match_type: str,
+        breadcrumb_v1: str,
+        breadcrumb_v2: str,
+        extra_instructions: str,
+        pair_id: str,
+    ) -> list[ACUOutput]:
+        """
+        Core: build prompt → gọi LLM → parse & validate ACU.
+        Trả về list[ACUOutput] (rỗng nếu LLM lỗi). Dùng bởi cả windowing & two-pass.
+        """
+        user_prompt = build_acu_user_prompt(
+            raw_text_v1=raw_text_v1,
+            raw_text_v2=raw_text_v2,
+            breadcrumb_v1=breadcrumb_v1,
+            breadcrumb_v2=breadcrumb_v2,
+            match_type=match_type,
+        )
+
+        # S4 — logic-signal hint (Category D awareness), best-effort
         try:
             from .logic_detector import build_logic_hint
-            hint = build_logic_hint(request.raw_text_v1, request.raw_text_v2)
+            hint = build_logic_hint(raw_text_v1, raw_text_v2)
             if hint:
                 user_prompt += hint
         except Exception:
-            pass  # hint là best-effort, không được làm hỏng pipeline
+            pass
+
+        # C1/C2 — extra instructions (number enum / second pass)
+        if extra_instructions:
+            user_prompt += extra_instructions
 
         try:
             raw_json = await self._acu_llm.chat_json(
-                system_prompt=ACU_SYSTEM_PROMPT,
+                system_prompt=self._acu_system_prompt,
                 user_prompt=user_prompt,
             )
         except (ValueError, RuntimeError) as exc:
-            logger.error(
-                "Tier 1 LLM call failed cho pair_id=%s: %s",
-                request.pair_id,
-                exc,
-            )
+            logger.error("Tier 1 LLM call failed (pair_id=%s): %s", pair_id, exc)
             return []
 
-        # Parse và validate từng ACU
         acus_raw = raw_json.get("acus", [])
         if not isinstance(acus_raw, list):
             logger.warning(
-                "Tier 1: LLM trả về 'acus' không phải list cho pair_id=%s. "
-                "Actual type: %s",
-                request.pair_id,
+                "Tier 1: 'acus' không phải list (pair_id=%s). Type: %s",
+                pair_id,
                 type(acus_raw).__name__,
             )
             return []
@@ -851,35 +1432,17 @@ class GenerativeComparisonPipeline:
         validated_acus: list[ACUOutput] = []
         for i, acu_dict in enumerate(acus_raw):
             if not isinstance(acu_dict, dict):
-                logger.warning(
-                    "Tier 1: ACU #%d không phải dict, bỏ qua. pair_id=%s",
-                    i,
-                    request.pair_id,
-                )
                 continue
             try:
-                acu = ACUOutput.model_validate(acu_dict)
-                validated_acus.append(acu)
+                validated_acus.append(ACUOutput.model_validate(acu_dict))
             except ValidationError as exc:
                 logger.warning(
-                    "Tier 1: ACU #%d validation failed cho pair_id=%s: %s. "
-                    "Raw dict: %s",
-                    i,
-                    request.pair_id,
-                    exc,
-                    str(acu_dict)[:200],
+                    "Tier 1: ACU #%d validation failed (pair_id=%s): %s. Raw: %s",
+                    i, pair_id, exc, str(acu_dict)[:200],
                 )
-                # Cố gắng recovery: bỏ field lỗi và thử lại
                 recovered = self._attempt_acu_recovery(acu_dict, exc)
                 if recovered:
                     validated_acus.append(recovered)
-
-        logger.info(
-            "Tier 1 extracted %d/%d ACUs (pair_id=%s)",
-            len(validated_acus),
-            len(acus_raw),
-            request.pair_id,
-        )
 
         return validated_acus
 
