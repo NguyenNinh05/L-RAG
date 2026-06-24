@@ -47,6 +47,11 @@ graph_db/*
 
 # Thư mục eval output (dữ liệu test tạm thời)
 eval_output/
+eval_results/
+eval_results_qwen/
+eval_results_deepseek/
+eval_results_v2/
+eval_results_v3/
 
 # ============================================================
 # Database — Vector DB (ChromaDB)
