@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+import { Layout } from '@/components/layout/Layout'
 
 const LoginPage = lazy(() => import('@/pages/LoginPage').then((m) => ({ default: m.LoginPage })))
 const RegisterPage = lazy(() =>
@@ -43,8 +44,13 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    element: <ProtectedRoute />,
+    element: (
+      <ProtectedRoute />
+    ),
     children: [
+      {
+        element: <Layout />,
+        children: [
       {
         path: '/',
         element: (
@@ -76,6 +82,8 @@ export const router = createBrowserRouter([
             <LibraryPage />
           </Suspense>
         ),
+      },
+        ],
       },
     ],
   },
