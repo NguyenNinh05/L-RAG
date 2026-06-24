@@ -1,0 +1,99 @@
+@import '@fontsource/eb-garamond/400.css';
+@import '@fontsource/eb-garamond/500.css';
+@import '@fontsource/eb-garamond/600.css';
+@import '@fontsource/eb-garamond/700.css';
+@import '@fontsource/lato/300.css';
+@import '@fontsource/lato/400.css';
+@import '@fontsource/lato/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode — Trust & Authority navy palette */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --primary: 215 28% 17%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --border: 213 27% 84%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 215 28% 17%;
+
+    /* Semantic diff colors (light) */
+    --diff-addition: 160 84% 36%;
+    --diff-deletion: 0 72% 51%;
+    --diff-numerical: 221 83% 53%;
+    --diff-terminology: 34 88% 43%;
+    --diff-structural: 262 83% 58%;
+    --diff-reorder: 215 16% 40%;
+  }
+
+  .dark {
+    /* Dark mode — desaturated elevated tonal variants */
+    --background: 220 49% 8%;
+    --foreground: 213 27% 84%;
+    --primary: 215 28% 17%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 210 40% 98%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 215 28% 17%;
+    --muted-foreground: 215 16% 60%;
+    --border: 215 25% 27%;
+    --destructive: 0 74% 71%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 217 91% 60%;
+
+    /* Semantic diff colors (dark — lifted for contrast) */
+    --diff-addition: 158 64% 52%;
+    --diff-deletion: 0 74% 71%;
+    --diff-numerical: 217 91% 60%;
+    --diff-terminology: 38 92% 50%;
+    --diff-structural: 262 83% 68%;
+    --diff-reorder: 215 16% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 {
+    @apply font-serif;
+  }
+  h1 { @apply text-3xl font-semibold; }
+  h2 { @apply text-2xl font-semibold; }
+  h3 { @apply text-xl font-medium; }
+
+  /* Evidence values use monospace + tabular nums */
+  .evidence-value {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: pre-wrap;
+  }
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
