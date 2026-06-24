@@ -2,10 +2,10 @@ import { api } from '@/api/client'
 import type { Job } from '@/types/document'
 
 export interface CreateJobPayload {
-  name: string
-  doc_v1_id: string
-  doc_v2_id: string
-  metadata?: Record<string, string>
+  document_v1_id: string
+  document_v2_id: string
+  skip_phase3?: boolean
+  config_overrides?: Record<string, unknown>
 }
 
 export function createJob(payload: CreateJobPayload): Promise<Job> {

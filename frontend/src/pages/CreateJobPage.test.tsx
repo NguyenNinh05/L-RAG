@@ -38,11 +38,6 @@ describe('CreateJobPage', () => {
     expect(screen.getByText('Tài liệu sửa đổi (V2)')).toBeInTheDocument()
   })
 
-  it('renders the job name input', () => {
-    renderPage()
-    expect(screen.getByLabelText(/Tên phiên so sánh/)).toBeInTheDocument()
-  })
-
   it('submit button is disabled when no documents uploaded', () => {
     renderPage()
     expect(screen.getByRole('button', { name: /Bắt đầu so sánh/ })).toBeDisabled()

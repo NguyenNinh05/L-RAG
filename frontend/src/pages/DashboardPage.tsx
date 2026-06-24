@@ -11,7 +11,7 @@ export function DashboardPage() {
   const kpis = {
     totalJobs: jobs?.length ?? 0,
     completed: jobs?.filter((j) => j.status === 'completed').length ?? 0,
-    inProgress: jobs?.filter((j) => ['phase1', 'phase2', 'phase3'].includes(j.status)).length ?? 0,
+    inProgress: jobs?.filter((j) => j.status === 'processing').length ?? 0,
     failed: jobs?.filter((j) => j.status === 'failed').length ?? 0,
   }
 
@@ -63,7 +63,11 @@ export function DashboardPage() {
             <tbody className="divide-y">
               {jobs?.slice(0, 10).map((job) => (
                 <tr key={job.id} className="hover:bg-muted/30">
-                  <td className="px-4 py-3 font-medium">{job.name}</td>
+                  <td className="px-4 py-3 font-medium">
+                    {job.v1_filename && job.v2_filename
+                      ? `${job.v1_filename} ↔ ${job.v2_filename}`
+                      : job.id.slice(0, 8)}
+                  </td>
                   <td className="px-4 py-3">
                     <StatusBadge status={job.status} />
                   </td>
@@ -109,20 +113,19 @@ function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
     completed: 'bg-diff-addition/10 text-diff-addition',
     failed: 'bg-destructive/10 text-diff-deletion',
-    idle: 'bg-muted text-muted-foreground',
+    cancelled: 'bg-muted text-muted-foreground',
     pending: 'bg-muted text-muted-foreground',
+    processing: 'bg-accent/10 text-accent',
   }
   const labels: Record<string, string> = {
     completed: 'Hoàn tất',
     failed: 'Thất bại',
+    cancelled: 'Đã hủy',
     pending: 'Đang chờ',
-    idle: 'Chờ',
-    phase1: 'Phase 1',
-    phase2: 'Phase 2',
-    phase3: 'Phase 3',
+    processing: 'Đang xử lý',
   }
 
-  const style = styles[status] || 'bg-accent/10 text-accent'
+  const style = styles[status] || 'bg-muted text-muted-foreground'
 
   return (
     <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${style}`}>
