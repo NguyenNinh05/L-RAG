@@ -1,27 +1,22 @@
-export type Phase = 'idle' | 'phase1' | 'phase2' | 'phase3' | 'completed' | 'failed'
+// Backend WS message format: { event, job_id, progress_pct, current_phase, message, error }
 
-export interface PhaseStatus {
-  phase: Phase
-  label: string
-  progress: number // 0-100
-  message?: string
-  started_at?: string
-  completed_at?: string
-}
-
-export interface JobProgress {
+export interface WSProgressMessage {
+  event: string // "progress" | "phase_change" | "completed" | "error"
   job_id: string
-  phase: Phase
-  phases: [PhaseStatus, PhaseStatus, PhaseStatus]
-  gpu_queue_position?: number
-  estimated_wait_minutes?: number
+  progress_pct: number
+  current_phase: string // "queued" | "ingestion" | "alignment" | "comparison"
+  message: string
+  error: string | null
 }
 
-export const PHASE_LABELS: Record<Phase, string> = {
-  idle: 'Đang chờ',
-  phase1: 'Phase 1 — Trích xuất ACU',
-  phase2: 'Phase 2 — Ghép cặp (Alignment)',
-  phase3: 'Phase 3 — So sánh & Đối chiếu',
+export const PHASE_ORDER = ['queued', 'ingestion', 'alignment', 'comparison'] as const
+export type PipelinePhase = (typeof PHASE_ORDER)[number]
+
+export const PHASE_LABELS: Record<string, string> = {
+  queued: 'Đang chờ',
+  ingestion: 'Phase 1 — Trích xuất & Phân tích tài liệu',
+  alignment: 'Phase 2 — Ghép cặp (Alignment)',
+  comparison: 'Phase 3 — So sánh & Đối chiếu',
   completed: 'Hoàn tất',
   failed: 'Thất bại',
 }

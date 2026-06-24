@@ -5,21 +5,20 @@ import { getReport } from '@/api/report'
 import { getJob } from '@/api/jobs'
 import { useWebSocket } from '@/hooks/useWebSocket'
 import { PhaseStepper } from '@/components/progress/PhaseStepper'
-import { QueueIndicator } from '@/components/progress/QueueIndicator'
 import { ExecutiveSummary } from '@/components/report/ExecutiveSummary'
 import { AcuList } from '@/components/report/AcuList'
 import { FilterBar } from '@/components/report/FilterBar'
 import type { AcuType, Severity } from '@/types/diff'
-import type { JobProgress } from '@/types/job'
+import type { WSProgressMessage } from '@/types/job'
 
 export function ReportPage() {
   const { id } = useParams<{ id: string }>()
-  const [wsProgress, setWsProgress] = useState<JobProgress | null>(null)
+  const [wsProgress, setWsProgress] = useState<WSProgressMessage | null>(null)
   const [typeFilter, setTypeFilter] = useState<AcuType | null>(null)
   const [severityFilter, setSeverityFilter] = useState<Severity | null>(null)
   const [sortBy, setSortBy] = useState<'type' | 'severity'>('type')
 
-  useWebSocket(id ?? null, useCallback((data: JobProgress) => {
+  useWebSocket(id ?? null, useCallback((data: WSProgressMessage) => {
     setWsProgress(data)
   }, []))
 
@@ -56,17 +55,24 @@ export function ReportPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="font-serif text-2xl font-semibold">
-        {job?.name || 'Báo cáo so sánh'}
+        {job
+          ? job.v1_filename && job.v2_filename
+            ? `${job.v1_filename} ↔ ${job.v2_filename}`
+            : 'Báo cáo so sánh'
+          : 'Báo cáo so sánh'}
       </h1>
 
       {/* Progress section */}
-      {wsProgress && wsProgress.phase !== 'completed' && wsProgress.phase !== 'failed' && (
+      {wsProgress && wsProgress.event !== 'completed' && wsProgress.event !== 'error' && (
         <div className="mt-6 space-y-4">
-          <PhaseStepper progress={wsProgress} />
-          <QueueIndicator
-            position={wsProgress.gpu_queue_position}
-            estimatedWaitMinutes={wsProgress.estimated_wait_minutes}
-          />
+          <PhaseStepper message={wsProgress} />
+        </div>
+      )}
+
+      {/* Error section */}
+      {wsProgress?.event === 'error' && (
+        <div className="mt-6 space-y-4">
+          <PhaseStepper message={wsProgress} />
         </div>
       )}
 

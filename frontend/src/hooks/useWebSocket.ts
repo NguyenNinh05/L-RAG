@@ -1,8 +1,8 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { useAuthStore } from '@/stores/auth'
+import type { WSProgressMessage } from '@/types/job'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type MessageHandler = (data: any) => void
+type MessageHandler = (data: WSProgressMessage) => void
 
 const WS_BASE = import.meta.env.VITE_WS_BASE_URL || '/ws'
 

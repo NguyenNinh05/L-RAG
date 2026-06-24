@@ -1,46 +1,52 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { PhaseStepper } from './PhaseStepper'
-import type { JobProgress } from '@/types/job'
+import type { WSProgressMessage } from '@/types/job'
 
-const mockProgress: JobProgress = {
-  job_id: 'test-job',
-  phase: 'phase1',
-  phases: [
-    { phase: 'phase1', label: 'Phase 1 — Trích xuất ACU', progress: 45, message: 'Đang xử lý...' },
-    { phase: 'phase2', label: 'Phase 2 — Ghép cặp', progress: 0 },
-    { phase: 'phase3', label: 'Phase 3 — So sánh', progress: 0 },
-  ],
+const inProgressMsg: WSProgressMessage = {
+  event: 'progress',
+  job_id: 'test',
+  progress_pct: 45,
+  current_phase: 'alignment',
+  message: 'Đang ghép cặp...',
+  error: null,
+}
+
+const completedMsg: WSProgressMessage = {
+  event: 'completed',
+  job_id: 'test',
+  progress_pct: 100,
+  current_phase: 'comparison',
+  message: 'Hoàn tất',
+  error: null,
+}
+
+const errorMsg: WSProgressMessage = {
+  event: 'error',
+  job_id: 'test',
+  progress_pct: 30,
+  current_phase: 'alignment',
+  message: 'Lỗi',
+  error: 'Qdrant lock conflict',
 }
 
 describe('PhaseStepper', () => {
-  it('renders all three phases', () => {
-    render(<PhaseStepper progress={mockProgress} />)
-    expect(screen.getByText(/Trích xuất ACU/)).toBeInTheDocument()
+  it('renders all four phases', () => {
+    render(<PhaseStepper message={inProgressMsg} />)
+    expect(screen.getByText(/Trích xuất/)).toBeInTheDocument()
     expect(screen.getByText(/Ghép cặp/)).toBeInTheDocument()
     expect(screen.getByText(/So sánh/)).toBeInTheDocument()
-  })
-
-  it('shows active phase message', () => {
-    render(<PhaseStepper progress={mockProgress} />)
-    expect(screen.getByText(/Đang xử lý/)).toBeInTheDocument()
+    expect(screen.getByText(/Đang chờ/)).toBeInTheDocument()
   })
 
   it('shows completion message when done', () => {
-    const done: JobProgress = {
-      ...mockProgress,
-      phase: 'completed',
-    }
-    render(<PhaseStepper progress={done} />)
+    render(<PhaseStepper message={completedMsg} />)
     expect(screen.getByText(/So sánh hoàn tất/)).toBeInTheDocument()
   })
 
-  it('shows failure message when failed', () => {
-    const failed: JobProgress = {
-      ...mockProgress,
-      phase: 'failed',
-    }
-    render(<PhaseStepper progress={failed} />)
+  it('shows error message when failed', () => {
+    render(<PhaseStepper message={errorMsg} />)
     expect(screen.getByText(/Đã xảy ra lỗi/)).toBeInTheDocument()
+    expect(screen.getAllByText(/Qdrant lock conflict/).length).toBeGreaterThanOrEqual(1)
   })
 })
