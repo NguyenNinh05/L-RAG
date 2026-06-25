@@ -22,7 +22,7 @@ llm:
   temperature_summary: 0.3    # Tầng 4 — cho phép diễn đạt tự nhiên hơn
   max_tokens_acu: 8192        # S3: tách ACU mịn hơn → JSON dài hơn; 8192 tránh cắt ngắn
   max_tokens_summary: 1024
-  timeout_seconds: 120.0
+  timeout_seconds: 300.0
   max_retries: 3
 
 # Cấu hình cho từng provider (merged vào llm config khi provider được chọn).

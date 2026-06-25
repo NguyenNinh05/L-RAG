@@ -81,9 +81,18 @@ class PipelineRunConfig:
     llm_temperature_summary: float = 0.3
     max_comparison_pairs: int | None = None
 
+    # Phase 3 — speed / throughput knobs (mirror GenPipelineCfg so they flow
+    # through config_overrides; defaults match the comparison engine defaults).
+    enable_second_pass: bool = True
+    enable_number_enumeration: bool = True
+    min_confidence_to_include: float = 0.2
+
     # Callback — gọi tại ranh giới phase: cb(pct, phase, message)
     # None → không gọi (chạy như cũ), dùng cho CLI/testing
     progress_callback: Callable[[int, str, str], None] | None = None
+
+    # LLM provider identification
+    llm_provider: str = "local"
 
     # Flags
     skip_phase3: bool = False  # True để chỉ chạy Phase 1+2
@@ -142,6 +151,7 @@ class LegalDiffPipeline:
             llm_max_retries=llm_cfg.get("max_retries", 3),
             llm_temperature_acu=llm_cfg.get("temperature_acu", 0.05),
             llm_temperature_summary=llm_cfg.get("temperature_summary", 0.3),
+            llm_provider=provider or "local",
         )
         return cls(run_config=run_cfg)
 
@@ -261,7 +271,6 @@ class LegalDiffPipeline:
         from src.comparison import GenerativeComparisonPipeline, ComparisonRequest
         from src.comparison import PipelineConfig as GenPipelineCfg
 
-        provider = llm_cfg.get("provider", "local")
         pipeline_cfg = GenPipelineCfg(
             llm_base_url=cfg.llm_base_url,
             llm_model_name=cfg.llm_model_name,
@@ -273,7 +282,10 @@ class LegalDiffPipeline:
             max_tokens_summary=cfg.max_tokens_summary,
             timeout_seconds=cfg.llm_timeout_seconds,
             max_retries=cfg.llm_max_retries,
-            provider=provider,
+            provider=cfg.llm_provider,
+            min_confidence_to_include=cfg.min_confidence_to_include,
+            enable_second_pass=cfg.enable_second_pass,
+            enable_number_enumeration=cfg.enable_number_enumeration,
         )
         gen_pipeline = GenerativeComparisonPipeline(config=pipeline_cfg)
 
