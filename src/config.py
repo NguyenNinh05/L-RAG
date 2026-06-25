@@ -198,7 +198,7 @@ def get_llm_config(provider: str | None = None) -> dict[str, Any]:
             "base_url", "https://api.deepseek.com/v1"
         )
         model_name = os.getenv("DEEPSEEK_MODEL", "").strip() or presets.get(
-            "model_name", "deepseek-chat"
+            "model_name", "deepseek-v4-flash"
         )
 
         return {

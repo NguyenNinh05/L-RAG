@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -56,6 +56,8 @@ export function SettingsPage() {
     handleSubmit,
     reset,
     watch,
+    setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -63,6 +65,9 @@ export function SettingsPage() {
 
   const provider = watch('llm_provider')
   const currentModel = watch('llm_model_name')
+  // Tracks the previously-seen provider so we can tell an active user switch
+  // (e.g. local → deepseek) apart from the initial form hydration.
+  const prevProvider = useRef<string | undefined>(undefined)
 
   // Options for the model dropdown: live-fetched models, always including the
   // currently-saved value so it stays visible even if the live list is stale.
@@ -80,13 +85,30 @@ export function SettingsPage() {
     }
   }, [data, reset])
 
-  // Refresh the model list whenever the provider changes.
+  // Refresh the model list whenever the provider changes. When the user
+  // actively switches provider, auto-select that provider's default model —
+  // e.g. choosing "deepseek" lands on deepseek-v4-flash (the cost-saving
+  // default) instead of leaving a stale model from the previous provider.
+  // The prevProvider ref skips the initial hydration so a saved selection
+  // isn't overwritten on load, and we never wipe a value when the live list
+  // comes back empty (e.g. Ollama unreachable).
   useEffect(() => {
     if (!provider) return
     listModels(provider)
-      .then((r) => setModels(r.models))
+      .then((r) => {
+        setModels(r.models)
+        const isUserSwitch =
+          prevProvider.current !== undefined && prevProvider.current !== provider
+        if (isUserSwitch) {
+          const cur = getValues('llm_model_name')
+          if (r.models.length > 0 && !r.models.includes(cur)) {
+            setValue('llm_model_name', r.models[0])
+          }
+        }
+        prevProvider.current = provider
+      })
       .catch(() => setModels([]))
-  }, [provider])
+  }, [provider, getValues, setValue])
 
   const saveMutation = useMutation({
     mutationFn: (config: LLMConfig) => saveLLMSettings(config),

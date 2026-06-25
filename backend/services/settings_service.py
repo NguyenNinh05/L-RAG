@@ -25,7 +25,12 @@ if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
 # Static model presets for hosted providers (Ollama is fetched live).
-_DEEPSEEK_MODELS = ["deepseek-chat", "deepseek-reasoner"]
+# Order matters: the first entry is the cost-saving default the UI lands on
+# when the user picks the "deepseek" provider. `deepseek-v4-flash` is ~3x
+# cheaper than `-pro` ($0.28 vs $0.87 / 1M output tokens) and is the right
+# choice for routine comparison jobs. The legacy `deepseek-chat` /
+# `deepseek-reasoner` aliases are deprecated by DeepSeek on 2026/07/24.
+_DEEPSEEK_MODELS = ["deepseek-v4-flash", "deepseek-v4-pro"]
 
 
 def _system_defaults() -> LLMConfigSchema:

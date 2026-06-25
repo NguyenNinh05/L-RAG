@@ -10,7 +10,7 @@ embedding:
   # device: "cuda"  # uncomment để force GPU
 
 llm:
-  # Provider: "local" (Qwen/Ollama) hoặc "deepseek" (DeepSeek V4 Pro API).
+  # Provider: "local" (Qwen/Ollama) hoặc "deepseek" (DeepSeek V4 Flash API).
   # Có thể override qua biến môi trường LLM_PROVIDER hoặc CLI --provider.
   provider: "local"
 
@@ -29,10 +29,14 @@ llm:
 # Section này KHÔNG bị override bởi pipeline_config.yaml.
 provider_presets:
   deepseek:
-    model_name: "deepseek-chat"               # override qua env DEEPSEEK_MODEL
+    # Mặc định dùng DeepSeek V4 Flash (~3x rẻ hơn V4 Pro) để tiết kiệm chi phí
+    # API cho routine comparison jobs. Đổi sang "deepseek-v4-pro" nếu cần chất
+    # lượng reasoning cao hơn. Override qua env DEEPSEEK_MODEL.
+    # Lưu ý: alias cũ "deepseek-chat"/"deepseek-reasoner" bị DeepSeek deprecate 2026/07/24.
+    model_name: "deepseek-v4-flash"           # override qua env DEEPSEEK_MODEL
     base_url: "https://api.deepseek.com/v1"   # override qua env DEEPSEEK_BASE_URL
     api_key: ""                                # LUÔN load từ env DEEPSEEK_API_KEY
-    # DeepSeek V4 Pro có khả năng reasoning mạnh — dùng temperature thấp hơn
+    # DeepSeek V4 Flash vẫn có khả năng reasoning tốt — dùng temperature thấp
     # cho structured JSON output vì model đã đủ deterministic ở low temp.
     temperature_acu: 0.0        # Zero-temperature cho ACU extraction (JSON mode)
     temperature_summary: 0.2    # Thấp hơn Qwen — DeepSeek diễn đạt tự nhiên hơn ở low temp
