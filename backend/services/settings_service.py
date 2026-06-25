@@ -108,6 +108,32 @@ class SettingsService:
             return list(_DEEPSEEK_MODELS)
         return await self._list_ollama_models(base_url or "http://localhost:11434/v1")
 
+    def provider_base_url(self, provider: str) -> str | None:
+        """Resolved default base_url for a provider (does NOT need an API key).
+
+        DeepSeek → env DEEPSEEK_BASE_URL, else the YAML preset, else the
+        OpenAI-format default. Local → the configured Ollama endpoint. Used by
+        the settings UI to repopulate base_url on provider switch.
+        """
+        if provider == "deepseek":
+            import os
+
+            from src.config import get_config
+
+            env = os.getenv("DEEPSEEK_BASE_URL", "").strip()
+            if env:
+                return env
+            preset = (
+                get_config().get("provider_presets", {}).get("deepseek", {}).get("base_url")
+            )
+            return preset or "https://api.deepseek.com/v1"
+        try:
+            from src.config import get_llm_config
+
+            return get_llm_config(provider="local").get("base_url")
+        except Exception:
+            return None
+
     @staticmethod
     async def _row(db: AsyncSession, user_id: uuid.UUID) -> UserSettings | None:
         result = await db.execute(

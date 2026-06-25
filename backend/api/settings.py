@@ -56,4 +56,5 @@ async def list_models(
     svc: SettingsService = Depends(_svc),
 ):
     models = await svc.list_models(provider, base_url)
-    return AvailableModelsResponse(provider=provider, models=models)
+    base = svc.provider_base_url(provider)
+    return AvailableModelsResponse(provider=provider, models=models, base_url=base)

@@ -33,4 +33,5 @@ export interface LLMSettingsResponse {
 export interface AvailableModelsResponse {
   provider: string
   models: string[]
+  base_url: string | null
 }

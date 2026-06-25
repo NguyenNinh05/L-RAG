@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getLLMSettings, saveLLMSettings, listModels } from '@/api/settings'
-import type { LLMConfig } from '@/types/settings'
+import type { LLMConfig, Provider } from '@/types/settings'
 
 const schema = z.object({
   llm_provider: z.enum(['local', 'deepseek']),
@@ -38,6 +38,15 @@ type FormData = z.infer<typeof schema>
 // backend stores null for unlimited. Coerce on the way in.
 function toFormData(config: LLMConfig): FormData {
   return { ...config, max_comparison_pairs: config.max_comparison_pairs ?? 0 }
+}
+
+// Host markers per provider. A base_url that contains none of its provider's
+// markers is treated as stale (left over from a different provider) and
+// repopulated when the user switches providers — e.g. switching to "deepseek"
+// while base_url still points at a local Ollama URL (localhost:11434).
+const PROVIDER_HOST_HINTS: Record<Provider, string[]> = {
+  local: ['localhost', '127.0.0.1', '11434'],
+  deepseek: ['deepseek.com'],
 }
 
 export function SettingsPage() {
@@ -100,9 +109,17 @@ export function SettingsPage() {
         const isUserSwitch =
           prevProvider.current !== undefined && prevProvider.current !== provider
         if (isUserSwitch) {
-          const cur = getValues('llm_model_name')
-          if (r.models.length > 0 && !r.models.includes(cur)) {
+          const curModel = getValues('llm_model_name')
+          if (r.models.length > 0 && !r.models.includes(curModel)) {
             setValue('llm_model_name', r.models[0])
+          }
+          // Repopulate base_url when it's stale for the newly-chosen provider
+          // (e.g. a local Ollama URL left over after switching to deepseek).
+          const curUrl = getValues('llm_base_url') || ''
+          const hints = PROVIDER_HOST_HINTS[provider as Provider] ?? []
+          const staleUrl = hints.length > 0 && !hints.some((h) => curUrl.includes(h))
+          if (staleUrl && r.base_url) {
+            setValue('llm_base_url', r.base_url)
           }
         }
         prevProvider.current = provider

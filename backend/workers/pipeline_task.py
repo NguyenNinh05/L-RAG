@@ -198,11 +198,26 @@ def run_pipeline(
             llm_provider=llm_cfg.get("provider", "local"),
         )
 
-        # Apply config overrides
+        # Apply config overrides. Connection fields for a HOSTED provider
+        # (base_url, api_key) are provider-managed — they come from
+        # get_llm_config() above (preset/env) and must NOT be clobbered by a
+        # stale per-user value left over from a different provider. Otherwise a
+        # saved local Ollama URL / "not-needed" key under provider="deepseek"
+        # sends deepseek model names to Ollama → 404 "model not found". model_name
+        # stays user-tunable (flash vs pro) but is only honored when it's a model
+        # this provider actually serves; a stale local model is ignored too.
+        hosted_provider = llm_cfg.get("provider", "local") != "local"
         if config_overrides:
+            from backend.services.settings_service import _DEEPSEEK_MODELS
+
             for key, val in config_overrides.items():
-                if hasattr(pipeline_cfg, key):
-                    setattr(pipeline_cfg, key, val)
+                if not hasattr(pipeline_cfg, key):
+                    continue
+                if hosted_provider and key in ("llm_base_url", "llm_api_key"):
+                    continue
+                if hosted_provider and key == "llm_model_name" and val not in _DEEPSEEK_MODELS:
+                    continue
+                setattr(pipeline_cfg, key, val)
 
         pipeline = LegalDiffPipeline(run_config=pipeline_cfg)
 

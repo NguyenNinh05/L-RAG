@@ -54,3 +54,8 @@ class LLMSettingsResponse(BaseModel):
 class AvailableModelsResponse(BaseModel):
     provider: str
     models: list[str]
+    # Resolved default base_url for this provider (does NOT require an API key).
+    # The settings UI uses it to repopulate base_url when switching providers so
+    # a stale value from the previous provider (e.g. a local Ollama URL under
+    # "deepseek") doesn't persist.
+    base_url: str | None = None
