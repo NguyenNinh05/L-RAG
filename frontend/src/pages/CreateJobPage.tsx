@@ -91,15 +91,7 @@ export function CreateJobPage() {
           </div>
         )}
 
-        {settings?.config && (
-          <p className="text-xs text-muted-foreground">
-            Phiên này sẽ dùng mô hình{' '}
-            <span className="font-medium text-foreground">
-              {settings.config.llm_model_name}
-            </span>{' '}
-            theo <Link to="/settings" className="text-accent hover:underline">cài đặt</Link> của bạn.
-          </p>
-        )}
+
 
         <button
           onClick={handleSubmit}

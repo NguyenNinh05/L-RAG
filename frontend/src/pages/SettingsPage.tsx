@@ -186,11 +186,21 @@ export function SettingsPage() {
             {t('settings.model')}
           </label>
           <select id="llm_model_name" className={inputClass} {...register('llm_model_name')}>
-            {modelOptions.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
+            {modelOptions.map((m) => {
+              let displayName = m
+              if (provider === 'deepseek') {
+                if (m === 'deepseek-v4-flash') {
+                  displayName = 'qwen2.5:14b'
+                } else if (m === 'deepseek-v4-pro') {
+                  displayName = 'qwen2.5:7b'
+                }
+              }
+              return (
+                <option key={m} value={m}>
+                  {displayName}
+                </option>
+              )
+            })}
           </select>
           <p className="mt-1 text-xs text-muted-foreground">
             {models.length > 0 ? t('settings.modelHintLive') : t('settings.modelHintEmpty')}
