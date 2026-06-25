@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getReport } from '@/api/report'
 import { getJob } from '@/api/jobs'
 import { useWebSocket } from '@/hooks/useWebSocket'
@@ -13,25 +13,47 @@ import type { WSProgressMessage } from '@/types/job'
 
 export function ReportPage() {
   const { id } = useParams<{ id: string }>()
+  const queryClient = useQueryClient()
   const [wsProgress, setWsProgress] = useState<WSProgressMessage | null>(null)
   const [typeFilter, setTypeFilter] = useState<AcuType | null>(null)
   const [severityFilter, setSeverityFilter] = useState<Severity | null>(null)
   const [sortBy, setSortBy] = useState<'type' | 'severity'>('type')
 
-  useWebSocket(id ?? null, useCallback((data: WSProgressMessage) => {
-    setWsProgress(data)
-  }, []))
+  useWebSocket(
+    id ?? null,
+    useCallback(
+      (data: WSProgressMessage) => {
+        setWsProgress(data)
+        // When the pipeline finishes (or fails), refresh the job so its status
+        // flips to terminal — that status is what gates the report query below.
+        if (data.event === 'completed' || data.event === 'error') {
+          queryClient.invalidateQueries({ queryKey: ['job', id] })
+        }
+      },
+      [queryClient, id],
+    ),
+  )
 
   const { data: job, isLoading: jobLoading } = useQuery({
     queryKey: ['job', id],
     queryFn: () => getJob(id!),
     enabled: !!id,
+    // Poll until the job reaches a terminal state. The WS message is the fast
+    // path; this is the reliable fallback when a socket frame is missed.
+    refetchInterval: (query) => {
+      const status = query.state.data?.status
+      if (status === 'completed' || status === 'failed' || status === 'cancelled') {
+        return false
+      }
+      return 2000
+    },
   })
 
-  const { data: report, isLoading } = useQuery({
+  const { data: report, isLoading, isError } = useQuery({
     queryKey: ['report', id],
     queryFn: () => getReport(id!),
-    enabled: !!id && job?.status === 'completed',
+    // Load the report as soon as either signal says the pipeline is done.
+    enabled: !!id && (job?.status === 'completed' || wsProgress?.event === 'completed'),
   })
 
   const filteredAcus = useMemo(() => {
@@ -50,6 +72,13 @@ export function ReportPage() {
     return result
   }, [report, typeFilter, severityFilter, sortBy])
 
+  const completed = job?.status === 'completed' || wsProgress?.event === 'completed'
+  const failed =
+    job?.status === 'failed' ||
+    job?.status === 'cancelled' ||
+    wsProgress?.event === 'error'
+  const running = !completed && !failed
+
   if (!id) return null
 
   return (
@@ -62,22 +91,35 @@ export function ReportPage() {
           : 'Báo cáo so sánh'}
       </h1>
 
-      {/* Progress section */}
-      {wsProgress && wsProgress.event !== 'completed' && wsProgress.event !== 'error' && (
+      {/* Initial load — before we know the job's status */}
+      {jobLoading && !wsProgress && (
+        <div className="mt-8 py-12 text-center">
+          <p className="text-sm text-muted-foreground">Đang tải...</p>
+        </div>
+      )}
+
+      {/* Progress section — shown while the pipeline is running */}
+      {running && wsProgress && (
         <div className="mt-6 space-y-4">
           <PhaseStepper message={wsProgress} />
         </div>
       )}
 
       {/* Error section */}
-      {wsProgress?.event === 'error' && (
+      {failed && (
         <div className="mt-6 space-y-4">
-          <PhaseStepper message={wsProgress} />
+          {wsProgress ? (
+            <PhaseStepper message={wsProgress} />
+          ) : (
+            <div className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              {job?.error_message || 'Phiên so sánh đã thất bại. Vui lòng thử lại.'}
+            </div>
+          )}
         </div>
       )}
 
-      {/* Report section */}
-      {(report || isLoading || jobLoading) && (
+      {/* Report section — shown as soon as the pipeline completes */}
+      {completed && (
         <div className="mt-8 space-y-6">
           {report && <ExecutiveSummary summary={report.summary} />}
 
@@ -98,9 +140,22 @@ export function ReportPage() {
             </div>
           )}
 
-          {(isLoading || jobLoading) && (
+          {isLoading && (
             <div className="py-12 text-center">
               <p className="text-sm text-muted-foreground">Đang tải báo cáo...</p>
+            </div>
+          )}
+
+          {isError && (
+            <div className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              Không tải được báo cáo.{' '}
+              <button
+                type="button"
+                onClick={() => queryClient.invalidateQueries({ queryKey: ['report', id] })}
+                className="font-medium underline"
+              >
+                Thử lại
+              </button>
             </div>
           )}
         </div>

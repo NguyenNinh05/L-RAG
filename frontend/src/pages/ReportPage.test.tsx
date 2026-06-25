@@ -33,6 +33,6 @@ describe('ReportPage', () => {
 
   it('shows loading state initially', () => {
     renderPage()
-    expect(screen.getByText('Đang tải báo cáo...')).toBeInTheDocument()
+    expect(screen.getByText('Đang tải...')).toBeInTheDocument()
   })
 })

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
 import { DocumentUploader } from '@/components/upload/DocumentUploader'
 import { uploadDocument } from '@/api/documents'
 import { createJob } from '@/api/jobs'
+import { getLLMSettings } from '@/api/settings'
 import type { DocumentMeta } from '@/types/document'
 
 export function CreateJobPage() {
@@ -11,6 +13,11 @@ export function CreateJobPage() {
   const [docV1, setDocV1] = useState<DocumentMeta | null>(null)
   const [docV2, setDocV2] = useState<DocumentMeta | null>(null)
   const [uploadError, setUploadError] = useState<string | null>(null)
+
+  const { data: settings } = useQuery({
+    queryKey: ['llm-settings'],
+    queryFn: getLLMSettings,
+  })
 
   const jobMutation = useMutation({
     mutationFn: createJob,
@@ -82,6 +89,16 @@ export function CreateJobPage() {
           <div className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
             {uploadError}
           </div>
+        )}
+
+        {settings?.config && (
+          <p className="text-xs text-muted-foreground">
+            Phiên này sẽ dùng mô hình{' '}
+            <span className="font-medium text-foreground">
+              {settings.config.llm_model_name}
+            </span>{' '}
+            theo <Link to="/settings" className="text-accent hover:underline">cài đặt</Link> của bạn.
+          </p>
         )}
 
         <button
