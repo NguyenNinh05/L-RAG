@@ -34,7 +34,7 @@ provider_presets:
     # lượng reasoning cao hơn. Override qua env DEEPSEEK_MODEL.
     # Lưu ý: alias cũ "deepseek-chat"/"deepseek-reasoner" bị DeepSeek deprecate 2026/07/24.
     model_name: "deepseek-v4-flash"           # override qua env DEEPSEEK_MODEL
-    base_url: "https://api.deepseek.com/anthropic"   # override qua env DEEPSEEK_BASE_URL
+    base_url: "https://api.deepseek.com/v1"   # override qua env DEEPSEEK_BASE_URL
     api_key: ""                                # LUÔN load từ env DEEPSEEK_API_KEY
     # DeepSeek V4 Flash vẫn có khả năng reasoning tốt — dùng temperature thấp
     # cho structured JSON output vì model đã đủ deterministic ở low temp.
