@@ -16,7 +16,8 @@ from backend.models.user import User
 from backend.schemas.auth import (
     RegisterRequest,
     LoginRequest,
-    TokenResponse,
+    AuthResponse,
+    AuthUserResponse,
     RefreshRequest,
     RefreshResponse,
 )
@@ -32,7 +33,17 @@ from backend.services.auth_service import (
 router = APIRouter()
 
 
-@router.post("/register", status_code=201)
+def _to_auth_user(user: User) -> AuthUserResponse:
+    """Map a User row to the brief auth payload (role derived from is_superuser)."""
+    return AuthUserResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        role="admin" if getattr(user, "is_superuser", False) else "user",
+    )
+
+
+@router.post("/register", response_model=AuthResponse, status_code=201)
 async def register(
     body: RegisterRequest,
     db: AsyncSession = Depends(get_db),
@@ -58,10 +69,15 @@ async def register(
     await db.flush()
     await db.refresh(user)
 
-    return {"id": str(user.id), "username": user.username, "email": user.email}
+    user_id = str(user.id)
+    return AuthResponse(
+        access_token=create_access_token(user_id, user.username),
+        refresh_token=create_refresh_token(user_id, user.username),
+        user=_to_auth_user(user),
+    )
 
 
-@router.post("/login", response_model=TokenResponse)
+@router.post("/login", response_model=AuthResponse)
 async def login(
     body: LoginRequest,
     db: AsyncSession = Depends(get_db),
@@ -78,9 +94,10 @@ async def login(
         )
 
     user_id = str(user.id)
-    return TokenResponse(
+    return AuthResponse(
         access_token=create_access_token(user_id, user.username),
         refresh_token=create_refresh_token(user_id, user.username),
+        user=_to_auth_user(user),
     )
 
 

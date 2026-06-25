@@ -14,6 +14,7 @@ from backend.celery_app import celery_app
 from backend.config import get_backend_config
 from backend.models.comparison_job import ComparisonJob, JobStatus, JobPhase
 from backend.models.document import Document
+from backend.services.settings_service import SettingsService
 from backend.services.storage import FileStorageManager
 
 
@@ -53,13 +54,18 @@ class JobService:
 
         cfg = get_backend_config()
 
+        # Merge the user's saved LLM settings (defaults) with any explicit
+        # per-job overrides from the request. Explicit overrides win.
+        saved = await SettingsService().get_overrides(db, user_id)
+        effective = {**saved, **(config_overrides or {})}
+
         job = ComparisonJob(
             user_id=user_id,
             document_v1_id=document_v1_id,
             document_v2_id=document_v2_id,
             status=JobStatus.PENDING.value,
             current_phase=JobPhase.QUEUED.value,
-            config_snapshot=config_overrides or {},
+            config_snapshot=effective,
         )
         db.add(job)
         await db.flush()
@@ -73,7 +79,7 @@ class JobService:
         task = celery_app.send_task(
             "run_pipeline",
             args=[str(job.id), v1_path, v2_path],
-            kwargs={"config_overrides": config_overrides},
+            kwargs={"config_overrides": effective},
         )
 
         job.celery_task_id = str(task.id)

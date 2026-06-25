@@ -17,11 +17,53 @@ from backend.models.comparison_report import ComparisonReportModel
 from backend.models.document import Document
 from backend.schemas.common import PaginatedResponse
 from backend.schemas.job import CreateJobRequest, JobResponse, JobStatusResponse
-from backend.schemas.report import ReportSummaryResponse
+from backend.schemas.report import (
+    ReportSummaryResponse,
+    DiffReportResponse,
+    DiffReportSummaryResponse,
+    AcuItemResponse,
+    EvidenceResponse,
+)
 from backend.services.job_service import JobService
 from backend.services.storage import FileStorageManager
 
 router = APIRouter()
+
+
+# Severity heuristic by change_type — ACUs have no native severity field,
+# so we derive one for the frontend's filter/sort UI.
+_SEVERITY_BY_TYPE = {
+    "addition": "high",
+    "deletion": "high",
+    "structural": "medium",
+    "numerical": "medium",
+    "terminology": "medium",
+    "reorder": "low",
+}
+
+
+def _acu_to_item(acu: dict) -> AcuItemResponse:
+    """Map a stored ACU dict (ACUOutput.to_dict()) to the frontend AcuItem shape."""
+    change_type = str(acu.get("change_type", "structural"))
+    original = str(acu.get("original_value", "") or "")
+    new = str(acu.get("new_value", "") or "")
+    title = (new or original or change_type).strip()
+
+    return AcuItemResponse(
+        id=str(acu.get("acu_id", "")),
+        type=change_type,
+        severity=_SEVERITY_BY_TYPE.get(change_type, "medium"),
+        title=title[:200],
+        description=str(acu.get("reasoning", "") or title),
+        v1_evidence=EvidenceResponse(
+            text=str(acu.get("verbatim_evidence_v1", "") or ""),
+            article=str(acu.get("location_v1", "") or "") or None,
+        ),
+        v2_evidence=EvidenceResponse(
+            text=str(acu.get("verbatim_evidence_v2", "") or ""),
+            article=str(acu.get("location_v2", "") or "") or None,
+        ),
+    )
 
 
 def _svc(storage: FileStorageManager = Depends(get_storage)) -> JobService:
@@ -162,6 +204,71 @@ async def list_job_reports(
         page=page,
         page_size=page_size,
         total_pages=total_pages,
+    )
+
+
+@router.get("/{job_id}/report", response_model=DiffReportResponse)
+async def get_job_report(
+    job_id: uuid.UUID,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+    svc: JobService = Depends(_svc),
+):
+    """
+    Aggregated report for a job — flattens every pair's verified ACUs into a
+    single {summary, acus[]} payload matching the frontend DiffReport shape.
+    """
+    job = await svc.get_by_id(db, job_id, user.id)
+    if not job:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
+    # Labels from the source documents
+    doc_rows = (
+        await db.execute(
+            select(Document).where(
+                Document.id.in_([job.document_v1_id, job.document_v2_id])
+            )
+        )
+    ).scalars().all()
+    doc_names = {str(d.id): d.original_filename for d in doc_rows}
+    v1_label = doc_names.get(str(job.document_v1_id), "V1")
+    v2_label = doc_names.get(str(job.document_v2_id), "V2")
+
+    # All report rows for this job, newest first
+    report_rows = (
+        await db.execute(
+            select(ComparisonReportModel)
+            .where(ComparisonReportModel.job_id == job_id)
+            .order_by(ComparisonReportModel.created_at.desc())
+        )
+    ).scalars().all()
+
+    acus: list[AcuItemResponse] = []
+    by_type: dict[str, int] = {}
+    by_severity: dict[str, int] = {}
+    generated_at = job.completed_at or job.created_at
+
+    for row in report_rows:
+        for raw_acu in row.verified_acus or []:
+            if not isinstance(raw_acu, dict):
+                continue
+            item = _acu_to_item(raw_acu)
+            acus.append(item)
+            by_type[item.type] = by_type.get(item.type, 0) + 1
+            by_severity[item.severity] = by_severity.get(item.severity, 0) + 1
+        if row.created_at and (generated_at is None or row.created_at > generated_at):
+            generated_at = row.created_at
+
+    return DiffReportResponse(
+        summary=DiffReportSummaryResponse(
+            total_acus=len(acus),
+            by_type=by_type,
+            by_severity=by_severity,
+            v1_label=v1_label,
+            v2_label=v2_label,
+            generated_at=(generated_at.isoformat() if generated_at else ""),
+        ),
+        acus=acus,
     )
 
 

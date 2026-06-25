@@ -24,7 +24,15 @@ from sqlalchemy import engine_from_config, pool
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
 from backend.models.base import Base
-from backend.models import User, Document, ComparisonJob, ComparisonReportModel  # noqa: F401
+from backend.models import (  # noqa: F401
+    User,
+    Document,
+    ComparisonJob,
+    ComparisonReportModel,
+    UserSettings,
+    EvalRun,
+    EvalPair,
+)
 
 config = context.config
 

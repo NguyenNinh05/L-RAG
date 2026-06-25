@@ -34,20 +34,27 @@ if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
 
-def _publish_progress(job_id: str, pct: int, phase: str, message: str) -> None:
+def _publish_progress(
+    job_id: str,
+    pct: int,
+    phase: str,
+    message: str,
+    event: str = "progress",
+    error: str | None = None,
+) -> None:
     cfg = get_backend_config()
     try:
         r = sync_redis.from_url(cfg.redis_url)
-        r.publish(
-            f"job:{job_id}:progress",
-            json.dumps({
-                "event": "progress",
-                "job_id": job_id,
-                "progress_pct": pct,
-                "current_phase": phase,
-                "message": message,
-            }),
-        )
+        payload: dict = {
+            "event": event,
+            "job_id": job_id,
+            "progress_pct": pct,
+            "current_phase": phase,
+            "message": message,
+        }
+        if error is not None:
+            payload["error"] = error
+        r.publish(f"job:{job_id}:progress", json.dumps(payload))
         r.close()
     except Exception:
         logger.warning("[Job %s] Failed to publish progress", job_id)
@@ -66,6 +73,18 @@ def _update_job_db(job_id: str, **kwargs) -> None:
         session.commit()
 
 
+def _get_job_current_phase(job_id: str) -> str | None:
+    """Read the last persisted current_phase for a job (used on failure)."""
+    from sqlalchemy import select
+
+    engine = _sync_engine()
+    with Session(engine) as session:
+        row = session.execute(
+            select(ComparisonJob.current_phase).where(ComparisonJob.id == job_id)
+        ).scalar_one_or_none()
+        return row
+
+
 class PipelineTask(Task):
     autoretry_for = (GPUBusyError, ConnectionError, TimeoutError)
     max_retries = 3
@@ -82,9 +101,14 @@ class PipelineTask(Task):
             error_message=str(exc),
             completed_at=datetime.now(timezone.utc),
         )
+        # Surface the phase the job actually failed in (not "done") so the
+        # frontend stepper marks the correct step as failed.
+        failed_phase = _get_job_current_phase(job_id) or JobPhase.DONE.value
         _publish_progress(
-            job_id, 0, JobPhase.DONE.value,
+            job_id, 0, failed_phase,
             f"Thất bại: {exc}",
+            event="error",
+            error=str(exc),
         )
         try:
             self._gpu_lock.release(str(job_id))
@@ -133,6 +157,21 @@ def run_pipeline(
         _update_job_db(job_id_str, current_phase=JobPhase.INGESTION.value, progress_pct=5)
 
         from src.pipeline import LegalDiffPipeline, PipelineRunConfig
+        from src.config import get_config, get_llm_config
+
+        pipe_cfg = get_config()
+
+        # Resolve the LLM provider from the user's saved settings/overrides so
+        # picking a hosted provider (e.g. deepseek) loads the right base config.
+        # Fall back to "local" if the chosen provider can't be resolved (e.g. a
+        # hosted API key missing from the env) — the override loop below still
+        # layers the stored base_url/api_key/model on top.
+        overrides = config_overrides or {}
+        provider = overrides.get("llm_provider", "local")
+        try:
+            llm_cfg = get_llm_config(provider=provider)
+        except ValueError:
+            llm_cfg = get_llm_config(provider="local")
 
         def progress_cb(pct: int, phase: str, message: str) -> None:
             _publish_progress(job_id_str, pct, phase, message)
@@ -142,6 +181,21 @@ def run_pipeline(
             file_v1=file_v1_path,
             file_v2=file_v2_path,
             progress_callback=progress_cb,
+            # Phase 2 — Qdrant
+            qdrant_path=pipe_cfg["alignment"]["qdrant"]["path"],
+            match_threshold=pipe_cfg["alignment"]["match_threshold"],
+            # Phase 3 — LLM
+            llm_base_url=llm_cfg["base_url"],
+            llm_model_name=llm_cfg["model_name"],
+            llm_api_key=llm_cfg.get("api_key", "not-needed"),
+            max_concurrency=pipe_cfg["comparison"]["max_concurrency"],
+            max_tokens_acu=llm_cfg["max_tokens_acu"],
+            max_tokens_summary=llm_cfg["max_tokens_summary"],
+            llm_timeout_seconds=llm_cfg.get("timeout_seconds", 120.0),
+            llm_max_retries=llm_cfg.get("max_retries", 3),
+            llm_temperature_acu=llm_cfg.get("temperature_acu", 0.05),
+            llm_temperature_summary=llm_cfg.get("temperature_summary", 0.3),
+            llm_provider=llm_cfg.get("provider", "local"),
         )
 
         # Apply config overrides
@@ -173,7 +227,7 @@ def run_pipeline(
             completed_at=datetime.now(timezone.utc),
         )
         _publish_progress(
-            job_id_str, 100, JobPhase.DONE.value, "Hoàn thành!"
+            job_id_str, 100, JobPhase.DONE.value, "Hoàn thành!", event="completed"
         )
 
         return {

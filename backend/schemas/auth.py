@@ -4,7 +4,35 @@ backend/schemas/auth.py — Authentication request/response schemas.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+import uuid
+
+from pydantic import BaseModel, ConfigDict, Field
+
+
+class AuthUserResponse(BaseModel):
+    """Brief user payload embedded in auth responses (matches frontend `User`)."""
+
+    id: uuid.UUID
+    username: str
+    email: str
+    role: str = "user"
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AuthResponse(BaseModel):
+    """
+    Full auth response returned by /login and /register.
+
+    Includes the access token AND the user object — the frontend reads both
+    (`data.access_token` and `data.user`) to establish a session.
+    """
+
+    access_token: str
+    refresh_token: str | None = None
+    token_type: str = "bearer"
+    expires_in: int = 3600
+    user: AuthUserResponse
 
 
 class RegisterRequest(BaseModel):
