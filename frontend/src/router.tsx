@@ -14,8 +14,17 @@ const ReportPage = lazy(() => import('@/pages/ReportPage').then((m) => ({ defaul
 const DashboardPage = lazy(() =>
   import('@/pages/DashboardPage').then((m) => ({ default: m.DashboardPage })),
 )
-const LibraryPage = lazy(() =>
-  import('@/pages/LibraryPage').then((m) => ({ default: m.LibraryPage })),
+const SettingsPage = lazy(() =>
+  import('@/pages/SettingsPage').then((m) => ({ default: m.SettingsPage })),
+)
+const EvalDashboardPage = lazy(() =>
+  import('@/pages/EvalDashboardPage').then((m) => ({ default: m.EvalDashboardPage })),
+)
+const EvalRunDetailPage = lazy(() =>
+  import('@/pages/EvalRunDetailPage').then((m) => ({ default: m.EvalRunDetailPage })),
+)
+const EvalPairDetailPage = lazy(() =>
+  import('@/pages/EvalPairDetailPage').then((m) => ({ default: m.EvalPairDetailPage })),
 )
 
 function Loading() {
@@ -76,10 +85,34 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/library',
+        path: '/settings',
         element: (
           <Suspense fallback={<Loading />}>
-            <LibraryPage />
+            <SettingsPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/eval',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <EvalDashboardPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/eval/:slug',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <EvalRunDetailPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/eval/:slug/:pairName',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <EvalPairDetailPage />
           </Suspense>
         ),
       },

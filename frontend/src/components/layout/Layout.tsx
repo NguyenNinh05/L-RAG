@@ -41,8 +41,11 @@ export function Layout() {
                 <NavLink to="/compare" className={linkClass}>
                   {t('nav.compare')}
                 </NavLink>
-                <NavLink to="/library" className={linkClass}>
-                  {t('nav.library')}
+                <NavLink to="/settings" className={linkClass}>
+                  {t('nav.settings')}
+                </NavLink>
+                <NavLink to="/eval" className={linkClass}>
+                  {t('nav.evaluations')}
                 </NavLink>
               </nav>
             )}
