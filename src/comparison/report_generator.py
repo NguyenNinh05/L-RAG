@@ -1390,6 +1390,18 @@ class GenerativeComparisonPipeline:
         Core: build prompt → gọi LLM → parse & validate ACU.
         Trả về list[ACUOutput] (rỗng nếu LLM lỗi). Dùng bởi cả windowing & two-pass.
         """
+        # Absolute string matching filter — skip LLM call if both versions are
+        # identical after whitespace normalization. Saves cost & speeds up processing.
+        norm_v1 = re.sub(r"\s+", " ", (raw_text_v1 or "")).strip()
+        norm_v2 = re.sub(r"\s+", " ", (raw_text_v2 or "")).strip()
+
+        if norm_v1 == norm_v2:
+            logger.info(
+                "Skipping LLM call for pair_id=%s because v1 and v2 texts are identical after normalization.",
+                pair_id,
+            )
+            return []
+
         user_prompt = build_acu_user_prompt(
             raw_text_v1=raw_text_v1,
             raw_text_v2=raw_text_v2,
