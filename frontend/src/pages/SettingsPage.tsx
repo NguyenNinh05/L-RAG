@@ -210,25 +210,15 @@ export function SettingsPage() {
           )}
         </div>
 
-        <div>
-          <label htmlFor="llm_base_url" className={labelClass}>
-            {t('settings.baseUrl')}
-          </label>
-          <input id="llm_base_url" className={inputClass} {...register('llm_base_url')} />
-        </div>
-
-        <div>
-          <label htmlFor="llm_api_key" className={labelClass}>
-            {t('settings.apiKey')}
-          </label>
-          <input
-            id="llm_api_key"
-            type="password"
-            className={inputClass}
-            {...register('llm_api_key')}
-          />
-          <p className="mt-1 text-xs text-muted-foreground">{t('settings.apiKeyHint')}</p>
-        </div>
+        {/* Base URL & API Key are intentionally hidden from the UI.
+            They only matter for hosted providers (e.g. DeepSeek); the local
+            Ollama setup needs neither ("not-needed"). Kept as hidden registered
+            inputs so the form still submits their stored values — otherwise
+            saving other settings would silently reset them to schema defaults
+            (the PUT /settings/llm endpoint replaces the whole config). The
+            provider-switch logic above keeps base_url in sync under the hood. */}
+        <input type="hidden" {...register('llm_base_url')} />
+        <input type="hidden" {...register('llm_api_key')} />
       </div>
 
       {/* Hyperparameter section */}

@@ -1,0 +1,3968 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L-RAG · Pipeline RAG ba pha cho so sánh văn bản pháp lý</title>
+
+    <!-- ===========================================================
+     PROFESSIONAL TYPE STACK — IBM Plex superfamily
+     Plex Serif (headings) · Plex Sans (body) · Plex Mono (chrome/code)
+     =========================================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ===========================================================
+   THEME TOKENS — Grove palette, IBM Plex type
+   =========================================================== */
+        :root {
+            --bg: #192b1b;
+            --bg-alt: #1e3221;
+            --bg-light: #e8e4d6;
+            --bg-light-alt: #dedad0;
+            --fg: #d8d3c4;
+            --fg2: rgba(216, 211, 196, .64);
+            --fg3: rgba(216, 211, 196, .34);
+            --fg-light: #192b1b;
+            --fg-light2: rgba(25, 43, 27, .62);
+            --fg-light3: rgba(25, 43, 27, .34);
+            --accent: #c8524a;
+            --accent-2: #d98a5a;
+            --border: rgba(216, 211, 196, .15);
+            --border-light: rgba(25, 43, 27, .16);
+            --wm: rgba(216, 211, 196, .05);
+            --wm-light: rgba(25, 43, 27, .05);
+            --serif: 'IBM Plex Serif', Georgia, serif;
+            --body: 'IBM Plex Sans', system-ui, sans-serif;
+            --mono: 'IBM Plex Mono', monospace;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --stage-bg: #0f1a10;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===========================================================
+   FIXED 16:9 STAGE — viewport-base.css (mandatory, verbatim)
+   =========================================================== */
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: var(--stage-bg, #000);
+        }
+
+        .deck-viewport {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            background: var(--stage-bg, #000);
+        }
+
+        .deck-stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            transform-origin: 0 0;
+            background: var(--slide-bg, #fff);
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            display: block;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            background: var(--slide-bg, #fff);
+        }
+
+        .slide.active,
+        .slide.visible {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 1;
+        }
+
+        img,
+        video,
+        canvas,
+        svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .deck-controls {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        @media print {
+
+            html,
+            body {
+                width: 1920px;
+                height: auto;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck-viewport {
+                position: static;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck-stage {
+                position: static;
+                width: auto;
+                height: auto;
+                transform: none !important;
+                background: none;
+            }
+
+            .slide {
+                position: relative;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                width: 1920px;
+                height: 1080px;
+                break-after: page;
+                page-break-after: always;
+            }
+
+            .slide:last-child {
+                break-after: auto;
+                page-break-after: auto;
+            }
+
+            .deck-controls {
+                display: none !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+        }
+
+        /* ===========================================================
+   SLIDE BASE
+   =========================================================== */
+        .slide {
+            --slide-bg: var(--bg);
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--body);
+            font-weight: 400;
+            padding: 50px 92px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.light {
+            --slide-bg: var(--bg-light);
+            background: var(--bg-light);
+            color: var(--fg-light);
+        }
+
+        .chrome,
+        .foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13.5px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--fg2);
+        }
+
+        .slide.light .chrome,
+        .slide.light .foot {
+            color: var(--fg-light2);
+        }
+
+        .chrome {
+            padding-bottom: 13px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .foot {
+            margin-top: auto;
+            padding-top: 13px;
+            border-top: 1px solid var(--border);
+        }
+
+        .slide.light .chrome {
+            border-color: var(--border-light);
+        }
+
+        .slide.light .foot {
+            border-color: var(--border-light);
+        }
+
+        .chrome .a,
+        .foot .a {
+            color: var(--accent);
+        }
+
+        .content {
+            flex: 1;
+            padding-top: 26px;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* compositional beats */
+        .kicker {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 14px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .rule {
+            width: 38px;
+            height: 2px;
+            background: var(--accent);
+            margin: 15px 0 20px;
+        }
+
+        .rule-full {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .slide.light .rule-full {
+            background: var(--border-light);
+        }
+
+        h1.title {
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 84px;
+            line-height: 1.07;
+            letter-spacing: -.015em;
+        }
+
+        h2.title {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 50px;
+            line-height: 1.1;
+            letter-spacing: -.01em;
+        }
+
+        h3.sub {
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 1.25;
+        }
+
+        .title em,
+        h3.sub em {
+            font-style: italic;
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        .lead {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 24px;
+            line-height: 1.5;
+            color: var(--fg2);
+            max-width: 1240px;
+        }
+
+        .slide.light .lead {
+            color: var(--fg-light2);
+        }
+
+        .body {
+            font-family: var(--body);
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 1.55;
+            color: var(--fg);
+        }
+
+        .slide.light .body {
+            color: var(--fg-light);
+        }
+
+        .cap {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13.5px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--fg2);
+        }
+
+        .slide.light .cap {
+            color: var(--fg-light2);
+        }
+
+        .accent {
+            color: var(--accent);
+        }
+
+        .en {
+            font-style: italic;
+            color: var(--fg2);
+        }
+
+        /* em-dash bullets (hanging indent — robust) */
+        .bul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bul li {
+            position: relative;
+            padding-left: 32px;
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 21px;
+            line-height: 1.48;
+            color: var(--fg);
+        }
+
+        .slide.light .bul li {
+            color: var(--fg-light);
+        }
+
+        .bul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-family: var(--mono);
+            color: var(--accent);
+        }
+
+        .bul li b {
+            font-weight: 600;
+            color: var(--fg);
+        }
+
+        .slide.light .bul li b {
+            color: var(--fg-light);
+        }
+
+        .bul li .m {
+            color: var(--fg2);
+        }
+
+        .slide.light .bul li .m {
+            color: var(--fg-light2);
+        }
+
+        .grove-num {
+            position: absolute;
+            right: 92px;
+            bottom: -0.16em;
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 340px;
+            line-height: 1;
+            letter-spacing: -.03em;
+            color: var(--wm);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .slide.light .grove-num {
+            color: var(--wm-light);
+        }
+
+        /* entrance animation */
+        [data-anim] {
+            opacity: 0;
+            transition: opacity .7s var(--ease), transform .7s var(--ease), clip-path .8s var(--ease);
+        }
+
+        [data-anim="fade-up"] {
+            transform: translateY(26px);
+        }
+
+        [data-anim="scale-in"] {
+            transform: scale(.96);
+        }
+
+        .slide.visible [data-anim] {
+            opacity: 1;
+            transform: none;
+            clip-path: inset(0 0 0 0);
+        }
+
+        [data-delay="1"] {
+            transition-delay: .07s
+        }
+
+        [data-delay="2"] {
+            transition-delay: .16s
+        }
+
+        [data-delay="3"] {
+            transition-delay: .27s
+        }
+
+        [data-delay="4"] {
+            transition-delay: .4s
+        }
+
+        [data-delay="5"] {
+            transition-delay: .54s
+        }
+
+        [data-delay="6"] {
+            transition-delay: .7s
+        }
+
+        [data-delay="7"] {
+            transition-delay: .86s
+        }
+
+        /* cover / chapter / closing */
+        .center {
+            justify-content: center;
+        }
+
+        .cover-meta {
+            position: absolute;
+            right: 92px;
+            top: 50px;
+            text-align: right;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13.5px;
+            letter-spacing: .14em;
+            line-height: 2.1;
+            color: var(--fg2);
+            text-transform: uppercase;
+        }
+
+        .cover-meta b {
+            color: var(--fg);
+            font-weight: 400;
+        }
+
+        .display {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 172px;
+            line-height: .94;
+            letter-spacing: -.02em;
+        }
+
+        .chapter-num {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 15px;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        /* flat table */
+        table.t {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--body);
+            font-weight: 400;
+            font-size: 19px;
+        }
+
+        table.t thead th {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-align: left;
+            padding: 0 16px 11px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .slide.light table.t thead th {
+            border-color: var(--border-light);
+        }
+
+        table.t tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.4;
+            color: var(--fg);
+        }
+
+        .slide.light table.t tbody td {
+            border-color: var(--border-light);
+            color: var(--fg-light);
+        }
+
+        table.t tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.t .mono,
+        table.t code {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 16px;
+            color: var(--accent);
+        }
+
+        table.t b {
+            font-weight: 600;
+        }
+
+        table.t.sm {
+            font-size: 17px;
+        }
+
+        table.t.sm tbody td {
+            padding: 9px 14px;
+        }
+
+        /* code block */
+        .code {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 17px;
+            line-height: 1.62;
+            background: var(--bg-alt);
+            color: var(--fg);
+            border: 1px solid var(--border);
+            padding: 22px 26px;
+            position: relative;
+            white-space: pre;
+            overflow: hidden;
+        }
+
+        .slide.light .code {
+            background: var(--bg-light-alt);
+            color: var(--fg-light);
+            border-color: var(--border-light);
+        }
+
+        .code .cm {
+            color: var(--fg3)
+        }
+
+        .slide.light .code .cm {
+            color: var(--fg-light3)
+        }
+
+        .code .kw,
+        .code .nm,
+        .code .st {
+            color: var(--accent)
+        }
+
+        .code .lbl {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 11.5px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--fg2);
+            padding: 5px 12px;
+            border-left: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* layout scaffolds */
+        .cols {
+            display: grid;
+            gap: 44px;
+            min-height: 0;
+        }
+
+        .c2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .c5545 {
+            grid-template-columns: 1.1fr .9fr;
+        }
+
+        .c6040 {
+            grid-template-columns: 1.42fr 1fr;
+        }
+
+        .c4060 {
+            grid-template-columns: 1fr 1.45fr;
+        }
+
+        .colhd {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .note {
+            border-left: 2px solid var(--accent);
+            padding: 3px 0 3px 20px;
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 20px;
+            line-height: 1.5;
+            color: var(--fg);
+        }
+
+        .slide.light .note {
+            color: var(--fg-light);
+        }
+
+        .note b {
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        .panel {
+            border: 1px solid var(--border);
+            padding: 22px 24px;
+        }
+
+        .slide.light .panel {
+            border-color: var(--border-light);
+        }
+
+        .panel.acc {
+            border-color: var(--accent);
+        }
+
+        /* ===========================================================
+   WORKFLOW · PIPELINE (slide 3) — static arrows
+   =========================================================== */
+        .flow3 {
+            display: grid;
+            grid-template-columns: 1fr 84px 1fr 84px 1fr;
+            align-items: stretch;
+        }
+
+        .stage .sno {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13.5px;
+            letter-spacing: .18em;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .stage h4 {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 36px;
+            line-height: 1.05;
+            margin: 9px 0 4px;
+        }
+
+        .stage .scap {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 17px;
+            color: var(--fg2);
+            margin-bottom: 18px;
+        }
+
+        .stage .sstep {
+            position: relative;
+            padding-left: 22px;
+            font-size: 17px;
+            line-height: 1.4;
+            color: var(--fg);
+            margin-bottom: 11px;
+        }
+
+        .stage .sstep::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            font-family: var(--mono);
+            color: var(--accent);
+        }
+
+        .conn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 46px;
+        }
+
+        .conn .arrow {
+            font-family: var(--serif);
+            font-size: 40px;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .io3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .io3 .k {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .io3 .v {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 19px;
+            line-height: 1.45;
+            color: var(--fg);
+            margin-top: 8px;
+        }
+
+        .io3 .v code {
+            font-family: var(--mono);
+            font-size: 16px;
+            color: var(--fg);
+            border-bottom: 1px solid var(--accent);
+        }
+
+        /* ===========================================================
+   WORKFLOW · ALIGNMENT SPINE (slide 12)
+   =========================================================== */
+        .spine {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            position: relative;
+        }
+
+        .spine::before {
+            content: "";
+            position: absolute;
+            top: 11px;
+            left: 7%;
+            right: 7%;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .snode {
+            padding-right: 22px;
+        }
+
+        .snode .tick {
+            width: 22px;
+            height: 22px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            background: var(--bg);
+            position: relative;
+        }
+
+        .snode .tick::after {
+            content: "";
+            position: absolute;
+            inset: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .snode .so {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .15em;
+            color: var(--accent);
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+
+        .snode h4 {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 27px;
+            line-height: 1.1;
+            margin: 7px 0 7px;
+        }
+
+        .snode p {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 16.5px;
+            line-height: 1.42;
+            color: var(--fg2);
+        }
+
+        .snode.out .tick {
+            background: var(--accent);
+        }
+
+        .snode.out .tick::after {
+            background: var(--bg);
+        }
+
+        /* ===========================================================
+   FUNNEL (slide 23)
+   =========================================================== */
+        .funnel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tier {
+            display: grid;
+            grid-template-columns: 84px 1fr 240px;
+            align-items: center;
+            gap: 26px;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            padding: 20px 28px;
+        }
+
+        .tier:last-child {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tier .tn {
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 50px;
+            line-height: 1;
+            color: var(--accent);
+        }
+
+        .tier .tname {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 25px;
+            line-height: 1.15;
+        }
+
+        .tier .tdesc {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 16.5px;
+            color: var(--fg2);
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .tier .tmeta {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--fg2);
+            text-align: right;
+        }
+
+        .tier .tmeta .a {
+            color: var(--accent);
+        }
+
+        .tier.w2 {
+            margin-left: 60px;
+        }
+
+        .tier.w3 {
+            margin-left: 120px;
+        }
+
+        .tier.w4 {
+            margin-left: 180px;
+        }
+
+        /* ===========================================================
+   MATCHING VISUALIZATION (slide 20) — exact coords, redone
+   =========================================================== */
+        .matchviz {
+            position: relative;
+            height: 470px;
+        }
+
+        .matchviz .vh {
+            position: absolute;
+            top: 0;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .mcard {
+            position: absolute;
+            width: 360px;
+            height: 92px;
+            border: 1px solid var(--border);
+            padding: 14px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--bg);
+        }
+
+        .mcard.act {
+            border-color: var(--accent);
+        }
+
+        .mcard.del {
+            border-style: dashed;
+            border-color: var(--fg3);
+        }
+
+        .mcard .id {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .1em;
+            color: var(--fg2);
+        }
+
+        .mcard .tx {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 21px;
+            margin-top: 3px;
+            line-height: 1.15;
+        }
+
+        .match-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .mline {
+            fill: none;
+            stroke-width: 1.6;
+            stroke-dasharray: var(--len);
+            stroke-dashoffset: var(--len);
+            transition: stroke-dashoffset 1s var(--ease) .3s;
+        }
+
+        .slide.visible .mline {
+            stroke-dashoffset: 0;
+        }
+
+        .mline.dash {
+            stroke-dasharray: 8 6;
+            stroke-dashoffset: 0;
+            opacity: 0;
+            transition: opacity .6s ease .7s;
+        }
+
+        .slide.visible .mline.dash {
+            opacity: 1;
+        }
+
+        .mtag {
+            position: absolute;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 2px;
+        }
+
+        .mtag.mut {
+            color: var(--fg2);
+            border-color: var(--fg3);
+        }
+
+        /* ===========================================================
+   HEATMAP (slide 17) — similarity matrix S, data-driven
+   =========================================================== */
+        .heat {
+            display: grid;
+            grid-template-columns: 64px repeat(3, 1fr);
+            gap: 7px;
+        }
+
+        .heat .corner {}
+
+        .heat .chh {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--fg2);
+            text-align: center;
+            align-self: end;
+            padding-bottom: 6px;
+        }
+
+        .heat .rhh {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 14px;
+            color: var(--fg2);
+            display: flex;
+            align-items: center;
+        }
+
+        .heat .cell {
+            height: 88px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono);
+            font-weight: 500;
+            font-size: 24px;
+            color: var(--fg);
+            position: relative;
+        }
+
+        .heat .cell.keep {
+            border-color: var(--accent);
+            border-width: 1.5px;
+        }
+
+        .heat .cell .kf {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 11px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-top: 3px;
+        }
+
+        /* COST MATRIX (slide 19) */
+        .cmx {
+            display: grid;
+            grid-template-columns: 64px repeat(3, 1fr);
+            gap: 7px;
+        }
+
+        .cmx .chh {
+            font-family: var(--mono);
+            font-size: 14px;
+            color: var(--fg2);
+            text-align: center;
+            align-self: end;
+            padding-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .cmx .rhh {
+            font-family: var(--mono);
+            font-size: 14px;
+            color: var(--fg2);
+            display: flex;
+            align-items: center;
+        }
+
+        .cmx .cell {
+            height: 74px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 21px;
+            color: var(--fg2);
+        }
+
+        .cmx .cell.sel {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+            font-weight: 500;
+        }
+
+        .cmx .cell.drop {
+            color: var(--fg3);
+            text-decoration: line-through;
+            text-decoration-color: var(--fg3);
+        }
+
+        /* PHASE-1 DATAFLOW (slide 10) */
+        .dflow {
+            display: grid;
+            grid-template-columns: 1fr 56px 1fr 56px 1.15fr;
+            align-items: stretch;
+        }
+
+        .dpanel {
+            border: 1px solid var(--border);
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .dpanel .dh {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--accent);
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dpanel .dbody {
+            padding: 16px 18px;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: var(--fg);
+            white-space: pre-wrap;
+            overflow: hidden;
+        }
+
+        .dpanel .dbody .cm {
+            color: var(--fg3)
+        }
+
+        .dpanel .dbody .nm {
+            color: var(--accent)
+        }
+
+        .darrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--serif);
+            font-size: 30px;
+            color: var(--accent);
+        }
+
+        .chunkrow {
+            border-bottom: 1px solid var(--border);
+            padding: 8px 0;
+        }
+
+        .chunkrow:last-child {
+            border-bottom: none;
+        }
+
+        .chunkrow .bc {
+            font-family: var(--mono);
+            font-size: 12.5px;
+            color: var(--accent);
+        }
+
+        .chunkrow .ct {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 15px;
+            color: var(--fg);
+            margin-top: 3px;
+        }
+
+        /* BGE example (slide 14) */
+        .bge {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .bcard {
+            border: 1px solid var(--border);
+            padding: 20px 22px;
+        }
+
+        .bcard .bt {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .bcard .bv {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 22px;
+            margin-top: 8px;
+        }
+
+        .bcard .bm {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 16px;
+            color: var(--fg2);
+            margin-top: 8px;
+            line-height: 1.45;
+        }
+
+        .simbar {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .simbar .lab {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--fg2);
+            width: 108px;
+        }
+
+        .simbar .tr {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-alt);
+            position: relative;
+        }
+
+        .simbar .tr .bf {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 6px;
+            background: var(--accent);
+            width: 0;
+            transition: width 1s var(--ease);
+        }
+
+        .simbar .vv {
+            font-family: var(--mono);
+            font-size: 15px;
+            color: var(--accent);
+            width: 48px;
+            text-align: right;
+        }
+
+        /* equation + weights (slide 15) */
+        .equation {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 25px;
+            line-height: 1.8;
+            color: var(--fg);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 26px 8px;
+            text-align: center;
+        }
+
+        .equation .w {
+            color: var(--accent);
+        }
+
+        .equation sub {
+            font-size: .62em;
+        }
+
+        .equation .small {
+            font-size: 19px;
+            color: var(--fg2);
+        }
+
+        .weights {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .wrow {
+            display: grid;
+            grid-template-columns: 190px 1fr 60px;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .wrow .wn {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 19px;
+        }
+
+        .wrow .wn sub {
+            font-size: .7em;
+        }
+
+        .wrow .wt {
+            height: 1px;
+            background: var(--border);
+            position: relative;
+        }
+
+        .wrow .wt .wb {
+            position: absolute;
+            left: 0;
+            top: -3px;
+            height: 7px;
+            width: 0;
+            background: var(--accent);
+            transition: width 1.1s var(--ease);
+        }
+
+        .wrow .wv {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 19px;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        /* grove stats (slide 29) */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 36px;
+        }
+
+        .gstat {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 18px;
+        }
+
+        .gstat .gv {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 74px;
+            line-height: 1;
+            color: var(--accent);
+            letter-spacing: -.02em;
+        }
+
+        .gstat .gl {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--fg2);
+            margin-top: 13px;
+            line-height: 1.45;
+        }
+
+        /* ACU example cards (light slides) */
+        .acu {
+            border-top: 1px solid var(--border);
+            padding: 14px 0;
+        }
+
+        .acu:first-of-type {
+            border-top: none;
+        }
+
+        .acu .ah {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+        }
+
+        .acu .ct {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .acu .conf {
+            margin-left: auto;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .08em;
+            color: var(--fg2);
+            text-transform: uppercase;
+        }
+
+        .acu .ch {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 22px;
+            margin-top: 7px;
+            line-height: 1.25;
+        }
+
+        .acu .ch .o {
+            color: var(--fg2);
+            text-decoration: line-through;
+            text-decoration-thickness: 1px;
+        }
+
+        .acu .ch .n {
+            color: var(--accent);
+        }
+
+        .acu .ev {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 13.5px;
+            color: var(--fg2);
+            margin-top: 7px;
+            border-left: 1px solid var(--border);
+            padding-left: 13px;
+            line-height: 1.5;
+        }
+
+        .passrow {
+            display: flex;
+            gap: 28px;
+        }
+
+        .passrow .p {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 14px;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .breadcrumb {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 18px;
+            border: 1px solid var(--border);
+            padding: 15px 18px;
+            line-height: 1.7;
+            color: var(--fg);
+        }
+
+        .breadcrumb .sep {
+            color: var(--accent);
+        }
+
+        /* legal DOM tree */
+        .tree {
+            font-family: var(--body);
+        }
+
+        .tree ul {
+            list-style: none;
+            margin-left: 36px;
+            position: relative;
+        }
+
+        .tree li {
+            position: relative;
+            padding: 6px 0;
+        }
+
+        .tree ul li::before {
+            content: "";
+            position: absolute;
+            top: -6px;
+            left: -22px;
+            width: 1px;
+            height: 100%;
+            background: var(--border);
+        }
+
+        .tree ul li:last-child::before {
+            height: 30px;
+        }
+
+        .tree ul li::after {
+            content: "";
+            position: absolute;
+            top: 22px;
+            left: -22px;
+            width: 20px;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .tnode {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 13px;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+        }
+
+        .tnode .lv {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 11.5px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .tnode .nm {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        .tnode .fl {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            color: var(--fg2);
+        }
+
+        .troot {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 13px;
+            border: 1px solid var(--accent);
+            padding: 10px 18px;
+        }
+
+        .troot .nm {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 23px;
+        }
+
+        .troot .lv {
+            font-family: var(--mono);
+            font-size: 11.5px;
+            letter-spacing: .1em;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .chips {
+            display: flex;
+            gap: 14px;
+        }
+
+        .chip {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-top: 2px solid var(--accent);
+            padding: 13px 16px;
+        }
+
+        .chip .ct {
+            font-family: var(--mono);
+            font-weight: 500;
+            font-size: 13px;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .chip .cd {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 15px;
+            color: var(--fg2);
+            margin-top: 6px;
+            line-height: 1.35;
+        }
+
+        /* ===========================================================
+   ARCHITECTURE DIAGRAM (end-to-end, mermaid-style)
+   =========================================================== */
+        .arch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .archchip {
+            border: 1px solid var(--accent);
+            padding: 9px 22px;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 14px;
+            letter-spacing: .06em;
+            color: var(--fg);
+            text-transform: uppercase;
+        }
+
+        .archchip b {
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        .archrow {
+            display: grid;
+            grid-template-columns: 1fr 64px 1fr 64px 1fr;
+            align-items: start;
+            width: 100%;
+        }
+
+        .aphase {
+            border: 1px solid var(--border);
+        }
+
+        .aphase .ah {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+            color: var(--accent);
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .aphase .asteps {
+            padding: 14px 16px;
+        }
+
+        .astep {
+            border: 1px solid var(--border);
+            padding: 9px 12px;
+            font-family: var(--body);
+            font-weight: 400;
+            font-size: 14.5px;
+            line-height: 1.28;
+            text-align: center;
+            color: var(--fg);
+        }
+
+        .astep.out {
+            border-color: var(--accent);
+        }
+
+        .adown {
+            text-align: center;
+            color: var(--accent);
+            font-family: var(--serif);
+            font-size: 17px;
+            line-height: 1.45;
+        }
+
+        .aconn {
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .aconn .ar {
+            font-family: var(--serif);
+            font-size: 34px;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .aconn .al {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .05em;
+            color: var(--fg2);
+            text-transform: uppercase;
+            margin-top: 8px;
+            text-align: center;
+            width: 90px;
+            line-height: 1.4;
+        }
+
+        /* ===========================================================
+   FLOWCHART (Phase 2 / 3 detailed) + UML CLASS DIAGRAM (Phase 1)
+   =========================================================== */
+        .fc {
+            position: relative;
+        }
+
+        .fcsvg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .fcbox {
+            position: absolute;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            padding: 12px 16px;
+        }
+
+        .fcbox.acc {
+            border-color: var(--accent);
+        }
+
+        .fcbox.drop {
+            border-style: dashed;
+            border-color: var(--fg3);
+        }
+
+        .fcbox .bx-t {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 1.15;
+        }
+
+        .fcbox.drop .bx-t {
+            color: var(--fg2);
+        }
+
+        .fcbox .bx-s {
+            font-family: var(--body);
+            font-weight: 300;
+            font-size: 13.5px;
+            color: var(--fg2);
+            margin-top: 4px;
+            line-height: 1.32;
+        }
+
+        .fcbox .bx-s .mono {
+            font-family: var(--mono);
+        }
+
+        .fcdia {
+            position: absolute;
+            border: 1px solid var(--accent);
+            background: var(--bg);
+            transform: rotate(45deg);
+        }
+
+        .fcdia .di {
+            position: absolute;
+            inset: 0;
+            transform: rotate(-45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--accent);
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .fclbl {
+            position: absolute;
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12px;
+            letter-spacing: .05em;
+            color: var(--fg2);
+            background: var(--bg);
+            padding: 1px 7px;
+            text-transform: uppercase;
+        }
+
+        .fclbl.acc {
+            color: var(--accent);
+        }
+
+        /* UML class box */
+        .uml {
+            position: absolute;
+            border: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .uml.acc {
+            border-color: var(--accent);
+        }
+
+        .uml .un {
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 18px;
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--fg);
+        }
+
+        .uml.acc .un {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .uml .uf {
+            font-family: var(--mono);
+            font-weight: 400;
+            font-size: 12.5px;
+            color: var(--fg2);
+            padding: 3px 14px;
+            line-height: 1.5;
+        }
+
+        .uml .uf:last-child {
+            padding-bottom: 9px;
+        }
+
+        /* deck chrome */
+        .nav-dots {
+            position: fixed;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 1500;
+        }
+
+        .nav-dots button {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            border: none;
+            padding: 0;
+            background: rgba(216, 211, 196, .28);
+            cursor: pointer;
+            transition: all .3s;
+        }
+
+        .nav-dots button.on {
+            background: var(--accent);
+            transform: scale(1.5);
+        }
+
+        .edit-hotzone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            z-index: 10000;
+            cursor: pointer;
+        }
+
+        .edit-toggle {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            background: var(--bg-alt);
+            color: var(--fg);
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s;
+            z-index: 10001;
+        }
+
+        .edit-toggle.show,
+        .edit-toggle.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .edit-toggle.active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        body.editing [contenteditable] {
+            outline: 1px dashed var(--accent);
+            outline-offset: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="edit-hotzone"></div>
+    <button class="edit-toggle" id="editToggle" title="Chỉnh sửa (E)">✎</button>
+
+    <div class="deck-viewport">
+        <main class="deck-stage" id="deckStage">
+
+            <!-- 00 · ACADEMIC TITLE -->
+            <section class="slide center active" style="align-items:center;text-align:center">
+                <div style="position:absolute;top:44px;left:92px;right:92px;display:flex;justify-content:space-between;align-items:flex-start"
+                    data-anim="fade-up">
+                    <div
+                        style="font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--fg2);line-height:2;text-align:left">
+                        Học viện Công nghệ<br>Bưu chính Viễn thông
+                    </div>
+                    <div
+                        style="font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--fg2);line-height:2;text-align:right">
+                        Bài tập lớn<br>Thực tập Cơ sở
+                    </div>
+                </div>
+                <div data-anim="fade-up" data-delay="1"><span class="kicker">Báo cáo Bài tập lớn · Thực tập Cơ sở</span>
+                </div>
+                <div class="rule" style="margin-left:auto;margin-right:auto" data-anim="fade-up" data-delay="1"></div>
+                <h2 class="title" style="font-size:46px;line-height:1.3;max-width:1400px" data-anim="fade-up"
+                    data-delay="2">Nghiên cứu trợ lý so sánh văn bản pháp lý<br>chạy cục bộ dùng <em>RAG + Local
+                        LLM</em></h2>
+                <div style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:36px 80px;max-width:900px;text-align:left"
+                    data-anim="fade-up" data-delay="3">
+                    <div>
+                        <div class="cap" style="color:var(--accent);margin-bottom:10px">Thành viên</div>
+                        <div
+                            style="font-family:var(--body);font-weight:400;font-size:19px;line-height:1.85;color:var(--fg)">
+                            Vũ Đình Hiếu — <span
+                                style="font-family:var(--mono);font-size:15px;color:var(--fg2)">B23DCCE036</span><br>
+                            Dương Anh Đức — <span
+                                style="font-family:var(--mono);font-size:15px;color:var(--fg2)">B23DCCE018</span><br>
+                            Nguyễn Văn Ninh — <span
+                                style="font-family:var(--mono);font-size:15px;color:var(--fg2)">B23DCAT232</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cap" style="color:var(--accent);margin-bottom:10px">Giảng viên bộ môn</div>
+                        <div
+                            style="font-family:var(--body);font-weight:400;font-size:19px;line-height:1.85;color:var(--fg)">
+                            Nguyễn Tất Thắng
+                        </div>
+                    </div>
+                </div>
+                <div class="grove-num" style="font-size:280px;opacity:.04">PTIT</div>
+            </section>
+
+            <!-- 01 · COVER -->
+            <section class="slide center">
+                <div class="cover-meta" data-anim="fade-up" data-delay="1">Technical Report<br><b>Legal Diff
+                        Pipeline</b><br>2026</div>
+                <div data-anim="fade-up"><span class="kicker">Hệ thống so sánh văn bản pháp lý</span></div>
+                <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                <h1 class="display" data-anim="fade-up" data-delay="2">L<span class="accent">-</span>RAG</h1>
+                <h3 class="sub" style="margin-top:22px;max-width:1240px" data-anim="fade-up" data-delay="3">Pipeline RAG
+                    ba pha cho so sánh văn bản pháp lý Việt Nam, với đảm bảo <em>zero-hallucination</em></h3>
+                <p class="lead" style="margin-top:28px" data-anim="fade-up" data-delay="4">Từ tệp PDF/DOCX thô đến báo
+                    cáo diff đã kiểm chứng — structured parsing, hybrid alignment, và generative comparison ràng buộc
+                    bằng evidence.</p>
+                <div class="grove-num">L</div>
+            </section>
+
+            <!-- 01b · TECH STACK -->
+            <section class="slide">
+                <div class="chrome"><span>L-RAG</span><span>Technology Stack</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Công nghệ sử dụng</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Kiến trúc ba tầng -
+                        AI Core, Backend, Frontend
+                    </h2>
+                    <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:32px;margin-top:28px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="colhd">AI Core · src/</div>
+                            <div class="panel" style="height:100%">
+                                <ul class="bul" style="gap:11px">
+                                    <li style="font-size:18px"><b>Python 3.11</b> <span class="m">ngôn ngữ chính</span>
+                                    </li>
+                                    <li style="font-size:18px"><b>Docling + Marker-PDF</b> <span class="m">parsing &
+                                            OCR</span></li>
+                                    <li style="font-size:18px"><b>BGE-M3</b> <span class="m">dense + sparse
+                                            embedding</span></li>
+                                    <li style="font-size:18px"><b>SciPy</b> <span class="m">Hungarian algorithm</span>
+                                    </li>
+                                    <li style="font-size:18px"><b>Qdrant</b> <span class="m">vector store</span></li>
+                                    <li style="font-size:18px"><b>Qwen2.5-7B</b> <span class="m">local LLM (vLLM)</span>
+                                    </li>
+                                    <li style="font-size:18px"><b>Pydantic</b> <span class="m">data models &
+                                            validation</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="colhd">Backend · backend/</div>
+                            <div class="panel" style="height:100%">
+                                <ul class="bul" style="gap:11px">
+                                    <li style="font-size:18px"><b>FastAPI</b> <span class="m">async REST +
+                                            WebSocket</span></li>
+                                    <li style="font-size:18px"><b>Celery</b> <span class="m">distributed task
+                                            queue</span></li>
+                                    <li style="font-size:18px"><b>Redis</b> <span class="m">broker + pub/sub + GPU
+                                            lock</span></li>
+                                    <li style="font-size:18px"><b>PostgreSQL</b> <span class="m">metadata store</span>
+                                    </li>
+                                    <li style="font-size:18px"><b>SQLAlchemy</b> <span class="m">async ORM</span></li>
+                                    <li style="font-size:18px"><b>Alembic</b> <span class="m">DB migrations</span></li>
+                                    <li style="font-size:18px"><b>JWT</b> <span class="m">authentication</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="4">
+                            <div class="colhd">Frontend · frontend/</div>
+                            <div class="panel" style="height:100%">
+                                <ul class="bul" style="gap:11px">
+                                    <li style="font-size:18px"><b>React 19</b> <span class="m">UI framework</span></li>
+                                    <li style="font-size:18px"><b>TypeScript</b> <span class="m">type safety</span></li>
+                                    <li style="font-size:18px"><b>Vite</b> <span class="m">build tool</span></li>
+                                    <li style="font-size:18px"><b>Tailwind CSS</b> <span class="m">styling</span></li>
+                                    <li style="font-size:18px"><b>shadcn/ui</b> <span class="m">component library</span>
+                                    </li>
+                                    <li style="font-size:18px"><b>WebSocket</b> <span class="m">live progress</span>
+                                    </li>
+                                    <li style="font-size:18px"><b>React Router</b> <span class="m">SPA navigation</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Tech Stack</span><span></span></div>
+            </section>
+
+            <!-- 02 · MOTIVATION -->
+            <section class="slide">
+                <div class="chrome"><span>L-RAG</span><span>Motivation</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Đặt vấn đề</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Bốn thách thức của
+                        bài toán so sánh văn bản
+                        pháp lý</h2>
+                    <div class="cols c5545" style="margin-top:34px">
+                        <ul class="bul" data-anim="fade-up" data-delay="2">
+                            <li><b>Cấu trúc phân cấp chặt chẽ.</b> <span class="m">Chương → Điều → Khoản → Điểm; một
+                                    thay đổi nhỏ nằm sâu trong cây và dễ mất khi linearize văn bản.</span></li>
+                            <li><b>Reordering, rewriting, split/merge.</b> <span class="m">So khớp theo vị trí
+                                    (positional) thất bại; cần semantic alignment thực sự.</span></li>
+                            <li><b>Số liệu mang tính quyết định.</b> <span class="m">Sai một con số (30 → 45 ngày) là
+                                    sai hiệu lực pháp lý của điều khoản.</span></li>
+                            <li><b>LLM hallucination.</b> <span class="m">Khẳng định không có cơ sở là không chấp nhận
+                                    được trong ngữ cảnh pháp lý.</span></li>
+                        </ul>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="note" style="margin-bottom:28px"><b>Nguyên tắc — zero-hallucination.</b> Mọi
+                                diff được báo cáo phải đính kèm verbatim evidence trích từ nguồn và vượt qua một chuỗi
+                                verification tất định (deterministic).</div>
+                            <div class="cap" style="margin-bottom:12px">Hướng tiếp cận</div>
+                            <p class="body" style="font-weight:300">Một pipeline ba pha: structured parsing, hybrid
+                                dense + sparse alignment, và generative comparison <span class="accent">có verification
+                                    lập trình</span> — năng lực suy luận của LLM bị ràng buộc bởi các bộ lọc tất định.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Legal Document Comparison</span><span><span class="a">02</span> /
+                        30</span></div>
+            </section>
+
+            <!-- 03 · PIPELINE OVERVIEW (static arrows) -->
+            <section class="slide">
+                <div class="chrome"><span>src/pipeline.py</span><span>Architecture</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Kiến trúc tổng quan</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Pipeline ba pha -
+                        luồng xử lý end-to-end</h2>
+                    <div class="flow3" data-anim="fade-up" data-delay="2" style="margin-top:32px">
+                        <div class="stage">
+                            <div class="sno">Phase 01</div>
+                            <h4>Ingestion</h4>
+                            <div class="scap" style="line-height: 1.3;">Parsing &amp; knowledge representation</div>
+                            <div class="sstep">LegalDocumentParser — Docling</div>
+                            <div class="sstep">Legal DOM — Chương → Điều → Khoản → Điểm</div>
+                            <div class="sstep">LsuChunker — breadcrumb + sentence split</div>
+                        </div>
+                        <div class="conn"><span class="arrow">→</span></div>
+                        <div class="stage">
+                            <div class="sno">Phase 02</div>
+                            <h4>Alignment</h4>
+                            <div class="scap">Embedding &amp; optimal matching</div>
+                            <div class="sstep">BGE-M3 — dense 1024-d + sparse lexical</div>
+                            <div class="sstep">Similarity matrix — 4 weighted signals</div>
+                            <div class="sstep">Hungarian + split/merge detection</div>
+                        </div>
+                        <div class="conn"><span class="arrow">→</span></div>
+                        <div class="stage">
+                            <div class="sno">Phase 03</div>
+                            <h4>Comparison</h4>
+                            <div class="scap">Generative diff &amp; verification</div>
+                            <div class="sstep">Tier 1 — LLM ACU extraction (Qwen)</div>
+                            <div class="sstep">Tier 2–3 — evidence + numerical verify</div>
+                            <div class="sstep">Tier 4 — summary + Markdown report</div>
+                        </div>
+                    </div>
+                    <div class="rule-full" data-anim="fade-up" data-delay="3" style="margin:36px 0 24px"></div>
+                    <div class="io3" data-anim="fade-up" data-delay="3">
+                        <div>
+                            <div class="k">Input</div>
+                            <div class="v">2× <code>PDF / DOCX</code> — version V1 &amp; V2</div>
+                        </div>
+                        <div>
+                            <div class="k">Intermediate</div>
+                            <div class="v"><code>LegalDocument</code> · <code>LsuChunk[]</code> ·
+                                <code>DiffPairCatalog</code>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="k">Output</div>
+                            <div class="v"><code>ComparisonReport[]</code> — JSON + Markdown</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Overview</span><span><span class="a">03</span> / 30</span></div>
+            </section>
+
+            <!-- 03b · DETAILED END-TO-END ARCHITECTURE -->
+            <section class="slide">
+                <div class="chrome"><span>src/pipeline.py</span><span>Architecture · chi tiết</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Luồng chi tiết end-to-end</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Bên trong ba pha -
+                        từng bước xử lý</h2>
+                    <div class="arch" data-anim="fade-up" data-delay="2" style="margin-top:24px">
+                        <div class="archchip"><b>Input</b>&nbsp;&nbsp;2× PDF / DOCX — V1 + V2</div>
+                        <div class="archrow">
+                            <div class="aphase">
+                                <div class="ah">Phase 01 · Ingestion</div>
+                                <div class="asteps">
+                                    <div class="astep">Docling parser</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep">LegalDocument<br>Chương → Điều → Khoản → Điểm</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep">LsuChunker<br>breadcrumb + sentence split</div>
+                                </div>
+                            </div>
+                            <div class="aconn"><span class="ar">→</span><span class="al">LegalDocument × 2</span></div>
+                            <div class="aphase">
+                                <div class="ah">Phase 02 · Alignment</div>
+                                <div class="asteps">
+                                    <div class="astep">BGE-M3 · dense 1024 + sparse</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep">Similarity Matrix S<br>4 signals + article-number bonus</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep">Hungarian 1:1 · θ = 0.60</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep">Split / Merge · cos ≥ 0.80</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep out">DiffPairCatalog</div>
+                                </div>
+                            </div>
+                            <div class="aconn"><span class="ar">→</span><span class="al">DiffPairCatalog</span></div>
+                            <div class="aphase">
+                                <div class="ah">Phase 03 · Comparison</div>
+                                <div class="asteps">
+                                    <div class="astep">Tier 1 · ACU extraction (Qwen)</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep">Tier 2 · evidence verification</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep">Tier 3 · numerical verification</div>
+                                    <div class="adown">↓</div>
+                                    <div class="astep">Tier 4 · summary + Markdown</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="archchip"><b>Output</b>&nbsp;&nbsp;ComparisonReport[] — JSON + Markdown</div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Architecture</span><span>04 / 34</span></div>
+            </section>
+
+            <!-- 04 · CONTRACT + CONFIG -->
+            <section class="slide">
+                <div class="chrome"><span>PipelineRunConfig</span><span>Data Contract</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Interface &amp; cấu hình</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1">Input / Output mỗi pha &amp; tham số điều khiển
+                    </h2>
+                    <div class="cols c6040" style="margin-top:34px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <table class="t">
+                                <thead>
+                                    <tr>
+                                        <th>Phase</th>
+                                        <th>Input</th>
+                                        <th>Output</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>01 · Ingestion</b></td>
+                                        <td>2× PDF/DOCX</td>
+                                        <td><code>LegalDocument</code>, <code>LsuChunk[]</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>02 · Alignment</b></td>
+                                        <td>2× <code>LegalDocument</code></td>
+                                        <td><code>DiffPairCatalog</code> — N pairs</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>03 · Comparison</b></td>
+                                        <td><code>DiffPairCatalog</code></td>
+                                        <td><code>ComparisonReport[]</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="note" style="margin-top:30px">Progress callback phát <span
+                                    class="accent">(percent, phase, message)</span> tại ranh giới các pha; backend
+                                chuyển thành WebSocket cho real-time progress.</div>
+                        </div>
+                        <div class="code" data-anim="fade-up" data-delay="3"><span class="lbl">PipelineRunConfig</span>
+<span class="cm"># Phase 1</span>
+confidence_threshold = <span class="nm">0.75</span>
+max_chunk_chars = <span class="nm">2000</span>
+<span class="cm"># Phase 2</span>
+match_threshold = <span class="nm">0.60</span> <span class="cm"># θ</span>
+<span class="cm"># Phase 3</span>
+llm_model_name = <span class="st">"Qwen2.5-7B-Instruct"</span>
+llm_temperature_acu = <span class="nm">0.05</span>
+llm_temperature_summary = <span class="nm">0.30</span>
+enable_second_pass = <span class="kw">True</span>
+enable_number_enumeration = <span class="kw">True</span>
+min_confidence_to_include = <span class="nm">0.20</span>
+max_concurrency = <span class="nm">4</span></div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Contract</span><span><span class="a">04</span> / 30</span></div>
+            </section>
+
+            <!-- 05 · CHAPTER 01 -->
+            <section class="slide center">
+                <div class="chapter-num" data-anim="fade-up">Phase 01 — Ingestion</div>
+                <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                <h1 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Parsing
+                    &amp;<br><em>knowledge representation</em>
+                </h1>
+                <p class="lead" style="margin-top:28px;max-width:1040px" data-anim="fade-up" data-delay="2">Chuyển
+                    PDF/DOCX thô thành biểu diễn có cấu trúc, machine-readable, rồi tách thành các Logical Semantic Unit
+                    phục vụ retrieval và alignment.</p>
+                <div style="margin-top:40px;display:flex;gap:52px" data-anim="fade-up" data-delay="3">
+                    <div>
+                        <div class="cap" style="color:var(--accent)">Module</div>
+                        <div class="body" style="margin-top:8px">src/ingestion/</div>
+                    </div>
+                    <div>
+                        <div class="cap" style="color:var(--accent)">Engine</div>
+                        <div class="body" style="margin-top:8px">Docling</div>
+                    </div>
+                    <div>
+                        <div class="cap" style="color:var(--accent)">Output</div>
+                        <div class="body" style="margin-top:8px">LegalDocument · LsuChunk[]</div>
+                    </div>
+                </div>
+                <div class="grove-num">1</div>
+            </section>
+
+            <!-- 06 · LEGAL DOM -->
+            <section class="slide">
+                <div class="chrome"><span>models.py</span><span>Phase 01 · Legal DOM</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Knowledge representation</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Legal DOM — cây phân
+                        cấp pháp lý Việt Nam</h2>
+                    <div class="cols c6040" style="margin-top:28px">
+                        <div class="tree" data-anim="fade-up" data-delay="2">
+                            <div class="troot"><span class="lv">Doc</span><span class="nm">LegalDocument</span></div>
+                            <ul>
+                                <li><span class="tnode"><span class="lv">Chương</span><span
+                                            class="nm">DocumentSection</span><span class="fl">type · number ·
+                                            title</span></span>
+                                    <ul>
+                                        <li><span class="tnode"><span class="lv">Điều</span><span
+                                                    class="nm">ArticleNode</span><span class="fl">number · title ·
+                                                    intro</span></span>
+                                            <ul>
+                                                <li><span class="tnode"><span class="lv">Khoản</span><span
+                                                            class="nm">ClauseNode</span><span
+                                                            class="fl">content</span></span>
+                                                    <ul>
+                                                        <li><span class="tnode"><span class="lv">Điểm</span><span
+                                                                    class="nm">PointNode</span><span class="fl">label
+                                                                    a/b/c</span></span></li>
+                                                        <li><span class="tnode"><span class="lv">Bảng</span><span
+                                                                    class="nm">TableData</span><span class="fl">grid 2D
+                                                                    · cell spans</span></span></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><span class="tnode"><span class="lv">Orphan</span><span
+                                            class="nm">orphan_articles</span><span class="fl">Điều ngoài mọi
+                                            Chương</span></span></li>
+                            </ul>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="note" style="margin-bottom:26px"><b>Bảng không bị làm phẳng.</b> TableData giữ
+                                nguyên grid 2D (headers, rows, cell spans) — dữ liệu số trong bảng được bảo toàn, không
+                                mất khi linearize.</div>
+                            <ul class="bul">
+                                <li><b>State-machine builder.</b> <span class="m">Mỗi dòng kiểm theo thứ tự ưu tiên:
+                                        section → article → clause → point → body, với hàm flush đóng node đang
+                                        mở.</span></li>
+                                <li><b>quality_metrics.</b> <span class="m">Engine, OCR confidence, warnings — đi kèm
+                                        mỗi document.</span></li>
+                                <li><b>iter_all_articles / iter_all_clauses.</b> <span class="m">Duyệt phẳng toàn cây
+                                        cho các pha sau.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Legal DOM</span><span><span class="a">06</span> / 30</span></div>
+            </section>
+
+            <!-- 06b · LEGAL DOM CLASS DIAGRAM -->
+            <section class="slide">
+                <div class="chrome"><span>models.py</span><span>Phase 01 · Class diagram</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Data model</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Legal DOM — class
+                        diagram &amp; composition
+                    </h2>
+                    <div class="fc" data-anim="fade-up" data-delay="2" style="height:560px;margin-top:20px">
+                        <svg class="fcsvg" viewBox="0 0 1736 560" preserveAspectRatio="none">
+                            <defs>
+                                <marker id="arr" markerWidth="11" markerHeight="9" refX="9" refY="3" orient="auto">
+                                    <path d="M0,0 L9,3 L0,6 Z" fill="#c8524a" />
+                                </marker>
+                                <marker id="dia" markerWidth="16" markerHeight="9" refX="1" refY="3" orient="auto">
+                                    <path d="M1,3 L7,0.5 L13,3 L7,5.5 Z" fill="#c8524a" />
+                                </marker>
+                            </defs>
+                            <!-- composition edges: diamond at whole-side, arrow at part-side -->
+                            <path d="M300,236 C360,236 380,84 430,84" stroke="#c8524a" stroke-width="1.4" fill="none"
+                                marker-start="url(#dia)" marker-end="url(#arr)" />
+                            <path d="M300,300 C360,300 380,372 430,372" stroke="#c8524a" stroke-width="1.4" fill="none"
+                                marker-start="url(#dia)" marker-end="url(#arr)" />
+                            <path d="M567,150 L567,316" stroke="#c8524a" stroke-width="1.4" fill="none"
+                                marker-start="url(#dia)" marker-end="url(#arr)" />
+                            <path d="M705,372 C760,372 790,366 835,366" stroke="#c8524a" stroke-width="1.4" fill="none"
+                                marker-start="url(#dia)" marker-end="url(#arr)" />
+                            <path d="M1085,366 C1130,366 1150,232 1190,232" stroke="#c8524a" stroke-width="1.4"
+                                fill="none" marker-start="url(#dia)" marker-end="url(#arr)" />
+                            <!-- dependency edges (dashed): tables -->
+                            <path d="M960,424 C960,470 1080,432 1190,432" stroke="rgba(216,211,196,.4)"
+                                stroke-width="1.3" fill="none" stroke-dasharray="7 5" marker-end="url(#arr)" />
+                            <path d="M705,410 C850,540 1060,470 1190,470" stroke="rgba(216,211,196,.4)"
+                                stroke-width="1.3" fill="none" stroke-dasharray="7 5" marker-end="url(#arr)" />
+                        </svg>
+                        <!-- multiplicity / relation labels -->
+                        <div class="fclbl acc" style="left:316px;top:150px">sections · 0..*</div>
+                        <div class="fclbl acc" style="left:312px;top:340px">orphan · 0..*</div>
+                        <div class="fclbl acc" style="left:575px;top:222px">articles · 0..*</div>
+                        <div class="fclbl acc" style="left:712px;top:332px">clauses · 0..*</div>
+                        <div class="fclbl acc" style="left:1086px;top:286px">points · 0..*</div>
+                        <div class="fclbl" style="left:1010px;top:452px">tables</div>
+                        <div class="fclbl" style="left:860px;top:520px">tables</div>
+                        <!-- UML class boxes -->
+                        <div class="uml acc" style="left:0;top:160px;width:300px">
+                            <div class="un">LegalDocument</div>
+                            <div class="uf">doc_id · doc_title</div>
+                            <div class="uf">doc_number · signing_date</div>
+                            <div class="uf">sections · orphan_articles</div>
+                            <div class="uf">quality_metrics</div>
+                            <div class="uf">+ iter_all_articles()</div>
+                        </div>
+                        <div class="uml" style="left:430px;top:30px;width:275px">
+                            <div class="un">DocumentSection</div>
+                            <div class="uf">section_type "Chương/Phần/Mục"</div>
+                            <div class="uf">number · title</div>
+                            <div class="uf">full_title</div>
+                        </div>
+                        <div class="uml" style="left:430px;top:316px;width:275px">
+                            <div class="un">ArticleNode</div>
+                            <div class="uf">number (int | str)</div>
+                            <div class="uf">title · intro</div>
+                            <div class="uf">full_title "Điều N. …"</div>
+                        </div>
+                        <div class="uml" style="left:835px;top:322px;width:250px">
+                            <div class="un">ClauseNode</div>
+                            <div class="uf">number (int | str)</div>
+                            <div class="uf">content · points</div>
+                        </div>
+                        <div class="uml" style="left:1190px;top:178px;width:246px">
+                            <div class="un">PointNode</div>
+                            <div class="uf">label "a / b / c"</div>
+                            <div class="uf">content</div>
+                        </div>
+                        <div class="uml" style="left:1190px;top:400px;width:246px">
+                            <div class="un">TableData</div>
+                            <div class="uf">headers · rows (2D grid)</div>
+                            <div class="uf">cells (row/col span)</div>
+                            <div class="uf">num_rows · num_cols</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Class diagram</span><span>07 / 34</span></div>
+            </section>
+
+            <!-- 07 · PARSER + REGEX (no OCR fallback) -->
+            <section class="slide">
+                <div class="chrome"><span>docling_parser.py</span><span>Phase 01 · Parser</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Cấu trúc nhận diện</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Nhận diện cấu trúc
+                        bằng regex pattern</h2>
+                    <p class="lead" data-anim="fade-up" data-delay="2" style="margin-top:10px;font-size:21px">Parser
+                        duyệt từng dòng và đối sánh với bộ regex tuned cho legal numbering tiếng Việt (hỗ trợ cả số
+                        Ả-Rập và La-Mã, cờ <span class="mono"
+                            style="font-family:var(--mono);font-size:18px">UNICODE</span>).</p>
+                    <div class="cols c5545" style="margin-top:26px">
+                        <table class="t sm" data-anim="fade-up" data-delay="3">
+                            <thead>
+                                <tr>
+                                    <th>Pattern</th>
+                                    <th>Nhận diện</th>
+                                    <th>Ví dụ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>_RE_SECTION</code></td>
+                                    <td>tiêu đề chương/phần/mục</td>
+                                    <td>Chương II</td>
+                                </tr>
+                                <tr>
+                                    <td><code>_RE_ARTICLE</code></td>
+                                    <td>điều luật + tiêu đề</td>
+                                    <td>Điều 5. …</td>
+                                </tr>
+                                <tr>
+                                    <td><code>_RE_CLAUSE</code></td>
+                                    <td>khoản đánh số</td>
+                                    <td>1. … 99.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>_RE_POINT</code></td>
+                                    <td>điểm chữ cái (gồm <code>đ</code>)</td>
+                                    <td>a) … đ)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>_RE_FB_*</code></td>
+                                    <td>fallback khi không có "Điều"</td>
+                                    <td>I. / 1.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div data-anim="fade-up" data-delay="4">
+                            <ul class="bul" style="gap:14px">
+                                <li><b>_RE_ARTICLE.</b> <span class="m">Bắt "Điều 5" hoặc "Điều V" kèm tiêu đề; nhận cả
+                                        Arabic và Roman numerals.</span></li>
+                                <li><b>_RE_POINT.</b> <span class="m">Bắt điểm <code
+                                            style="font-family:var(--mono);color:var(--accent)">a)</code>, có ký tự
+                                        <code style="font-family:var(--mono);color:var(--accent)">đ</code> đặc thù tiếng
+                                        Việt.</span></li>
+                                <li><b>Fallback pass.</b> <span class="m">Văn bản (Công điện, Quyết định) đánh số trực
+                                        tiếp <span class="mono" style="font-family:var(--mono)">1. 2. I.</span> thay vì
+                                        "Điều"; khi pass chính ra 0 điều, parser chạy lại với <code
+                                            style="font-family:var(--mono);color:var(--accent)">_RE_FB_*</code> và
+                                        promote các mục cấp cao thành ArticleNode.</span></li>
+                            </ul>
+                            <div class="note" style="margin-top:22px">Markdown bold/italic (<span class="mono"
+                                    style="font-family:var(--mono)">**Điều 5:**</span>) được strip trước khi đối sánh để
+                                định dạng không gây nhiễu structure detection.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Parser</span><span><span class="a">07</span> / 30</span></div>
+            </section>
+
+            <!-- 08 · LSU CHUNKER — purpose / rationale -->
+            <section class="slide">
+                <div class="chrome"><span>lsu_chunker.py</span><span>Phase 01 · Chunking</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Logical Semantic Unit</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Vì sao chunk theo cấu
+                        trúc, không cắt theo độ
+                        dài?</h2>
+                    <div class="cols c5545" style="margin-top:30px">
+                        <ul class="bul" data-anim="fade-up" data-delay="2">
+                            <li><b>Fixed-size splitting phá vỡ ngữ cảnh.</b> <span class="m">Cắt cố định 512/1000 ký tự
+                                    sẽ cắt ngang câu và khoản, khiến embedding bị nhiễu và retrieval trả về mảnh vô
+                                    nghĩa.</span></li>
+                            <li><b>LSU = ranh giới ngữ nghĩa tự nhiên.</b> <span class="m">Mỗi chunk tương ứng một Điều
+                                    hoặc một Khoản — đơn vị mà luật pháp định nghĩa, nên là đơn vị retrieval đúng
+                                    đắn.</span></li>
+                            <li><b>Dual granularity.</b> <span class="m">Tạo cả article-level (tổng quan) và
+                                    clause-level (chi tiết) → alignment so khớp được ở cả hai mức.</span></li>
+                        </ul>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="note" style="margin-bottom:24px"><b>Breadcrumb là chìa khóa.</b> Đường dẫn phân
+                                cấp được nối vào chính text trước khi embed, nên vector mang theo vị trí trong cây — cải
+                                thiện cả retrieval lẫn alignment.</div>
+                            <div class="cap" style="color:var(--accent);margin-bottom:12px">Breadcrumb được embed</div>
+                            <div class="breadcrumb"><span class="sep">[</span> Chương II. Quyền và Nghĩa vụ <span
+                                    class="sep">›</span> Điều 5. Quyền của Bên A <span class="sep">›</span> Khoản 3
+                                <span class="sep">]</span>
+                            </div>
+                            <p class="body" style="font-weight:300;margin-top:18px;font-size:18px;color:var(--fg2)">
+                                <span class="mono"
+                                    style="font-family:var(--mono);color:var(--fg)">content_with_prefix</span> =
+                                breadcrumb + "\n" + raw_content — chính trường này được đưa vào embedding model.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · LsuChunker</span><span><span class="a">08</span> / 30</span></div>
+            </section>
+
+            <!-- 09 · LSU CHUNKER — algorithm -->
+            <section class="slide">
+                <div class="chrome"><span>lsu_chunker.py</span><span>Phase 01 · Algorithm</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Thuật toán chunking</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Ba bước, tôn trọng
+                        sentence boundary</h2>
+                    <div class="cols c5545" style="margin-top:30px">
+                        <ul class="bul" data-anim="fade-up" data-delay="2">
+                            <li><b>1 · Article-level chunk.</b> <span class="m">Mỗi ArticleNode → intro + preview các
+                                    khoản (overview để retrieval thô).</span></li>
+                            <li><b>2 · Clause-level chunk.</b> <span class="m">Mỗi ClauseNode → flatten content + các
+                                    điểm con thành một unit chi tiết.</span></li>
+                            <li><b>3 · Sentence split khi > 2000 ký tự.</b> <span class="m">Cắt tại biên câu tiếng Việt,
+                                    mang overlap 200 ký tự sang phần kế, gắn nhãn <span class="mono"
+                                        style="font-family:var(--mono)">[phần 1/3]</span> để giữ liên tục.</span></li>
+                        </ul>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="cap" style="color:var(--accent);margin-bottom:12px">Sentence boundary —
+                                accent-aware</div>
+                            <div class="code"><span class="lbl">regex</span><span class="cm"># nhận biết chữ hoa có dấu
+tiếng Việt</span>
+_RE_SENTENCE_BOUNDARY = re.compile(
+<span class="st">r"(?&lt;=[.!?;])\s+(?=[A-ZÁÀẢÃẠ…</span>
+<span class="st"> ĐÉÈẺẼẸ…ÝỲỶỸỴ0-9])"</span>,
+re.UNICODE,
+)</div>
+                            <div class="note" style="margin-top:20px">Overlap 200 ký tự đảm bảo một câu bị cắt vẫn xuất
+                                hiện đủ ngữ cảnh ở cả hai chunk liền kề.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · LsuChunker</span><span><span class="a">09</span> / 30</span></div>
+            </section>
+
+            <!-- 10 · PHASE 1 DATA-TRANSFORMATION VISUALIZATION -->
+            <section class="slide">
+                <div class="chrome"><span>Worked example</span><span>Phase 01 · Data flow</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Dữ liệu sau khi xử lý</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Raw text → Legal DOM
+                        → LsuChunk[]</h2>
+                    <div class="dflow" data-anim="fade-up" data-delay="2" style="margin-top:30px">
+                        <div class="dpanel">
+                            <div class="dh">① Raw text</div>
+                            <div class="dbody"><span class="nm">Điều 5.</span> Quyền của Bên A
+                                <span class="nm">1.</span> Yêu cầu Bên B giao
+                                hàng đúng hạn
+                                <span class="nm">2.</span> Kiểm tra chất lượng
+                                hàng hóa
+                            </div>
+                        </div>
+                        <div class="darrow">→</div>
+                        <div class="dpanel">
+                            <div class="dh">② Parsed DOM</div>
+                            <div class="dbody">ArticleNode(
+                                number=<span class="nm">5</span>,
+                                title=<span class="nm">"Quyền của Bên A"</span>,
+                                clauses=[
+                                Clause(<span class="nm">1</span>, "Yêu cầu…"),
+                                Clause(<span class="nm">2</span>, "Kiểm tra…"),
+                                ])</div>
+                        </div>
+                        <div class="darrow">→</div>
+                        <div class="dpanel">
+                            <div class="dh">③ LsuChunk[]</div>
+                            <div class="dbody" style="white-space:normal;padding:12px 16px">
+                                <div class="chunkrow">
+                                    <div class="bc">[Ch.II › Điều 5]</div>
+                                    <div class="ct">article · overview · 96 chars</div>
+                                </div>
+                                <div class="chunkrow">
+                                    <div class="bc">[Ch.II › Điều 5 › Khoản 1]</div>
+                                    <div class="ct">clause · "Yêu cầu Bên B…" · 34</div>
+                                </div>
+                                <div class="chunkrow">
+                                    <div class="bc">[Ch.II › Điều 5 › Khoản 2]</div>
+                                    <div class="ct">clause · "Kiểm tra chất lượng…" · 28</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rule-full" data-anim="fade-up" data-delay="3" style="margin:30px 0 22px"></div>
+                    <p class="lead" data-anim="fade-up" data-delay="3" style="font-size:21px">Một Điều ba dòng văn bản
+                        phẳng trở thành <span class="accent">một cây có kiểu</span> rồi thành <span class="accent">ba
+                            chunk gắn breadcrumb</span> — mỗi chunk là một retrieval unit độc lập, sẵn sàng cho
+                        embedding ở Phase 2.</p>
+                </div>
+                <div class="foot"><span>L-RAG · Phase 01 — Data flow</span><span><span class="a">10</span> / 30</span>
+                </div>
+            </section>
+
+            <!-- 11 · CHAPTER 02 -->
+            <section class="slide center">
+                <div class="chapter-num" data-anim="fade-up">Phase 02 — Alignment</div>
+                <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                <h1 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">
+                    Embedding<br>&amp;<em>optimal matching</em></h1>
+                <p class="lead" style="margin-top:28px;max-width:1080px" data-anim="fade-up" data-delay="2">Xác định mỗi
+                    điều của V1 tương ứng điều nào của V2 — kể cả khi văn bản đã rewrite, reorder, hay split/merge.
+                    Output là một DiffPairCatalog.</p>
+                <div style="margin-top:40px;display:flex;gap:52px" data-anim="fade-up" data-delay="3">
+                    <div>
+                        <div class="cap" style="color:var(--accent)">Module</div>
+                        <div class="body" style="margin-top:8px">src/alignment/</div>
+                    </div>
+                    <div>
+                        <div class="cap" style="color:var(--accent)">Embedding</div>
+                        <div class="body" style="margin-top:8px">BGE-M3 · dense + sparse</div>
+                    </div>
+                    <div>
+                        <div class="cap" style="color:var(--accent)">Matching</div>
+                        <div class="body" style="margin-top:8px">Hungarian · θ = 0.60</div>
+                    </div>
+                </div>
+                <div class="grove-num">2</div>
+            </section>
+
+            <!-- 12 · ALIGNMENT FLOW -->
+            <section class="slide">
+                <div class="chrome"><span>alignment_engine.py</span><span>Phase 02 · Flow</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Alignment algorithm</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Năm bước từ node đến
+                        DiffPairCatalog</h2>
+                    <div class="spine" data-anim="fade-up" data-delay="2" style="margin-top:34px">
+                        <div class="snode">
+                            <div class="tick"></div>
+                            <div class="so">01 · Embed</div>
+                            <h4>Embedding</h4>
+                            <p>V1: N node, V2: M node. Mỗi node embed hai lần (structural + semantic), dense 1024 +
+                                sparse.</p>
+                        </div>
+                        <div class="snode">
+                            <div class="tick"></div>
+                            <div class="so">02 · Score</div>
+                            <h4>Matrix S (N×M)</h4>
+                            <p>sem·cos + jaro + ordinal + sparse, cộng bonus số điều, clip [0,1].</p>
+                        </div>
+                        <div class="snode">
+                            <div class="tick"></div>
+                            <div class="so">03 · Assign</div>
+                            <h4>Hungarian 1:1</h4>
+                            <p>linear_sum_assignment(1−S); giữ pair có S ≥ θ = 0.60.</p>
+                        </div>
+                        <div class="snode">
+                            <div class="tick"></div>
+                            <div class="so">04 · Split / Merge</div>
+                            <h4>Residue</h4>
+                            <p>MERGE: cos(v1a+v1b, v2) ≥ 0.80. SPLIT: cos(v1, v2a+v2b) ≥ 0.80.</p>
+                        </div>
+                        <div class="snode out">
+                            <div class="tick"></div>
+                            <div class="so">05 · Classify</div>
+                            <h4>DiffPairCatalog</h4>
+                            <p>Chỉ V1 → deleted. Chỉ V2 → added. Còn lại matched / split / merged.</p>
+                        </div>
+                    </div>
+                    <div class="rule-full" data-anim="fade-up" data-delay="3" style="margin:42px 0 22px"></div>
+                    <p class="lead" data-anim="fade-up" data-delay="3" style="font-size:22px">Output là N cặp DiffPair,
+                        mỗi cặp mang <span class="accent">match_type</span>, confidence và raw text — đưa thẳng sang
+                        Phase 3.</p>
+                </div>
+                <div class="foot"><span>L-RAG · Alignment</span><span><span class="a">12</span> / 30</span></div>
+            </section>
+
+            <!-- 12b · ALIGNMENT FLOWCHART (detailed) -->
+            <section class="slide">
+                <div class="chrome"><span>alignment_engine.py</span><span>Phase 02 · Flowchart</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Alignment · luồng chi tiết</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Quyết định &amp; phân
+                        nhánh → DiffPairCatalog
+                    </h2>
+                    <div class="fc" data-anim="fade-up" data-delay="2" style="height:580px;margin-top:14px">
+                        <svg class="fcsvg" viewBox="0 0 1736 580" preserveAspectRatio="none">
+                            <defs>
+                                <marker id="fa" markerWidth="11" markerHeight="9" refX="9" refY="3" orient="auto">
+                                    <path d="M0,0 L9,3 L0,6 Z" fill="#c8524a" />
+                                </marker>
+                            </defs>
+                            <g stroke="rgba(216,211,196,.45)" stroke-width="1.4" fill="none">
+                                <!-- spine vertical arrows -->
+                                <path d="M260,56 L260,80" marker-end="url(#fa)" />
+                                <path d="M260,140 L260,164" marker-end="url(#fa)" />
+                                <path d="M260,224 L260,248" marker-end="url(#fa)" />
+                                <!-- hungarian → diamond -->
+                                <path d="M260,308 L260,336" marker-end="url(#fa)" />
+                                <!-- hungarian right → MATCHED -->
+                                <path d="M460,278 L660,278" marker-end="url(#fa)" />
+                                <!-- split/merge right → SPLIT/MERGED -->
+                                <path d="M460,528 L660,528" marker-end="url(#fa)" />
+                                <!-- outputs → DiffPairCatalog -->
+                                <path d="M1000,278 C1100,278 1140,315 1240,315" marker-end="url(#fa)" />
+                                <path d="M1000,408 C1100,408 1140,365 1240,365" marker-end="url(#fa)" />
+                                <path d="M1000,528 C1100,528 1140,408 1240,408" marker-end="url(#fa)" />
+                            </g>
+                            <g stroke="#c8524a" stroke-width="1.4" fill="none">
+                                <!-- diamond "no" → ADDED/DELETED -->
+                                <path d="M326,408 C460,408 550,408 660,408" marker-end="url(#fa)" />
+                                <!-- diamond "yes" → split/merge -->
+                                <path d="M260,478 L260,502" marker-end="url(#fa)" />
+                            </g>
+                        </svg>
+                        <!-- labels -->
+                        <div class="fclbl" style="left:530px;top:262px">matched</div>
+                        <div class="fclbl acc" style="left:380px;top:396px">no</div>
+                        <div class="fclbl acc" style="left:272px;top:482px">yes</div>
+                        <!-- main spine (left column, wider, centered) -->
+                        <div class="fcbox" style="left:60px;top:2px;width:400px">
+                            <div class="bx-t">Collect ArticleNodes</div>
+                            <div class="bx-s">V1: N nodes · V2: M nodes</div>
+                        </div>
+                        <div class="fcbox" style="left:60px;top:82px;width:400px">
+                            <div class="bx-t">BGE-M3 embedding</div>
+                            <div class="bx-s">structural + semantic · dense + sparse</div>
+                        </div>
+                        <div class="fcbox" style="left:60px;top:166px;width:400px">
+                            <div class="bx-t">Similarity Matrix S</div>
+                            <div class="bx-s">N × M · 4 weighted signals + bonus</div>
+                        </div>
+                        <div class="fcbox" style="left:60px;top:250px;width:400px">
+                            <div class="bx-t">Hungarian assignment</div>
+                            <div class="bx-s">minimize Σ (1 − S), keep S ≥ θ</div>
+                        </div>
+                        <!-- diamond — well below hungarian -->
+                        <div class="fcdia" style="left:196px;top:338px;width:130px;height:130px">
+                            <div class="di">unmatched<br>leftovers?</div>
+                        </div>
+                        <!-- split/merge — below diamond -->
+                        <div class="fcbox" style="left:60px;top:504px;width:400px">
+                            <div class="bx-t">Split / Merge detection</div>
+                            <div class="bx-s">concat cos ≥ 0.80</div>
+                        </div>
+                        <!-- outputs column (middle) -->
+                        <div class="fcbox acc" style="left:660px;top:252px;width:340px">
+                            <div class="bx-t">MATCHED pairs</div>
+                        </div>
+                        <div class="fcbox" style="left:660px;top:378px;width:340px">
+                            <div class="bx-t">ADDED / DELETED</div>
+                            <div class="bx-s">classify residue (V2-only / V1-only)</div>
+                        </div>
+                        <div class="fcbox acc" style="left:660px;top:502px;width:340px">
+                            <div class="bx-t">SPLIT / MERGED</div>
+                        </div>
+                        <!-- collector (right) -->
+                        <div class="fcbox acc" style="left:1240px;top:268px;width:400px;padding:22px 26px">
+                            <div class="bx-t" style="font-size:24px">DiffPairCatalog</div>
+                            <div class="bx-s" style="font-size:16px;margin-top:10px">matched · added · deleted · split ·
+                                merged</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Alignment flowchart</span><span></span></div>
+            </section>
+
+            <!-- 13 · BGE-M3 detailed -->
+            <section class="slide">
+                <div class="chrome"><span>embedder.py</span><span>Phase 02 · BGE-M3</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Embedding model</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">BGE-M3 - vì sao dùng
+                        cả
+                        dense và sparse?</h2>
+                    <div class="cols c5545" style="margin-top:28px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <table class="t">
+                                <thead>
+                                    <tr>
+                                        <th>Vector</th>
+                                        <th>Dim</th>
+                                        <th>Bắt được</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>Dense</b></td>
+                                        <td><span class="mono">1024</span></td>
+                                        <td>ngữ nghĩa contextual; "Nghĩa vụ B" ≈ "Nghĩa vụ của Bên B"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Sparse</b></td>
+                                        <td><span class="mono">≤ 2²⁰</span></td>
+                                        <td>lexical chính xác (BM25-like); số điều, danh từ riêng, thuật ngữ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ColBERT</td>
+                                        <td><span class="mono">—</span></td>
+                                        <td>late-interaction (không dùng ở Pha 2)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="note" style="margin-top:22px"><b>Bổ sung cho nhau.</b> Dense làm mờ token chính
+                                xác (vd "Điều 15" vs "Điều 16"); sparse khôi phục đúng các token đó. Kết hợp cho cả
+                                nghĩa lẫn từ vựng.</div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="colhd">Mỗi node embed hai lần</div>
+                            <div class="panel" style="margin-bottom:18px">
+                                <div class="cap" style="color:var(--accent)">① Structural · max_len 512</div>
+                                <p class="body" style="font-weight:300;margin-top:9px;color:var(--fg2);font-size:18px">
+                                    <span class="mono" style="font-family:var(--mono);color:var(--fg)">"Điều {n}:
+                                        {title}"</span> — identity/vị trí: nhận ra "Điều 5" ↔ "Điều 5" dù nội dung đổi.
+                                </p>
+                            </div>
+                            <div class="panel acc">
+                                <div class="cap" style="color:var(--accent)">② Semantic · max_len 1024</div>
+                                <p class="body" style="font-weight:300;margin-top:9px;color:var(--fg2);font-size:18px">
+                                    breadcrumb + intro + 3 clause preview — ý nghĩa nội dung sâu. Dense vector này nuôi
+                                    trực tiếp similarity matrix.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · BGE-M3</span><span><span class="a">13</span> / 30</span></div>
+            </section>
+
+            <!-- 14 · BGE-M3 WORKED EXAMPLE (data viz) -->
+            <section class="slide">
+                <div class="chrome"><span>Worked example</span><span>Phase 02 · Embedding</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Embedding example</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Structural vs
+                        semantic trên một cặp thực tế
+                    </h2>
+                    <p class="lead" data-anim="fade-up" data-delay="2" style="margin-top:8px;font-size:21px">Cặp điều đã
+                        reword tiêu đề nhưng giữ số điều: structural cosine cao (cùng identity), semantic cosine vẫn cao
+                        (cùng nội dung), sparse overlap bắt token "Điều 5".</p>
+                    <div class="bge" data-anim="fade-up" data-delay="3" style="margin-top:28px">
+                        <div class="bcard">
+                            <div class="bt">V1 · ArticleNode</div>
+                            <div class="bv">Điều 5. Nghĩa vụ B</div>
+                            <div class="bm">structural text: <span class="mono" style="font-family:var(--mono)">"Điều 5:
+                                    Nghĩa vụ B"</span></div>
+                        </div>
+                        <div class="bcard">
+                            <div class="bt">V2 · ArticleNode</div>
+                            <div class="bv">Điều 5. Nghĩa vụ của Bên B</div>
+                            <div class="bm">structural text: <span class="mono" style="font-family:var(--mono)">"Điều 5:
+                                    Nghĩa vụ của Bên B"</span></div>
+                        </div>
+                    </div>
+                    <div class="panel" data-anim="fade-up" data-delay="4" style="margin-top:24px">
+                        <div class="cap" style="color:var(--accent);margin-bottom:6px">Tín hiệu tương đồng (minh họa)
+                        </div>
+                        <div class="simbar">
+                            <div class="lab">structural cos</div>
+                            <div class="tr">
+                                <div class="bf" data-w="94"></div>
+                            </div>
+                            <div class="vv">0.94</div>
+                        </div>
+                        <div class="simbar">
+                            <div class="lab">semantic cos</div>
+                            <div class="tr">
+                                <div class="bf" data-w="86"></div>
+                            </div>
+                            <div class="vv">0.86</div>
+                        </div>
+                        <div class="simbar">
+                            <div class="lab">sparse overlap</div>
+                            <div class="tr">
+                                <div class="bf" data-w="71"></div>
+                            </div>
+                            <div class="vv">0.71</div>
+                        </div>
+                        <div class="simbar">
+                            <div class="lab">Jaro-Winkler</div>
+                            <div class="tr">
+                                <div class="bf" data-w="82"></div>
+                            </div>
+                            <div class="vv">0.82</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · BGE-M3 Example</span><span><span class="a">14</span> / 30</span></div>
+            </section>
+
+            <!-- 15 · SIMILARITY MATRIX — formula -->
+            <section class="slide">
+                <div class="chrome"><span>similarity_matrix.py</span><span>Phase 02 · Formula</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Similarity matrix</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Bốn weighted
+                        signal, cộng article-number bonus
+                    </h2>
+                    <div class="equation" data-anim="fade-up" data-delay="2" style="margin-top:28px">
+                        S[i][j] = <span class="w">w<sub>sem</sub></span>·cos(d<sub>i</sub>,d<sub>j</sub>) + <span
+                            class="w">w<sub>jw</sub></span>·JW(t<sub>i</sub>,t<sub>j</sub>) + <span
+                            class="w">w<sub>ord</sub></span>·ord(i,j) + <span
+                            class="w">w<sub>sp</sub></span>·cos(s<sub>i</sub>,s<sub>j</sub>)<br>
+                        <span class="small">+ 0.15 nếu article_number<sub>i</sub> == article_number<sub>j</sub>,&nbsp;
+                            rồi clip [0,1]</span>
+                    </div>
+                    <div class="cols c5545" style="margin-top:30px;align-items:start">
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="colhd">Runtime weights · pipeline_config.yaml</div>
+                            <div class="weights">
+                                <div class="wrow">
+                                    <div class="wn">w<sub>semantic</sub></div>
+                                    <div class="wt">
+                                        <div class="wb" data-w="100"></div>
+                                    </div>
+                                    <div class="wv">0.50</div>
+                                </div>
+                                <div class="wrow">
+                                    <div class="wn">w<sub>jaro_winkler</sub></div>
+                                    <div class="wt">
+                                        <div class="wb" data-w="50"></div>
+                                    </div>
+                                    <div class="wv">0.25</div>
+                                </div>
+                                <div class="wrow">
+                                    <div class="wn">w<sub>sparse</sub></div>
+                                    <div class="wt">
+                                        <div class="wb" data-w="30"></div>
+                                    </div>
+                                    <div class="wv">0.15</div>
+                                </div>
+                                <div class="wrow">
+                                    <div class="wn">w<sub>ordinal</sub></div>
+                                    <div class="wt">
+                                        <div class="wb" data-w="20"></div>
+                                    </div>
+                                    <div class="wv">0.10</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="note" data-anim="fade-up" data-delay="4">Bốn weight tổng = 1.0 (validate ở <span
+                                class="mono" style="font-family:var(--mono)">__post_init__</span>); article-number bonus
+                            +0.15 cộng thêm, nằm ngoài tổng. Chi tiết từng thông số ở slide kế.</div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Similarity Matrix</span><span><span class="a">15</span> / 30</span>
+                </div>
+            </section>
+
+            <!-- 16 · SIMILARITY MATRIX — parameter explanation -->
+            <section class="slide">
+                <div class="chrome"><span>similarity_matrix.py</span><span>Phase 02 · Parameters</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Giải thích thông số công thức</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Mỗi tín hiệu bắt một
+                        loại bằng chứng khác nhau
+                    </h2>
+                    <table class="t" data-anim="fade-up" data-delay="2" style="margin-top:26px">
+                        <thead>
+                            <tr>
+                                <th>Thành phần</th>
+                                <th>Định nghĩa</th>
+                                <th>Bắt được</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>cos(d<sub>i</sub>,d<sub>j</sub>)</b></td>
+                                <td>cosine của dense vector đã L2-normalize, tính <code>V1 @ V2.T</code></td>
+                                <td>tương đồng <b>ngữ nghĩa</b> nội dung, chịu được rewrite</td>
+                                <td><span class="mono" style="color:var(--accent)">0.50</span></td>
+                            </tr>
+                            <tr>
+                                <td><b>JW(t<sub>i</sub>,t<sub>j</sub>)</b></td>
+                                <td>Jaro-Winkler trên tiêu đề (jellyfish), range [0,1]</td>
+                                <td>tiêu đề <b>gần giống</b> chuỗi: "Nghĩa vụ B" ↔ "Nghĩa vụ của Bên B"</td>
+                                <td><span class="mono" style="color:var(--accent)">0.25</span></td>
+                            </tr>
+                            <tr>
+                                <td><b>cos(s<sub>i</sub>,s<sub>j</sub>)</b></td>
+                                <td>cosine trên sparse dict (BGE-M3 lexical weights)</td>
+                                <td><b>trùng token</b> chính xác mà dense làm mờ: số điều, danh từ riêng</td>
+                                <td><span class="mono" style="color:var(--accent)">0.15</span></td>
+                            </tr>
+                            <tr>
+                                <td><b>ord(i,j)</b></td>
+                                <td><code>1 − |pos_i − pos_j|</code>, với <code>pos = ordinal/(count−1)</code></td>
+                                <td>thưởng nhỏ cho điều <b>giữ nguyên vị trí</b> tương đối</td>
+                                <td><span class="mono" style="color:var(--accent)">0.10</span></td>
+                            </tr>
+                            <tr>
+                                <td><b>bonus</b></td>
+                                <td>cộng cố định khi <code>article_number</code> trùng</td>
+                                <td>tín hiệu <b>mạnh</b>: điều luật hiếm khi đổi số trừ khi renumber</td>
+                                <td><span class="mono" style="color:var(--accent)">+0.15</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="note" data-anim="fade-up" data-delay="3" style="margin-top:22px">Bốn weight có thể tinh
+                        chỉnh trong YAML nhưng phải tổng = 1.0; bonus đứng ngoài để không phá ràng buộc này. Thiết kế
+                        additive giúp mỗi tín hiệu đóng góp độc lập và dễ diễn giải.</div>
+                </div>
+                <div class="foot"><span>L-RAG · Similarity Parameters</span><span><span class="a">16</span> / 30</span>
+                </div>
+            </section>
+
+            <!-- 17 · SIMILARITY MATRIX — heatmap worked example -->
+            <section class="slide">
+                <div class="chrome"><span>Worked example</span><span>Phase 02 · Matrix S</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Score matrix trên dữ liệu mẫu</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Ma trận S (3×3) -
+                        minh chứng split detection
+                    </h2>
+                    <div class="cols c5545" style="margin-top:28px;align-items:center">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="heat">
+                                <div class="corner"></div>
+                                <div class="chh">A1</div>
+                                <div class="chh">A2</div>
+                                <div class="chh">B'</div>
+                                <div class="rhh">A</div>
+                                <div class="cell" style="background:rgba(200,82,74,.52)">0.52</div>
+                                <div class="cell" style="background:rgba(200,82,74,.48)">0.48</div>
+                                <div class="cell" style="background:rgba(200,82,74,.12)">0.12</div>
+                                <div class="rhh">B</div>
+                                <div class="cell" style="background:rgba(200,82,74,.09)">0.09</div>
+                                <div class="cell" style="background:rgba(200,82,74,.14)">0.14</div>
+                                <div class="cell keep" style="background:rgba(200,82,74,.78)">0.78<span class="kf">keep
+                                        ≥ θ</span></div>
+                                <div class="rhh">C</div>
+                                <div class="cell" style="background:rgba(200,82,74,.10)">0.10</div>
+                                <div class="cell" style="background:rgba(200,82,74,.08)">0.08</div>
+                                <div class="cell" style="background:rgba(200,82,74,.21)">0.21</div>
+                            </div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <ul class="bul">
+                                <li><b>B ↔ B' = 0.78 ≥ 0.60.</b> <span class="m">Hungarian giữ pair này → <span
+                                            class="accent">MATCHED</span>.</span></li>
+                                <li><b>A với A1 (0.52) và A2 (0.48) đều &lt; 0.60.</b> <span class="m">Không pair nào
+                                        riêng lẻ qua threshold — direct matching thất bại.</span></li>
+                                <li><b>Split check.</b> <span class="m">cos(A, A1+A2 nối chuỗi) = 0.83 ≥ 0.80 → <span
+                                            class="accent">SPLIT</span> A → [A1, A2].</span></li>
+                                <li><b>Hàng C toàn ≤ 0.21.</b> <span class="m">Không khớp đâu cả → <span
+                                            class="accent">DELETED</span>.</span></li>
+                            </ul>
+                            <div class="note" style="margin-top:20px">Heatmap cho thấy vì sao cần split detection: nội
+                                dung A bị phân tán qua A1+A2 nên từng ô thấp, chỉ tổng hợp mới đạt ngưỡng.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Matrix S Example</span><span><span class="a">17</span> / 30</span></div>
+            </section>
+
+            <!-- 18 · HUNGARIAN detail -->
+            <section class="slide">
+                <div class="chrome"><span>hungarian_matcher.py</span><span>Phase 02 · Matching</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Optimal assignment</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Hungarian: tối ưu
+                        toàn cục, không greedy</h2>
+                    <div class="cols c5545" style="margin-top:28px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <ul class="bul">
+                                <li><b>Global optimum.</b> <span class="m"><code
+                                            style="font-family:var(--mono);color:var(--accent)">linear_sum_assignment(1−S)</code>
+                                        tối thiểu hóa <i>tổng</i> cost — tránh bẫy local của greedy 1:1.</span></li>
+                                <li><b>Cost = 1 − S.</b> <span class="m">Similarity cao ⇒ cost thấp ⇒ ưu tiên ghép. Sau
+                                        khi gán, loại pair có S &lt; <b>0.60</b>.</span></li>
+                                <li><b>Split/Merge trên residue.</b> <span class="m">Với node chưa ghép, kiểm xem ghép
+                                        hai node nhỏ có khớp một node lớn không (cos ≥ <b>0.80</b>).</span></li>
+                                <li><b>Phân loại phần còn lại.</b> <span class="m">Chỉ V2 → added; chỉ V1 →
+                                        deleted.</span></li>
+                            </ul>
+                            <div class="code" data-anim="fade-up" data-delay="3" style="margin-top:24px;font-size:16px">
+                                cost_matrix = <span class="nm">1.0</span> - similarity_matrix
+                                row, col = <span class="kw">linear_sum_assignment</span>(cost_matrix)
+                                <span class="cm"># giữ (i,j) với S[i,j] >= match_threshold</span>
+                            </div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="4">
+                            <div class="colhd">MatchType — năm loại</div>
+                            <table class="t sm">
+                                <tbody>
+                                    <tr>
+                                        <td><b>matched</b></td>
+                                        <td>1 V1 ↔ 1 V2, score ≥ θ</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>split</b></td>
+                                        <td>1 V1 → 2+ V2</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>merged</b></td>
+                                        <td>2+ V1 → 1 V2</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>added</b></td>
+                                        <td>chỉ tồn tại ở V2</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>deleted</b></td>
+                                        <td>chỉ tồn tại ở V1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="note" style="margin-top:22px">Độ phức tạp Hungarian là O(n³) — chấp nhận được
+                                với số điều của một văn bản luật điển hình.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Hungarian</span><span><span class="a">18</span> / 30</span></div>
+            </section>
+
+            <!-- 19 · HUNGARIAN — cost matrix worked example -->
+            <section class="slide">
+                <div class="chrome"><span>Worked example</span><span>Phase 02 · Assignment</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Cost matrix &amp; assignment</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Cost = 1 − S → gán
+                        tối ưu → lọc theo θ</h2>
+                    <div class="cols c5545" style="margin-top:26px;align-items:center">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="cap" style="color:var(--accent);margin-bottom:14px">cost matrix (1 − S) · ô tô
+                                đậm = assignment</div>
+                            <div class="cmx">
+                                <div></div>
+                                <div class="chh">A1</div>
+                                <div class="chh">A2</div>
+                                <div class="chh">B'</div>
+                                <div class="rhh">A</div>
+                                <div class="cell sel">0.48</div>
+                                <div class="cell">0.52</div>
+                                <div class="cell">0.88</div>
+                                <div class="rhh">B</div>
+                                <div class="cell">0.91</div>
+                                <div class="cell">0.86</div>
+                                <div class="cell sel">0.22</div>
+                                <div class="rhh">C</div>
+                                <div class="cell">0.90</div>
+                                <div class="cell sel">0.92</div>
+                                <div class="cell">0.79</div>
+                            </div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <ul class="bul">
+                                <li><b>Assignment tối ưu:</b> <span class="m">A→A1 (cost 0.48), B→B' (0.22), C→A2
+                                        (0.92).</span></li>
+                                <li><b>Lọc theo θ = 0.60 trên S:</b> <span class="m">B–B' có S = 0.78 ≥ θ → <span
+                                            class="accent">giữ</span>. A–A1 có S = 0.52 &lt; θ → <span
+                                            class="accent">loại</span>. C–A2 có S = 0.08 &lt; θ → loại.</span></li>
+                                <li><b>Còn lại A, A1, A2, C chưa ghép.</b> <span class="m">Chuyển sang bước split/merge
+                                        và classify.</span></li>
+                            </ul>
+                            <div class="note" style="margin-top:20px">Hungarian luôn trả một gán 1:1 đầy đủ; threshold θ
+                                mới là bước quyết định pair nào thực sự là MATCHED, còn lại để các bước sau xử lý.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Assignment Example</span><span><span class="a">19</span> / 30</span>
+                </div>
+            </section>
+
+            <!-- 20 · MATCHING VISUALIZATION (redone, exact coords) -->
+            <section class="slide">
+                <div class="chrome"><span>Worked example</span><span>Phase 02 · Result</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Kết quả căn chỉnh</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">DiffPairCatalog -
+                        <em>matched · split ·
+                            deleted</em>
+                    </h2>
+                    <div class="matchviz" data-anim="fade-up" data-delay="2" style="margin-top:18px">
+                        <div class="vh" style="left:0">V1 — version gốc</div>
+                        <div class="vh" style="left:1010px">V2 — version mới</div>
+                        <svg class="match-svg" viewBox="0 0 1736 470" preserveAspectRatio="none">
+                            <!-- C deleted (dashed) -->
+                            <path class="mline dash" style="stroke:var(--fg3)" d="M360,442 H690" />
+                            <!-- A(c118) -> A1(c76) split -->
+                            <path class="mline" style="--len:740;stroke:var(--accent)"
+                                d="M360,118 C600,118 800,76 1010,76" />
+                            <!-- A(c118) -> A2(c236) split -->
+                            <path class="mline" style="--len:740;stroke:var(--accent)"
+                                d="M360,118 C600,150 800,236 1010,236" />
+                            <!-- B(c278) -> B'(c396) matched -->
+                            <path class="mline" style="--len:740;stroke:var(--fg)"
+                                d="M360,278 C620,278 760,396 1010,396" />
+                        </svg>
+                        <!-- V1 cards: right edge x=360 -->
+                        <div class="mcard act" style="left:0;top:72px"><span class="id">A · ordinal 0</span><span
+                                class="tx">Quyền của A</span></div>
+                        <div class="mcard act" style="left:0;top:232px"><span class="id">B · ordinal 1</span><span
+                                class="tx">Nghĩa vụ B</span></div>
+                        <div class="mcard del" style="left:0;top:376px"><span class="id">C · ordinal 2</span><span
+                                class="tx">Thanh toán 30 ngày</span></div>
+                        <!-- V2 cards: left edge x=1010 -->
+                        <div class="mcard act" style="left:1010px;top:30px"><span class="id">A1</span><span
+                                class="tx">Quyền của A (phần 1)</span></div>
+                        <div class="mcard act" style="left:1010px;top:190px"><span class="id">A2</span><span
+                                class="tx">Quyền bổ sung của A</span></div>
+                        <div class="mcard act" style="left:1010px;top:350px"><span class="id">B'</span><span
+                                class="tx">Nghĩa vụ của Bên B</span></div>
+                        <!-- tags -->
+                        <div class="mtag" style="left:1430px;top:66px">Split · cos 0.83</div>
+                        <div class="mtag" style="left:1430px;top:386px">Matched · 0.78</div>
+                        <div class="mtag mut" style="left:470px;top:418px">Deleted</div>
+                    </div>
+                    <div class="note" data-anim="fade-up" data-delay="3" style="margin-top:10px">summary() → <span
+                            class="accent">matched 1 · split 1 · deleted 1 · added 0 · merged 0</span> — backend lưu bộ
+                        đếm này lên job row.</div>
+                </div>
+                <div class="foot"><span>L-RAG · Phase 02 — Result</span><span><span class="a">20</span> / 30</span>
+                </div>
+            </section>
+
+            <!-- 21 · CHAPTER 03 -->
+            <section class="slide center">
+                <div class="chapter-num" data-anim="fade-up">Phase 03 — Comparison</div>
+                <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                <h1 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Generative diff
+                    &amp;<br><em>verification</em></h1>
+                <p class="lead" style="margin-top:28px;max-width:1100px" data-anim="fade-up" data-delay="2">Với mỗi
+                    DiffPair, sinh một danh sách thay đổi có cấu trúc đã verified (Atomic Comparison Unit) và báo cáo
+                    tiếng Việt — với ràng buộc cứng: không khẳng định nào thiếu evidence được sống sót.</p>
+                <div style="margin-top:40px;display:flex;gap:52px" data-anim="fade-up" data-delay="3">
+                    <div>
+                        <div class="cap" style="color:var(--accent)">Module</div>
+                        <div class="body" style="margin-top:8px">src/comparison/</div>
+                    </div>
+                    <div>
+                        <div class="cap" style="color:var(--accent)">Unit</div>
+                        <div class="body" style="margin-top:8px">ACU · Atomic Comparison Unit</div>
+                    </div>
+                    <div>
+                        <div class="cap" style="color:var(--accent)">LLM</div>
+                        <div class="body" style="margin-top:8px">Qwen2.5-7B-Instruct</div>
+                    </div>
+                </div>
+                <div class="grove-num">3</div>
+            </section>
+
+            <!-- 22 · ACU MODEL -->
+            <section class="slide">
+                <div class="chrome"><span>models.py</span><span>Phase 03 · ACU</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Atomic Comparison Unit</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Đơn vị thay đổi nhỏ
+                        nhất, có thể verify</h2>
+                    <div class="cols c5545" style="margin-top:28px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="code" style="font-size:16px"><span class="lbl">ACUOutput</span><span
+class="kw">class</span> ACUOutput(BaseModel):
+acu_id: <span class="kw">str</span>
+change_type: ChangeType <span class="cm"># 6 loại</span>
+location_v1 / location_v2: <span class="kw">str</span>
+original_value / new_value: <span class="kw">str</span>
+<span class="st">verbatim_evidence_v1</span>: <span class="kw">str</span> <span class="cm"># copy V1</span>
+<span class="st">verbatim_evidence_v2</span>: <span class="kw">str</span> <span class="cm"># copy V2</span>
+confidence: <span class="kw">float</span> <span class="cm"># 0.0–1.0</span></div>
+                            <div class="note" style="margin-top:22px">LLM phải phát ACU dưới dạng structured JSON, mỗi
+                                ACU mang <span class="accent">verbatim evidence</span> sao chép từ nguồn — nền móng cho
+                                mọi tầng verification.</div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="colhd">ChangeType — sáu loại</div>
+                            <ul class="bul" style="gap:13px">
+                                <li><b>numerical</b> <span class="m">số · ngày · % · tiền tệ · deadline</span></li>
+                                <li><b>terminology</b> <span class="m">thuật ngữ, cách diễn đạt pháp lý</span></li>
+                                <li><b>structural</b> <span class="m">cấu trúc khoản / điểm</span></li>
+                                <li><b>addition</b> <span class="m">chỉ V2 — evidence_v1 rỗng</span></li>
+                                <li><b>deletion</b> <span class="m">chỉ V1 — evidence_v2 rỗng</span></li>
+                                <li><b>reorder</b> <span class="m">đảo thứ tự</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · ACU Model</span><span><span class="a">22</span> / 30</span></div>
+            </section>
+
+            <!-- 23 · FOUR-TIER FUNNEL -->
+            <section class="slide">
+                <div class="chrome"><span>report_generator.py · verifier.py</span><span>Phase 03 · Verification</span>
+                </div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Verification pipeline</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Phễu
+                        zero-hallucination - lọc dần đến sự thật</h2>
+                    <div class="funnel" style="margin-top:28px">
+                        <div class="tier" data-anim="fade-up" data-delay="2">
+                            <div class="tn">1</div>
+                            <div>
+                                <div class="tname">ACU Extraction · LLM Qwen, temp ≈ 0.05</div>
+                                <div class="tdesc">Skip nếu V1 ≡ V2 · windowing văn bản dài · number-enum · two-pass
+                                    recall · dedupe.</div>
+                            </div>
+                            <div class="tmeta">Sinh candidate</div>
+                        </div>
+                        <div class="tier w2" data-anim="fade-up" data-delay="3">
+                            <div class="tn">2</div>
+                            <div>
+                                <div class="tname">Evidence Verification · programmatic</div>
+                                <div class="tdesc">exact <span style="font-family:var(--mono)">in</span> →
+                                    whitespace-normalized → fuzzy SequenceMatcher ≥ 0.85.</div>
+                            </div>
+                            <div class="tmeta"><span class="a">miss → loại</span><br>FAILED_EVIDENCE</div>
+                        </div>
+                        <div class="tier w3" data-anim="fade-up" data-delay="4">
+                            <div class="tn">3</div>
+                            <div>
+                                <div class="tname">Numerical Verification · regex, 100% strict</div>
+                                <div class="tdesc">Trích mọi số (date / % / currency / float / int); mỗi số phải có
+                                    trong raw_text.</div>
+                            </div>
+                            <div class="tmeta"><span class="a">miss → loại</span><br>FAILED_NUMERICAL</div>
+                        </div>
+                        <div class="tier w4" data-anim="fade-up" data-delay="5">
+                            <div class="tn">4</div>
+                            <div>
+                                <div class="tname">Executive Summary + Markdown · LLM, temp ≈ 0.3</div>
+                                <div class="tdesc">Tổng hợp trên các ACU đã verified → báo cáo tiếng Việt (fallback
+                                    Python tất định).</div>
+                            </div>
+                            <div class="tmeta"><span class="a">verified</span></div>
+                        </div>
+                    </div>
+                    <p class="lead" data-anim="fade-up" data-delay="6" style="margin-top:24px;font-size:20px">ACU bị
+                        loại ở Tier 2/3 được ghi vào hallucination log, không bao giờ xuất hiện trong báo cáo.</p>
+                </div>
+                <div class="foot"><span>L-RAG · Verification</span><span><span class="a">23</span> / 30</span></div>
+            </section>
+
+            <!-- 23b · FOUR-TIER FLOWCHART (detailed) -->
+            <section class="slide">
+                <div class="chrome"><span>report_generator.py · verifier.py</span><span>Phase 03 · Flowchart</span>
+                </div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Verification · luồng chi tiết</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Decision gates →
+                        hallucination log</h2>
+                    <div class="fc" data-anim="fade-up" data-delay="2" style="height:620px;margin-top:20px">
+                        <svg class="fcsvg" viewBox="0 0 1736 580" preserveAspectRatio="none">
+                            <defs>
+                                <marker id="fb" markerWidth="11" markerHeight="9" refX="9" refY="3" orient="auto">
+                                    <path d="M0,0 L9,3 L0,6 Z" fill="#c8524a" />
+                                </marker>
+                            </defs>
+                            <g stroke="rgba(216,211,196,.45)" stroke-width="1.4" fill="none">
+                                <!-- request → tier1 -->
+                                <path d="M360,48 L360,66" marker-end="url(#fb)" />
+                                <!-- tier1 → tier2 -->
+                                <path d="M360,126 L360,148" marker-end="url(#fb)" />
+                                <!-- tier2 → diamond1 -->
+                                <path d="M360,208 L360,228" marker-end="url(#fb)" />
+                                <!-- diamond1 pass → tier3 -->
+                                <path d="M360,340 L360,360" marker-end="url(#fb)" />
+                                <!-- tier3 → diamond2 -->
+                                <path d="M360,420 L360,440" marker-end="url(#fb)" />
+                                <!-- diamond2 pass → tier4 -->
+                                <path d="M360,546 L360,560" marker-end="url(#fb)" />
+                            </g>
+                            <g stroke="#c8524a" stroke-width="1.4" fill="none">
+                                <!-- diamond1 miss → hallucination log -->
+                                <path d="M420,284 C580,284 720,290 900,290" marker-end="url(#fb)" />
+                                <!-- diamond2 miss → hallucination log -->
+                                <path d="M420,493 C580,493 720,400 900,400" marker-end="url(#fb)" />
+                            </g>
+                        </svg>
+                        <!-- labels -->
+                        <div class="fclbl" style="left:374px;top:344px">pass</div>
+                        <div class="fclbl" style="left:374px;top:550px">pass</div>
+                        <div class="fclbl acc" style="left:480px;top:268px">miss</div>
+                        <div class="fclbl acc" style="left:480px;top:478px">miss</div>
+                        <!-- spine (wider boxes, centered in left half) -->
+                        <div class="fcbox" style="left:80px;top:2px;width:560px">
+                            <div class="bx-t">ComparisonRequest</div>
+                            <div class="bx-s">pair_id · match_type · raw_text V1/V2</div>
+                        </div>
+                        <div class="fcbox acc" style="left:80px;top:68px;width:560px">
+                            <div class="bx-t">Tier 1 · ACU extraction (Qwen)</div>
+                            <div class="bx-s">skip nếu V1≡V2 · windowing · number-enum · two-pass</div>
+                        </div>
+                        <div class="fcbox" style="left:80px;top:150px;width:560px">
+                            <div class="bx-t">Tier 2 · Evidence verification</div>
+                            <div class="bx-s">exact → whitespace-norm → fuzzy ≥ 0.85</div>
+                        </div>
+                        <!-- diamond 1 -->
+                        <div class="fcdia" style="left:318px;top:260px;width:80px;height:80px">
+                            <div class="di">evidence<br>pass?</div>
+                        </div>
+                        <div class="fcbox" style="left:80px;top:362px;width:560px">
+                            <div class="bx-t">Tier 3 · Numerical verification</div>
+                            <div class="bx-s">regex extract · 100% strict</div>
+                        </div>
+                        <!-- diamond 2 -->
+                        <div class="fcdia" style="left:318px;top:472px;width:80px;height:80px">
+                            <div class="di">numerical<br>pass?</div>
+                        </div>
+                        <div class="fcbox acc" style="left:80px;top:570px;width:560px">
+                            <div class="bx-t">Tier 4 · Summary + Markdown → ComparisonReport</div>
+                        </div>
+                        <!-- reject collector (right side, tall, centered vertically) -->
+                        <div class="fcbox drop"
+                            style="left:900px;top:180px;width:480px;height:260px;display:flex;flex-direction:column;justify-content:center;padding:24px 28px">
+                            <div class="bx-t" style="font-size:22px">Hallucination log</div>
+                            <div class="bx-s" style="font-size:15px;margin-top:12px;line-height:1.5">rejected ACUs —
+                                FAILED_EVIDENCE / FAILED_NUMERICAL<br>không bao giờ vào báo cáo · tính
+                                hallucination_rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Verification flowchart</span><span></span></div>
+            </section>
+
+            <!-- 24 · TIER 1 detail (Qwen, no DeepSeek) -->
+            <section class="slide">
+                <div class="chrome"><span>report_generator.py · acu_prompter.py</span><span>Phase 03 · Tier 1</span>
+                </div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Tier 1 · ACU extraction</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Strict prompt +
+                        recall boosters trên Qwen</h2>
+                    <div class="cols c6040" style="margin-top:26px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="colhd">Recall boosters</div>
+                            <table class="t sm">
+                                <thead>
+                                    <tr>
+                                        <th>Strategy</th>
+                                        <th>Hành vi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>B · Windowing</b></td>
+                                        <td>văn bản &gt; 5000 ký tự → tách theo sentence boundary, ghép window theo vị
+                                            trí, mỗi pair một LLM call</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>C1 · Number enum</b></td>
+                                        <td>liệt kê tới 80 số mỗi bên, inject vào prompt như cross-check bắt buộc</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>C2 · Two-pass</b></td>
+                                        <td>gửi lại ACU list, hỏi "thay đổi bổ sung" — thuần recall</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Identical skip</b></td>
+                                        <td>nếu normalize(V1) == normalize(V2) → bỏ LLM call hoàn toàn</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Truncation recovery</b></td>
+                                        <td>response bị cắt → brace-balanced scan, cứu mọi ACU hoàn chỉnh</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="panel acc">
+                                <div class="cap" style="color:var(--accent)">8 mandatory rules — vi phạm ⇒ loại toàn bộ
+                                    output</div>
+                                <ul class="bul" style="margin-top:14px;gap:12px;font-size:18px">
+                                    <li><b>R1 · verbatim only.</b> <span class="m">evidence phải copy-paste, cấm
+                                            paraphrase/bịa.</span></li>
+                                    <li><b>R2 · atomic.</b> <span class="m">một thay đổi mỗi ACU.</span></li>
+                                    <li><b>R4 · evidence theo type.</b> <span class="m">addition ⇒ v1 rỗng; deletion ⇒
+                                            v2 rỗng.</span></li>
+                                    <li><b>R8 · logic shift.</b> <span class="m">flip "không"↔"có thể" là thay đổi
+                                            critical, dễ bỏ sót.</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Tier 1</span><span><span class="a">24</span> / 30</span></div>
+            </section>
+
+            <!-- 25 · TIER 2 evidence verification -->
+            <section class="slide">
+                <div class="chrome"><span>verifier.py</span><span>Phase 03 · Tier 2</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Tier 2 · Evidence verification</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Evidence có thật là
+                        substring của nguồn?</h2>
+                    <div class="cols c5545" style="margin-top:26px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="colhd">Ba chiến lược, theo thứ tự</div>
+                            <ul class="bul">
+                                <li><b>1 · exact <span class="mono" style="font-family:var(--mono)">in</span>.</b> <span
+                                        class="m">evidence là substring nguyên văn của raw_text.</span></li>
+                                <li><b>2 · whitespace-normalized.</b> <span class="m">chuẩn hóa khoảng trắng rồi so lại
+                                        — chịu được khác biệt format.</span></li>
+                                <li><b>3 · fuzzy sliding window.</b> <span class="m">SequenceMatcher trên cửa sổ
+                                        80%–150% độ dài evidence; ratio ≥ <b>0.85</b> mới chấp nhận.</span></li>
+                            </ul>
+                            <div class="note" style="margin-top:22px">Evidence &lt; 5 ký tự được skip (tránh false
+                                positive). Một side chỉ bị <span class="accent">False</span> khi đáng lẽ phải tồn tại mà
+                                không khớp → kích hoạt FAILED_EVIDENCE.</div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <table class="t">
+                                <thead>
+                                    <tr>
+                                        <th>change_type</th>
+                                        <th>V1 evidence</th>
+                                        <th>V2 evidence</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>addition</td>
+                                        <td>skip ("")</td>
+                                        <td><b>verify</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>deletion</td>
+                                        <td><b>verify</b></td>
+                                        <td>skip ("")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>còn lại</td>
+                                        <td><b>verify</b></td>
+                                        <td><b>verify</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="code" style="margin-top:22px;font-size:15px"><span class="cm"># fuzzy fallback
+                                    chỉ chạy khi exact + norm thất bại</span>
+                                score = SequenceMatcher(
+                                None, ev, window).ratio()
+                                accept = score &gt;= <span class="nm">0.85</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Tier 2</span><span><span class="a">25</span> / 30</span></div>
+            </section>
+
+            <!-- 26 · TIER 3 numerical verification -->
+            <section class="slide">
+                <div class="chrome"><span>verifier.py</span><span>Phase 03 · Tier 3</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Tier 3 · Numerical verification</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Mọi con số phải truy
+                        được trong raw text</h2>
+                    <div class="cols c5545" style="margin-top:24px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="colhd">Numerical patterns (longest-first)</div>
+                            <table class="t sm">
+                                <thead>
+                                    <tr>
+                                        <th>num_type</th>
+                                        <th>Ví dụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>date</code></td>
+                                        <td>01/06/2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>percentage</code></td>
+                                        <td>10,5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>currency_vn</code></td>
+                                        <td>500.000 đồng</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>currency_intl</code></td>
+                                        <td>USD 1,000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>float / integer</code></td>
+                                        <td>3,14 · 30</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <ul class="bul">
+                                <li><b>3 chiến lược search.</b> <span class="m">exact → normalized separators →
+                                        value-based (so theo giá trị số).</span></li>
+                                <li><b>VN vs intl decimal.</b> <span class="m">khi có cả "," và ".", dấu phải nhất là
+                                        decimal: <span class="mono" style="font-family:var(--mono)">1.000.000,50 →
+                                            1000000.50</span>.</span></li>
+                                <li><b>strict 100%.</b> <span class="m">thiếu một số ⇒ FAILED_NUMERICAL, drop ACU. Chạy
+                                        cả cho ACU phi-số có chứa số → bắt figure bịa trong bảng.</span></li>
+                            </ul>
+                            <div class="note" style="margin-top:20px">Date trả <span class="mono"
+                                    style="font-family:var(--mono)">value=None</span>, chỉ so dạng chuỗi/chuẩn hóa,
+                                không so số học.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Tier 3</span><span><span class="a">26</span> / 30</span></div>
+            </section>
+
+            <!-- 27 · TIER 4 + logic-shift -->
+            <section class="slide">
+                <div class="chrome"><span>logic_detector.py · report_generator.py</span><span>Phase 03 · Tier 4</span>
+                </div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Summary &amp; logic-shift</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Báo cáo tổng hợp
+                        &amp;
+                        cú hích phát hiện đảo
+                        nghĩa</h2>
+                    <div class="cols c5545" style="margin-top:26px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="colhd">Tier 4 · Executive summary</div>
+                            <ul class="bul">
+                                <li><b>Một LLM call cuối.</b> <span class="m">tổng hợp trên các verified ACU → overall
+                                        assessment, critical changes, numerical summary, risks.</span></li>
+                                <li><b>Deterministic fallback.</b> <span class="m">nếu LLM fail, một Python summary tất
+                                        định thay thế — pipeline không bao giờ tắc.</span></li>
+                                <li><b>render_markdown_report().</b> <span class="m">lắp ráp báo cáo tiếng Việt:
+                                        verified changes + hallucination log.</span></li>
+                            </ul>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="panel acc">
+                                <div class="cap" style="color:var(--accent)">S4 · Logic-shift hint</div>
+                                <p class="body" style="font-weight:300;margin-top:10px;font-size:18px">Đếm chênh lệch
+                                    tần suất token trên một lexicon đòn bẩy nghĩa:</p>
+                                <div class="body"
+                                    style="font-family:var(--mono);font-weight:400;font-size:15px;color:var(--fg2);margin:12px 0;line-height:1.9">
+                                    không · được phép · phải · cấm · trừ khi · chỉ khi · nếu</div>
+                                <p class="body" style="font-weight:300;font-size:17px;color:var(--fg2)">→ inject hint
+                                    <span class="accent">"thêm có thể, bỏ không"</span> vào Tier-1 prompt. Là recall
+                                    nudge, không phải gate.
+                                </p>
+                            </div>
+                            <div class="note" style="margin-top:18px"><b>Batching.</b> <span class="mono"
+                                    style="font-family:var(--mono);color:var(--accent)">asyncio.Semaphore(4)</span> chạy
+                                mọi pair đồng thời; một pair lỗi trả error-report, không làm hỏng batch.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Tier 4</span><span><span class="a">27</span> / 30</span></div>
+            </section>
+
+            <!-- 28 · PHASE 3 WORKED EXAMPLE (light) -->
+            <section class="slide">
+                <div class="chrome"><span>Worked example</span><span>Phase 03 · Result</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Worked example</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Ba ACU qua phễu →
+                        <em>0% hallucination</em>
+                    </h2>
+                    <div class="cols c2" style="margin-top:28px">
+                        <div data-anim="fade-up" data-delay="2">
+                            <div class="cap" style="color:var(--accent);margin-bottom:12px">Input pair · matched</div>
+                            <div class="code" style="font-size:15.5px"><span class="cm">V1:</span> "...thanh toán <span
+class="st">500.000 đồng</span> trong
+vòng <span class="st">30 ngày</span>. Bên A <span class="st">không được</span>
+chuyển nhượng."
+<span class="cm">V2:</span> "...thanh toán <span class="nm">600.000 đồng</span> trong
+vòng <span class="nm">45 ngày</span>. Bên A <span class="nm">có thể</span>
+chuyển nhượng nếu được bên B đồng ý."</div>
+                            <div class="passrow" style="margin-top:22px">
+                                <span class="p">✓ Tier 2 · 6/6 evidence</span>
+                                <span class="p">✓ Tier 3 · 4/4 số</span>
+                            </div>
+                            <div class="note" style="margin-top:20px;border-color:var(--accent)">ACU có evidence không
+                                nằm trong nguồn bị Tier 2 đánh dấu FAILED_EVIDENCE và chỉ xuất hiện ở hallucination log
+                                — không bao giờ ở verified changes.</div>
+                        </div>
+                        <div data-anim="fade-up" data-delay="3">
+                            <div class="cap" style="color:var(--accent);margin-bottom:4px">Ba ACU đã verified</div>
+                            <div class="acu">
+                                <div class="ah"><span class="ct">numerical</span><span class="conf">conf 100%</span>
+                                </div>
+                                <div class="ch"><span class="o">500.000 đồng</span> → <span class="n">600.000
+                                        đồng</span></div>
+                                <div class="ev">"...thanh toán 500.000 đồng trong vòng 30 ngày"</div>
+                            </div>
+                            <div class="acu">
+                                <div class="ah"><span class="ct">numerical</span><span class="conf">conf 100%</span>
+                                </div>
+                                <div class="ch"><span class="o">30 ngày</span> → <span class="n">45 ngày</span></div>
+                                <div class="ev">"trong vòng 30 ngày" → "trong vòng 45 ngày"</div>
+                            </div>
+                            <div class="acu">
+                                <div class="ah"><span class="ct">terminology</span><span class="conf">conf 95%</span>
+                                </div>
+                                <div class="ch"><span class="o">không được chuyển nhượng</span> → <span class="n">có thể
+                                        chuyển nhượng…</span></div>
+                                <div class="ev">logic-shift: bỏ "không", thêm "có thể"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Phase 03 — Result</span><span><span class="a">28</span> / 30</span>
+                </div>
+            </section>
+
+            <!-- 29 · SYNTHESIS -->
+            <section class="slide">
+                <div class="chrome"><span>Synthesis</span><span>Zero-hallucination</span></div>
+                <div class="content">
+                    <span class="kicker" data-anim="fade-up">Đảm bảo</span>
+                    <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                    <h2 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Suy luận của LLM,
+                        ràng buộc bằng deterministic
+                        verification</h2>
+                    <div class="stats" data-anim="fade-up" data-delay="2" style="margin-top:38px">
+                        <div class="gstat">
+                            <div class="gv"><span class="counter" data-target="3">0</span></div>
+                            <div class="gl">pha độc lập, data contract rõ ràng</div>
+                        </div>
+                        <div class="gstat">
+                            <div class="gv"><span class="counter" data-target="1024">0</span></div>
+                            <div class="gl">chiều dense vector BGE-M3</div>
+                        </div>
+                        <div class="gstat">
+                            <div class="gv">0.<span class="counter" data-target="60">0</span></div>
+                            <div class="gl">threshold θ matching Hungarian</div>
+                        </div>
+                        <div class="gstat">
+                            <div class="gv"><span class="counter" data-target="4">0</span></div>
+                            <div class="gl">tier verification trước khi xuất report</div>
+                        </div>
+                    </div>
+                    <div class="rule-full" data-anim="fade-up" data-delay="3" style="margin:42px 0 28px"></div>
+                    <div class="cols c2" data-anim="fade-up" data-delay="3">
+                        <ul class="bul">
+                            <li><b>Structure preserved.</b> <span class="m">Legal DOM + breadcrumb giữ ngữ cảnh phân
+                                    cấp; bảng không bị làm phẳng.</span></li>
+                            <li><b>Alignment chịu được rewrite.</b> <span class="m">dense + sparse, Hungarian,
+                                    split/merge xử lý reorder và split/merge.</span></li>
+                        </ul>
+                        <ul class="bul">
+                            <li><b>Mọi claim có evidence.</b> <span class="m">verbatim evidence + numerical verify 100%
+                                    strict.</span></li>
+                            <li><b>Minh bạch, auditable.</b> <span class="m">ACU bị loại ghi vào log kèm
+                                    hallucination_rate.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="foot"><span>L-RAG · Synthesis</span><span><span class="a">29</span> / 30</span></div>
+            </section>
+
+            <!-- 30 · CLOSING -->
+            <section class="slide center">
+                <div class="chapter-num" data-anim="fade-up">L-RAG · Technical Report</div>
+                <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                <h1 class="title" data-anim="fade-up" data-delay="1" style="line-height: 1.3;">Từ văn bản thô<br>đến
+                    <em>sự thật đã verified</em>
+                </h1>
+                <p class="lead" style="margin-top:28px;max-width:1040px" data-anim="fade-up" data-delay="2">Pipeline RAG
+                    ba pha cho so sánh văn bản pháp lý Việt Nam — structured parsing, hybrid optimal alignment,
+                    generative comparison có verification, với ràng buộc cứng zero-hallucination.</p>
+                <div style="margin-top:42px;display:flex;gap:38px;font-family:var(--mono);font-weight:400;font-size:16px;letter-spacing:.12em;text-transform:uppercase"
+                    data-anim="fade-up" data-delay="3">
+                    <span><span class="accent">01</span>&nbsp; Ingestion</span>
+                    <span><span class="accent">02</span>&nbsp; Alignment</span>
+                    <span><span class="accent">03</span>&nbsp; Comparison</span>
+                </div>
+                <div class="grove-num">∎</div>
+            </section>
+
+            <!-- CLOSING · THANK YOU -->
+            <section class="slide center">
+                <div style="position:absolute;top:44px;left:92px;right:92px;display:flex;justify-content:space-between;align-items:flex-start"
+                    data-anim="fade-up">
+                    <div
+                        style="font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--fg2);line-height:2">
+                        Học viện Công nghệ<br>Bưu chính Viễn thông
+                    </div>
+                    <div
+                        style="font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--fg2);line-height:2;text-align:right">
+                        Bài tập lớn<br>Thực tập Cơ sở · 2026
+                    </div>
+                </div>
+                <div data-anim="fade-up" data-delay="1"><span class="kicker">Cảm ơn quý thầy cô và các bạn</span></div>
+                <div class="rule" data-anim="fade-up" data-delay="1"></div>
+                <h1 class="display" style="font-size:140px;line-height: 1.5" data-anim="fade-up" data-delay="2">Q <span
+                        class="accent">&</span> A</h1>
+                <div style="margin-top:48px;display:flex;flex-direction:column;align-items:center;gap:8px"
+                    data-anim="fade-up" data-delay="3">
+                    <div style="font-family:var(--body);font-weight:400;font-size:20px;color:var(--fg);line-height:1.8">
+                        Vũ Đình Hiếu · Dương Anh Đức · Nguyễn Văn Ninh
+                    </div>
+                    <div
+                        style="font-family:var(--mono);font-weight:400;font-size:14px;letter-spacing:.1em;color:var(--fg2);text-transform:uppercase">
+                        GVBM: Nguyễn Tất Thắng
+                    </div>
+                </div>
+                <div class="grove-num" style="font-size:280px;opacity:.04">PTIT</div>
+            </section>
+
+        </main>
+    </div>
+
+    <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+    <script>
+        /* ===========================================================
+           DECK CONTROLLER — fixed 1920×1080 stage scaled to viewport
+           =========================================================== */
+        class Deck {
+            constructor() {
+                this.slides = [...document.querySelectorAll('.slide')];
+                this.stage = document.getElementById('deckStage');
+                this.i = 0;
+                this.buildDots(); this.pageNos(); this.scale();
+                addEventListener('resize', () => this.scale());
+                this.keys(); this.touch(); this.wheel();
+                this.show(0);
+            }
+            scale() {
+                const f = Math.min(innerWidth / 1920, innerHeight / 1080);
+                this.stage.style.transform = `translate(${(innerWidth - 1920 * f) / 2}px,${(innerHeight - 1080 * f) / 2}px) scale(${f})`;
+            }
+            buildDots() {
+                const d = document.getElementById('navDots');
+                this.slides.forEach((_, k) => {
+                    const b = document.createElement('button');
+                    b.setAttribute('aria-label', 'Slide ' + (k + 1)); b.onclick = () => this.show(k); d.appendChild(b);
+                });
+                this.dots = [...d.children];
+            }
+            /* auto-fill foot "NN / TT" so inserting slides never breaks numbering */
+            pageNos() {
+                const tt = String(this.slides.length).padStart(2, '0');
+                this.slides.forEach((s, k) => {
+                    const f = s.querySelector('.foot');
+                    if (f && f.lastElementChild) f.lastElementChild.innerHTML = `<span class="a">${String(k + 1).padStart(2, '0')}</span> / ${tt}`;
+                });
+            }
+            show(n) {
+                this.i = Math.max(0, Math.min(n, this.slides.length - 1));
+                this.slides.forEach((s, k) => { s.classList.toggle('active', k === this.i); s.classList.toggle('visible', k === this.i); });
+                this.dots.forEach((b, k) => b.classList.toggle('on', k === this.i));
+                this.animate(this.slides[this.i]);
+            }
+            next() { this.show(this.i + 1); }
+            prev() { this.show(this.i - 1); }
+            /* per-slide one-shot motion: bars + counters */
+            animate(slide) {
+                slide.querySelectorAll('.wb,.bf').forEach(b => {
+                    b.style.width = '0';
+                    requestAnimationFrame(() => setTimeout(() => b.style.width = b.dataset.w + '%', 160));
+                });
+                slide.querySelectorAll('.counter').forEach(c => {
+                    const target = +c.dataset.target, dur = 1100, t0 = performance.now();
+                    const step = t => {
+                        const p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+                        c.textContent = Math.round(target * e); if (p < 1) requestAnimationFrame(step);
+                    };
+                    requestAnimationFrame(step);
+                });
+            }
+            keys() {
+                addEventListener('keydown', e => {
+                    if (e.target.getAttribute('contenteditable')) return;
+                    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); this.next(); }
+                    else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); this.prev(); }
+                    else if (e.key === 'Home') this.show(0);
+                    else if (e.key === 'End') this.show(this.slides.length - 1);
+                });
+            }
+            touch() {
+                let x = null;
+                addEventListener('touchstart', e => x = e.touches[0].clientX, { passive: true });
+                addEventListener('touchend', e => {
+                    if (x === null) return;
+                    const dx = e.changedTouches[0].clientX - x; if (Math.abs(dx) > 60) dx < 0 ? this.next() : this.prev(); x = null;
+                }, { passive: true });
+            }
+            wheel() {
+                let lock = false;
+                addEventListener('wheel', e => {
+                    if (lock || Math.abs(e.deltaY) < 24) return;
+                    lock = true; e.deltaY > 0 ? this.next() : this.prev(); setTimeout(() => lock = false, 650);
+                }, { passive: true });
+            }
+        }
+        const deck = new Deck();
+
+        /* ===========================================================
+           INLINE EDITING — hotzone hover / E key, localStorage save
+           =========================================================== */
+        const editor = {
+            isActive: false,
+            toggleEditMode() {
+                this.isActive = !this.isActive;
+                document.body.classList.toggle('editing', this.isActive);
+                document.getElementById('editToggle').classList.toggle('active', this.isActive);
+                document.querySelectorAll('.title,.sub,.lead,.body,.note,.bul li,.stage h4,.snode h4,.snode p,.tier .tname,.tier .tdesc,.acu .ch,table.t td,.gstat .gl,.io3 .v,.display,.bcard .bv')
+                    .forEach(el => el.setAttribute('contenteditable', this.isActive));
+                if (!this.isActive) this.save();
+            },
+            save() { try { localStorage.setItem('lrag-plex', document.querySelector('.deck-stage').innerHTML); } catch (e) { } }
+        };
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault(); editor.save();
+                const t = document.getElementById('editToggle'); t.textContent = '✓'; setTimeout(() => t.textContent = '✎', 900);
+            }
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) editor.toggleEditMode();
+        });
+        const hotzone = document.querySelector('.edit-hotzone'), editToggle = document.getElementById('editToggle');
+        let hideT = null;
+        hotzone.addEventListener('mouseenter', () => { clearTimeout(hideT); editToggle.classList.add('show'); });
+        hotzone.addEventListener('mouseleave', () => { hideT = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+        editToggle.addEventListener('mouseenter', () => clearTimeout(hideT));
+        editToggle.addEventListener('mouseleave', () => { hideT = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+        editToggle.addEventListener('click', () => editor.toggleEditMode());
+        hotzone.addEventListener('click', () => editor.toggleEditMode());
+    </script>
+</body>
+
+</html>
