@@ -91,8 +91,6 @@ export function CreateJobPage() {
           </div>
         )}
 
-
-
         <button
           onClick={handleSubmit}
           disabled={jobMutation.isPending || !docV1 || !docV2}
